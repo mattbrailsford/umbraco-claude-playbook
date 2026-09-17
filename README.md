@@ -1,13 +1,13 @@
 # Umbraco Claude Playbook
 
-A Claude Code plugin for building Umbraco packages and sites: C# / .NET backend, EF Core
+A Claude Code plugin for building Umbraco packages and backoffice extensions: C# / .NET backend, EF Core
 persistence, Lit + UUI frontend for the backoffice. It gives you a five-step feature pipeline
 (`umb-init` → `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop`), a builder/reviewer
 gate that reviews and tests every change before it's committed, and a set of skills teaching
 the C#, EF Core, and Lit + UUI idioms Umbraco itself uses.
 
-**This is a foundation, not a finished house.** Drop it into a new package, a client site, or
-a fresh add-on, and build on top of it for whatever that project needs next — see
+**This is a foundation, not a finished house.** Drop it into a new package or a fresh add-on,
+and build on top of it for whatever that project needs next — see
 [Building on top](#building-on-top) below.
 
 ## Install
@@ -153,4 +153,4 @@ the commit/branch conventions this repo itself follows.
 ## Credits
 
 Based on [Rob Conery's `claude-playbook`](https://github.com/robconery) starter template,
-adapted for Umbraco package and site development.
+adapted for Umbraco package and backoffice extension development.
