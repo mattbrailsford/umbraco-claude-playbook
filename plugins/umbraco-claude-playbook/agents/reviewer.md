@@ -23,13 +23,14 @@ design. A reviewer that fixes its own findings isn't a gate.
 - `solid-principles` / `design-principles` — when judging module and class design.
 - `dotnet-best-practices` — nullable-reference discipline, type modeling, async/LINQ/disposal
   correctness, whether an error path should have been an exception or an explicit result.
-- `umbraco-extensibility` — check async naming, DI/Composer registration, and that a public API
-  change was proxied via `[Obsolete]` rather than broken outright.
+- `umbraco-extensibility` — check DI/Composer registration and collection-builder usage.
+- `umbraco-package-conventions` — check async naming and that a public API change was proxied
+  via `[Obsolete]` rather than broken outright (used in step 4 below).
 - `ef-core-data` — if a migration was added, check it's prefixed to avoid colliding with
   other packages in a shared Umbraco database, and that it works for every database provider
   the project supports (not just the one the builder happened to test against).
-- `lit-uui-conventions` — for the public-API-surface rule (only barrel-exported symbols are
-  real public API) and the manifest-alias-rename hazard, both used in step 4 below.
+- `umbraco-backoffice-conventions` — for the public-API-surface rule (only barrel-exported
+  symbols are real public API) and the manifest-alias-rename hazard, both used in step 4 below.
 
 ## Workflow
 
@@ -60,8 +61,9 @@ design. A reviewer that fixes its own findings isn't a gate.
      call it consistent.
 4. **Check impact on consumers, not just the diff.** For every public symbol the diff adds,
    removes, or changes the shape of (a `public`/`protected` C# member, or a symbol reachable
-   through the frontend package's real public barrel — see `lit-uui-conventions` for which
-   barrel that is), grep the rest of the codebase for usages outside the changed files.
+   through the frontend package's real public barrel — see `umbraco-backoffice-conventions`
+   for which barrel that is), grep the rest of the codebase for usages outside the changed
+   files.
    - Report what you find: the symbol, who calls it elsewhere in this repo, and whether
      they'd break (compile error), behave differently (runtime), or are unaffected.
    - **A package's real risk is the consumer you can't grep.** Unlike an app repo, most of a
@@ -76,9 +78,9 @@ design. A reviewer that fixes its own findings isn't a gate.
      the old member removed outright, the old member not delegating to the new one, the
      package's own DI registration still wired to the obsolete path.
    - **Frontend: only the real public barrel is public API.** A rename inside an internal
-     barrel chain (see `lit-uui-conventions`) is not breaking — nothing outside the package
-     can reach it. Removing or reshaping something re-exported from the public barrel is.
-     Don't flag internal renames as breaking; don't wave through a public-barrel change as
+     barrel chain (see `umbraco-backoffice-conventions`) is not breaking — nothing outside the
+     package can reach it. Removing or reshaping something re-exported from the public barrel
+     is. Don't flag internal renames as breaking; don't wave through a public-barrel change as
      safe just because it compiles.
    - **A renamed backoffice manifest `alias` is a silent breaking change.** Aliases are
      referenced by string (conditions, overwrites, extension-registry lookups), so the

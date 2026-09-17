@@ -1,17 +1,19 @@
 ---
-name: lit-uui-conventions
+name: umbraco-backoffice-conventions
 description: >-
-  Package-level frontend structuring conventions for Umbraco backoffice packages built with
-  Lit and UUI — local vs. global components, what actually gates your public API surface,
-  generating a typed client from a Management API's OpenAPI spec, and building a multi-package
-  frontend workspace in the right order. Use when structuring a Lit + UUI backoffice frontend
-  package, deciding whether a component should be exported, wiring up an OpenAPI-generated
-  client, or setting up frontend builds in a monorepo — not when implementing a specific
-  extension point (dashboard, tree, property editor, modal), which the official Backoffice
-  Skills plugin already covers in depth.
+  Umbraco-backoffice-specific frontend conventions built with Lit and UUI — required compiler
+  setup, local vs. global components, what actually gates your public API surface, generating
+  a typed client from a Management API's OpenAPI spec, observable/state subscription lifecycle,
+  and building a multi-package frontend workspace in the right order. Use when setting up or
+  structuring a Lit + UUI backoffice frontend package, deciding whether a component should be
+  exported, wiring up an OpenAPI-generated client, subscribing to a state/context observable,
+  or setting up frontend builds in a monorepo — not when implementing a specific extension
+  point (dashboard, tree, property editor, modal) or using the state-management system itself,
+  which the official Backoffice Skills plugin already covers in depth. Complements
+  `typescript-best-practices` (general TS language discipline, not Umbraco-specific).
 ---
 
-# Lit + UUI package conventions
+# Umbraco backoffice frontend conventions
 
 The official Umbraco Backoffice Skills plugin already covers backoffice extension-point
 patterns in exhaustive detail — dashboards, trees, property editors, modals, workspace
@@ -31,6 +33,28 @@ If every component registers itself a different way, or the public/private bound
 whatever happened to get exported first, every future contributor has to re-derive the rules
 by reading code instead of following one. The structure below exists so "is this component
 loaded, and is it meant to be used outside this package?" always has one obvious answer.
+
+## Compiler setup this ecosystem requires
+
+On top of `typescript-best-practices`' generic strict baseline, a Lit + UUI backoffice
+package's `tsconfig.json` needs a few settings that are specific to this ecosystem, not
+optional style choices:
+
+```json
+{
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "experimentalDecorators": true,
+    "types": ["@umbraco-cms/backoffice/extension-types"]
+  }
+}
+```
+
+**`experimentalDecorators: true`** is required for Lit's `@customElement`/`@property`
+decorators — without it, decorated classes silently fail to register or observe attributes
+correctly. **`moduleResolution: "bundler"`** matches how the backoffice's own Vite-based build
+resolves modules. **`types: ["@umbraco-cms/backoffice/extension-types"]`** brings in the
+ambient manifest/extension types the backoffice itself expects a package to declare against.
 
 ## Local vs. global components
 
@@ -86,9 +110,9 @@ whether the symbol was actually reachable through an exported path** — if not,
 breaking, no matter how central it felt internally. And removing or reshaping something that
 *is* exported (dropped export, changed constructor signature, removed `@property()` field) is
 breaking for every package or site importing it directly — apply the same `[Obsolete]`-proxy
-discipline `umbraco-extensibility` describes for the backend, adapted to TypeScript (keep the old
-export working, or ship a major version bump; pair it with a JSDoc `@deprecated` tag and a
-runtime warning). **Manifests are never exported from `index.ts`** — they register through the
+discipline `umbraco-package-conventions` describes for the backend, adapted to TypeScript (keep
+the old export working, or ship a major version bump; pair it with a JSDoc `@deprecated` tag
+and a runtime warning). **Manifests are never exported from `index.ts`** — they register through the
 package's bundle mechanism instead, so a manifest array changing shape isn't a public-API
 concern the way an exported class is.
 
@@ -170,6 +194,32 @@ npm run build:addon  # then the package that consumes it
 Restore/install dependencies from the workspace root, not from an individual package's
 frontend subfolder — a nested `node_modules` can resolve its own, possibly stale, copy of a
 workspace-linked local package instead of the one the workspace actually links.
+
+## Observable subscriptions: use `this.observe()`, not raw `.subscribe()`
+
+Every Umbraco state/context observable (see the official Backoffice Skills plugin's
+`umbraco-state-management` for the observable pattern itself) can be subscribed to two ways:
+the element's own `this.observe()` (from `UmbLitElement`/`UmbControllerHostElementMixin`), or
+RxJS's raw `.subscribe()`. Only the first one is safe by default.
+
+```typescript
+// WRONG — a raw subscription outlives the component if you forget to unsubscribe
+connectedCallback() {
+  super.connectedCallback();
+  this._context.myValue.subscribe((value) => { this._value = value; }); // leaks on disconnect
+}
+
+// RIGHT — this.observe() ties the subscription's lifecycle to the element automatically
+constructor() {
+  super();
+  this.observe(this._context.myValue, (value) => { this._value = value; });
+}
+```
+
+`this.observe()` registers the subscription as a controller on the element's host, so it's torn
+down automatically on `disconnectedCallback` — no manual `unsubscribe()` to remember, and no
+risk of a callback firing after the component is gone. A raw `.subscribe()` anywhere in a Lit
+component is worth a second look in review — it's usually meant to be `this.observe()`.
 
 ## Design tokens and styling
 

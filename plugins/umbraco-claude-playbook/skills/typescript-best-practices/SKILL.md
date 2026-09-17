@@ -1,48 +1,48 @@
 ---
 name: typescript-best-practices
 description: >-
-  Strict TypeScript discipline for a Lit + UUI backoffice package — type modeling, null
-  hygiene, error handling, and the toString()/toJSON() rule. Use when writing or reviewing
-  any TypeScript in an Umbraco backoffice frontend package. Complements lit-uui-conventions
-  (which covers package/file structure, not language discipline) and the official Backoffice
-  Skills plugin (which covers individual extension-point patterns).
+  General TypeScript language discipline — type modeling, null hygiene, error handling, and
+  the toString()/toJSON() rule. Not framework- or project-specific. Use when writing or
+  reviewing any TypeScript. For an Umbraco backoffice frontend package specifically, also see
+  `umbraco-backoffice-conventions` (compiler setup, package/file structure) and the official
+  Backoffice Skills plugin (individual extension-point patterns) — this skill covers only the
+  language discipline that applies regardless of framework.
 ---
 
-# TypeScript discipline for Umbraco backoffice packages
+# TypeScript language discipline
 
 ## 🎯 Why: Design for Change
 
-A loosely-typed frontend fails the same way a loosely-typed backend does: the compiler stops
+A loosely-typed codebase fails the same way a loosely-typed backend does: the compiler stops
 catching the change you were about to break. These rules keep the type checker doing real
 work, not decoration.
 
 ## Compiler settings — start strict, stay strict
 
-A Lit + UUI package's `tsconfig.json` should look roughly like this from day one:
+A `tsconfig.json` should look roughly like this from day one, regardless of framework:
 
 ```json
 {
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "experimentalDecorators": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "isolatedModules": true,
-    "types": ["@umbraco-cms/backoffice/extension-types"]
+    "isolatedModules": true
   }
 }
 ```
 
-The exact target/module numbers vary by project — a larger package may add
+The exact target/module numbers vary by project — a larger project may add
 `verbatimModuleSyntax`, `noImplicitOverride`, `noImplicitReturns` on top of the above; a
-smaller package targeting `ES2020` is equally valid. **Not negotiable: `strict: true`,
-`experimentalDecorators: true`** (required for Lit's `@customElement`/`@property` decorators)
-**and `moduleResolution: "bundler"`.** If you inherit a non-strict project, enabling `strict`
-and fixing the fallout is worth its own task, not something to defer indefinitely.
+smaller one targeting `ES2020` is equally valid. **Not negotiable: `strict: true`.** If you
+inherit a non-strict project, enabling `strict` and fixing the fallout is worth its own task,
+not something to defer indefinitely. A specific framework or ecosystem may require its own
+additional compiler options on top of this baseline (decorators, a particular
+`moduleResolution`, ambient framework types) — see that framework's own skill for those (e.g.
+`umbraco-backoffice-conventions` for a Lit + UUI Umbraco backoffice package).
 
 ## Type modeling: make invalid states unrepresentable
 
@@ -64,14 +64,14 @@ type FetchState =
   | { status: "success"; data: Item }
   | { status: "error"; error: string };
 
-function render(state: FetchState) {
+function describe(state: FetchState): string {
   switch (state.status) {
     case "success":
-      return html`${state.data.name}`; // .data is known to exist here, no `!`, no `?.`
+      return state.data.name; // .data is known to exist here, no `!`, no `?.`
     case "error":
-      return html`${state.error}`;
+      return state.error;
     default:
-      return html`…`;
+      return "…";
   }
 }
 ```
@@ -106,10 +106,10 @@ of API calls, so the tuple shape and "never throws" rule apply consistently ever
 than being hand-rolled per call site.
 
 This is specifically about **data operations** — reserve real `throw`/`try`/`catch` for
-genuinely exceptional, programmer-error conditions and for component lifecycle code
-(`constructor`, `connectedCallback`, `render`), where try/catch around initialization is
-normal. Data layer returns tuples; component layer catches around what could go wrong during
-setup or rendering.
+genuinely exceptional, programmer-error conditions and for UI/component lifecycle code
+(initialization, rendering), where a try/catch around setup is normal. Data layer returns
+tuples; the layer above it catches around what could go wrong during its own setup or
+rendering.
 
 ## Null hygiene: don't accept `null`/`undefined` at a function boundary
 
@@ -137,9 +137,9 @@ it usually means a type is lying about what it can contain.
 ## The `toString()` / `toJSON()` rule
 
 Any class whose instances might end up in a template literal, a `console.log`, or
-`JSON.stringify` (Management API request bodies, error reporting, debug logging) should
-implement `toString()` and, if it's ever serialized, `toJSON()` explicitly — don't rely on the
-default `[object Object]` behavior:
+`JSON.stringify` (an outgoing request body, error reporting, debug logging) should implement
+`toString()` and, if it's ever serialized, `toJSON()` explicitly — don't rely on the default
+`[object Object]` behavior:
 
 ```ts
 class ItemAlias {
@@ -152,18 +152,11 @@ class ItemAlias {
 A value object that silently stringifies to `[object Object]` inside a template or log line is
 a debugging session waiting to happen, and it's invisible until someone hits it.
 
-## Working with the generated Management API client
-
-Treat the client generated from your package's own OpenAPI spec (see `lit-uui-conventions`) as
-read-only — never hand-edit it, regenerate it. **Only one layer (a data source) is ever allowed
-to import a generated type or call a generated service.** Everything above that — repository,
-context, component — works with your package's own domain models, mapped once at that single
-boundary, and returns the `{ data, error }` tuple shape above. A generated request/response
-type showing up past the data source means the mapping layer is missing, not just untidy.
-
 ## Scope note
 
-This skill is language discipline — types, null handling, error shapes. It does not cover
-*where* files live, barrel exports, or workspace build order; that's `lit-uui-conventions`.
-It does not cover individual Umbraco extension-point implementation patterns (how to build a
-property editor, a dashboard, a tree); that's the official Backoffice Skills plugin.
+This skill is language discipline — types, null handling, error shapes — and applies to any
+TypeScript project. It does not cover a specific framework's file structure, build tooling, or
+generated-client handling; for a Lit + UUI Umbraco backoffice package, that's
+`umbraco-backoffice-conventions`. It does not cover individual Umbraco extension-point
+implementation patterns (how to build a property editor, a dashboard, a tree); that's the
+official Backoffice Skills plugin.

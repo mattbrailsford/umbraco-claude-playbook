@@ -18,15 +18,16 @@ scope creep, no adjacent "while I'm here" changes.
 - `dotnet-best-practices` — always, for any C# work. Nullable reference types, type modeling,
   async/LINQ/disposal discipline, general error-handling shape.
 - `umbraco-extensibility` — whenever the task touches Umbraco's own extension surface:
-  Composer/DI registration, collection-builder extensibility, notification handlers,
-  `[Obsolete]` proxying for a public API change.
+  Composer/DI registration, collection-builder extensibility, notification handlers.
+- `umbraco-package-conventions` — always, for any C# work in an Umbraco package: async naming,
+  repository visibility, `[Obsolete]` proxying for a public API change.
 - `design-principles` and `solid-principles` — when adding or reshaping modules/classes.
   `gof-patterns` only if a pattern genuinely fits.
 - Persistence work → `ef-core-data`. Check whether the project targets SQL Server only or
   SQL Server *and* SQLite before writing a migration — most Umbraco packages need both.
 - Frontend work (Lit components, UUI, backoffice manifests) → the installed Umbraco
-  Backoffice Skills for the specific extension point, plus `lit-uui-conventions` for
-  package-level structure (barrel exports, OpenAPI client usage).
+  Backoffice Skills for the specific extension point, plus `umbraco-backoffice-conventions`
+  for package-level structure (barrel exports, OpenAPI client usage).
 - Anything touching auth, user input, the Management API, or secrets → `security-dotnet`
   while writing, so the reviewer has less to send back.
 - Any Lit template rendering user-generated/AI-generated/external content via

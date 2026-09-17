@@ -63,12 +63,14 @@ returning `PASS` or `FAIL`.
 - `dotnet-best-practices` — nullable reference types, type modeling, async/LINQ/disposal
   discipline — general C#, not Umbraco-specific
 - `umbraco-extensibility` — Composers, collection builders, notification handlers,
-  attribute-based discovery, async naming, `[Obsolete]`-proxied public API changes
+  attribute-based discovery
+- `umbraco-package-conventions` — async naming, repository visibility,
+  `[Obsolete]`-proxied public API changes
 - `typescript-best-practices` — discriminated unions, `{ data, error }` error handling, null
-  hygiene, the `toString()`/`toJSON()` rule
-- `lit-uui-conventions` — package-level frontend structure the official Backoffice Skills
-  plugin doesn't cover: barrel-export entry points, OpenAPI client generation, workspace
-  context
+  hygiene, the `toString()`/`toJSON()` rule — general TypeScript, not Umbraco-specific
+- `umbraco-backoffice-conventions` — package-level frontend structure the official Backoffice
+  Skills plugin doesn't cover: required compiler setup, barrel-export entry points, OpenAPI
+  client generation, observable-subscription lifecycle, monorepo build order
 - `ef-core-data` — dual SQL Server/SQLite support, product-prefixed migrations, repositories
   internal to their owning service
 - `security-dotnet` — Management API authz, EF Core injection, secrets handling
@@ -149,7 +151,7 @@ umbraco-claude-playbook/
 ├── plugins/umbraco-claude-playbook/
 │   ├── .claude-plugin/
 │   │   └── plugin.json               # the plugin's own manifest
-│   ├── skills/                       # all 20 skills, one folder each
+│   ├── skills/                       # all 21 skills, one folder each
 │   └── agents/                       # builder.md, reviewer.md
 ├── settings.example.json             # optional, copy-paste, not auto-installed
 ├── README.md

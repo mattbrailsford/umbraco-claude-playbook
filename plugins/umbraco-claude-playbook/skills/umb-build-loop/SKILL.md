@@ -50,9 +50,9 @@ For each task still unchecked (`- [ ]`), in order, top to bottom:
 1. **Build.** Dispatch a `builder` subagent (Agent tool, `subagent_type: builder`, model
    sonnet). Give it: the exact task text, the relevant section of `## Design`, the files/
    extension points it owns, and an instruction to invoke the project's stack skills
-   (`dotnet-best-practices`, `umbraco-extensibility`, `ef-core-data`, `lit-uui-conventions`,
-   etc. as relevant) and run
-   the existing specs before reporting back. The builder does not commit.
+   (`dotnet-best-practices`, `umbraco-extensibility`, `umbraco-package-conventions`,
+   `ef-core-data`, `umbraco-backoffice-conventions`, etc. as relevant) and run the existing
+   specs before reporting back. The builder does not commit.
 
 2. **Review.** Dispatch a `reviewer` subagent (Agent tool, `subagent_type: reviewer`, model
    opus — must be ≥ builder). It invokes `security-dotnet`/`security-lit` (whichever the diff

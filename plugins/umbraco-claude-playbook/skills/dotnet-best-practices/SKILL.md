@@ -106,8 +106,8 @@ routine, expected failure paths a caller is meant to branch on.
 
 ## Async: beyond naming
 
-(Async *naming* — `[Action][Entity]Async` — is `umbraco-extensibility`'s territory; this is
-about async *behavior*.)
+(Async *naming* — `[Action][Entity]Async` — is `umbraco-package-conventions`'s territory; this
+is about async *behavior*.)
 
 - **Never `async void`**, except a top-level UI event handler with no other option. An
   unhandled exception in an `async void` method crashes the process instead of completing the
@@ -167,6 +167,7 @@ they got back is a compile error, not a runtime surprise for whoever else holds 
 
 This skill is general C#/.NET language discipline — types, nulls, async, LINQ, error shapes,
 disposal, immutability. It does not cover Umbraco's own extension mechanisms (Composers,
-collection builders, notification handlers, async *naming*) — that's `umbraco-extensibility`.
-It does not cover EF Core/persistence specifics — that's `ef-core-data`. It does not cover
-security-sensitive patterns — that's `security-dotnet`.
+collection builders, notification handlers) — that's `umbraco-extensibility`. It does not cover
+async *naming*, repository visibility, or public-API compatibility — that's
+`umbraco-package-conventions`. It does not cover EF Core/persistence specifics — that's
+`ef-core-data`. It does not cover security-sensitive patterns — that's `security-dotnet`.

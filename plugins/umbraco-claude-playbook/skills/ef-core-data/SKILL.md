@@ -75,9 +75,9 @@ name.
 
 ## Repository pattern: internal to the owning service
 
-This is the same rule `umbraco-extensibility` states for the codebase generally — this skill's
-job is the EF Core-specific half of it. The `DbContext` itself, and every repository built on
-it, should be `internal` to the persistence assembly:
+This is the same rule `umbraco-package-conventions` states for the codebase generally — this
+skill's job is the EF Core-specific half of it. The `DbContext` itself, and every repository
+built on it, should be `internal` to the persistence assembly:
 
 ```
 Controller / other service ──▶ EntityService ──▶ EntityRepository (internal) ──▶ DbContext (internal)
