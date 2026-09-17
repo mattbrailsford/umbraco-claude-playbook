@@ -76,10 +76,13 @@ returning `PASS` or `FAIL`.
 - `security-dotnet` — Management API authz, EF Core injection, secrets handling
 - `security-lit` — XSS in Lit templates, secrets in a client bundle, browser storage, npm
   supply chain
-- `solid-principles`, `design-principles`, `gof-patterns` — C# examples throughout
+- `solid-principles`, `design-principles` — both C# and Lit/TypeScript examples throughout
+- `gof-patterns` — all 23 patterns in C#, plus Lit/TypeScript examples for the ones that
+  come up often in backoffice component work (State, Strategy, Command, Composite)
 
 **Process:**
-- `bdd-specs-dotnet` — xUnit + Shouldly + Moq, Feature/Scenario/Specification shape
+- `bdd-specs` — Feature/Scenario/Specification shape for both backend (xUnit + Shouldly + Moq)
+  and frontend (Web Test Runner + `@open-wc/testing`)
 - `user-stories` — Given/When/Then acceptance criteria feeding straight into specs
 - `git-workflow` — Conventional Commits, branch-per-CMS-major-version, an
   always-ask-before-touching-main rule for AI agents

@@ -2,9 +2,11 @@
 name: solid-principles
 description: >-
   The five SOLID principles (Single Responsibility, Open/Closed, Liskov Substitution,
-  Interface Segregation, Dependency Inversion), with C# examples grounded in Umbraco package
-  development. Use when adding or reshaping a service, class, or interface in a C# Umbraco
-  package, or when reviewing whether a design will hold up as the package grows.
+  Interface Segregation, Dependency Inversion), with both C# and Lit/TypeScript examples
+  grounded in Umbraco package development. Use when adding or reshaping a service, class,
+  component, or interface in either layer of an Umbraco package, or when reviewing whether a
+  design will hold up as the package grows. The principles are the same regardless of layer;
+  only the illustration differs.
 ---
 
 # SOLID principles for Umbraco packages
@@ -44,6 +46,27 @@ The validator changes when business rules change. The repository changes when st
 changes. The service changes only when the *orchestration* between them changes. Three
 independent reasons, three independent classes.
 
+**Lit/TypeScript:** the same violation shows up as a component that fetches its own data,
+validates it, *and* renders — three reasons to change one class:
+
+```ts
+// BAD — one element, three reasons to change
+class UmbItemFormElement extends UmbLitElement {
+  async #save() { /* validate */ /* fetch() with hand-built request */ /* render error state */ }
+}
+
+// GOOD — split by reason to change
+class UmbItemFormElement extends UmbLitElement {
+  #repository = new UmbItemRepository(this); // owns the fetch
+  #validator = new ItemValidator(); // owns the rules
+  async #save() {
+    const errors = this.#validator.validate(this.item);
+    if (errors.length) return this.#showErrors(errors); // owns the rendering
+    await this.#repository.save(this.item);
+  }
+}
+```
+
 ## Open/Closed — extend without modifying
 
 A module should be open for extension, closed for modification. This is not abstract in an
@@ -66,6 +89,24 @@ public string Render(IContentNode node) =>
 public interface IBlockRenderer { bool CanRender(IContentNode node); string Render(IContentNode node); }
 // new block types ship as new IBlockRenderer registrations, this class never changes again
 public string Render(IContentNode node) => _renderers.First(r => r.CanRender(node)).Render(node);
+```
+
+**Lit/TypeScript:** the manifest-based extension system (see `umbraco-backoffice-conventions`
+and the official Backoffice Skills plugin) *is* Open/Closed at the package level — a new block
+type ships as a new manifest entry, never a change to a shared renderer:
+
+```ts
+// BAD — every new block type means editing this component's switch
+render() {
+  switch (this.block.alias) {
+    case "hero": return this.#renderHero();
+    case "gallery": return this.#renderGallery();
+  }
+}
+
+// GOOD — closed to modification; a new block type registers its own manifest + element,
+// this component just resolves whichever one matches
+{ type: "blockEditorCustomView", alias: "MyCompany.BlockView.Hero", forContentTypeAlias: "hero", element: () => import("./hero-view.element.js") }
 ```
 
 ## Liskov Substitution — a subtype must honor its supertype's contract
@@ -94,6 +135,23 @@ If a provider genuinely can't support part of the contract, that's a signal the 
 too wide — split it (see Interface Segregation) rather than let a subtype defect from its
 promise.
 
+**Lit/TypeScript:** the same break shows up in a data-source implementing a shared repository
+interface:
+
+```ts
+interface UmbItemDataSource {
+  get(id: string): Promise<{ data?: Item; error?: string }>;
+}
+
+// BAD — silently returns an error instead of honoring the contract callers expect
+class ReadOnlyItemDataSource implements UmbItemDataSource {
+  async get(id: string) {
+    return this.canRead(id) ? this.#fetch(id) : { error: "not supported" }; // callers coded
+    // against UmbItemDataSource don't expect a real id to just fail like this
+  }
+}
+```
+
 ## Interface Segregation — don't force a consumer to implement what it doesn't need
 
 A fat interface forces every implementer to stub out methods it has no use for, which is
@@ -112,6 +170,17 @@ public interface IItemProvider
 public interface IItemReader { Task<Item> ReadAsync(Guid id); }
 public interface IItemWriter { Task WriteAsync(Item item); Task DeleteAsync(Guid id); }
 // a provider implements only the capability interfaces it actually supports
+```
+
+**Lit/TypeScript:**
+
+```ts
+// BAD — a read-only source is forced to implement write/delete it can't support
+interface UmbItemDataSource { get(id: string): Promise<Item>; save(item: Item): Promise<void>; remove(id: string): Promise<void>; }
+
+// GOOD — segregated by capability
+interface UmbItemReadDataSource { get(id: string): Promise<Item>; }
+interface UmbItemWriteDataSource { save(item: Item): Promise<void>; remove(id: string): Promise<void>; }
 ```
 
 ## Dependency Inversion — depend on abstractions, not concrete implementations
@@ -137,3 +206,23 @@ public class ItemService
 This is also what makes supporting more than one persistence provider possible — e.g. SQL
 Server and SQLite side by side, per `ef-core-data`. The service never knows which concrete
 provider it's talking to.
+
+**Lit/TypeScript:** a component that reaches for a concrete data source directly is welded to
+it the same way; depend on the Umbraco context API instead, so a test (or a future data
+source) can provide a fake:
+
+```ts
+// BAD — the component is welded to this one concrete data source, untestable without a real API
+class UmbItemWorkspace extends UmbLitElement {
+  #dataSource = new UmbItemServerDataSource(this);
+}
+
+// GOOD — consumes a context, resolved to whatever provided it (real or a test fake)
+class UmbItemWorkspace extends UmbLitElement {
+  #repository?: UmbItemRepository;
+  constructor() {
+    super();
+    this.consumeContext(UMB_ITEM_REPOSITORY_CONTEXT, (instance) => (this.#repository = instance));
+  }
+}
+```

@@ -3,7 +3,7 @@ name: umb-plan
 description: >-
   Slices a finished design into an ordered, dependency-aware task checklist. Owns the
   "## Stories & Tasks" section of the feature's plan doc, and delegates to the user-stories
-  and bdd-specs-dotnet skills. Use once umb-design has decided how to build the feature
+  and bdd-specs skills. Use once umb-design has decided how to build the feature
   and it's time to break it into reviewable, committable units of work for umb-build-loop.
 user-invocable: true
 argument-hint: [scope to plan, optional]
@@ -31,7 +31,7 @@ tracks completion via issues instead of an in-doc checklist.
 ## Scope
 
 - IN: derive user stories from `## Design`, order tasks into a dependency-aware checklist,
-  mark what can run concurrently, then generate executable specs via `bdd-specs-dotnet` —
+  mark what can run concurrently, then generate executable specs via `bdd-specs` —
   always, no asking.
 - OUT: gathering requirements (`umb-explore`/`umb-design`), building
   (`umb-build-loop`).
@@ -46,13 +46,13 @@ tracks completion via issues instead of an in-doc checklist.
 ## Stories
 
 Delegate to `user-stories` to produce/refine the story list (Given/When/Then acceptance
-criteria per story, formatted so `bdd-specs-dotnet` can consume it directly). Don't
+criteria per story, formatted so `bdd-specs` can consume it directly). Don't
 hand-roll the format.
 
 ## Specs (always, no asking)
 
 Once stories are finalized and the task list is written, always delegate to
-`bdd-specs-dotnet` to generate executable, pending spec files from the stories. This is part
+`bdd-specs` to generate executable, pending spec files from the stories. This is part
 of `umb-plan`'s contract, not optional. The generated specs should fail (or be marked
 pending) until `umb-build-loop` turns them green.
 

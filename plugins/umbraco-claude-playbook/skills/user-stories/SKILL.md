@@ -2,7 +2,7 @@
 name: user-stories
 description: >-
   Write, split, and refine user stories with Given/When/Then acceptance criteria, feeding
-  directly into bdd-specs-dotnet. Writes into the "## Stories & Tasks" section of the
+  directly into bdd-specs. Writes into the "## Stories & Tasks" section of the
   feature's plan doc. Normally dispatched by umb-plan, but usable standalone when
   someone just wants help drafting or tightening a story. Use whenever turning a feature
   request or a vague ask into a structured, testable backlog entry.
@@ -10,14 +10,14 @@ description: >-
 
 # User stories
 
-Turn product intent into stories that flow straight into `bdd-specs-dotnet` with no manual
+Turn product intent into stories that flow straight into `bdd-specs` with no manual
 reshaping. The structure here is a contract, not decoration — get it right and stories
 become specs become code with nothing lost in translation.
 
 **Honest framing:** this is a discipline this playbook introduces, not one already standard
 across Umbraco projects — don't present it to a team as "the Umbraco way." It's a real,
 well-understood technique worth adopting on its own merits, and it's what makes
-`bdd-specs-dotnet`'s handoff work cleanly.
+`bdd-specs`'s handoff work cleanly.
 
 ## Where this writes
 
@@ -29,12 +29,12 @@ turn the stories into an ordered, dependency-aware task list.
 ## The pipeline this sits in
 
 ```
-feature request ──▶ [user-stories] ──▶ ## Stories & Tasks ──▶ [bdd-specs-dotnet] ──▶ specs ──▶ code
+feature request ──▶ [user-stories] ──▶ ## Stories & Tasks ──▶ [bdd-specs] ──▶ specs ──▶ code
 ```
 
 Map deliberately:
 
-| Story artifact | Becomes in bdd-specs-dotnet |
+| Story artifact | Becomes in bdd-specs |
 |---|---|
 | One story | One Feature (one test class) |
 | One acceptance criterion | One Scenario (a nested test-class group, or a `#region`) |
@@ -115,7 +115,7 @@ section, so every story in that feature inherits it instead of restating it. Rea
 starting points to offer (not impose): **Ready** — role/capability/value all stated and
 non-hollow, Given/When/Then acceptance criteria cover the happy path, out-of-scope is
 explicit, passes INVEST. **Done** — all acceptance criteria pass as executable specs (via
-`bdd-specs-dotnet`), sad-path criteria are covered too, plus whatever the team adds (review,
+`bdd-specs`), sad-path criteria are covered too, plus whatever the team adds (review,
 docs, deployed behind a flag, etc.).
 
 ## Scope boundaries
@@ -125,7 +125,7 @@ docs, deployed behind a flag, etc.).
 - **Out of scope:** story-point estimation and sprint capacity — team rituals that depend on
   a team's own history and velocity. Offer relative-size flags (S/M/L, or "this is too big,
   split it") instead of fabricated point numbers.
-- **Hand off, don't overlap:** generating executable specs is `bdd-specs-dotnet`'s job.
+- **Hand off, don't overlap:** generating executable specs is `bdd-specs`'s job.
   Sequencing into an ordered task list is `umb-plan`'s job. Produce the story, point at
   the next step, don't do it here.
 
@@ -134,4 +134,4 @@ docs, deployed behind a flag, etc.).
 Write or update the `## Stories & Tasks` section. If stories already exist there, merge —
 preserve story ids already in use (specs reference them) and append or amend rather than
 rewriting wholesale. After writing, report how many stories the section now holds and that
-it's ready for `bdd-specs-dotnet`.
+it's ready for `bdd-specs`.

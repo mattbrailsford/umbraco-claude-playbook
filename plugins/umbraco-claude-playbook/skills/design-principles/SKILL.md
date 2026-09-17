@@ -2,9 +2,9 @@
 name: design-principles
 description: >-
   Coupling and cohesion, DRY/YAGNI/KISS, the Law of Demeter, Tell-Don't-Ask, Command-Query
-  Separation, and fail-fast. Horizontal principles that apply to almost any C# written in an
-  Umbraco package. Use whenever writing or reviewing service/class design, not just when a
-  specific pattern question comes up.
+  Separation, and fail-fast. Horizontal principles that apply to almost any code — C# or
+  Lit/TypeScript — written in an Umbraco package. Use whenever writing or reviewing
+  service/class/component design, not just when a specific pattern question comes up.
 ---
 
 # Design principles for Umbraco packages
@@ -29,6 +29,11 @@ their owning service** (see `umbraco-package-conventions`). A controller that re
 exists — when that repository's shape changes, the controller breaks too, for no reason
 related to what the controller actually does.
 
+**Lit/TypeScript:** the same rule, one layer over — `umbraco-backoffice-conventions` requires
+that only one layer (a data source) ever imports a generated Management API client type or
+domain model past it, mapped once at that boundary. A context or component reaching straight
+through to a generated type is the frontend's version of the controller-into-repository leak.
+
 ## Law of Demeter — talk to your friends, not strangers
 
 A method should only call methods on: itself, its parameters, objects it creates, and its
@@ -44,6 +49,16 @@ var apiKey = item.GetApiKey();
 
 The controller-reaching-into-a-repository violation above is a Law of Demeter violation too
 — it's reaching through the service to get to something two hops away.
+
+**Lit/TypeScript:**
+
+```ts
+// BAD — reaches through the context to its item's profile's connection
+const apiKey = this.#context.item.profile.connection.apiKey;
+
+// GOOD — ask the context for what you actually need
+const apiKey = this.#context.getApiKey();
+```
 
 ## Tell, Don't Ask
 
@@ -63,6 +78,19 @@ if (connection.Status == ConnectionStatus.Expired)
 connection.RefreshIfExpired();
 ```
 
+**Lit/TypeScript:**
+
+```ts
+// BAD — asks for state, decides externally
+if (connection.status === "expired") {
+  connection.status = "active";
+  connection.refreshedAt = new Date();
+}
+
+// GOOD — tells the object to handle its own transition
+connection.refreshIfExpired();
+```
+
 ## Command-Query Separation (CQS)
 
 A method should either do something (a command, returns `void` or `Task`) or answer
@@ -77,6 +105,20 @@ public Item GetOrCreate(Guid id) { /* creates and saves if missing, returns it e
 // GOOD — separate command and query, the caller controls when the side effect happens
 public Task<Item?> FindAsync(Guid id);
 public Task<Item> CreateAsync(Item item);
+```
+
+**Lit/TypeScript:** the `{ data, error }` return shape from `typescript-best-practices`
+already enforces this — a query returns the tuple, a command returns `Promise<void>` (or a
+`{ error }`-only shape). A method that both saves *and* returns the saved-or-created item
+invites the same "did this just have a side effect?" ambiguity:
+
+```ts
+// BAD — looks like it might just read, silently creates if missing
+async function getOrCreate(id: string): Promise<Item> { /* ... */ }
+
+// GOOD — separate command and query
+async function find(id: string): Promise<{ data?: Item; error?: string }>;
+async function create(item: Item): Promise<{ data?: Item; error?: string }>;
 ```
 
 ## DRY, YAGNI, KISS — in tension, on purpose
@@ -98,6 +140,12 @@ not yet, KISS says the simplest thing might just be the duplication). When they 
 default to YAGNI + KISS until a second or third real case proves the abstraction earns its
 keep.
 
+**Lit/TypeScript:** the same tension, same defaults — a component rendering three known block
+types with a plain conditional doesn't need a manifest-driven plugin system (YAGNI/KISS) until
+a fourth, genuinely-open-ended type shows up; three components that happen to render similarly
+today but represent different business concepts should stay three components (DRY is about
+knowledge, not markup that merely looks alike).
+
 ## Fail fast
 
 Validate at the boundary — the Management API request model, the public method's entry — and
@@ -115,5 +163,23 @@ public async Task<Item> CreateAsync(ItemRequest request)
     if (string.IsNullOrWhiteSpace(request.Alias))
         throw new ArgumentException("Alias is required.", nameof(request));
     return await _repository.AddAsync(new Item(request.Alias, request.Name ?? request.Alias));
+}
+```
+
+**Lit/TypeScript:** validate at the same kind of boundary — a repository/data-source method's
+entry, or a component's public setter — and return the `{ error }` shape immediately rather
+than letting bad input reach a `fetch()` call that fails with an opaque network error three
+layers down:
+
+```ts
+// BAD — an empty alias reaches the network call before anything rejects it
+async function create(request: ItemRequest) {
+  return client.postItem({ body: { alias: request.alias, name: request.name } });
+}
+
+// GOOD — reject at the boundary with a message that names the actual problem
+async function create(request: ItemRequest): Promise<{ data?: Item; error?: string }> {
+  if (!request.alias?.trim()) return { error: "Alias is required." };
+  return client.postItem({ body: { alias: request.alias, name: request.name ?? request.alias } });
 }
 ```
