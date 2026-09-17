@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💡 Features and ideas
+    url: <link to GitHub Discussions, or wherever feature discussion happens for this project>
+    about: Start a discussion for ideas or feature requests before they become an issue.
+  - name: 🔐 Security Issue
+    url: <link to the project's actual vulnerability-disclosure process>
+    about: Please don't open a public issue for a security report.

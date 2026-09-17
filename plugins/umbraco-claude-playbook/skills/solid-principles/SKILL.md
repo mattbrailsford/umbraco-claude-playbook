@@ -2,11 +2,11 @@
 name: solid-principles
 description: >-
   The five SOLID principles (Single Responsibility, Open/Closed, Liskov Substitution,
-  Interface Segregation, Dependency Inversion), with both C# and Lit/TypeScript examples
-  grounded in Umbraco package development. Use when adding or reshaping a service, class,
-  component, or interface in either layer of an Umbraco package, or when reviewing whether a
-  design will hold up as the package grows. The principles are the same regardless of layer;
-  only the illustration differs.
+  Interface Segregation, Dependency Inversion), grounded in Umbraco package development. Use
+  when adding or reshaping a service, class, component, or interface in either layer of an
+  Umbraco package, or when reviewing whether a design will hold up as the package grows. The
+  principles are the same regardless of layer; this skill's references/ files carry the C# and
+  Lit/TypeScript illustrations — read whichever layer the task is actually in.
 ---
 
 # SOLID principles for Umbraco packages
@@ -17,212 +17,27 @@ SOLID isn't a checklist to satisfy, it's five different answers to the same ques
 this changes, how big is the diff, and who else does it drag down with it? Apply whichever
 principle actually shrinks the next change. Applying one that doesn't is just ceremony.
 
-## Single Responsibility — one reason to change
+## The five principles
 
-A class should have one reason to change. In an Umbraco package, the classic violation is a
-service that both contains business logic *and* knows how to persist itself, format itself
-for the Management API, and validate its own input:
+- **Single Responsibility** — a class (or component) should have one reason to change. The
+  classic violation bundles business logic, persistence, and formatting/rendering into one
+  type; split by reason to change instead.
+- **Open/Closed** — open for extension, closed for modification. A package that lets
+  consumers register new behavior (a collection builder on the backend, a manifest entry on
+  the frontend) never needs its own source touched to support a new case.
+- **Liskov Substitution** — a subtype must honor its supertype's contract everywhere the base
+  type is expected. A derived type that throws where the base promised a value, or silently
+  does less, breaks every caller coded against the base.
+- **Interface Segregation** — don't force a consumer to implement capabilities it doesn't
+  need. A fat interface discourages exactly the kind of extension a package should be
+  encouraging.
+- **Dependency Inversion** — depend on abstractions, not concrete implementations. High-level
+  code (a service, a component) should never be welded to one concrete database client, HTTP
+  client, or data source — it depends on an interface, resolved through DI or a context.
 
-```csharp
-// BAD — one class, four reasons to change
-public class ItemService
-{
-    public Item Create(ItemRequest request) { /* validate */ /* map */ /* save to db */ /* build response DTO */ }
-}
+## Examples
 
-// GOOD — split by reason to change
-public class ItemService
-{
-    public ItemService(IItemRepository repository, IItemValidator validator) { /* ... */ }
-    public async Task<Item> CreateAsync(Item item, CancellationToken ct)
-    {
-        validator.ValidateAndThrow(item);
-        return await repository.AddAsync(item, ct);
-    }
-}
-```
+Read whichever layer the task is in — don't load both for a single-layer change:
 
-The validator changes when business rules change. The repository changes when storage
-changes. The service changes only when the *orchestration* between them changes. Three
-independent reasons, three independent classes.
-
-**Lit/TypeScript:** the same violation shows up as a component that fetches its own data,
-validates it, *and* renders — three reasons to change one class:
-
-```ts
-// BAD — one element, three reasons to change
-class UmbItemFormElement extends UmbLitElement {
-  async #save() { /* validate */ /* fetch() with hand-built request */ /* render error state */ }
-}
-
-// GOOD — split by reason to change
-class UmbItemFormElement extends UmbLitElement {
-  #repository = new UmbItemRepository(this); // owns the fetch
-  #validator = new ItemValidator(); // owns the rules
-  async #save() {
-    const errors = this.#validator.validate(this.item);
-    if (errors.length) return this.#showErrors(errors); // owns the rendering
-    await this.#repository.save(this.item);
-  }
-}
-```
-
-## Open/Closed — extend without modifying
-
-A module should be open for extension, closed for modification. This is not abstract in an
-Umbraco package — it's the collection-builder pattern from `umbraco-extensibility`. A package
-that lets consumers register new behavior via `builder.MyPackageThings().Add<Custom>()`
-never needs its own source touched to support a new case:
-
-```csharp
-// BAD — every new kind requires editing this method
-public string Render(IContentNode node) =>
-    node.Alias switch
-    {
-        "hero" => RenderHero(node),
-        "gallery" => RenderGallery(node),
-        // every new block type means editing this switch
-        _ => throw new NotSupportedException(node.Alias)
-    };
-
-// GOOD — closed to modification, open to new registrations
-public interface IBlockRenderer { bool CanRender(IContentNode node); string Render(IContentNode node); }
-// new block types ship as new IBlockRenderer registrations, this class never changes again
-public string Render(IContentNode node) => _renderers.First(r => r.CanRender(node)).Render(node);
-```
-
-**Lit/TypeScript:** the manifest-based extension system (see `umbraco-backoffice-conventions`
-and the official Backoffice Skills plugin) *is* Open/Closed at the package level — a new block
-type ships as a new manifest entry, never a change to a shared renderer:
-
-```ts
-// BAD — every new block type means editing this component's switch
-render() {
-  switch (this.block.alias) {
-    case "hero": return this.#renderHero();
-    case "gallery": return this.#renderGallery();
-  }
-}
-
-// GOOD — closed to modification; a new block type registers its own manifest + element,
-// this component just resolves whichever one matches
-{ type: "blockEditorCustomView", alias: "MyCompany.BlockView.Hero", forContentTypeAlias: "hero", element: () => import("./hero-view.element.js") }
-```
-
-## Liskov Substitution — a subtype must honor its supertype's contract
-
-Anywhere the base type is expected, a derived type must work without surprising the caller.
-The usual break in a provider-base-class setup is a derived class that throws where the base
-promised a value, or silently does less than the interface implies:
-
-```csharp
-public abstract class ProviderBase
-{
-    public abstract Task<Result> ExecuteAsync(Request request, CancellationToken ct);
-}
-
-// BAD — violates the contract the base type promises
-public class LimitedProvider : ProviderBase
-{
-    public override Task<Result> ExecuteAsync(Request request, CancellationToken ct) =>
-        request.IsComplex
-            ? throw new NotSupportedException() // callers coded against ProviderBase don't expect this
-            : DoWork(request, ct);
-}
-```
-
-If a provider genuinely can't support part of the contract, that's a signal the interface is
-too wide — split it (see Interface Segregation) rather than let a subtype defect from its
-promise.
-
-**Lit/TypeScript:** the same break shows up in a data-source implementing a shared repository
-interface:
-
-```ts
-interface UmbItemDataSource {
-  get(id: string): Promise<{ data?: Item; error?: string }>;
-}
-
-// BAD — silently returns an error instead of honoring the contract callers expect
-class ReadOnlyItemDataSource implements UmbItemDataSource {
-  async get(id: string) {
-    return this.canRead(id) ? this.#fetch(id) : { error: "not supported" }; // callers coded
-    // against UmbItemDataSource don't expect a real id to just fail like this
-  }
-}
-```
-
-## Interface Segregation — don't force a consumer to implement what it doesn't need
-
-A fat interface forces every implementer to stub out methods it has no use for, which is
-exactly the kind of ceremony that discourages people from extending your package at all:
-
-```csharp
-// BAD — a read-only provider is forced to implement Write and Delete
-public interface IItemProvider
-{
-    Task<Item> ReadAsync(Guid id);
-    Task WriteAsync(Item item);
-    Task DeleteAsync(Guid id);
-}
-
-// GOOD — segregated by capability, so a provider only implements what it actually supports
-public interface IItemReader { Task<Item> ReadAsync(Guid id); }
-public interface IItemWriter { Task WriteAsync(Item item); Task DeleteAsync(Guid id); }
-// a provider implements only the capability interfaces it actually supports
-```
-
-**Lit/TypeScript:**
-
-```ts
-// BAD — a read-only source is forced to implement write/delete it can't support
-interface UmbItemDataSource { get(id: string): Promise<Item>; save(item: Item): Promise<void>; remove(id: string): Promise<void>; }
-
-// GOOD — segregated by capability
-interface UmbItemReadDataSource { get(id: string): Promise<Item>; }
-interface UmbItemWriteDataSource { save(item: Item): Promise<void>; remove(id: string): Promise<void>; }
-```
-
-## Dependency Inversion — depend on abstractions, not concrete implementations
-
-High-level modules (services, orchestration) shouldn't depend on low-level modules (a
-specific database client, a specific HTTP client) directly — both depend on an interface,
-resolved through DI:
-
-```csharp
-// BAD — the service is now welded to SQL Server, and untestable without one
-public class ItemService
-{
-    private readonly SqlConnection _connection = new(connectionString);
-}
-
-// GOOD — depends on an abstraction, wired up in a Composer
-public class ItemService
-{
-    public ItemService(IItemRepository repository) { /* ... */ }
-}
-```
-
-This is also what makes supporting more than one persistence provider possible — e.g. SQL
-Server and SQLite side by side, per `ef-core-data`. The service never knows which concrete
-provider it's talking to.
-
-**Lit/TypeScript:** a component that reaches for a concrete data source directly is welded to
-it the same way; depend on the Umbraco context API instead, so a test (or a future data
-source) can provide a fake:
-
-```ts
-// BAD — the component is welded to this one concrete data source, untestable without a real API
-class UmbItemWorkspace extends UmbLitElement {
-  #dataSource = new UmbItemServerDataSource(this);
-}
-
-// GOOD — consumes a context, resolved to whatever provided it (real or a test fake)
-class UmbItemWorkspace extends UmbLitElement {
-  #repository?: UmbItemRepository;
-  constructor() {
-    super();
-    this.consumeContext(UMB_ITEM_REPOSITORY_CONTEXT, (instance) => (this.#repository = instance));
-  }
-}
-```
+- **`references/csharp.md`** — all five principles, backend/C# examples.
+- **`references/frontend.md`** — all five principles, Lit/TypeScript examples.

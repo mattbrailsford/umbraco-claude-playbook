@@ -1,0 +1,32 @@
+# .NET (Visual Studio default patterns — catches case variants like Bin/ and BIN/ too)
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+
+# NuGet — this is a package repo; don't accidentally commit pack output
+*.nupkg
+*.snupkg
+packages/
+
+# Node / frontend
+node_modules/
+dist/
+
+# Editors
+.idea/
+.vscode/
+
+# Secrets — never commit these
+appsettings.Local.json
+appsettings.Development.json
+.env
+.env.*
+
+# Generated demo site, if this project uses one for manual testing (a demo-site-management-
+# style skill pattern more than one real Umbraco product uses) — the whole tree is generated
+# per-developer and never committed
+demos/

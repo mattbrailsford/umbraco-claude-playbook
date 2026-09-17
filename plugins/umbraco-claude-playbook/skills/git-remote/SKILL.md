@@ -40,35 +40,8 @@ skips, and why" below.
 
 A boilerplate README is anything matching: just the project name and a one-liner; contains
 `TODO`, `Lorem ipsum`, or the literal `umb-init` stub text; no installation, no usage, no
-example. If the current README trips this, **refuse to push** and offer to write a real one:
-
-```markdown
-# <Package name>
-
-> <One-line pitch — what it does, which Umbraco versions it targets.>
-
-## Installation
-
-\`\`\`bash
-dotnet add package <PackageName>
-\`\`\`
-
-## Usage
-
-<Smallest possible working example — real code, real output.>
-
-## Supported Umbraco versions
-
-<CMS major version(s) this targets — pull from CLAUDE.md, don't invent it.>
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## License
-
-<SPDX id> — see [LICENSE](LICENSE).
-```
+example. If the current README trips this, **refuse to push** and offer to write a real one
+from `templates/README.md` — fill in every placeholder, don't copy one through unfilled.
 
 Pull the pitch and supported-versions line from `CLAUDE.md` — never invent them. If
 `CLAUDE.md` doesn't have them yet, send the user to `umb-init` first.
@@ -96,18 +69,8 @@ screenshots/videos), a required "steps to reproduce," and a required "expected r
 actual result." Ask for each field's `description` to include a short hint ("write the
 *exact* version, example: `10.1.0`") — it measurably improves what people fill in.
 
-`config.yml`:
-
-```yaml
-blank_issues_enabled: false
-contact_links:
-  - name: 💡 Features and ideas
-    url: <link to GitHub Discussions, or wherever feature discussion happens for this project>
-    about: Start a discussion for ideas or feature requests before they become an issue.
-  - name: 🔐 Security Issue
-    url: <link to the project's actual vulnerability-disclosure process>
-    about: Please don't open a public issue for a security report.
-```
+`config.yml` — copy from `templates/config.yml`, filling in the real Discussions/security
+links for this project.
 
 A contact link that redirects feature ideas to a discussion, and another that redirects
 security reports to wherever that actually gets handled, is a better fit for a small package
