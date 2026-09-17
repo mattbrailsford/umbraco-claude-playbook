@@ -177,21 +177,12 @@ target.
 
 ## Umbraco packages and version tracking
 
-A package's own version and the Umbraco CMS major version(s) it supports are two different
-numbers, and conflating them causes real problems — a package pinned to `18.x` because it
-happens to be at `v18` of its *own* versioning, when it actually still works fine against
-CMS v17, needlessly locks out v17 sites. Track both, deliberately:
-
-- **The package's own SemVer** (what you commit and tag) and **the CMS major(s) it declares
-  support for** are separate facts. Express the CMS constraint as a package-level version
-  range in your dependency management (e.g. `[17.0.0, 19.0.0)` against the CMS package), not
-  as an assumption baked into code. When a change only applies to one CMS major, say so
-  explicitly in the commit body and PR description — a reviewer on a multi-version project
-  can't infer that from the diff alone.
-- **Which CMS major(s) does this support right now**, and which lifecycle phase is each one
-  in (active feature development, security-patches-only, or end-of-life)? Umbraco's own
-  [LTS/EOL policy](https://umbraco.com/products/knowledge-center/long-term-support-and-end-of-life/)
-  is the reference point for what those phases mean.
+Two numbers matter for a package that supports Umbraco: **its own release version**, and
+**which CMS major(s) it supports right now** — and which lifecycle phase each one is in
+(active feature development, security-patches-only, or end-of-life). Umbraco's own
+[LTS/EOL policy](https://umbraco.com/products/knowledge-center/long-term-support-and-end-of-life/)
+is the reference point for what those phases mean. Decide deliberately how the two numbers
+relate to each other — don't let one drift into implying the other by accident.
 
 **If more than one CMS major is supported at once**, decide early — before it's forced by a
 merge conflict — how the codebase carries that:
@@ -206,6 +197,32 @@ merge conflict — how the codebase carries that:
 - **Single branch with runtime version checks** (`if (umbracoMajorVersion >= N) { ... }`):
   keeps everything in one place, but the checks accumulate and untested branches-not-taken
   creep in. Reasonable only for a package needing a handful of such checks at most.
+
+### Does the package's own version number track the CMS major?
+
+Once you're branching per major, this falls out almost for free — but pick it deliberately,
+don't let the `vN/` branch name silently answer the question for you:
+
+- **Version-aligned (default recommendation):** the package's major version tracks the CMS
+  major it targets — release from `v17/main`, tag `17.x.x`; a new CMS major gets a new package
+  major, whether or not the code underneath actually changed. This is the dominant pattern
+  among well-known, actively-maintained Umbraco community packages — uSync, Skybrud.Redirects,
+  and Diplo GodMode all do this, and say so explicitly in their own release notes or README.
+  It's the most discoverable option for someone skimming NuGet ("v17 → works with Umbraco 17"),
+  and once you're already cutting a `vN/main` branch per major, it costs nothing extra to
+  follow through on. The tradeoff: you'll sometimes bump a major version for a release that
+  changed nothing meaningful, purely to keep pace with a new CMS major.
+- **Independent SemVer:** the package's own version reflects only its own change history; CMS
+  compatibility is declared as a NuGet dependency range instead (e.g.
+  `Umbraco.Cms.Core [17.0.0, 19.0.0)`), the same way any library depending on another would.
+  This is the technically "purer" SemVer reading — Contentment does this — but it's the
+  minority pattern here, and a bare version number no longer tells a consumer which CMS major
+  it targets. Reach for this when the package rarely needs real code changes across a CMS
+  major bump, so a major version bump would otherwise be spent on nothing.
+
+Whichever you pick, when a change only applies to one CMS major, say so explicitly in the
+commit body and PR description — a reviewer on a multi-version project can't infer that from
+the diff alone.
 
 This skill deliberately stops here. A full release pipeline — calendar-based release
 branches, multi-product release manifests, automated changelog generation, coordinated
