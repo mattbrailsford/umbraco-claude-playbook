@@ -1,6 +1,6 @@
 # Umbraco Claude Playbook
 
-A `.claude/` starting point for solid Umbraco development: C# / .NET backend, EF Core
+A Claude Code plugin for solid Umbraco development: C# / .NET backend, EF Core
 persistence, Lit + UUI frontend for the backoffice. Adapted from
 [Rob Conery's `claude-playbook`](https://github.com/robconery) starter template, with the
 parts that assumed a small solo web app replaced by patterns that hold up on a real,
@@ -30,17 +30,44 @@ not Umbraco.AI's specific internals, but the shape of good practice it demonstra
 
 ## Install
 
+From inside the Umbraco project you want to use this in:
+
 ```bash
-# 1. The official backoffice extension-point skills (58 skills, Lit/UUI-specific).
+# 1. This playbook.
+claude plugin marketplace add https://github.com/mattbrailsford/umbraco-claude-playbook --scope project
+claude plugin install umbraco-claude-playbook@umbraco-claude-playbook --scope project
+
+# 2. The official backoffice extension-point skills (58 skills, Lit/UUI-specific).
 claude plugin marketplace add https://github.com/umbraco/Umbraco-CMS-Backoffice-Skills.git#main --scope project
 claude plugin install umbraco-cms-backoffice-skills@umbraco-backoffice-marketplace --scope project
-
-# 2. This playbook.
-cp -r umbraco-claude-playbook/.claude /path/to/your/umbraco-project/
 ```
 
-Then, optionally, copy `.claude/settings.example.json` → your project's `.claude/settings.json`
-(or merge it in) and uncomment the hooks you want.
+(Or, from inside Claude Code: `/plugin marketplace add ...` / `/plugin install ...` with the
+same arguments.)
+
+Then, optionally, copy [`settings.example.json`](./settings.example.json) → your project's
+`.claude/settings.json` (or merge it in) and uncomment the hooks you want — this isn't part of
+the installed plugin, since permissions and hooks are a per-project trust decision a plugin
+shouldn't make for you.
+
+## Repository layout
+
+This repo is both a Claude Code marketplace and the one plugin it lists, the same shape the
+official Umbraco Backoffice Skills repo uses:
+
+```
+umbraco-claude-playbook/
+├── .claude-plugin/
+│   └── marketplace.json              # lists the plugin below
+├── plugins/umbraco-claude-playbook/
+│   ├── .claude-plugin/
+│   │   └── plugin.json               # the plugin's own manifest
+│   ├── skills/                       # all 17 skills, one folder each
+│   └── agents/                       # builder.md, reviewer.md
+├── settings.example.json             # optional, copy-paste, not auto-installed
+├── README.md
+└── QUICKSTART.md
+```
 
 ## The pipeline
 
@@ -114,8 +141,9 @@ and becomes part of the repo's permanent record.
   doesn't have CMS-core's internal layering, and a `reviewer` subagent invoked from
   `umb-build-loop` doesn't need a separate non-interactive automation harness.
 
-Full detail: `.claude/agents/builder.md`, `.claude/agents/reviewer.md`, and the orchestration
-in `.claude/skills/umb-build-loop/SKILL.md`.
+Full detail: `plugins/umbraco-claude-playbook/agents/builder.md`,
+`plugins/umbraco-claude-playbook/agents/reviewer.md`, and the orchestration in
+`plugins/umbraco-claude-playbook/skills/umb-build-loop/SKILL.md`.
 
 ## Skills
 

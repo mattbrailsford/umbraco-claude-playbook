@@ -1,17 +1,21 @@
 # Quickstart
 
-Two installs, then five skills. Five minutes.
+Two plugin installs, then five skills. Five minutes.
+
+From inside the Umbraco project you want to use this in:
 
 ```bash
-# 1. The official Umbraco backoffice extension-point skills (once per machine, or once
-#    per project so the whole team gets it).
+# 1. This playbook.
+claude plugin marketplace add https://github.com/mattbrailsford/umbraco-claude-playbook --scope project
+claude plugin install umbraco-claude-playbook@umbraco-claude-playbook --scope project
+
+# 2. The official Umbraco backoffice extension-point skills.
 claude plugin marketplace add https://github.com/umbraco/Umbraco-CMS-Backoffice-Skills.git#main --scope project
 claude plugin install umbraco-cms-backoffice-skills@umbraco-backoffice-marketplace --scope project
-
-# 2. This playbook.
-cp -r umbraco-claude-playbook/.claude /path/to/your/umbraco-project/
-cd /path/to/your/umbraco-project && claude
 ```
+
+(Or run the equivalent `/plugin marketplace add` / `/plugin install` commands from inside
+Claude Code itself.)
 
 Then, inside Claude Code:
 
