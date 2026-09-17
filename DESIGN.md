@@ -1,9 +1,5 @@
 # Design notes
 
-This is the "why," kept out of the README so the README can stay an entry point. Read this
-if you're curious how the playbook got its current shape, or deciding whether to adapt it
-further for your own project.
-
 ## Where this came from
 
 Adapted from [Rob Conery's `claude-playbook`](https://github.com/robconery) starter
