@@ -59,7 +59,10 @@ For each task still unchecked (`- [ ]`), in order, top to bottom:
 
 3. **Recurse.** If `FAIL`: send the findings back to a fresh `builder` for the same task.
    Repeat build → review until `PASS`. No cap — a task is not done until it passes both code
-   and security review. Nothing reaches git history before `PASS`.
+   and security review. Nothing reaches git history before `PASS`. If a finding is a
+   repeatable mistake rather than a one-off slip — the kind of thing a future `builder` would
+   plausibly do again on a different task — write it to `.claude/memory/` (type: `gotcha`)
+   once it's fixed, so the next dispatch doesn't repeat it.
 
 4. **Smoke the real entry point.** Before commit, actually exercise the deployed artifact.
    Most packages/add-ons generate a throwaway demo site for exactly this — start it and drive

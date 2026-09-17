@@ -104,7 +104,11 @@ existing Umbraco data via <service>">
 <each decision, its rationale, and the alternative rejected>
 ```
 
-Append dated entries to `## Decision Log` for each architectural call made here.
+Append dated entries to `## Decision Log` for each architectural call made here. If a call is
+a standing, project-wide decision rather than one scoped to this feature (the CMS major
+version(s) targeted, the database provider(s) supported, a pattern every future feature must
+follow), write it to `.claude/memory/` instead (type: `decision`) — see
+`.claude/memory/README.md` for the format.
 
 ## Hand off
 

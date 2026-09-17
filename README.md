@@ -98,6 +98,16 @@ instead if your project needs that — say so once in `CLAUDE.md` and every phas
 Rules: **re-entrant** (re-run a phase to refine, never restart), **stop, don't guess** (a
 phase missing its input sends you back to the owning phase), **one owner per section**.
 
+### Project memory
+
+Not every decision belongs in the per-feature plan doc or in the root `CLAUDE.md` forever.
+`umb-init` scaffolds `.claude/memory/` alongside `CLAUDE.md` for exactly the facts that don't
+fit either: standing project-wide decisions (`decision`), corrections learned from a
+`reviewer` `FAIL` so the next `builder` dispatch doesn't repeat them (`gotcha`), and pointers
+to external systems (`reference`). A convention scoped to one directory still belongs in a
+nested `CLAUDE.md` there instead — `reviewer` already reads the nearest one on every task. See
+`.claude/memory/README.md` (created by `umb-init`) for the format.
+
 ### Docs vs. worktrees
 
 These solve different problems. Worktrees isolate the *filesystem* — two features get two

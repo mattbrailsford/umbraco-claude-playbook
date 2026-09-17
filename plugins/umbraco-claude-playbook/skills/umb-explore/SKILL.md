@@ -88,7 +88,10 @@ items TODO rather than guessing>
 ```
 
 Append a dated entry to `## Decision Log` for anything decided here worth remembering later
-(a scope cut, a killed alternative), one line each with the why.
+(a scope cut, a killed alternative), one line each with the why. If a decision is project-wide
+rather than scoped to this feature (a constraint that will bind every future feature too, not
+just this one), write it to `.claude/memory/` instead (type: `decision`) — see
+`.claude/memory/README.md` for the format.
 
 ## Hand off
 

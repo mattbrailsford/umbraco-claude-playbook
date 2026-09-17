@@ -33,7 +33,9 @@ Pick the minimum set the task actually needs; don't load all of them.
 ## Workflow
 
 1. Read the task and the files/extension points you own. Match existing conventions in the
-   surrounding code — don't impose a different style even if you'd prefer it.
+   surrounding code — don't impose a different style even if you'd prefer it. If
+   `.claude/memory/` exists, skim `.claude/memory/MEMORY.md` for any `gotcha` or `decision`
+   relevant to what you're about to touch.
 2. Implement the task.
 3. **Trace from the real entry point.** If the task touches a deployed code path, open the
    Management API controller action, the Composer that registers the service, or the

@@ -43,7 +43,10 @@ design. A reviewer that fixes its own findings isn't a gate.
      cross-referenced skill). Decide what the *correct* approach looks like from that
      documentation **before** judging what the builder actually did — classify the code by
      what it does, not by what the file next to it happens to look like. If the docs define
-     a pattern that fits, whether the diff follows it is the leading finding.
+     a pattern that fits, whether the diff follows it is the leading finding. If
+     `.claude/memory/` exists, also check `.claude/memory/MEMORY.md` for a `gotcha` or
+     `decision` relevant to this diff — a repeated instance of a documented gotcha is a
+     finding on its own.
    - **Sibling comparison, only when docs don't cover it.** Grep for the most similar
      existing method on the same class/interface (or the closest sibling class/component by
      base type, interface, or name suffix) and read enough of it (not just the signature) to
