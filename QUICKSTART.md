@@ -20,7 +20,8 @@ Claude Code itself.)
 Then, inside Claude Code:
 
 ```
-/umb-init          # once per project — CLAUDE.md, .gitignore, README stub
+/umb-init          # once per project — scaffolds the solution (if new) via a real dotnet
+                   # template, then CLAUDE.md, .gitignore, README stub
 /umb-explore       # talk through what you're building
 /umb-design        # decide which extension points, data model, API surface
 /umb-plan          # slice into tasks + generate pending specs
