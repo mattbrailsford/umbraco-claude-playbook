@@ -71,8 +71,9 @@ returning `PASS` or `FAIL`.
   context
 - `ef-core-data` — dual SQL Server/SQLite support, product-prefixed migrations, repositories
   internal to their owning service
-- `security-dotnet` — Management API authz, EF Core injection, secrets handling, XSS in Lit
-  templates
+- `security-dotnet` — Management API authz, EF Core injection, secrets handling
+- `security-lit` — XSS in Lit templates, secrets in a client bundle, browser storage, npm
+  supply chain
 - `solid-principles`, `design-principles`, `gof-patterns` — C# examples throughout
 
 **Process:**
@@ -148,7 +149,7 @@ umbraco-claude-playbook/
 ├── plugins/umbraco-claude-playbook/
 │   ├── .claude-plugin/
 │   │   └── plugin.json               # the plugin's own manifest
-│   ├── skills/                       # all 19 skills, one folder each
+│   ├── skills/                       # all 20 skills, one folder each
 │   └── agents/                       # builder.md, reviewer.md
 ├── settings.example.json             # optional, copy-paste, not auto-installed
 ├── README.md

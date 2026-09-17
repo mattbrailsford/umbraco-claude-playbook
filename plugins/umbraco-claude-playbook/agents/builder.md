@@ -29,6 +29,9 @@ scope creep, no adjacent "while I'm here" changes.
   package-level structure (barrel exports, OpenAPI client usage).
 - Anything touching auth, user input, the Management API, or secrets → `security-dotnet`
   while writing, so the reviewer has less to send back.
+- Any Lit template rendering user-generated/AI-generated/external content via
+  `unsafeHTML`/`unsafeSVG`, any frontend code reading a build-time env var, or any
+  `localStorage`/`sessionStorage` use → `security-lit`, same reason.
 
 Pick the minimum set the task actually needs; don't load all of them.
 

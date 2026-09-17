@@ -1,17 +1,21 @@
 ---
 name: security-dotnet
 description: >-
-  Security review checklist for the backend and frontend surface of an Umbraco CMS package —
-  Management API controllers, EF Core queries built from user or backoffice-user input,
-  backoffice authorization, secrets/sensitive-configuration storage, Lit templates that render
-  user-generated or externally-sourced content, custom non-Management-API endpoints, and
+  Backend security review checklist for an Umbraco CMS package — Management API controllers,
+  EF Core queries built from user or backoffice-user input, backoffice authorization,
+  secrets/sensitive-configuration storage, custom non-Management-API endpoints, and NuGet
   dependency supply chain. Use when reviewing or writing any Management API controller action,
   any EF Core query assembled from input, any code path handling API keys/tokens/connection
-  strings, any Lit template using `unsafeHTML`/`unsafeSVG`, or any endpoint added outside the
-  standard Management API pipeline.
+  strings, or any endpoint added outside the standard Management API pipeline. For frontend
+  security (XSS in Lit templates, secrets in a client bundle, npm supply chain), see
+  `security-lit` instead.
 ---
 
-# Security review for Umbraco packages
+# Backend security review for Umbraco packages
+
+Frontend security — XSS in Lit templates, secrets leaking into a client bundle, browser
+storage, npm supply chain — is `security-lit`'s job, not this skill's. Use both together for a
+task that touches both layers.
 
 ## 🎯 Why: Design for Change
 
@@ -132,34 +136,6 @@ client for a masked field, even to redraw the mask — client-side masking alone
 `type="password"` input) does nothing if the API payload still carries the plaintext value.
 Check the DTO/response model, not just the editor UI.
 
-## XSS in Lit templates
-
-Lit's `html` tagged template escapes interpolated values by default — that's the safe path and
-needs no special review. The risk is entirely in the directives that opt out of it:
-`unsafeHTML()` and `unsafeSVG()` render their argument as raw markup, unescaped.
-
-**Rule:** never pass content through `unsafeHTML`/`unsafeSVG` unless its origin is fully
-trusted and it has been sanitized first. This includes AI-generated content, rich-text/RTE
-content, and anything pulled from an external API — none of these are trusted just because they
-passed through the package's own backend first.
-
-```typescript
-// WRONG — rendering AI-generated or RTE content straight through unsafeHTML
-render() {
-  return html`<div class="preview">${unsafeHTML(this.generatedContent)}</div>`;
-}
-
-// RIGHT — sanitize first if real markup genuinely needs to render
-render() {
-  const safeHtml = DOMPurify.sanitize(this.generatedContent);
-  return html`<div class="preview">${unsafeHTML(safeHtml)}</div>`;
-}
-```
-
-Grep diffs for `unsafeHTML(` and `unsafeSVG(` and trace the argument back to its source. If
-that source is a user, an LLM response, an RTE/block-content value, or an external HTTP call,
-the missing sanitization step is a finding.
-
 ## CSRF / cross-origin for custom endpoints
 
 Anything added outside the standard Management API pipeline — a custom minimal API endpoint, a
@@ -173,10 +149,10 @@ which case it needs its *own* authentication (signature verification, shared sec
 allow-list) rather than relying on "nobody knows the URL"? Don't leave this undecided — an
 endpoint that assumes backoffice protections it never actually inherited is a silent gap.
 
-## Dependency / package supply chain
+## NuGet dependency / package supply chain
 
-- Pin dependency versions deliberately (Central Package Management / lockfiles) — this class of
-  project does not want a transitive dependency silently jumping versions on a routine restore.
+- Pin dependency versions deliberately (Central Package Management) — this class of project
+  does not want a transitive NuGet dependency silently jumping versions on a routine restore.
 - Don't introduce `curl | sh`-style install patterns (piping a downloaded script into a shell)
   in build or setup scripts — fetch a pinned artifact and verify it instead.
 

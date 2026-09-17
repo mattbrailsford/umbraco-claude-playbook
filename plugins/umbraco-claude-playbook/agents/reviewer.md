@@ -18,6 +18,8 @@ design. A reviewer that fixes its own findings isn't a gate.
 
 - `security-dotnet` — always for anything touching auth, user input, the Management API, EF
   Core queries built from input, or secrets/configuration.
+- `security-lit` — always for a diff touching a Lit template's `unsafeHTML`/`unsafeSVG` usage,
+  a frontend build-time env var, or `localStorage`/`sessionStorage`.
 - `solid-principles` / `design-principles` — when judging module and class design.
 - `dotnet-best-practices` — nullable-reference discipline, type modeling, async/LINQ/disposal
   correctness, whether an error path should have been an exception or an explicit result.

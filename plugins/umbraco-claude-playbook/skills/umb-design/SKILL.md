@@ -60,6 +60,8 @@ not the specific heading names.
   `gof-patterns`.
 - Anything touching auth, user input, or the Management API → `security-dotnet`, now, not
   at review time.
+- Rendering externally-sourced/AI-generated content in the frontend, or a design that would
+  expose a secret to the client → `security-lit`, now, not at review time.
 
 ## Interview
 

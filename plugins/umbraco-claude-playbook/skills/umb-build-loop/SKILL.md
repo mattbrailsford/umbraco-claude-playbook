@@ -55,8 +55,9 @@ For each task still unchecked (`- [ ]`), in order, top to bottom:
    the existing specs before reporting back. The builder does not commit.
 
 2. **Review.** Dispatch a `reviewer` subagent (Agent tool, `subagent_type: reviewer`, model
-   opus — must be ≥ builder). It invokes `security-dotnet` and the relevant stack skills,
-   reads the builder's diff, and returns `PASS` or `FAIL` with specific findings.
+   opus — must be ≥ builder). It invokes `security-dotnet`/`security-lit` (whichever the diff
+   touches) and the relevant stack skills, reads the builder's diff, and returns `PASS` or
+   `FAIL` with specific findings.
 
 3. **Recurse.** If `FAIL`: send the findings back to a fresh `builder` for the same task.
    Repeat build → review until `PASS`. No cap — a task is not done until it passes both code
