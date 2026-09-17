@@ -85,23 +85,7 @@ Refs #142
 ## Issues — `gh issue create`
 
 A useful issue answers: **what's wrong / what's wanted, what's the context, what does done
-look like.**
-
-```markdown
-## Context
-<one paragraph: where this came from, why it matters, link to a story id or plan-doc
-section if relevant>
-
-## What we want
-<the concrete change or behavior — bulleted is fine>
-
-## Acceptance criteria
-- [ ] <observable outcome 1>
-- [ ] <observable outcome 2>
-
-## Notes
-<optional — links, screenshots, related PRs>
-```
+look like.** Body from `templates/issue.md`, filled in — don't hand-write the structure:
 
 ```bash
 gh issue create \
@@ -117,24 +101,8 @@ Add labels if the repo uses them (`--label bug`), and an assignee if known (`--a
 
 ## Pull requests — `gh pr create`
 
-A useful PR answers: what changed, why, how to verify, what could go wrong.
-
-```markdown
-## Summary
-- <headline change>
-- <caveats / non-changes>
-
-## Why
-<one paragraph — the motivation, linked story/issue>
-
-## How to verify
-- [ ] <a concrete check, ideally a command>
-
-## Risk / rollback
-<what could go wrong, how to revert>
-
-Closes #<issue-number, if any>
-```
+A useful PR answers: what changed, why, how to verify, what could go wrong. Body from
+`templates/pr.md`, filled in — don't hand-write the structure.
 
 Command (always use a HEREDOC for the body — preserves formatting):
 
