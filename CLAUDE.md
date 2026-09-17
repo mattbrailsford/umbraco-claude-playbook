@@ -59,3 +59,26 @@ Changes here follow the same `git-workflow` skill this repo ships to others: Con
 Commits, branch by change size, and — since this is a solo `main`-only repo right now — the
 **always ask before committing straight to `main`** rule applies to you as much as to any
 consumer project.
+
+## Skill boundary discipline
+
+Skill scope drifts quietly: `dotnet-conventions` ended up entirely Umbraco-specific despite its
+generic name, `typescript-best-practices` absorbed Lit/Umbraco content, `security-dotnet`
+picked up frontend XSS guidance, and two pairs of skills ended up documenting the same rule
+twice — none of that was deliberate, it just accumulated one reasonable-looking edit at a time.
+
+**Before adding a section to an existing skill, ask:**
+1. Does this fit the skill's own frontmatter `description`? If not, that's a signal it
+   belongs in a different (possibly new) skill, not a reason to broaden the description.
+2. Is this generic language/stack discipline (portable to any project) or Umbraco/Lit-specific?
+   Generic goes in a `*-best-practices` skill; Umbraco-specific goes in a skill named for what
+   it actually covers.
+3. Is this already documented elsewhere? Grep for the concept before writing it — this repo
+   has twice ended up with the same rule stated in two skills because nobody checked first.
+
+**Before renaming, splitting, or removing a skill,** run `scripts/check-skill-refs.sh` — it
+flags any backtick-quoted skill reference across the repo's Markdown that no longer resolves
+to an actual skill folder. It's a mechanical check for stale cross-references, not a judge of
+whether a boundary is *correct* — the three questions above still need a real read of the
+content, and a false positive gets added to `scripts/skill-ref-allowlist.txt`, not silenced by
+weakening the check.

@@ -1,0 +1,15 @@
+# Kebab-case, backtick-quoted tokens that check-skill-refs.sh would otherwise flag as an
+# unresolved skill reference, but aren't a skill in this plugin. One token per line; '#'
+# comments and blank lines are ignored.
+#
+# Add a new entry here (with a one-line reason) whenever the checker flags a real false
+# positive — a doc reference to a template, an official Backoffice Skills plugin skill name,
+# or anything else kebab-case that isn't meant to resolve to a folder under
+# plugins/umbraco-claude-playbook/skills/.
+
+claude-playbook         # Rob Conery's original template, credited in the README, not a skill
+dotnet-conventions      # old, renamed name — cited deliberately as a drift example in CLAUDE.md
+opinionated-package-starter  # Lotte Pitcher's dotnet new template, referenced in umb-init
+umbraco-document        # a hypothetical future skill umb-init's README stub gestures at
+umbraco-extension       # the official `dotnet new umbraco-extension` core template
+umbraco-state-management  # a skill in the official Backoffice Skills plugin, not ours
