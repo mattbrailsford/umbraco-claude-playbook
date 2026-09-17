@@ -1,0 +1,76 @@
+{
+  "$comment": "Rename to settings.json (project-shared) or settings.local.json (personal, gitignored). Hooks below are examples — uncomment to enable. See https://docs.claude.com/claude-code/hooks for the full schema.",
+  "$comment_validation": "The format-on-save and secret-file-blocking hooks below are a recommendation, not a universal convention. If your project adopts a worktree-per-feature workflow, add SessionStart/WorktreeCreate/WorktreeRemove hooks pointing at your own scripts — not included here since they're project-specific.",
+
+  "permissions": {
+    "$comment": "Pre-approve common safe commands so you stop seeing prompts.",
+    "allow": [
+      "Bash(dotnet build*)",
+      "Bash(dotnet test*)",
+      "Bash(dotnet restore*)",
+      "Bash(npm install)",
+      "Bash(npm run*)",
+      "Bash(npm test*)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(ls *)",
+      "Bash(find . *)",
+      "Bash(grep -r *)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(git push --force*)",
+      "Bash(curl * | sh)",
+      "Bash(curl * | bash)",
+      "Bash(dotnet nuget push*)"
+    ]
+  },
+
+  "env": {
+    "$comment": "Project-wide env hints for the AI. Real secrets go in appsettings.*.json / user-secrets / .env (gitignored), never here."
+  },
+
+  "hooks": {
+    "$comment_PostToolUse": "Run after each Edit/Write — uncomment to auto-format C#/TS on save.",
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$CLAUDE_FILE_PATHS\" | grep -qE '\\.cs$' && dotnet format --include \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$CLAUDE_FILE_PATHS\" | grep -qE '\\.(ts|tsx)$' && npx prettier --write \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+
+    "$comment_PreToolUse": "Block edits to sensitive/secret files. Uncomment to enable.",
+    "PreToolUse": [
+      {
+        "$comment": "Example: refuse to edit local secrets or environment files.",
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$CLAUDE_FILE_PATHS\" | grep -qE '(appsettings\\.Local|appsettings\\.Development|\\.env(\\..*)?)$' && { echo 'refuse: do not edit local secret/config files'; exit 2; } || exit 0"
+          }
+        ]
+      }
+    ],
+
+    "$comment_Stop": "Run on session end — uncomment to print a summary or trigger CI.",
+    "Stop": []
+  }
+}
