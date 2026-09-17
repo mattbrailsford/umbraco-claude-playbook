@@ -78,6 +78,8 @@ returning `PASS` or `FAIL`.
 - `git-workflow` — Conventional Commits, branch-per-CMS-major-version, an
   always-ask-before-touching-main rule for AI agents
 - `git-remote` — bootstraps a new GitHub remote: real README, LICENSE, one CONTRIBUTING.md
+- `umbraco-marketplace` — gets a finished package listed: the required NuGet tag and Umbraco
+  dependency reference, the v14+ compatibility gotcha, the optional `umbraco-marketplace.json`
 
 ## How it works
 
@@ -143,7 +145,7 @@ umbraco-claude-playbook/
 ├── plugins/umbraco-claude-playbook/
 │   ├── .claude-plugin/
 │   │   └── plugin.json               # the plugin's own manifest
-│   ├── skills/                       # all 17 skills, one folder each
+│   ├── skills/                       # all 18 skills, one folder each
 │   └── agents/                       # builder.md, reviewer.md
 ├── settings.example.json             # optional, copy-paste, not auto-installed
 ├── README.md

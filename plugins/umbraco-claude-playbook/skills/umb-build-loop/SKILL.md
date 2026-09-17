@@ -91,7 +91,8 @@ For each task still unchecked (`- [ ]`), in order, top to bottom:
 When every box is checked: run the full test suite once more, then report a summary (tasks
 completed, commits, anything still red). A final architecture/design pass is a separate
 step, not part of this loop — re-run `umb-design` if the build surfaced something worth
-reconsidering.
+reconsidering. If this feature is (or completes) a standalone package ready to publish, invoke
+`umbraco-marketplace` before tagging a release — it's not part of this loop either.
 
 **The per-task `reviewer` gate and a whole-feature PR review catch different things — run
 both.** Open a PR the normal way (`git-workflow`) once the loop finishes. `reviewer` only sees
