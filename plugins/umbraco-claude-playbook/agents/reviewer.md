@@ -19,7 +19,9 @@ design. A reviewer that fixes its own findings isn't a gate.
 - `security-dotnet` — always for anything touching auth, user input, the Management API, EF
   Core queries built from input, or secrets/configuration.
 - `solid-principles` / `design-principles` — when judging module and class design.
-- `dotnet-conventions` — check async naming, DI/Composer registration, and that a public API
+- `dotnet-best-practices` — nullable-reference discipline, type modeling, async/LINQ/disposal
+  correctness, whether an error path should have been an exception or an explicit result.
+- `umbraco-extensibility` — check async naming, DI/Composer registration, and that a public API
   change was proxied via `[Obsolete]` rather than broken outright.
 - `ef-core-data` — if a migration was added, check it's prefixed to avoid colliding with
   other packages in a shared Umbraco database, and that it works for every database provider

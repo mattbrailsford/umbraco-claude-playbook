@@ -50,7 +50,8 @@ not the specific heading names.
 
 ## Skills to pull in
 
-- Extension-point idioms, DI registration patterns, async naming → `dotnet-conventions`.
+- Extension-point idioms, DI registration patterns, async naming → `umbraco-extensibility`.
+- General C# type/error-handling shape for a new service or model → `dotnet-best-practices`.
 - Persistence needed → `ef-core-data`.
 - Backoffice UI needed → the official Umbraco Backoffice Skills plugin for the specific
   extension point (dashboard, property editor, tree, etc.), plus `lit-uui-conventions` for

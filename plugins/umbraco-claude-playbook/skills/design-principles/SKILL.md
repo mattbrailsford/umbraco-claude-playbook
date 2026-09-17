@@ -24,7 +24,7 @@ pull in the same direction — a highly cohesive class naturally has fewer reaso
 into other classes' internals.
 
 The concrete rule this playbook recommends as a strong default is **repositories internal to
-their owning service** (see `dotnet-conventions`). A controller that reaches past
+their owning service** (see `umbraco-extensibility`). A controller that reaches past
 `ItemService` straight into `ItemRepository` is coupled to a layer it has no business knowing
 exists — when that repository's shape changes, the controller breaks too, for no reason
 related to what the controller actually does.

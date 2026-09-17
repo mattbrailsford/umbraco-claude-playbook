@@ -1,13 +1,16 @@
 ---
-name: dotnet-conventions
+name: umbraco-extensibility
 description: >-
-  C# / .NET conventions for building Umbraco packages and add-ons — Composer registration,
-  collection-builder extensibility, notification handlers, attribute-based discovery, async
-  naming, and public-API backwards compatibility. Use when writing or reviewing any C# code
-  in an Umbraco package, or when deciding how to make a feature extensible by other packages.
+  Umbraco's own extension mechanisms, and how to build on them instead of inventing your own —
+  Composer registration, collection-builder extensibility, notification handlers,
+  attribute-based discovery, repository access, and public-API backwards compatibility. Use
+  when deciding how to make a feature extensible by other packages, or when writing/reviewing
+  any code that plugs into Umbraco's startup pipeline. Complements `dotnet-best-practices`
+  (general C#/.NET language discipline, not Umbraco-specific) — use both together for any
+  substantial backend change.
 ---
 
-# .NET conventions for Umbraco packages
+# Extending Umbraco, not just building on top of it
 
 ## 🎯 Why: Design for Change
 
@@ -16,12 +19,10 @@ exist to keep the extension surface stable while the implementation behind it ch
 If a convention here doesn't make the *next* change (by you, or by a package consumer) easier,
 it's the wrong convention for this project.
 
-## Extending Umbraco, not just building on top of it
-
 Umbraco itself is built from a small set of extension mechanisms. A package that reuses them
 feels native; one that invents its own DI/config/plugin system feels bolted on.
 
-### Composers — your package's DI entry point
+## Composers — your package's DI entry point
 
 A `Composer` (implementing `IComposer`) is how a package registers itself into Umbraco's
 startup pipeline, auto-discovered via assembly scanning. Keep one composer per package (or
@@ -39,7 +40,7 @@ public class MyPackageComposer : IComposer
 }
 ```
 
-### Collection builders — how you make *your own* extension points
+## Collection builders — how you make *your own* extension points
 
 If other packages (or the same package's own future features) need to plug into yours,
 expose a collection builder rather than a raw list or a config flag. This is the same
@@ -64,7 +65,7 @@ instead of a config setting or a hardcoded `if`. Ordering via `Append()`/`Insert
 `InsertAfter<T>()` is more change-safe than an `Order` property on the interface — the
 registration site controls ordering, not every implementation having to know its place.
 
-### Attribute-based discovery, when the extension point is "plugins"
+## Attribute-based discovery, when the extension point is "plugins"
 
 If your package supports pluggable implementations shipped as separate NuGet packages
 (providers, connectors, adapters), prefer attribute + assembly-scan discovery over a config
@@ -78,7 +79,7 @@ public class CoolVendorProvider : MyPackageProviderBase { /* ... */ }
 This is what lets `dotnet add package My.Package.CoolVendor` be the whole integration step —
 no code change required in the consuming project.
 
-### Notification handlers, not raw event subscriptions
+## Notification handlers, not raw event subscriptions
 
 If your package needs to react to Umbraco content/media/member lifecycle events, implement
 `INotificationHandler<T>` and register it via the composer, rather than subscribing to a

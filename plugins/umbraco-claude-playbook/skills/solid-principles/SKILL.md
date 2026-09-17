@@ -47,7 +47,7 @@ independent reasons, three independent classes.
 ## Open/Closed — extend without modifying
 
 A module should be open for extension, closed for modification. This is not abstract in an
-Umbraco package — it's the collection-builder pattern from `dotnet-conventions`. A package
+Umbraco package — it's the collection-builder pattern from `umbraco-extensibility`. A package
 that lets consumers register new behavior via `builder.MyPackageThings().Add<Custom>()`
 never needs its own source touched to support a new case:
 

@@ -15,9 +15,11 @@ scope creep, no adjacent "while I'm here" changes.
 
 ## Skills to invoke (via the Skill tool, as relevant to the task)
 
-- `dotnet-conventions` — always, for any C#/.NET work. Async naming, DI/Composer
-  registration, collection-builder extensibility, `[Obsolete]` proxying for public API
-  changes.
+- `dotnet-best-practices` — always, for any C# work. Nullable reference types, type modeling,
+  async/LINQ/disposal discipline, general error-handling shape.
+- `umbraco-extensibility` — whenever the task touches Umbraco's own extension surface:
+  Composer/DI registration, collection-builder extensibility, notification handlers,
+  `[Obsolete]` proxying for a public API change.
 - `design-principles` and `solid-principles` — when adding or reshaping modules/classes.
   `gof-patterns` only if a pattern genuinely fits.
 - Persistence work → `ef-core-data`. Check whether the project targets SQL Server only or

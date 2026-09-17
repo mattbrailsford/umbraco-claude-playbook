@@ -36,7 +36,7 @@ any phase any time to refine its section; nothing gets clobbered.
 
 **Before your first real feature:** open your project's `CLAUDE.md` and write down which
 CMS major version(s) you target and which database provider(s) you support (SQL Server
-only, or SQL Server + SQLite). The stack-knowledge skills (`dotnet-conventions`,
+only, or SQL Server + SQLite). The stack-knowledge skills (`umbraco-extensibility`,
 `ef-core-data`, the `reviewer` agent's parity checks) all key off that.
 
 **Full docs:** [README.md](./README.md)

@@ -24,7 +24,7 @@ plugin — if you change one, check whether the other drifted.
 
 ## This repo is not an Umbraco project
 
-The skills here (`dotnet-conventions`, `ef-core-data`, `umb-init`, etc.) describe conventions
+The skills here (`umbraco-extensibility`, `ef-core-data`, `umb-init`, etc.) describe conventions
 for *consumer* projects that install this plugin — they don't apply to this repo's own
 content. Don't reach for `dotnet build` or C# conventions on this repo itself; there's no
 .NET code here.

@@ -60,7 +60,9 @@ traces impact on any public API change, and traces the change to its real entry 
 returning `PASS` or `FAIL`.
 
 **Stack knowledge:**
-- `dotnet-conventions` — Composers, collection builders, notification handlers,
+- `dotnet-best-practices` — nullable reference types, type modeling, async/LINQ/disposal
+  discipline — general C#, not Umbraco-specific
+- `umbraco-extensibility` — Composers, collection builders, notification handlers,
   attribute-based discovery, async naming, `[Obsolete]`-proxied public API changes
 - `typescript-best-practices` — discriminated unions, `{ data, error }` error handling, null
   hygiene, the `toString()`/`toJSON()` rule
@@ -146,7 +148,7 @@ umbraco-claude-playbook/
 ├── plugins/umbraco-claude-playbook/
 │   ├── .claude-plugin/
 │   │   └── plugin.json               # the plugin's own manifest
-│   ├── skills/                       # all 18 skills, one folder each
+│   ├── skills/                       # all 19 skills, one folder each
 │   └── agents/                       # builder.md, reviewer.md
 ├── settings.example.json             # optional, copy-paste, not auto-installed
 ├── README.md

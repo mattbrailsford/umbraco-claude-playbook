@@ -86,7 +86,7 @@ whether the symbol was actually reachable through an exported path** — if not,
 breaking, no matter how central it felt internally. And removing or reshaping something that
 *is* exported (dropped export, changed constructor signature, removed `@property()` field) is
 breaking for every package or site importing it directly — apply the same `[Obsolete]`-proxy
-discipline `dotnet-conventions` describes for the backend, adapted to TypeScript (keep the old
+discipline `umbraco-extensibility` describes for the backend, adapted to TypeScript (keep the old
 export working, or ship a major version bump; pair it with a JSDoc `@deprecated` tag and a
 runtime warning). **Manifests are never exported from `index.ts`** — they register through the
 package's bundle mechanism instead, so a manifest array changing shape isn't a public-API

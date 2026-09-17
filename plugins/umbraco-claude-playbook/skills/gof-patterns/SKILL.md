@@ -201,7 +201,7 @@ public class LoggingItemClient : IItemClient
 }
 ```
 
-An ordered collection builder (`dotnet-conventions`) manages layering like this for you —
+An ordered collection builder (`umbraco-extensibility`) manages layering like this for you —
 `Append()`/`InsertBefore<T>()`/`InsertAfter<T>()` — instead of nesting decorators by hand.
 
 ### Facade
@@ -258,7 +258,7 @@ Patterns concerned with how objects communicate and divide responsibility.
 ### Chain of Responsibility
 
 Use when a request should be passed along a series of handlers until one of them handles
-it, without the sender knowing which one will. See `dotnet-conventions` for the ordered
+it, without the sender knowing which one will. See `umbraco-extensibility` for the ordered
 collection builder, which gives you this shape for free — each registered handler decides
 whether to act or fall through.
 
@@ -360,7 +360,7 @@ public class Item
 ### Observer
 
 Use when one or more dependents need to react to a state change without the source object
-knowing who they are. See `dotnet-conventions` — `INotificationHandler<T>` registered via a
+knowing who they are. See `umbraco-extensibility` — `INotificationHandler<T>` registered via a
 composer *is* this pattern; prefer it over a hand-rolled event subscription.
 
 ```csharp
@@ -385,7 +385,7 @@ public class ExpiredState : IConnectionState
 ### Strategy
 
 Use when you need to swap one of several interchangeable algorithms at runtime, selected by
-config, alias, or context. See `dotnet-conventions` — the collection-builder-based provider
+config, alias, or context. See `umbraco-extensibility` — the collection-builder-based provider
 model (each provider implementing a shared capability interface) is this pattern at package
 scale; resolve by alias or DI rather than a `switch` on a type field.
 
@@ -445,7 +445,7 @@ public class TextItem : Item
   dependencies.
 - **Prototype**: a `record`'s built-in `with` expression covers most shallow-copy needs;
   implement `Clone()` by hand only when you need a real deep copy.
-- **Observer**: prefer the DI-registered notification-handler shape (`dotnet-conventions`)
+- **Observer**: prefer the DI-registered notification-handler shape (`umbraco-extensibility`)
   over C# `event`/`delegate` — it's testable in isolation and doesn't leak subscriptions
   across app restarts.
 - **Iterator**: reach for `yield return` before hand-writing `IEnumerator<T>` — it covers the
