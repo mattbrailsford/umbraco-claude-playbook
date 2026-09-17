@@ -89,6 +89,8 @@ returning `PASS` or `FAIL`.
 - `git-remote` — bootstraps a new GitHub remote: real README, LICENSE, one CONTRIBUTING.md
 - `umbraco-marketplace` — gets a finished package listed: the required NuGet tag and Umbraco
   dependency reference, the v14+ compatibility gotcha, the optional `umbraco-marketplace.json`
+- `quick-fix` — the escape hatch around the five-step pipeline for a fix too small to justify
+  it (a typo, a dead try/catch); escalates to `umb-plan`/`umb-explore` the moment it isn't
 
 ## How it works
 
@@ -154,7 +156,7 @@ umbraco-claude-playbook/
 ├── plugins/umbraco-claude-playbook/
 │   ├── .claude-plugin/
 │   │   └── plugin.json               # the plugin's own manifest
-│   ├── skills/                       # all 21 skills, one folder each
+│   ├── skills/                       # all 22 skills, one folder each
 │   └── agents/                       # builder.md, reviewer.md
 ├── settings.example.json             # optional, copy-paste, not auto-installed
 ├── README.md
