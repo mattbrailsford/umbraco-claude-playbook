@@ -31,6 +31,10 @@ Then, inside Claude Code:
 Or just describe what you want ("I want to add a dashboard that...") — these skills
 auto-surface when the description matches, you don't have to invoke them by name.
 
+For a fix too small to justify any of that — a typo, a reversed condition, a dead
+`try/catch` — use `/quick-fix` instead. It's deliberately not part of the pipeline above; it
+escalates to `umb-plan`/`umb-explore` the moment the fix turns out not to be that small.
+
 Everything writes into one file per feature: `docs/plans/<feature-slug>-plan.md`. Re-run
 any phase any time to refine its section; nothing gets clobbered.
 
