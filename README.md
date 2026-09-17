@@ -137,8 +137,7 @@ umbraco-claude-playbook/
 │   └── agents/                       # builder.md, reviewer.md
 ├── settings.example.json             # optional, copy-paste, not auto-installed
 ├── README.md
-├── QUICKSTART.md
-└── DESIGN.md                         # why it's built this way, departures from the original
+└── QUICKSTART.md
 ```
 
 ## Contributing
@@ -150,3 +149,8 @@ the commit/branch conventions this repo itself follows.
 ## License
 
 [MIT](./LICENSE)
+
+## Credits
+
+Based on [Rob Conery's `claude-playbook`](https://github.com/robconery) starter template,
+adapted for Umbraco package and site development.
