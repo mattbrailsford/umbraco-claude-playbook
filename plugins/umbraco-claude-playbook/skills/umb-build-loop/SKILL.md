@@ -62,6 +62,18 @@ things.
 5. Confirm you're now inside the right branch/worktree — `pwd` and the current branch should
    match `<feature-slug>` (or whatever the project's hook actually named it) — before touching
    any code.
+6. **Check the demo/test site is worktree-safe, if one exists.** Find the demo/test site
+   project (if this repo has one) and check its `Properties/launchSettings.json` for a fixed
+   `applicationUrl`. A fixed port there means two worktrees smoke-testing at the same time
+   will collide, and the failure will look like a broken build rather than a setup problem. If
+   found, **stop and flag it** — don't build on top of it. The fix: add
+   `Umbraco.Community.WorktreeDevPort` to that site's `.csproj` (`dotnet add package
+   Umbraco.Community.WorktreeDevPort`) and delete the `applicationUrl` line — it then assigns
+   every worktree its own stable port automatically. Check any OpenAPI client generation
+   config the same way (hey-api or similar) — if it resolves the demo site's address by a
+   hardcoded port, or an old named-pipe/socket trick, it needs the matching `worktree-dev-port`
+   npm package's `getPort()` instead, or it'll end up generating a client against the wrong
+   worktree's site. If no demo/test site exists at all, this step is a no-op.
 
 ## The loop
 
