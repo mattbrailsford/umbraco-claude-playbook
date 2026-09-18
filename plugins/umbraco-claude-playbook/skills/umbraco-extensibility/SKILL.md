@@ -4,17 +4,16 @@ description: >-
   Umbraco's own extension mechanisms, and how to build on them instead of inventing your own —
   Composer registration, collection-builder extensibility, notification handlers, and
   attribute-based discovery — plus a catalogue of the most common concrete, backend-side
-  Umbraco CMS extension points (the C# property editor definition, property value converters,
-  Management API endpoints, content finders, URL segment providers, health checks, Examine
-  indexing, and more). Use when deciding how to make a feature extensible by other packages,
-  or when choosing which CMS extension point fits a given task. For general backend package
-  conventions that aren't about extension mechanisms specifically (async naming, repository
-  visibility, public-API compatibility), see `umbraco-package-conventions` instead. The Lit/
-  UUI element and manifest for a backoffice-UI surface (a property editor's UI, a dashboard,
-  section, or tree) is out of scope here — that's the official Backoffice Extension Skills
-  plugin's job — but the C# side of a property editor (its `DataEditor` definition and value
-  converter) has nothing to do with Lit and is in scope. Complements `dotnet-best-practices`
-  (general C#/.NET language discipline, not Umbraco-specific).
+  Umbraco CMS extension points (property value converters, Management API endpoints, content
+  finders, URL segment providers, health checks, Examine indexing, and more). Use when
+  deciding how to make a feature extensible by other packages, or when choosing which CMS
+  extension point fits a given task. For general backend package conventions that aren't
+  about extension mechanisms specifically (async naming, repository visibility, public-API
+  compatibility), see `umbraco-package-conventions` instead. Anything already covered by the
+  official Backoffice Extension Skills plugin — a property editor's Lit UI and its C# schema
+  (`umbraco-property-editor-ui`, `umbraco-property-editor-schema`), dashboards, sections,
+  trees — is deliberately left out here rather than duplicated. Complements
+  `dotnet-best-practices` (general C#/.NET language discipline, not Umbraco-specific).
 ---
 
 # Extending Umbraco, not just building on top of it
@@ -95,28 +94,39 @@ If your package needs to react to Umbraco content/media/member lifecycle events,
 static event. Handlers are testable in isolation and don't leak subscriptions across app
 restarts.
 
+Don't confuse this with the official Backoffice Extension Skills plugin's
+`umbraco-notifications` skill — that one is the backoffice's toast-style UI messages
+(`UMB_NOTIFICATION_CONTEXT`), a completely different, frontend-only concept that just
+happens to share the name.
+
 ## Catalogue: which CMS extension point for which job
 
-Deliberately excludes the Lit/UUI element and manifest for a backoffice-UI surface (a
-property editor's UI, dashboard, section, or tree) — that's the official Backoffice
-Extension Skills plugin's territory. It does *not* exclude the C# side of the same feature
-where one exists — a property editor's `DataEditor` definition is plain C# with nothing Lit
-about it. Full skeletons are in `references/`; read only the file you need.
+Excludes anything the official Backoffice Extension Skills plugin already documents rather
+than duplicating it: the Lit/UUI element and manifest for a backoffice-UI surface
+(`umbraco-property-editor-ui`, `umbraco-dashboard`, `umbraco-sections`, `umbraco-tree`), and
+the C# property editor schema itself (`umbraco-property-editor-schema` — covers `DataEditor`,
+`IConfigurationEditor`, and even its own value converter example end to end). Property value
+converters stay in this catalogue anyway, since you write one for any property editor,
+built-in or custom, not only when authoring a new schema.
+
+Signatures below can drift across Umbraco majors — this skill isn't version-pinned the way
+the official plugin is, so check docs.umbraco.com against the target version before trusting
+a base class or attribute shape verbatim. Full skeletons are in `references/`; read only the
+file you need.
 
 | # | Extension point | Interface / base class | Registered via | Reach for it when |
 |---|---|---|---|---|
-| 1 | Property editor definition | `DataEditor` / `IDataEditor` | `[DataEditor]` attribute | shipping a custom property editor |
-| 2 | Property value converter | `IPropertyValueConverter` (+ `IDeliveryApiPropertyValueConverter`) | auto-discovered | that property's stored value needs a typed shape at runtime |
-| 3 | Management API endpoint | `ManagementApiControllerBase` | versioned route attributes | the backoffice needs to call your package's data |
-| 4 | Health check | `HealthCheck` | `[HealthCheck]` attribute | a site builder should be able to self-diagnose your package's config |
-| 5 | Cache refresher | `ICacheRefresher` | auto-discovered | your package's own entities need to stay in sync across a load-balanced site |
-| 6 | Content finder | `IContentFinder` | `ContentFindersCollection` | resolving custom/virtual URLs to content |
-| 7 | URL segment provider | `IUrlSegmentProvider` | `UrlSegmentProviders().Insert<T>()` | generating those same custom URL segments |
-| 8 | Examine custom indexing | `IValueSetBuilder` | named options / composer | indexing something that isn't `IContentBase` |
-| 9 | Custom file system | `IFileSystem` | `builder.SetMediaFileSystem()` (or similar) | media/files live somewhere other than local disk |
+| 1 | Property value converter | `IPropertyValueConverter` (+ `IDeliveryApiPropertyValueConverter`) | auto-discovered | a property's stored value needs a typed shape at runtime |
+| 2 | Management API endpoint | `ManagementApiControllerBase` | versioned route attributes | the backoffice needs to call your package's data |
+| 3 | Health check | `HealthCheck` | `[HealthCheck]` attribute | a site builder should be able to self-diagnose your package's config |
+| 4 | Cache refresher | `ICacheRefresher` | auto-discovered | your package's own entities need to stay in sync across a load-balanced site |
+| 5 | Content finder | `IContentFinder` | `ContentFindersCollection` | resolving custom/virtual URLs to content |
+| 6 | URL segment provider | `IUrlSegmentProvider` | `UrlSegmentProviders().Insert<T>()` | generating those same custom URL segments |
+| 7 | Examine custom indexing | `IValueSetBuilder` | named options / composer | indexing something that isn't `IContentBase` |
+| 8 | Custom file system | `IFileSystem` | `builder.SetMediaFileSystem()` (or similar) | media/files live somewhere other than local disk |
 
-- **`references/content-and-routing.md`** — rows 1, 2, 6, 7, 8.
-- **`references/api-and-infrastructure.md`** — rows 3, 4, 5, 9.
+- **`references/content-and-routing.md`** — rows 1, 5, 6, 7.
+- **`references/api-and-infrastructure.md`** — rows 2, 3, 4, 8.
 
 ### Also documented, lower frequency
 
@@ -137,9 +147,12 @@ compatibility, and where extension methods live are general package conventions,
 extension mechanisms — that's `umbraco-package-conventions`. Product-specific extension
 points that other packages expose (an Umbraco Commerce payment provider, a Forms workflow
 type, a Contentment data source) belong to *that* package's own docs, not here — this skill
-is about what Umbraco CMS itself lets you plug into. The Lit/UUI element and manifest for a
-backoffice-UI surface (a property editor's UI, a dashboard, section, or tree) is the official
-Backoffice Extension Skills plugin's job — not just the element's implementation, but knowing
-that extension type exists and choosing it at all. That exclusion is about the *UI surface*,
-not the feature: a property editor's C# `DataEditor` definition is still documented here,
-because it's plain C# and has no Lit component of its own.
+is about what Umbraco CMS itself lets you plug into. Anything the official Backoffice
+Extension Skills plugin already owns end to end — a backoffice-UI surface's Lit element and
+manifest, and a property editor's C# schema (`umbraco-property-editor-ui`,
+`umbraco-dashboard`, `umbraco-sections`, `umbraco-tree`, `umbraco-property-editor-schema`) —
+is left to that plugin rather than duplicated here, even where the underlying code is plain
+C#. A couple of names collide across the two plugins without meaning the same thing: that
+plugin's `umbraco-notifications` and `umbraco-health-check` skills are both frontend/UI
+concepts (toast messages, a health check's backoffice manifest), distinct from this skill's
+`INotificationHandler<T>` and `HealthCheck` C# base class.

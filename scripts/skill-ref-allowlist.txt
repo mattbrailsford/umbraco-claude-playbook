@@ -13,3 +13,10 @@ opinionated-package-starter  # Lotte Pitcher's dotnet new template, referenced i
 umbraco-document        # a hypothetical future skill umb-init's README stub gestures at
 umbraco-extension       # the official `dotnet new umbraco-extension` core template
 umbraco-state-management  # a skill in the official Backoffice Skills plugin, not ours
+umbraco-property-editor-ui      # a skill in the official Backoffice Skills plugin, not ours
+umbraco-property-editor-schema  # a skill in the official Backoffice Skills plugin, not ours
+umbraco-dashboard       # a skill in the official Backoffice Skills plugin, not ours
+umbraco-sections        # a skill in the official Backoffice Skills plugin, not ours
+umbraco-tree            # a skill in the official Backoffice Skills plugin, not ours
+umbraco-notifications   # a skill in the official Backoffice Skills plugin, not ours
+umbraco-health-check    # a skill in the official Backoffice Skills plugin, not ours

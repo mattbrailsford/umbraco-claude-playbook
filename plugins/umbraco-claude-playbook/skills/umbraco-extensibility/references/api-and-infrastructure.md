@@ -1,8 +1,8 @@
 # API and infrastructure extension points
 
-Rows 3, 4, 5, 9 of the catalogue in `SKILL.md`.
+Rows 2, 3, 4, 8 of the catalogue in `SKILL.md`.
 
-## 3. Management API endpoint
+## 2. Management API endpoint
 
 Controllers derive from `ManagementApiControllerBase`, versioned and routed under
 `/umbraco/management/api/v{n}`; OpenAPI is generated automatically.
@@ -21,7 +21,7 @@ public class MyPackageController : ManagementApiControllerBase
 Known gotcha: don't suffix the controller class name with the version number (e.g.
 `MyPackageV1Controller`) — it breaks route generation.
 
-## 4. Health check
+## 3. Health check
 
 ```csharp
 [HealthCheck("2c0a1f4e-0000-0000-0000-000000000000", "My Package Check",
@@ -37,9 +37,12 @@ public class MyHealthCheck : HealthCheck
 
 Discovered by the attribute — surfaces automatically under Settings > Health Check. Good
 fit for "is my package configured correctly" checks a site builder can self-diagnose,
-instead of a support ticket.
+instead of a support ticket. Distinct from the official Backoffice Extension Skills plugin's
+`umbraco-health-check` skill, which covers a health check's *frontend* manifest
+(`ManifestHealthCheck`) and context — only needed if your check wants custom backoffice UI
+beyond the default status/action display.
 
-## 5. Cache refresher
+## 4. Cache refresher
 
 ```csharp
 public class MyCacheRefresher : JsonCacheRefresherBase<MyCacheRefresher, MyCacheRefresherJsonModel>
@@ -54,7 +57,7 @@ per entity type your package owns is the normal shape once there's more than one
 this the moment your package maintains its own in-memory cache that needs to stay consistent
 across servers.
 
-## 9. Custom file system
+## 8. Custom file system
 
 ```csharp
 public class MyBlobFileSystem : IFileSystem { /* Delete/Exists/GetFiles/OpenFile/... */ }
