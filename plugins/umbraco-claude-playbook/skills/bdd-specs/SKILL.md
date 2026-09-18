@@ -1,14 +1,14 @@
 ---
 name: bdd-specs
 description: >-
-  Behavior-driven design: write executable specs from a feature's "## Stories & Tasks" plan
-  section, structured as Feature > Scenario > Specification with exactly one logical assertion
-  per test, using whichever test framework the project already has. Covers both layers a
-  feature might touch — C# and Lit/TypeScript, in this skill's references/ files — the
-  discipline is identical, only the syntax differs. Use when a feature's design and stories are
-  finalized and it's time to turn them into a test suite, or when asked to "spec out," "write
-  the tests first," or do BDD/TDD for an Umbraco feature. Dispatched by umb-plan; stops and
-  asks if the design or stories don't exist yet.
+  Behavior-driven design: write executable specs from a feature's STORIES.md and PLAN.md,
+  structured as Feature > Scenario > Specification with exactly one logical assertion per
+  test, using whichever test framework the project already has. Covers both layers a feature
+  might touch — C# and Lit/TypeScript, in this skill's references/ files — the discipline is
+  identical, only the syntax differs. Use when a feature's design and stories are finalized
+  and it's time to turn them into a test suite, or when asked to "spec out," "write the tests
+  first," or do BDD/TDD for an Umbraco feature. Dispatched by umb-plan; stops and asks if the
+  design or stories don't exist yet.
 ---
 
 # BDD specs
@@ -33,12 +33,12 @@ seriously as generating the code it will gate.
 
 ## Gate: require the design and the stories first
 
-Read the feature's plan doc.
+Read the feature's plan folder.
 
-1. **`## Design`** — if it's missing, still a stub, or full of `TODO`, **stop**. Tell the
+1. **`SPEC.md`** — if it's missing, still a stub, or full of `TODO`, **stop**. Tell the
    user: "No design yet — run `umb-design` first, so specs are grounded in real extension
    points and API shapes instead of invented ones."
-2. **`## Stories & Tasks`** — if it's missing, empty, or full of placeholder text, **stop**.
+2. **`STORIES.md`** — if it's missing, empty, or full of placeholder text, **stop**.
    Tell the user: "No stories yet — run `umb-plan` first, so specs come from real
    acceptance criteria instead of invented ones."
 
@@ -47,7 +47,7 @@ Do not draft design or stories yourself under this skill — that's `umb-design`
 
 ## Which layer(s) does this feature touch?
 
-Check `## Design`'s "Management API surface" and "Frontend components" sections, and read
+Check `SPEC.md`'s "Management API surface" and "Frontend components" sections, and read
 only the reference file(s) that layer needs:
 
 - **Management API surface isn't "none"** → read `references/backend-csharp.md`.

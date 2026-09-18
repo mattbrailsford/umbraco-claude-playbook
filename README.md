@@ -47,9 +47,9 @@ Or just describe what you want ("I want to add a dashboard that...") — these s
 auto-surface when the description matches, you don't have to invoke them by name. Full
 walkthrough: [QUICKSTART.md](./QUICKSTART.md).
 
-Everything writes into one file per feature: `docs/plans/<feature-slug>-plan.md`. Re-run any
-phase any time to refine its section; nothing gets clobbered. See
-[How it works](#how-it-works) for the section-ownership rules.
+Everything writes into one folder per feature: `docs/plans/<feature-slug>/`. Re-run any
+phase any time to refine its file; nothing gets clobbered. See
+[How it works](#how-it-works) for the file-ownership rules.
 
 ## What's included
 
@@ -94,26 +94,28 @@ returning `PASS` or `FAIL`.
 
 ## How it works
 
-### One plan doc per feature
+### One plan folder per feature
 
-Each pipeline skill owns a section of one file, by default at
-`docs/plans/<feature-slug>-plan.md` (point it at a worktree-relative or monorepo-scoped path
-instead if your project needs that — say so once in `CLAUDE.md` and every phase follows it):
+Each pipeline phase owns one file in a per-feature folder, by default at
+`docs/plans/<feature-slug>/` (point it at a worktree-relative or monorepo-scoped path instead
+if your project needs that — say so once in `CLAUDE.md` and every phase follows it):
 
-| Section | Owned by |
+| File | Owned by |
 |---|---|
-| `## Problem`, `## Non-goals` | `umb-explore` |
-| `## Design` | `umb-design` |
-| `## Stories & Tasks` | `umb-plan` |
-| `## Decision Log` | every phase appends |
-| `## Build Log` | `umb-build-loop` |
+| `BRIEF.md` | `umb-explore` |
+| `ARCHITECTURE.md`, `SPEC.md` | `umb-design` |
+| `STORIES.md`, `PLAN.md` | `umb-plan` |
+| `DECISION-LOG.md` | every phase appends |
+| `BUILD-LOG.md` | `umb-build-loop` |
 
-Rules: **re-entrant** (re-run a phase to refine, never restart), **stop, don't guess** (a
-phase missing its input sends you back to the owning phase), **one owner per section**.
+One file per owner, not one section per owner in a shared doc — two phases (or two sessions)
+never touch the same file, so there's nothing to merge-conflict over. Rules: **re-entrant**
+(re-run a phase to refine its file, never restart), **stop, don't guess** (a phase missing its
+input sends you back to the owning phase), **one owner per file**.
 
 ### Project memory
 
-Not every decision belongs in the per-feature plan doc or in the root `CLAUDE.md` forever.
+Not every decision belongs in a per-feature plan file or in the root `CLAUDE.md` forever.
 `umb-init` scaffolds `.claude/memory/` alongside `CLAUDE.md` for exactly the facts that don't
 fit either: standing project-wide decisions (`decision`), corrections learned from a
 `reviewer` `FAIL` so the next `builder` dispatch doesn't repeat them (`gotcha`), and pointers
@@ -125,8 +127,8 @@ nested `CLAUDE.md` there instead — `reviewer` already reads the nearest one on
 
 These solve different problems. Worktrees isolate the *filesystem* — two features get two
 full checkouts, no risk of one session's edits colliding with another's. The per-feature plan
-doc isolates the *decision record* — what was decided, why, what's left. Because the doc's
-path is scoped to the feature, the two never collide, with or without worktrees.
+folder isolates the *decision record* — what was decided, why, what's left. Because the
+folder's path is scoped to the feature, the two never collide, with or without worktrees.
 
 ## Building on top
 

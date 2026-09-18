@@ -26,7 +26,8 @@ naming — it's an escape hatch *around* the pipeline, not a phase in it.
   conventions`, not a quick-fix), renames a backoffice manifest `alias` (a silent breaking
   change per `umbraco-backoffice-conventions`), changes behavior across modules, or needs test
   coverage beyond what already exists. If it smells like any of that, **stop and escalate** —
-  suggest `umb-plan` (if a plan doc already covers this area) or `umb-explore` (if it doesn't).
+  suggest `umb-plan` (if a plan folder already covers this area) or `umb-explore` (if it
+  doesn't).
 
 ## Argument
 

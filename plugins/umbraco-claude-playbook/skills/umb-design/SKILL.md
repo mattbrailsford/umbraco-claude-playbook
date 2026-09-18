@@ -2,10 +2,10 @@
 name: umb-design
 description: >-
   Solution-space interview for an Umbraco feature — which extension points, data model,
-  Management API surface, and frontend components to use. Owns the "## Design" section of the
-  feature's plan doc. Use once umb-explore has defined the problem and it's time to decide
-  how to build it: which CMS extension point fits, whether it needs persistence, what the
-  package/project structure should look like.
+  Management API surface, and frontend components to use. Owns ARCHITECTURE.md and SPEC.md in
+  the feature's plan folder. Use once umb-explore has defined the problem and it's time to
+  decide how to build it: which CMS extension point fits, whether it needs persistence, what
+  the package/project structure should look like.
 user-invocable: true
 argument-hint: [area to focus, optional]
 ---
@@ -22,13 +22,18 @@ component shape (if any).
 
 ## Where this writes
 
-The same per-feature plan doc `umb-explore` started. Owns exactly one section:
-`## Design`. Read `## Problem` and `## Non-goals` — design must serve them, not redefine them.
+The same per-feature plan folder `umb-explore` started. Owns two files:
 
-As with `umb-explore`: if the project has its own plan-doc convention (numbered sub-phases, a
-`## Migration` section, whatever shape it already uses), fold this content into that shape —
-but keep the discipline of touching only this phase's own part of the doc; that's the point,
-not the specific heading names.
+- **`ARCHITECTURE.md`** — the internal structural decisions: which extension point(s), the
+  data model, key decisions with their rationale and the rejected alternative. This answers
+  "how is it built, and why."
+- **`SPEC.md`** — the externally observable contract: the Management API surface and the
+  frontend components' expected behavior, in concrete, testable terms. This answers "what must
+  it do," and is what `umb-plan` slices into stories — keep it testable, not vague.
+
+Read `BRIEF.md` — design must serve it, not redefine it. As with `umb-explore`: if the project
+has its own plan-folder convention, fold this content into that shape, but keep the discipline
+of touching only these two files; that's the point, not the specific file names.
 
 ## Scope
 
@@ -41,9 +46,8 @@ not the specific heading names.
 
 ## Preflight
 
-1. Read the plan doc's `## Problem` and `## Non-goals`. If they're still `TODO` or missing,
-   surface that and offer to bounce back to `umb-explore` — designing against an
-   undefined problem is wasted work.
+1. Read `BRIEF.md`. If it's still `TODO` or missing, surface that and offer to bounce back to
+   `umb-explore` — designing against an undefined problem is wasted work.
 2. Read the project's `CLAUDE.md` for existing architectural conventions (folder structure,
    namespace rules, extension patterns already in use) — a new feature should extend the
    grain of the codebase, not fight it.
@@ -88,27 +92,37 @@ Up to ~10 questions, adaptive, batched (4 at a time):
 
 ## Produce
 
-```md
-## Design
+`ARCHITECTURE.md`:
 
-### Extension points
+```md
+# Architecture
+
+## Extension points
 <which Umbraco extension point(s), and why this one over an alternative>
 
-### Data model & persistence
+## Data model & persistence
 <entities, relationships, SQL Server + SQLite considerations, or "none — reads/writes
 existing Umbraco data via <service>">
 
-### Management API surface
-<routes, request/response shapes, or "none">
-
-### Frontend components
-<component boundaries, which package/library they live in>
-
-### Key decisions
+## Key decisions
 <each decision, its rationale, and the alternative rejected>
 ```
 
-Append dated entries to `## Decision Log` for each architectural call made here. If a call is
+`SPEC.md`:
+
+```md
+# Spec
+
+## Management API surface
+<routes, request/response shapes, and the observable behavior each one guarantees — or
+"none">
+
+## Frontend components
+<component boundaries, which package/library they live in, and what each must observably
+do/render/emit — or "none">
+```
+
+Append dated entries to `DECISION-LOG.md` for each architectural call made here. If a call is
 a standing, project-wide decision rather than one scoped to this feature (the CMS major
 version(s) targeted, the database provider(s) supported, a pattern every future feature must
 follow), write it to `.claude/memory/` instead (type: `decision`) — see
@@ -116,4 +130,4 @@ follow), write it to `.claude/memory/` instead (type: `decision`) — see
 
 ## Hand off
 
-Note any `TODO` in `## Design`, then: `Suggested next: umb-plan.`
+Note any `TODO` in `ARCHITECTURE.md`/`SPEC.md`, then: `Suggested next: umb-plan.`

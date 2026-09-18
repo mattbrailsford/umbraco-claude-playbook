@@ -29,17 +29,17 @@ for *consumer* projects that install this plugin — they don't apply to this re
 content. Don't reach for `dotnet build` or C# conventions on this repo itself; there's no
 .NET code here.
 
-## Architecture: one plan doc per feature, five owners
+## Architecture: one plan folder per feature, one file per owner
 
-`umb-init` → `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop` each own one
-section of a single per-feature file (default `docs/plans/<feature-slug>-plan.md`) in a
-*consumer* project — not in this repo. The rules that make this work, if editing any of
-these skill files:
+`umb-init` → `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop` each own one file
+in a per-feature folder (default `docs/plans/<feature-slug>/`) in a *consumer* project — not
+in this repo. The rules that make this work, if editing any of these skill files:
 
-- **Re-entrant** — re-running a phase refines its section; it never restarts the file.
-- **One owner per section** — `umb-explore` owns `## Problem`/`## Non-goals`, `umb-design`
-  owns `## Design`, `umb-plan` owns `## Stories & Tasks`, `umb-build-loop` owns
-  `## Build Log`, every phase may append to `## Decision Log`.
+- **Re-entrant** — re-running a phase refines its file; it never restarts it.
+- **One owner per file** — `umb-explore` owns `BRIEF.md`, `umb-design` owns `ARCHITECTURE.md`
+  + `SPEC.md`, `umb-plan` owns `STORIES.md` + `PLAN.md`, `umb-build-loop` owns
+  `BUILD-LOG.md`, every phase may append to `DECISION-LOG.md`. File-level (not
+  section-level) ownership means two phases never touch the same file.
 - **Stop, don't guess** — a phase missing its expected input hands off to the owning phase
   rather than inventing the missing content.
 

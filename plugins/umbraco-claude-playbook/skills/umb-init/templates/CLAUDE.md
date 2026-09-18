@@ -20,12 +20,13 @@ a frontend project exists.]
 
 ## Feature workflow
 
-This project uses the Umbraco Claude Playbook. Feature plan docs live at:
+This project uses the Umbraco Claude Playbook. Feature plan folders live at:
 `[the path convention settled on in the interview]`
 
 Pipeline: `/umb-explore` → `/umb-design` → `/umb-plan` → `/umb-build-loop`.
-Each owns a section of the feature's plan doc, not a whole file — see the playbook's README
-for the section-ownership table.
+Each phase owns its own file in the feature's plan folder (`BRIEF.md`, `ARCHITECTURE.md` +
+`SPEC.md`, `STORIES.md` + `PLAN.md`, `BUILD-LOG.md`) — see the playbook's README for the
+file-ownership table.
 
 ## Conventions
 

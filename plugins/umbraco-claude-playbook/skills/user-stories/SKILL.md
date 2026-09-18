@@ -2,10 +2,10 @@
 name: user-stories
 description: >-
   Write, split, and refine user stories with Given/When/Then acceptance criteria, feeding
-  directly into bdd-specs. Writes into the "## Stories & Tasks" section of the
-  feature's plan doc. Normally dispatched by umb-plan, but usable standalone when
-  someone just wants help drafting or tightening a story. Use whenever turning a feature
-  request or a vague ask into a structured, testable backlog entry.
+  directly into bdd-specs. Writes STORIES.md in the feature's plan folder. Normally
+  dispatched by umb-plan, but usable standalone when someone just wants help drafting or
+  tightening a story. Use whenever turning a feature request or a vague ask into a
+  structured, testable backlog entry.
 ---
 
 # User stories
@@ -21,15 +21,15 @@ well-understood technique worth adopting on its own merits, and it's what makes
 
 ## Where this writes
 
-The feature's plan doc, `## Stories & Tasks` section (owned by `umb-plan`, which usually
-dispatches this skill as its first step). If invoked standalone before `umb-plan` has
-run, still write to the same section, and note that `umb-plan` still needs to run to
-turn the stories into an ordered, dependency-aware task list.
+`STORIES.md` in the feature's plan folder (owned by `umb-plan`, which usually dispatches
+this skill as its first step). If invoked standalone before `umb-plan` has run, still write
+to the same file, and note that `umb-plan` still needs to run to turn the stories into an
+ordered, dependency-aware task list in `PLAN.md`.
 
 ## The pipeline this sits in
 
 ```
-feature request ──▶ [user-stories] ──▶ ## Stories & Tasks ──▶ [bdd-specs] ──▶ specs ──▶ code
+feature request ──▶ [user-stories] ──▶ STORIES.md ──▶ [bdd-specs] ──▶ specs ──▶ code
 ```
 
 Map deliberately:
@@ -110,13 +110,12 @@ decomposing a backlog that will change is waste.
 ### 5. Definition of Ready / Definition of Done
 
 These are team agreements, not house rules — confirm them with the user rather than asserting
-defaults. Capture the agreed version once, at the top of the feature's `## Stories & Tasks`
-section, so every story in that feature inherits it instead of restating it. Reasonable
-starting points to offer (not impose): **Ready** — role/capability/value all stated and
-non-hollow, Given/When/Then acceptance criteria cover the happy path, out-of-scope is
-explicit, passes INVEST. **Done** — all acceptance criteria pass as executable specs (via
-`bdd-specs`), sad-path criteria are covered too, plus whatever the team adds (review,
-docs, deployed behind a flag, etc.).
+defaults. Capture the agreed version once, at the top of `STORIES.md`, so every story in that
+feature inherits it instead of restating it. Reasonable starting points to offer (not impose):
+**Ready** — role/capability/value all stated and non-hollow, Given/When/Then acceptance
+criteria cover the happy path, out-of-scope is explicit, passes INVEST. **Done** — all
+acceptance criteria pass as executable specs (via `bdd-specs`), sad-path criteria are covered
+too, plus whatever the team adds (review, docs, deployed behind a flag, etc.).
 
 ## Scope boundaries
 
@@ -131,7 +130,7 @@ docs, deployed behind a flag, etc.).
 
 ## Output
 
-Write or update the `## Stories & Tasks` section. If stories already exist there, merge —
-preserve story ids already in use (specs reference them) and append or amend rather than
-rewriting wholesale. After writing, report how many stories the section now holds and that
-it's ready for `bdd-specs`.
+Write or update `STORIES.md`. If stories already exist there, merge — preserve story ids
+already in use (specs reference them) and append or amend rather than rewriting wholesale.
+After writing, report how many stories the file now holds and that it's ready for
+`bdd-specs`.

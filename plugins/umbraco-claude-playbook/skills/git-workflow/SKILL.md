@@ -24,7 +24,7 @@ Write commits and branches that read clearly weeks later. Direct, specific, no f
 - New feature or capability, even a small one.
 - A schema/migration change.
 - Anything that could break the default branch for someone else.
-- A task with its own id in a feature's `## Stories & Tasks` section.
+- A task with its own id in a feature's `PLAN.md`.
 
 Branch naming: `<type>/<short-slug>` — `feat/order-fulfillment`, `fix/missing-null-check`,
 `chore/bump-deps` — for a project supporting a single CMS version line. **Supporting more

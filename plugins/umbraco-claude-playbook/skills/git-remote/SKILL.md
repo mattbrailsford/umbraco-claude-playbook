@@ -19,7 +19,7 @@ skips, and why" below.
 1. **Refuse if a remote already exists.** `git remote -v` — if `origin` points at github.com,
    stop and tell the user. Suggest `gh repo view` / `gh repo edit` instead.
 2. **`gh auth status`** — refuse if not logged in; tell the user to run `gh auth login`.
-3. Read context: `CLAUDE.md`, the feature plan doc(s) if any exist, any existing `README.md`,
+3. Read context: `CLAUDE.md`, the feature plan folder(s) if any exist, any existing `README.md`,
    `LICENSE`, `CONTRIBUTING.md`, `.github/` — never overwrite without consent.
 
 ## Interview (ask in one batch)

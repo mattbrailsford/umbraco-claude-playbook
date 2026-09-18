@@ -1,11 +1,12 @@
 ---
 name: umb-build-loop
 description: >-
-  Drives a feature's "## Stories & Tasks" checklist to completion, task by task — a builder
-  subagent implements, a reviewer subagent gates, commit only on pass. Use once umb-plan
-  has produced an ordered task list and it's time to actually write code.
+  Drives a feature's PLAN.md checklist to completion, task by task — a builder subagent
+  implements, a reviewer subagent gates, commit only on pass. Owns BUILD-LOG.md in the
+  feature's plan folder. Use once umb-plan has produced an ordered task list and it's time to
+  actually write code.
 user-invocable: true
-argument-hint: [path to the feature's plan doc, optional]
+argument-hint: [path to the feature's plan folder, optional]
 ---
 
 # umb-build-loop
@@ -14,7 +15,7 @@ argument-hint: [path to the feature's plan doc, optional]
 > seam. The reviewer fails work that couples modules or bloats blast radius — the builder
 > should pre-empt that, not rely on the reviewer to catch it.
 
-Execute the task checklist in a feature's plan doc, one task at a time. You are the
+Execute the task checklist in a feature's plan folder, one task at a time. You are the
 orchestrator. You do **not** write feature code or review it yourself — you dispatch to the
 `builder` and `reviewer` subagents and gate on their verdicts.
 
@@ -33,26 +34,26 @@ things.
 
 ## Preflight
 
-1. Resolve the plan doc: the path given in the argument, else the project's convention (see
-   `CLAUDE.md`), else **stop and ask** — do not infer one.
-2. Read `## Stories & Tasks`. It must be a checklist (`- [ ]` / `- [x]`). If it has no
-   checkboxes, stop and report — send the user to `umb-plan`.
+1. Resolve the plan folder: the path given in the argument, else the project's convention
+   (see `CLAUDE.md`), else **stop and ask** — do not infer one.
+2. Read `PLAN.md`. It must be a checklist (`- [ ]` / `- [x]`). If it has no checkboxes, stop
+   and report — send the user to `umb-plan`.
 3. Confirm a clean git working tree. If dirty, stop and report; do not build on top of
    uncommitted changes.
 4. If the project's mandatory-worktree convention applies (check `CLAUDE.md` /
    `CLAUDE.local.md`), confirm you're actually inside the right worktree before touching
-   anything — `pwd` and the current branch should match the feature this plan doc is for.
+   anything — `pwd` and the current branch should match the feature this plan folder is for.
 
 ## The loop
 
-For each task still unchecked (`- [ ]`), in order, top to bottom:
+For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
 
 1. **Build.** Dispatch a `builder` subagent (Agent tool, `subagent_type: builder`, model
-   sonnet). Give it: the exact task text, the relevant section of `## Design`, the files/
-   extension points it owns, and an instruction to invoke the project's stack skills
-   (`dotnet-best-practices`, `umbraco-extensibility`, `umbraco-package-conventions`,
-   `ef-core-data`, `umbraco-backoffice-conventions`, etc. as relevant) and run the existing
-   specs before reporting back. The builder does not commit.
+   sonnet). Give it: the exact task text, the relevant sections of `ARCHITECTURE.md` and
+   `SPEC.md`, the files/extension points it owns, and an instruction to invoke the project's
+   stack skills (`dotnet-best-practices`, `umbraco-extensibility`, `umbraco-package-
+   conventions`, `ef-core-data`, `umbraco-backoffice-conventions`, etc. as relevant) and run
+   the existing specs before reporting back. The builder does not commit.
 
 2. **Review.** Dispatch a `reviewer` subagent (Agent tool, `subagent_type: reviewer`, model
    opus — must be ≥ builder). It invokes `security-dotnet`/`security-lit` (whichever the diff
@@ -82,8 +83,8 @@ For each task still unchecked (`- [ ]`), in order, top to bottom:
    with a message naming the task, following the project's commit conventions (see
    `git-workflow`). One commit per task.
 
-6. **Check the box.** Edit the plan doc: `- [ ]` → `- [x]` for the completed task, and add a
-   one-line entry to `## Build Log` (commit SHA, what was verified). Commit that change with
+6. **Check the box.** Edit `PLAN.md`: `- [ ]` → `- [x]` for the completed task, and add a
+   one-line entry to `BUILD-LOG.md` (commit SHA, what was verified). Commit that change with
    the task commit or immediately after.
 
 7. Next task.
@@ -105,7 +106,7 @@ still needs to happen, by a human or whatever automated review the project has.
 ## Rules
 
 - Sequential, dependency-ordered. This is a pipeline, not a parallel team.
-- Builder owns code; reviewer owns the gate; this loop owns sequencing and checkbox state.
-  Never collapse these roles.
+- Builder owns code; reviewer owns the gate; this loop owns sequencing, `PLAN.md` checkbox
+  state, and `BUILD-LOG.md`. Never collapse these roles.
 - If a gate can't pass after repeated attempts and the builder is stuck, stop and report the
   task + findings rather than committing degraded code.

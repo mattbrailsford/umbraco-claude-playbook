@@ -2,34 +2,35 @@
 name: umb-explore
 description: >-
   Problem-space interview for a new Umbraco feature or package — what problem, for whom,
-  why, and what's explicitly out of scope. Owns the "## Problem" and "## Non-goals" sections
-  of the feature's plan doc. Use when starting a new feature, package, or add-on and nothing
-  has been written down yet, or when a feature request is vague and needs shaping before any
-  design or code happens.
+  why, and what's explicitly out of scope. Owns BRIEF.md in the feature's plan folder. Use
+  when starting a new feature, package, or add-on and nothing has been written down yet, or
+  when a feature request is vague and needs shaping before any design or code happens.
 user-invocable: true
 argument-hint: [one-line idea, optional]
 ---
 
 # umb-explore
 
-Think through an idea before touching the solution space. By the end, the feature's plan doc
+Think through an idea before touching the solution space. By the end, the feature's `BRIEF.md`
 says what's being built and for whom, honestly including what isn't known yet.
 
 ## Where this writes
 
-The project's per-feature plan doc — see the root `CLAUDE.md` for the path convention (default
-`docs/plans/<feature-slug>-plan.md`; a monorepo or worktree-based project may scope it
-differently, e.g. `docs/internal/agent/plans/<feature-slug>-plan.md`). If no convention is
-written down anywhere, ask once, then propose one and add it to `CLAUDE.md` so the next phase
-doesn't have to ask again.
+The project's per-feature plan folder — see the root `CLAUDE.md` for the path convention
+(default `docs/plans/<feature-slug>/`; a monorepo or worktree-based project may scope it
+differently, e.g. `docs/internal/agent/plans/<feature-slug>/`). If no convention is written
+down anywhere, ask once, then propose one and add it to `CLAUDE.md` so the next phase doesn't
+have to ask again.
 
-Owns exactly two sections: `## Problem` and `## Non-goals`. Never edit `## Design`,
-`## Stories & Tasks`, or `## Build Log` — those belong to later phases.
+Owns exactly one file: `BRIEF.md`. Never edit `ARCHITECTURE.md`, `SPEC.md`, `STORIES.md`,
+`PLAN.md`, or `BUILD-LOG.md` — those belong to later phases.
 
-**Why phase-owned sections:** re-running a phase must never silently overwrite another
-phase's decisions — owned sections make that structurally impossible. If a project already
-has its own plan-doc convention, match it for consistency, but keep the same discipline
-(track which part of the doc each phase owns) rather than going fully freeform.
+**Why one file per phase, not one shared doc:** re-running a phase must never silently
+overwrite another phase's decisions, and two files can't collide the way two sections in one
+shared file can — a phase editing its own file is safe to run concurrently with another phase
+(or another session) touching a different one. If a project already has its own plan-folder
+convention, match it for consistency, but keep the same discipline (one owner per file) rather
+than going fully freeform.
 
 ## Scope
 
@@ -38,11 +39,11 @@ has its own plan-doc convention, match it for consistency, but keep the same dis
   where a fact is needed to proceed.
 - OUT: architecture, CMS extension points to use, data model, package structure — all
   `umb-design`. If a solution idea comes up mid-interview, park it under a `> ASSUMPTION:`
-  or note in `## Non-goals` rather than deciding it here.
+  or note in the non-goals section rather than deciding it here.
 
 ## Preflight
 
-1. If the plan doc already exists, read it. Summarize current state in 1–2 lines
+1. If `BRIEF.md` already exists, read it. Summarize current state in 1–2 lines
    ("problem defined, no success metric yet"). Re-entrant: refine, don't restart.
 2. Read the project's `CLAUDE.md` and any existing architecture docs for prior context —
    don't re-litigate a decision already on record.
@@ -76,9 +77,11 @@ already expose the extension point this needs).
 
 ## Produce
 
-Write/update the plan doc:
+Write/update `BRIEF.md`:
 
 ```md
+# Brief
+
 ## Problem
 <what, who, why-now, success criteria, constraints, riskiest unknowns — mark unresolved
 items TODO rather than guessing>
@@ -87,7 +90,7 @@ items TODO rather than guessing>
 <explicitly out of scope, and why>
 ```
 
-Append a dated entry to `## Decision Log` for anything decided here worth remembering later
+Append a dated entry to `DECISION-LOG.md` for anything decided here worth remembering later
 (a scope cut, a killed alternative), one line each with the why. If a decision is project-wide
 rather than scoped to this feature (a constraint that will bind every future feature too, not
 just this one), write it to `.claude/memory/` instead (type: `decision`) — see

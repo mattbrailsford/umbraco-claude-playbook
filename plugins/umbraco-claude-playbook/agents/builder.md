@@ -1,6 +1,6 @@
 ---
 name: builder
-description: Implements a single task from a feature's "## Stories & Tasks" plan section in C# (.NET / Umbraco) and/or Lit + UUI. Builds and self-tests; never commits unless told. Dispatched by umb-build-loop.
+description: Implements a single task from a feature's PLAN.md in C# (.NET / Umbraco) and/or Lit + UUI. Builds and self-tests; never commits unless told. Dispatched by umb-build-loop.
 tools: Read, Write, Edit, Glob, Grep, Bash, Skill
 model: sonnet
 ---

@@ -2,7 +2,7 @@
 name: umb-init
 description: >-
   Scaffolds the working files a fresh Umbraco package or project needs before the pipeline
-  skills can run — CLAUDE.md, .gitignore, a README stub, .claude/memory/, and the plan-doc
+  skills can run — CLAUDE.md, .gitignore, a README stub, .claude/memory/, and the plan-folder
   path convention. For a brand-new package with no solution yet, offers to generate the
   solution itself from a real dotnet new template rather than hand-rolling one. Use when
   starting a brand-new Umbraco package/add-on/site repo and nothing has been written down yet,
@@ -37,7 +37,7 @@ template, the same way you'd defer to a formatter instead of hand-fixing whitesp
 
 1. **Re-entrant: if a file already exists, leave it alone.** Report what was already there
    vs. what you created. Never clobber an existing `CLAUDE.md` — if it's missing a section
-   this skill would normally add (the plan-doc convention, the pipeline skill list), offer to
+   this skill would normally add (the plan-folder convention, the pipeline skill list), offer to
    append just that section, and show the diff before writing it.
 2. Detect the ground:
    - Code already present → seed `CLAUDE.md` from what's actually there: the CMS version(s)
@@ -93,9 +93,10 @@ Almost none. Ask at most:
 2. If this is a brand-new package with no solution yet: use the `opinionated-package-starter`
    template (default yes, if its targeted CMS major fits), and its `-an`/`-gu`/`-gr`
    parameters.
-3. The plan-doc path convention (default `docs/plans/<feature-slug>-plan.md`; offer a
-   monorepo/worktree-scoped alternative if the repo already uses worktrees or has more than
-   one deployable product in it).
+3. The plan-folder path convention (default `docs/plans/<feature-slug>/`, holding `BRIEF.md`,
+   `ARCHITECTURE.md`, `SPEC.md`, `STORIES.md`, `PLAN.md`, `DECISION-LOG.md`, `BUILD-LOG.md` —
+   one file per pipeline phase; offer a monorepo/worktree-scoped alternative if the repo
+   already uses worktrees or has more than one deployable product in it).
 4. Only if genuinely ambiguous from the code: which Umbraco CMS major version(s) this targets,
    and whether it ships against SQL Server only or SQL Server + SQLite.
 
@@ -132,10 +133,12 @@ through unfilled:
   this skill's job.
 
 **`docs/plans/`** (or the agreed path) — create the empty folder with a `.gitkeep` if the
-convention is a fresh folder, so the path exists before the first feature needs it.
+convention is a fresh folder, so the path exists before the first feature needs it. Don't
+pre-create a per-feature subfolder or any of its seven files — `umb-explore` creates
+`docs/plans/<feature-slug>/` and its own `BRIEF.md` when the first real feature starts.
 
 ## Hand off
 
-End with the file list (created vs. skipped vs. appended-to), the plan-doc path convention
+End with the file list (created vs. skipped vs. appended-to), the plan-folder path convention
 settled on, then:
 `Suggested next: umb-explore — to define the first feature.`

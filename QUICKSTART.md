@@ -35,8 +35,8 @@ For a fix too small to justify any of that — a typo, a reversed condition, a d
 `try/catch` — use `/quick-fix` instead. It's deliberately not part of the pipeline above; it
 escalates to `umb-plan`/`umb-explore` the moment the fix turns out not to be that small.
 
-Everything writes into one file per feature: `docs/plans/<feature-slug>-plan.md`. Re-run
-any phase any time to refine its section; nothing gets clobbered.
+Everything writes into one folder per feature: `docs/plans/<feature-slug>/`. Re-run
+any phase any time to refine its file; nothing gets clobbered.
 
 **Before your first real feature:** open your project's `CLAUDE.md` and write down which
 CMS major version(s) you target and which database provider(s) you support (SQL Server
