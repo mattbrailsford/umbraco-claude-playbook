@@ -118,17 +118,6 @@ about it. Full skeletons are in `references/`; read only the file you need.
 - **`references/content-and-routing.md`** — rows 1, 2, 6, 7, 8.
 - **`references/api-and-infrastructure.md`** — rows 3, 4, 5, 9.
 
-### Also documented, lower frequency
-
-Real interfaces, but rare enough that most packages should never need them:
-
-- **oEmbed provider** (`IEmbedProvider`, via `EmbedProvidersCollection`) — adds a video/media
-  source to the Rich Text Editor's Embed button. Only relevant to a package whose whole
-  purpose is integrating a specific media host.
-- **Backoffice external login provider** — standard ASP.NET Core OAuth/OIDC, wired up via
-  `ExternalSignInAutoLinkOptions`. This is a one-time site-level SSO setup, not something
-  package authors typically implement.
-
 ## Scope note
 
 This skill is Umbraco's extension mechanisms, and the concrete backend-side CMS extension
