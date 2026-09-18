@@ -18,12 +18,16 @@ says what's being built and for whom, honestly including what isn't known yet.
 
 The project's per-feature plan folder — see the root `CLAUDE.md` for the path convention
 (default `docs/plans/<feature-slug>/`; a monorepo or worktree-based project may scope it
-differently, e.g. `docs/internal/agent/plans/<feature-slug>/`). If no convention is written
-down anywhere, ask once, then propose one and add it to `CLAUDE.md` so the next phase doesn't
-have to ask again.
+differently). If no convention is written down anywhere, ask once, then propose one and add it
+to `CLAUDE.md` so the next phase doesn't have to ask again.
 
 Owns exactly one file: `BRIEF.md`. Never edit `ARCHITECTURE.md`, `SPEC.md`, `STORIES.md`,
 `PLAN.md`, or `BUILD-LOG.md` — those belong to later phases.
+
+**Stays uncommitted, stays on trunk.** `umb-explore` never runs `git commit`, never creates a
+branch. The plan folder is just plain files on disk until `umb-build-loop` decides the feature
+is actually being built — see "Branch/worktree per feature" in `git-workflow` for why. If the
+feature never gets built, nothing ever touched git history.
 
 **Why one file per phase, not one shared doc:** re-running a phase must never silently
 overwrite another phase's decisions, and two files can't collide the way two sections in one
@@ -44,10 +48,18 @@ than going fully freeform.
 ## Preflight
 
 1. If `BRIEF.md` already exists, read it. Summarize current state in 1–2 lines
-   ("problem defined, no success metric yet"). Re-entrant: refine, don't restart.
-2. Read the project's `CLAUDE.md` and any existing architecture docs for prior context —
+   ("problem defined, no success metric yet"). Re-entrant: refine, don't restart. **Skip step
+   2 below** — a refinement run can legitimately happen from inside the feature's own
+   branch/worktree once `umb-build-loop` has started.
+2. **Only for a brand-new feature (no `BRIEF.md` yet):** confirm the current branch is the
+   project's trunk branch (see `CLAUDE.md`'s Feature workflow section; default the repo's
+   default branch). If it isn't, stop and tell the user — starting a new plan folder from an
+   unrelated branch is how plan folders end up scattered across branches they don't belong to.
+   Let them override if they confirm it's intentional (e.g. planning a sub-feature inside a
+   monorepo product's own long-lived line).
+3. Read the project's `CLAUDE.md` and any existing architecture docs for prior context —
    don't re-litigate a decision already on record.
-3. If this is a package/add-on (not a feature inside an existing product), check whether it's
+4. If this is a package/add-on (not a feature inside an existing product), check whether it's
    extending an existing Umbraco extension point (property editor, dashboard, content app,
    notification handler) or introducing a new one — that framing shapes several of the
    interview questions below.

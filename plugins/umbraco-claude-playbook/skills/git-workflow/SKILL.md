@@ -34,6 +34,38 @@ Prefer the `vN/` **prefix** form for a new project (it sorts and greps better th
 match whatever a project with existing history already does otherwise. Keep branches
 short-lived; open the PR early, even as draft.
 
+## Branch/worktree per feature (the umb-* pipeline)
+
+If a project runs `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop`, the branch (or
+worktree) for a feature is cut at one specific moment: the start of `umb-build-loop`, not
+before. The reasoning:
+
+- **Discovery and design cost nothing to abandon.** `umb-explore`/`umb-design`/`umb-plan`
+  never touch git — the plan folder is just files on disk. A feature that gets explored then
+  dropped never created a branch, so there's nothing to clean up.
+- **The plan folder and the branch share one name.** The feature's plan-folder slug (e.g.
+  `docs/plans/order-fulfillment/`) is passed straight through as the branch/worktree name, so
+  the two are always identifiable from each other without a separate lookup.
+- **The docs travel with the code.** A worktree is a fresh checkout of a commit — anything not
+  yet committed when the worktree is created never appears in it. So the moment
+  `umb-build-loop` decides to actually build, it commits the plan folder to trunk first (one
+  commit — `docs: add plan folder for <feature-slug>`), *then* cuts the branch/worktree from
+  that commit. The docs land in the feature branch's history as a result, without needing any
+  file-copying step.
+- **This skill doesn't pick the naming convention or decide worktree-vs-plain-branch — a
+  project's own `WorktreeCreate` hook does, if it has one.** Claude Code ships a native
+  `WorktreeCreate`/`WorktreeRemove` hook pair for exactly this
+  (https://code.claude.com/docs/en/hooks) — a project can already have a hook that names
+  branches `feature/<name>`, puts worktrees under `.worktrees/`, and copies over whatever local
+  files it needs. `umb-build-loop` just triggers worktree creation with the feature slug as the
+  name and lets that hook do its job. **Don't build a second, bespoke hook mechanism inside
+  this playbook** — reuse the one Claude Code already has. If a project has no such hook,
+  `umb-build-loop` falls back to a plain `git checkout -b <feature-slug>` off trunk, using the
+  naming table above if the project wants a `<type>/` or `vN/` prefix on top of the slug.
+- **The commit-to-trunk step still needs a yes.** It's a real commit on the trunk branch, so
+  the "always ask before touching main" rule below applies to it exactly as it would to any
+  other trunk commit — don't skip the confirmation just because the change is "only docs."
+
 ## If you are an AI agent: always ask before touching main or a support branch
 
 "Trunk-based" above is about when a *human* would commit straight to the default branch — it

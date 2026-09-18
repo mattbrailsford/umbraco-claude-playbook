@@ -130,6 +130,15 @@ full checkouts, no risk of one session's edits colliding with another's. The per
 folder isolates the *decision record* — what was decided, why, what's left. Because the
 folder's path is scoped to the feature, the two never collide, with or without worktrees.
 
+They're also linked at one specific moment, not throughout. `umb-explore`/`umb-design`/
+`umb-plan` never touch git — the plan folder is just files on disk, so a feature explored then
+dropped never cost a branch. `umb-build-loop` is what connects the two: at the start of the
+first build, it commits the plan folder to trunk, then cuts a branch or worktree named after
+the plan folder (using Claude Code's native `WorktreeCreate` hook if the project has one
+configured, otherwise a plain branch). The docs end up in the feature branch's history because
+they were committed just before it was cut, not because of any special copying step. See
+`git-workflow`'s "Branch/worktree per feature" section for the full reasoning.
+
 ## Building on top
 
 The gap between this playbook and a mature product's toolkit is real, and it's meant to be
@@ -139,8 +148,10 @@ here, it typically needs:
 - **A real release pipeline** — calendar or semver release branches, changelog generation,
   multi-product manifests — once you have a real release cadence. `git-workflow` here stops
   at "commit and branch well."
-- **A worktree-per-feature layer** — merge/cleanup skills and `WorktreeCreate`/
-  `WorktreeRemove` hooks, once parallel feature development earns its keep.
+- **Merge/cleanup automation on top of branch-per-feature** — `umb-build-loop` already cuts a
+  branch/worktree per feature (see "Docs vs. worktrees" above); a project can add its own
+  `WorktreeCreate`/`WorktreeRemove` hooks for custom naming, local-file copying, and
+  post-merge cleanup once parallel feature development earns that investment.
 - **Project-specific scaffolding and environment automation** — every non-trivial project
   ends up with a few of these.
 

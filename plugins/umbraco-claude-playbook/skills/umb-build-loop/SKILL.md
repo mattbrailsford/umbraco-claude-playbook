@@ -35,14 +35,33 @@ things.
 ## Preflight
 
 1. Resolve the plan folder: the path given in the argument, else the project's convention
-   (see `CLAUDE.md`), else **stop and ask** — do not infer one.
+   (see `CLAUDE.md`), else **stop and ask** — do not infer one. Its name is the feature slug
+   used below for the branch/worktree.
 2. Read `PLAN.md`. It must be a checklist (`- [ ]` / `- [x]`). If it has no checkboxes, stop
    and report — send the user to `umb-plan`.
-3. Confirm a clean git working tree. If dirty, stop and report; do not build on top of
-   uncommitted changes.
-4. If the project's mandatory-worktree convention applies (check `CLAUDE.md` /
-   `CLAUDE.local.md`), confirm you're actually inside the right worktree before touching
-   anything — `pwd` and the current branch should match the feature this plan folder is for.
+3. **Resuming or first run?** If any task in `PLAN.md` is already `- [x]`, or `BUILD-LOG.md`
+   already has entries, the branch/worktree was already cut by an earlier run — skip to step 5.
+   Otherwise this is the first run for this feature; continue to step 4.
+4. **Cut the feature's branch/worktree.** This is the one point in the whole pipeline that
+   touches git before any feature code exists — see `git-workflow`'s "Branch/worktree per
+   feature" section for the full reasoning. In order:
+   1. Confirm the working tree is clean *except* for the plan folder itself (expected —
+      `umb-explore`/`umb-design`/`umb-plan` never commit it). Any *other* uncommitted change is
+      unrelated work; stop and report rather than building on top of it.
+   2. Confirm you're on the project's trunk branch (see `CLAUDE.md`'s Feature workflow
+      section). If not, stop and ask — don't guess which branch to fork the feature from.
+   3. **Ask the user to confirm before running any of this** — it commits to trunk, which the
+      "always ask before touching main" rule covers regardless of how small the change is.
+   4. Commit the plan folder as-is, on trunk: `git add <plan-folder> && git commit -m "docs:
+      add plan folder for <feature-slug>"`.
+   5. Create the branch/worktree named after `<feature-slug>`, off that commit. Prefer Claude
+      Code's native worktree mechanism (`isolation: "worktree"` on the `Agent` tool, or the
+      project's own configured `WorktreeCreate` hook) so the project decides the real branch
+      name and location; fall back to a plain `git checkout -b <feature-slug>` off trunk if the
+      project has no such hook. Never invent a separate worktree/branch mechanism here.
+5. Confirm you're now inside the right branch/worktree — `pwd` and the current branch should
+   match `<feature-slug>` (or whatever the project's hook actually named it) — before touching
+   any code.
 
 ## The loop
 
@@ -102,6 +121,10 @@ both.** Open a PR the normal way (`git-workflow`) once the loop finishes. `revie
 one task's diff at a time, so it can't catch cross-task issues (a design decision in task 3
 that doesn't sit well with task 7, the feature's shape end to end) — a whole-feature review
 still needs to happen, by a human or whatever automated review the project has.
+
+If this feature built inside a worktree, don't remove it here — that's a post-merge cleanup
+step (the project's own `WorktreeRemove` hook, or `git worktree remove`), outside this loop's
+job.
 
 ## Rules
 

@@ -28,6 +28,15 @@ Each phase owns its own file in the feature's plan folder (`BRIEF.md`, `ARCHITEC
 `SPEC.md`, `STORIES.md` + `PLAN.md`, `BUILD-LOG.md`) — see the playbook's README for the
 file-ownership table.
 
+**Branch/worktree per feature:** new features start from `[trunk branch — the repo's default
+branch, or a long-lived vN/dev line for a branch-per-major project]`. Plan-folder files stay
+uncommitted through `umb-explore`/`umb-design`/`umb-plan`. `umb-build-loop` commits the plan
+folder to trunk and cuts the feature's branch/worktree — named after the plan folder — the
+moment building actually starts, not before (see `git-workflow`'s "Branch/worktree per
+feature" section). [If a `WorktreeCreate` hook is configured for this project, name it here —
+it decides the real branch name and location. Otherwise `umb-build-loop` falls back to a plain
+`git checkout -b <feature-slug>` off trunk.]
+
 ## Conventions
 
 [TODO — filled in as umb-explore/umb-design surface real decisions worth recording

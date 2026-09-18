@@ -52,6 +52,13 @@ template, the same way you'd defer to a formatter instead of hand-fixing whitesp
    - Empty dir, and this genuinely isn't a package (a full Umbraco site, or the template
      doesn't fit — see below) → `CLAUDE.md` gets a stub with the headings below and `TODO`s,
      as before.
+   - Regardless of the branch above: detect the trunk branch (`git symbolic-ref
+     refs/remotes/origin/HEAD`, falling back to whichever of `main`/`master` exists) and check
+     `.claude/settings.json` (project and user level) for an already-configured
+     `WorktreeCreate` hook. Both facts go into `CLAUDE.md`'s Feature workflow section — don't
+     ask for either unless detection is genuinely ambiguous (e.g. both a default branch and a
+     separate long-lived `vN/dev` line exist and it's unclear which one new features should
+     branch from).
 
 ## Scaffolding a brand-new package
 
@@ -97,7 +104,10 @@ Almost none. Ask at most:
    `ARCHITECTURE.md`, `SPEC.md`, `STORIES.md`, `PLAN.md`, `DECISION-LOG.md`, `BUILD-LOG.md` —
    one file per pipeline phase; offer a monorepo/worktree-scoped alternative if the repo
    already uses worktrees or has more than one deployable product in it).
-4. Only if genuinely ambiguous from the code: which Umbraco CMS major version(s) this targets,
+4. Only if trunk-branch detection above was ambiguous: which branch new features should start
+   from and be cut against (see `git-workflow`'s "Branch/worktree per feature" section — this
+   is where `umb-build-loop` commits the plan folder and cuts the feature branch/worktree).
+5. Only if genuinely ambiguous from the code: which Umbraco CMS major version(s) this targets,
    and whether it ships against SQL Server only or SQL Server + SQLite.
 
 Otherwise stay silent and scaffold.
