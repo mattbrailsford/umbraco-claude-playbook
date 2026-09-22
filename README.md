@@ -98,6 +98,8 @@ returning `PASS` or `FAIL`.
   may live outside the source repo; one issue runs inline, a range or the whole backlog fans
   out to one `issue-triager` subagent each. Report only — never labels, comments, or closes
   anything itself.
+- `issue-resolve` — takes one triaged issue and routes it into `quick-fix` or the full pipeline
+  depending on size, then drafts (never posts) the tracker resolution once the fix lands.
 
 ## How it works
 

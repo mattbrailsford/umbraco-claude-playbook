@@ -20,3 +20,4 @@ umbraco-sections        # a skill in the official Backoffice Skills plugin, not 
 umbraco-tree            # a skill in the official Backoffice Skills plugin, not ours
 umbraco-notifications   # a skill in the official Backoffice Skills plugin, not ours
 umbraco-health-check    # a skill in the official Backoffice Skills plugin, not ours
+issue-triager           # the subagent issue-triage dispatches, not a skill itself
