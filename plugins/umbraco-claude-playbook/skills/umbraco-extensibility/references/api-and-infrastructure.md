@@ -1,6 +1,6 @@
 # API and infrastructure extension points
 
-Rows 2, 3, 4, 8 of the catalogue in `SKILL.md`.
+Rows 2, 3, 4, 8, 9 of the catalogue in `SKILL.md`.
 
 ## 2. Management API endpoint
 
@@ -68,3 +68,58 @@ builder.SetMediaFileSystem(provider => new MyBlobFileSystem(/* ... */));
 ```
 
 Replaces where media/files physically live (e.g. cloud blob storage instead of local disk).
+
+## 9. Package migration plan
+
+This is Umbraco's own migration system — content/schema import and evolution across a
+package's installs and upgrades. Don't confuse it with an EF Core migration (see
+`ef-core-data`): a package can have both, for two different jobs — EF Core migrates *your
+own* database tables, a `PackageMigrationPlan` migrates Umbraco content/schema (document
+types, data types, content nodes) that your package ships or needs to evolve.
+
+```csharp
+public class MyPackageMigrationPlan : PackageMigrationPlan
+{
+    public MyPackageMigrationPlan() : base("My Package")
+    {
+    }
+
+    protected override void DefinePlan()
+    {
+        To<AddMyPackageDashboard>(new Guid("4FD681BE-E27E-4688-922B-29EDCDCB8A49"));
+    }
+}
+
+public class AddMyPackageDashboard : PackageMigrationBase
+{
+    protected override void Migrate()
+    {
+        ImportPackage.FromEmbeddedResource<AddMyPackageDashboard>().Do();
+    }
+}
+```
+
+```csharp
+public class MyPackageComposer : IComposer
+{
+    public void Compose(IUmbracoBuilder builder)
+        => builder.PackageMigrationPlans().Append<MyPackageMigrationPlan>();
+}
+```
+
+Steps are chained and ordered by the GUID passed to `To<T>()`, the same collection-builder
+shape used everywhere else in this skill. Use `PackageMigrationBase` for sync steps,
+`AsyncPackageMigrationBase` for steps that need `await` (e.g. calling an async service).
+`MigrationBase` still exists for non-package migrations, but a package author almost always
+wants the `Package*` variants — they add helper methods for importing embedded
+`package.xml`-style content/schema.
+
+By default `IgnoreCurrentState` is `true` on a custom package migration plan, meaning the
+plan's already-reached final state is ignored and it re-runs — set it to `false` once the
+plan should behave like a normal migration and only run new steps. Plans run unattended at
+startup by default (`PackageMigrationsUnattended` config can disable this) or from the
+Packages section in the backoffice.
+
+**v19 note:** signatures here matched CMS 17.x at time of writing — confirm against
+[Creating a Package](https://docs.umbraco.com/umbraco-cms/extend-your-project/packages/creating-a-package)
+for the target version before trusting them verbatim, same as everywhere else in this skill.

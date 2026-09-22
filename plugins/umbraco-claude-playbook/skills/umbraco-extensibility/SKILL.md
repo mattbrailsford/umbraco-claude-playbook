@@ -122,11 +122,17 @@ file you need.
 | 4 | Cache refresher | `ICacheRefresher` | auto-discovered | your package's own entities need to stay in sync across a load-balanced site |
 | 5 | Content finder | `IContentFinder` | `ContentFindersCollection` | resolving custom/virtual URLs to content |
 | 6 | URL segment provider | `IUrlSegmentProvider` | `UrlSegmentProviders().Insert<T>()` | generating those same custom URL segments |
-| 7 | Examine custom indexing | `IValueSetBuilder` | named options / composer | indexing something that isn't `IContentBase` |
+| 7 | Examine custom indexing | `IValueSetBuilder` | named options / composer | indexing something that isn't `IContentBase` |¹
 | 8 | Custom file system | `IFileSystem` | `builder.SetMediaFileSystem()` (or similar) | media/files live somewhere other than local disk |
+| 9 | Package migration plan | `PackageMigrationPlan` + `PackageMigrationBase`/`AsyncPackageMigrationBase` | `builder.PackageMigrationPlans().Append<T>()` | your package needs to import content/schema, or evolve it, across installs and upgrades |
 
 - **`references/content-and-routing.md`** — rows 1, 5, 6, 7.
-- **`references/api-and-infrastructure.md`** — rows 2, 3, 4, 8.
+- **`references/api-and-infrastructure.md`** — rows 2, 3, 4, 8, 9.
+
+¹ A new `Umbraco.Cms.Search` layer (still beta as of this writing) wraps Examine and becomes
+the default search stack from v19 — see the note at the end of `content-and-routing.md`'s
+Examine section before assuming `IValueSetBuilder` is still the only indexing surface on a
+v19+ target.
 
 ## Scope note
 
