@@ -46,9 +46,15 @@ of touching only these two files; that's the point, not the specific file names.
 
 ## Preflight
 
-1. Read `BRIEF.md`. If it's still `TODO` or missing, surface that and offer to bounce back to
-   `umb-explore` — designing against an undefined problem is wasted work.
-2. Read the project's `CLAUDE.md` for existing architectural conventions (folder structure,
+1. Resolve which feature this run is for. If more than one plan folder exists, prefer a match
+   between the current branch/worktree name and a folder name (see `CLAUDE.md`'s "Finding the
+   current feature's plan folder" rule) — this is the normal case once `umb-build-loop` has
+   started. If nothing matches, fall back to the one plan folder present, or ask if more than
+   one is ambiguous.
+2. Read `BRIEF.md` in the resolved folder. If it's still `TODO` or missing, surface that and
+   offer to bounce back to `umb-explore` — designing against an undefined problem is wasted
+   work.
+3. Read the project's `CLAUDE.md` for existing architectural conventions (folder structure,
    namespace rules, extension patterns already in use) — a new feature should extend the
    grain of the codebase, not fight it.
 

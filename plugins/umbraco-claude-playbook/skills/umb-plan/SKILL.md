@@ -44,9 +44,14 @@ tracks completion via issues instead of an in-doc checklist.
 
 ## Preflight
 
-1. Read `SPEC.md` (and `ARCHITECTURE.md` for context). If `SPEC.md` is still a stub or full of
-   `TODO`, **stop** — send the user back to `umb-design`.
-2. Read any existing `STORIES.md`/`PLAN.md`. Re-entrant: reconcile and extend; never silently
+1. Resolve which feature this run is for. If more than one plan folder exists, prefer a match
+   between the current branch/worktree name and a folder name (see `CLAUDE.md`'s "Finding the
+   current feature's plan folder" rule) — this is the normal case once `umb-build-loop` has
+   started. If nothing matches, fall back to the one plan folder present, or ask if more than
+   one is ambiguous.
+2. Read `SPEC.md` (and `ARCHITECTURE.md` for context) in the resolved folder. If `SPEC.md` is
+   still a stub or full of `TODO`, **stop** — send the user back to `umb-design`.
+3. Read any existing `STORIES.md`/`PLAN.md`. Re-entrant: reconcile and extend; never silently
    drop or renumber completed (`- [x]`) tasks.
 
 ## Stories

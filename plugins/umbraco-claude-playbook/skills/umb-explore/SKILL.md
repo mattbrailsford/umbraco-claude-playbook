@@ -47,10 +47,14 @@ than going fully freeform.
 
 ## Preflight
 
-1. If `BRIEF.md` already exists, read it. Summarize current state in 1–2 lines
-   ("problem defined, no success metric yet"). Re-entrant: refine, don't restart. **Skip step
-   2 below** — a refinement run can legitimately happen from inside the feature's own
-   branch/worktree once `umb-build-loop` has started.
+1. Resolve which feature this run is for. If more than one plan folder exists, prefer a match
+   between the current branch/worktree name and a folder name (see `CLAUDE.md`'s "Finding the
+   current feature's plan folder" rule) — this is the normal case for a refinement run once
+   `umb-build-loop` has started. If nothing matches and only one plan folder exists, or the
+   argument names a brand-new idea, use that instead; ask only if it's still ambiguous. If
+   `BRIEF.md` already exists in the resolved folder, read it. Summarize current state in 1–2
+   lines ("problem defined, no success metric yet"). Re-entrant: refine, don't restart. **Skip
+   step 2 below** when refining an existing `BRIEF.md`.
 2. **Only for a brand-new feature (no `BRIEF.md` yet):** confirm the current branch is the
    project's trunk branch (see `CLAUDE.md`'s Feature workflow section; default the repo's
    default branch). If it isn't, stop and tell the user — starting a new plan folder from an

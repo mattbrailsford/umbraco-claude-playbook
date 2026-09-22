@@ -34,9 +34,11 @@ things.
 
 ## Preflight
 
-1. Resolve the plan folder: the path given in the argument, else the project's convention
-   (see `CLAUDE.md`), else **stop and ask** — do not infer one. Its name is the feature slug
-   used below for the branch/worktree.
+1. Resolve the plan folder: the path given in the argument; else, if the current
+   branch/worktree name matches a plan folder under the project's convention (see
+   `CLAUDE.md`'s "Finding the current feature's plan folder" rule — this is the normal case
+   when resuming a build already in progress), use that match; else **stop and ask** — do not
+   guess when nothing matches. Its name is the feature slug used below for the branch/worktree.
 2. Read `PLAN.md`. It must be a checklist (`- [ ]` / `- [x]`). If it has no checkboxes, stop
    and report — send the user to `umb-plan`.
 3. **Resuming or first run?** If any task in `PLAN.md` is already `- [x]`, or `BUILD-LOG.md`
