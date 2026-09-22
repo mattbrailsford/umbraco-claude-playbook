@@ -125,9 +125,11 @@ file you need.
 | 7 | Examine custom indexing | `IValueSetBuilder` | named options / composer | indexing something that isn't `IContentBase` |¹
 | 8 | Custom file system | `IFileSystem` | `builder.SetMediaFileSystem()` (or similar) | media/files live somewhere other than local disk |
 | 9 | Package migration plan | `PackageMigrationPlan` + `PackageMigrationBase`/`AsyncPackageMigrationBase` | `builder.PackageMigrationPlans().Append<T>()` | your package needs to import content/schema, or evolve it, across installs and upgrades |
+| 10 | Recurring background job | `RecurringBackgroundJobBase` (or `IRecurringBackgroundJob` directly) | `builder.Services.AddRecurringBackgroundJob<T>()` | your package needs scheduled/periodic work (cleanup, sync, digest) without a separate host |
+| 11 | Custom Management API authorization policy | `IAuthorizationRequirement` + `MustSatisfyRequirementAuthorizationHandler<T>` | `AddAuthorization` + `[Authorize(policyName)]` | a Management API endpoint (row 2) needs finer-grained access control than the built-in section/content policies |
 
 - **`references/content-and-routing.md`** — rows 1, 5, 6, 7.
-- **`references/api-and-infrastructure.md`** — rows 2, 3, 4, 8, 9.
+- **`references/api-and-infrastructure.md`** — rows 2, 3, 4, 8, 9, 10, 11.
 
 ¹ A new `Umbraco.Cms.Search` layer (still beta as of this writing) wraps Examine and becomes
 the default search stack from v19 — see the note at the end of `content-and-routing.md`'s

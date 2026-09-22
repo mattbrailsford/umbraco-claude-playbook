@@ -1,6 +1,6 @@
 # API and infrastructure extension points
 
-Rows 2, 3, 4, 8, 9 of the catalogue in `SKILL.md`.
+Rows 2, 3, 4, 8, 9, 10, 11 of the catalogue in `SKILL.md`.
 
 ## 2. Management API endpoint
 
@@ -123,3 +123,89 @@ Packages section in the backoffice.
 **v19 note:** signatures here matched CMS 17.x at time of writing — confirm against
 [Creating a Package](https://docs.umbraco.com/umbraco-cms/extend-your-project/packages/creating-a-package)
 for the target version before trusting them verbatim, same as everywhere else in this skill.
+
+## 10. Recurring background job
+
+```csharp
+public class CleanUpYourRoom : RecurringBackgroundJobBase
+{
+    public CleanUpYourRoom() : base(TimeSpan.FromMinutes(60))
+    {
+    }
+
+    public override Task RunJobAsync(CancellationToken cancellationToken)
+    {
+        // your periodic work here
+        return Task.CompletedTask;
+    }
+}
+```
+
+```csharp
+public class CleanUpYourRoomComposer : IComposer
+{
+    public void Compose(IUmbracoBuilder builder)
+        => builder.Services.AddRecurringBackgroundJob<CleanUpYourRoom>();
+}
+```
+
+`Period` (passed to the base constructor above) is how often it runs. `Delay` (default 3
+minutes) is the wait after startup before the first run. `ServerRoles` (default `Single,
+SchedulingPublisher`) restricts which server role in a load-balanced setup actually executes
+it — leave the default unless the job must run on every server or a specific role. Implement
+`IRecurringBackgroundJob` directly only if the class already has to inherit from something
+else and can't take `RecurringBackgroundJobBase`. Inject services (`IContentService`,
+`ICoreScopeProvider`, `ILogger<T>`, `IOptionsMonitor<T>`) via constructor DI as normal — the
+job is resolved from the container like anything else registered through the composer.
+
+Source: [Scheduling](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/scheduling).
+
+## 11. Custom Management API authorization policy
+
+Reach for this when the built-in policies (`AuthorizationPolicies.SectionAccessContent` and
+similar, applied via `[Authorize(...)]` on a row-2 controller) aren't granular enough — e.g.
+access should depend on something specific to your package's own data, not just section
+access. Standard ASP.NET Core authorization underneath, with one Umbraco-specific handler
+base class:
+
+```csharp
+public class SectionAccessRequirement : IAuthorizationRequirement
+{
+    public SectionAccessRequirement(string sectionAlias) => SectionAlias = sectionAlias;
+    public string SectionAlias { get; }
+}
+
+public class SectionAccessHandler : MustSatisfyRequirementAuthorizationHandler<SectionAccessRequirement>
+{
+    // inject IAuthorizationHelper to turn the request's principal into an IUser, then check it
+}
+```
+
+```csharp
+public class SectionAccessPolicyComposer : IComposer
+{
+    public void Compose(IUmbracoBuilder builder)
+    {
+        builder.Services.AddSingleton<IAuthorizationHandler, SectionAccessHandler>();
+        builder.Services.AddAuthorization(options =>
+            options.AddPolicy("MyPackage.CustomSectionAccess", policy =>
+            {
+                policy.AuthenticationSchemes.Add(
+                    OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+                policy.Requirements.Add(new SectionAccessRequirement("myPackageSection"));
+            }));
+    }
+}
+```
+
+```csharp
+[Authorize("MyPackage.CustomSectionAccess")]
+public class MyItemApiController : ManagementApiControllerBase { /* ... */ }
+```
+
+The requirement is a plain data container built at startup (no DI); the handler does the
+actual check per-request and is where you inject whatever services you need. Don't forget
+`policy.AuthenticationSchemes.Add(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)`
+— without it the policy won't authenticate against the backoffice's own auth scheme.
+
+Source: [Access policies](https://docs.umbraco.com/umbraco-cms/extend-your-project/tutorials/creating-a-backoffice-api/access-policies).
