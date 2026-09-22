@@ -89,6 +89,11 @@ already expose the extension point this needs).
 
 ## Produce
 
+When revising an existing `BRIEF.md`, rewrite the affected sections to reflect the current
+understanding only — don't leave the old answer in place alongside a note about what
+changed. This file is a snapshot of the current problem definition, not a changelog. Past
+answers and why they changed belong in `DECISION-LOG.md`.
+
 Write/update `BRIEF.md`:
 
 ```md

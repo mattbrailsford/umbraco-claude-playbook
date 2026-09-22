@@ -92,6 +92,11 @@ Up to ~10 questions, adaptive, batched (4 at a time):
 
 ## Produce
 
+When revising an existing `ARCHITECTURE.md`/`SPEC.md`, rewrite the affected sections to
+reflect the current approach only — don't leave the old approach in place alongside a note
+about what changed. These files are a snapshot of the current design, not a changelog. Past
+approaches and why they were rejected belong in `DECISION-LOG.md`.
+
 `ARCHITECTURE.md`:
 
 ```md
