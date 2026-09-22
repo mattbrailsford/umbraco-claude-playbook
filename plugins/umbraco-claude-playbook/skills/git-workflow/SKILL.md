@@ -133,30 +133,14 @@ Add labels if the repo uses them (`--label bug`), and an assignee if known (`--a
 
 ## Pull requests — `gh pr create`
 
-A useful PR answers: what changed, why, how to verify, what could go wrong. Body from
-`templates/pr.md`, filled in — don't hand-write the structure.
-
-Command (always use a HEREDOC for the body — preserves formatting):
+This skill owns opening the PR — push, title, base branch, draft status. It does **not** write
+the description body: that's always `describe-pr`'s job, every time, no exceptions. Run
+`describe-pr` first, then pass its output straight through:
 
 ```bash
 gh pr create \
   --title "feat(profile): resolve connection by alias before validating capability" \
-  --body "$(cat <<'EOF'
-## Summary
-- ...
-
-## Why
-...
-
-## How to verify
-- [ ] dotnet test ...
-
-## Risk / rollback
-Low — revert via git revert.
-
-Closes #142
-EOF
-)"
+  --body-file <path to describe-pr's output>
 ```
 
 Title follows whatever commit convention the project uses (see above — Conventional Commits

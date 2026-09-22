@@ -86,11 +86,18 @@ returning `PASS` or `FAIL`.
 - `user-stories` — Given/When/Then acceptance criteria feeding straight into specs
 - `git-workflow` — Conventional Commits, branch-per-CMS-major-version, an
   always-ask-before-touching-main rule for AI agents
+- `describe-pr` — `git-workflow` always delegates the PR description to this skill; it writes a
+  diagram-based outline (file trees, before/after diffs, call chains, table/manifest diffs) for
+  a feature-sized change, or a plain summary otherwise
 - `git-remote` — bootstraps a new GitHub remote: real README, LICENSE, one CONTRIBUTING.md
 - `umbraco-marketplace` — gets a finished package listed: the required NuGet tag and Umbraco
   dependency reference, the v14+ compatibility gotcha, the optional `umbraco-marketplace.json`
 - `quick-fix` — the escape hatch around the five-step pipeline for a fix too small to justify
   it (a typo, a dead try/catch); escalates to `umb-plan`/`umb-explore` the moment it isn't
+- `issue-triage` — classifies, duplicate-checks, and security-flags issues from a tracker that
+  may live outside the source repo; one issue runs inline, a range or the whole backlog fans
+  out to one `issue-triager` subagent each. Report only — never labels, comments, or closes
+  anything itself.
 
 ## How it works
 
@@ -107,6 +114,7 @@ if your project needs that — say so once in `CLAUDE.md` and every phase follow
 | `STORIES.md`, `PLAN.md` | `umb-plan` |
 | `DECISION-LOG.md` | every phase appends |
 | `BUILD-LOG.md` | `umb-build-loop` |
+| `PR-DESCRIPTION.md` | `describe-pr` (only when the plan folder exists — otherwise the description goes straight into the PR, not to disk) |
 
 One file per owner, not one section per owner in a shared doc — two phases (or two sessions)
 never touch the same file, so there's nothing to merge-conflict over. Rules: **re-entrant**
