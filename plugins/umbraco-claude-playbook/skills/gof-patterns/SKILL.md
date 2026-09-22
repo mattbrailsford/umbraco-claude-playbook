@@ -7,7 +7,9 @@ description: >-
   in this skill's references/ files, read on demand — only pull in the category or layer
   actually relevant to the question at hand, not all of them. Use when choosing or reviewing a
   design pattern in an Umbraco package, or answering "which pattern fits here" — not as a
-  checklist to force into every class or component.
+  checklist to force into every class or component. For the principles that tell you a pattern
+  is warranted in the first place, see `design-principles` and `solid-principles` — reach for
+  this skill once a recurring shape needs a name, not before.
 ---
 
 # GoF patterns for Umbraco packages

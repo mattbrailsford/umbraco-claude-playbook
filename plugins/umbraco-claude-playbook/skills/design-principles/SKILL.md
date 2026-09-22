@@ -6,7 +6,9 @@ description: >-
   Lit/TypeScript — written in an Umbraco package. Use whenever writing or reviewing
   service/class/component design, not just when a specific pattern question comes up. This
   skill's references/ files carry the C# and Lit/TypeScript illustrations — read whichever
-  layer the task is actually in.
+  layer the task is actually in. For the five SOLID principles specifically, see
+  `solid-principles`; for a named structural solution once a recurring shape shows up (Adapter,
+  Strategy, Observer, etc.), see `gof-patterns`.
 ---
 
 # Design principles for Umbraco packages
