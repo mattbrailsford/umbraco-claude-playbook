@@ -40,7 +40,8 @@ of touching only these two files; that's the point, not the specific file names.
 - IN: which Umbraco extension point(s) to use (property editor, dashboard, content app,
   section, notification handler, middleware, tree, workspace, etc.), data model & persistence
   (EF Core entities/migrations, or none), Management API surface (controllers, DTOs, routes),
-  frontend component boundaries, build-vs-buy, key tradeoffs.
+  frontend component boundaries, build-vs-buy, key tradeoffs, which connected systems a change
+  of this kind conventionally touches (see "Connected-pattern check" below).
 - OUT: the problem/why (`umb-explore` — read it, don't redo it), task breakdown
   (`umb-plan`), actual code (`umb-build-loop`).
 
@@ -57,6 +58,35 @@ of touching only these two files; that's the point, not the specific file names.
 3. Read the project's `CLAUDE.md` for existing architectural conventions (folder structure,
    namespace rules, extension patterns already in use) — a new feature should extend the
    grain of the codebase, not fight it.
+
+## Connected-pattern check
+
+Some changes belong to a *kind* the codebase already has conventions for — a new property on
+a content/model type, a new CRUD method on a repository, a new entity type — and that kind
+conventionally fans out to systems well outside the file being changed: version history/audit
+trail, Deploy import/export connectors, search indexing, cache refreshers, before/after
+notification events, permission checks. Missing one of these doesn't fail a build or a test —
+it ships a feature that quietly doesn't round-trip through Deploy, or doesn't show up in
+version history, and nobody notices until a user does.
+
+Before drafting `ARCHITECTURE.md`, decide if this feature is that kind of addition. If it is:
+
+1. **Check docs first.** If `CLAUDE.md` or another skill already states what a change of this
+   kind must touch, that's ground truth — skip straight to step 3.
+2. **Otherwise, sample sibling implementations.** Find two or three existing siblings of the
+   same kind (properties on similar models, similar entity types, similar CRUD methods) and
+   read what each one currently wires up. If they agree, that's the pattern. If they disagree,
+   note the split in `ARCHITECTURE.md` and ask which behavior this feature should follow rather
+   than picking one.
+3. For each system the pattern touches, decide: does this feature need the same treatment?
+   Carry the ones that apply into `ARCHITECTURE.md`'s decisions and `SPEC.md`'s scope so
+   `umb-plan` slices them into real tasks. Explicitly note the ones that don't apply and why,
+   so it reads as a deliberate cut, not an oversight.
+
+This is a different altitude than `reviewer`'s sibling-comparison step: reviewer catches a
+missed cross-cutting concern on the *same class* after the code is written; this catches a
+missed *subsystem* before a single task is planned. Skipping this step doesn't fail review —
+it just means the gap ships, because nothing else in the pipeline looks for it.
 
 ## Skills to pull in
 
@@ -114,6 +144,11 @@ approaches and why they were rejected belong in `DECISION-LOG.md`.
 ## Data model & persistence
 <entities, relationships, SQL Server + SQLite considerations, or "none — reads/writes
 existing Umbraco data via <service>">
+
+## Connected systems
+<other systems this kind of change conventionally touches — version history, Deploy
+connectors, search indexing, notification events, etc. — and whether each applies here and
+why, or "none — not this kind of change">
 
 ## Key decisions
 <each decision, its rationale, and the alternative rejected>
