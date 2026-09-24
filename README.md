@@ -41,6 +41,7 @@ shouldn't make for you.
 /umb-design        # decide which extension points, data model, API surface
 /umb-plan          # slice into tasks + generate pending specs
 /umb-build-loop    # build, review, commit — task by task
+/umb-decision-review  # digest what the build decided on its own, before the PR opens
 ```
 
 Or just describe what you want ("I want to add a dashboard that...") — these skills
@@ -86,6 +87,10 @@ returning `PASS` or `FAIL`.
 - `user-stories` — Given/When/Then acceptance criteria feeding straight into specs
 - `git-workflow` — Conventional Commits, branch-per-CMS-major-version, an
   always-ask-before-touching-main rule for AI agents
+- `umb-decision-review` — once `umb-build-loop` finishes, digests `DECISION-LOG.md`,
+  `BUILD-LOG.md`, and the feature diff into a short list of assumptions, spec deviations, and
+  workarounds worth the user's attention before the PR opens. Read-only, never gates or fixes
+  anything.
 - `describe-pr` — `git-workflow` always delegates the PR description to this skill; it writes a
   diagram-based outline (file trees, before/after diffs, call chains, table/manifest diffs) for
   a feature-sized change, or a plain summary otherwise
@@ -179,7 +184,7 @@ umbraco-claude-playbook/
 ├── plugins/umbraco-claude-playbook/
 │   ├── .claude-plugin/
 │   │   └── plugin.json               # the plugin's own manifest
-│   ├── skills/                       # all 22 skills, one folder each
+│   ├── skills/                       # all 26 skills, one folder each
 │   └── agents/                       # builder.md, reviewer.md
 ├── settings.example.json             # optional, copy-paste, not auto-installed
 ├── README.md

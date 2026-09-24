@@ -118,7 +118,12 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
 
 6. **Check the box.** Edit `PLAN.md`: `- [ ]` → `- [x]` for the completed task, and add a
    one-line entry to `BUILD-LOG.md` (commit SHA, what was verified). Commit that change with
-   the task commit or immediately after.
+   the task commit or immediately after. If the builder's report named "any decision the plan
+   left implicit that you had to make" (step 5 of its workflow) — an assumption, a spec
+   deviation, a workaround — append a dated one-line entry to `DECISION-LOG.md` for it too,
+   even though `BUILD-LOG.md` is this loop's own file. Otherwise that decision only ever
+   existed in a subagent's report and is gone the moment the task ends; `umb-decision-review`
+   depends on it being on disk.
 
 7. Next task.
 
@@ -129,6 +134,11 @@ completed, commits, anything still red). A final architecture/design pass is a s
 step, not part of this loop — re-run `umb-design` if the build surfaced something worth
 reconsidering. If this feature is (or completes) a standalone package ready to publish, invoke
 `umbraco-marketplace` before tagging a release — it's not part of this loop either.
+
+Before `describe-pr`, run `umb-decision-review` — it digests `DECISION-LOG.md`, `BUILD-LOG.md`,
+and the feature diff into a short list of build-time assumptions, spec deviations, and
+workarounds worth a human look before the PR opens. Also not part of this loop: it's read-only
+and never gates a commit the way `reviewer` does.
 
 **The per-task `reviewer` gate and a whole-feature PR review catch different things — run
 both.** Open a PR the normal way (`git-workflow`) once the loop finishes. `reviewer` only sees

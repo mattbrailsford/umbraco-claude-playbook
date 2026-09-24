@@ -31,7 +31,9 @@ as-is; don't restate them here.
 2. **Gather context.**
    - Plan folder found: read `BRIEF.md`, `ARCHITECTURE.md`/`SPEC.md`, `PLAN.md`, and
      `DECISION-LOG.md`. That's the "why" and the decisions already made — read it instead of
-     reverse-engineering intent from the diff.
+     reverse-engineering intent from the diff. If `umb-decision-review` already ran for this
+     feature, its output is the ranked list for step 4's "Special things to note" — don't
+     re-derive it from `DECISION-LOG.md` by hand.
    - No plan folder: read the branch's commit messages instead — there's no separate plan
      artifact to draw on.
    - Either way, read the full diff against the base branch (`git diff <base>...HEAD`, or
