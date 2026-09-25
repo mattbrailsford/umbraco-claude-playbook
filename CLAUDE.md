@@ -22,6 +22,19 @@ jq . plugins/umbraco-claude-playbook/.claude-plugin/plugin.json
 The two manifests duplicate each other's `description`/`version`/`keywords` for the one
 plugin — if you change one, check whether the other drifted.
 
+## Bump the version whenever a shipped change needs to reach consumers
+
+An installed consumer project only sees new/changed skill, agent, or template content after
+its plugin update picks up a newer version number — not automatically the moment `main`
+changes. A change merged here without a version bump can sit invisible to everyone who already
+installed the plugin.
+
+Bump `version` in **both** manifests (`marketplace.json`'s `metadata.version` and
+`plugins[0].version`, and `plugin.json`'s `version` — keep all three in sync) for any change to
+a skill, agent, or template a consumer project would actually load. Patch for edits to an
+existing skill/agent; minor for a new one. Skip the bump only for changes that never ship to a
+consumer — this file, `README.md`, `QUICKSTART.md`, repo scripts, CI config.
+
 ## This repo is not an Umbraco project
 
 The skills here (`umbraco-extensibility`, `ef-core-data`, `umb-init`, etc.) describe conventions

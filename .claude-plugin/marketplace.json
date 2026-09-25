@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "A Claude Code playbook for Umbraco package and backoffice extension development",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "plugins": [
     {
       "name": "umbraco-claude-playbook",
       "source": "./plugins/umbraco-claude-playbook",
       "description": "Explore/design/plan/build pipeline skills, a builder/reviewer build-loop gate, and C#/.NET, EF Core, Lit + UUI, security, and testing convention skills for Umbraco package and backoffice extension development",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": "development",
       "author": {
         "name": "Matt Brailsford",
