@@ -12,8 +12,10 @@ Omit the whole line if there's nothing to link.}
 - {Every `Needs a decision`/`Consider reverting` item decision-review flagged, first, each
   prefixed with its verdict — e.g. "**Needs a decision:** {what and why}" or "**Consider
   reverting:** {what and why}". A plain `Looks fine as documented` item gets no prefix.}
-- {Then up to 1-3 more bullets: migrations, compatibility constraints, or other deliberate
-  omissions decision-review wouldn't have caught. Write "- None." if there's nothing at all.}
+- {Then one bullet each for migrations, compatibility constraints, or other deliberate
+  omissions decision-review wouldn't have caught — no fixed count, but each one must be
+  something the reviewer genuinely needs before approving, not a restatement of the change
+  outline below. Write "- None." if there's nothing at all.}
 
 ## Change outline
 

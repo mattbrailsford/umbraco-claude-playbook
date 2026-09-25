@@ -53,12 +53,11 @@ as-is; don't restate them here.
        its recommended action through as a visible prefix, don't smooth it into plain prose:
        `**Needs a decision:**` or `**Consider reverting:**` for those two verdicts, no prefix
        for a plain `Looks fine as documented` item. Every `Needs a decision`/`Consider
-       reverting` item from `decision-review` gets a bullet, no exceptions — that verdict is
-       the entire reason this section exists, so the 1-3 bullet guideline below applies only to
-       everything else, never to trimming one of these two. After those: up to 1-3 more bullets
-       for migrations, compatibility constraints, or other deliberate omissions
-       `decision-review` wouldn't have caught. Write `- None.` if there's nothing at all — don't
-       pad it out.
+       reverting` item from `decision-review` gets a bullet, no exceptions. After those: a
+       bullet each for migrations, compatibility constraints, or other deliberate omissions
+       `decision-review` wouldn't have caught — no fixed count, but every one must be something
+       the reviewer genuinely needs before approving, not a restatement of the diagram below or
+       the diff itself. Write `- None.` if there's nothing at all — don't pad it out.
      - **Change outline** — the smallest set of diagrams that explains the implementation. See
        `references/diagram-conventions.md` for which shape fits which kind of change and how to
        draw it. Only include a view that actually changed; skip the rest. Order them the way a
