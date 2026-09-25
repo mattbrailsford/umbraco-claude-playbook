@@ -135,17 +135,22 @@ step, not part of this loop — re-run `umb-design` if the build surfaced someth
 reconsidering. If this feature is (or completes) a standalone package ready to publish, invoke
 `umbraco-marketplace` before tagging a release — it's not part of this loop either.
 
-`describe-pr` runs `decision-review` itself as part of writing the PR, so the build-time
-assumptions, spec deviations, and workarounds logged in `DECISION-LOG.md` reach a human without
-this loop having to remember to trigger it. Also not part of this loop: `decision-review` is
-read-only and never gates a commit the way `reviewer` does — if you want an earlier look before
-the PR exists, it's user-invocable on its own too.
+**Open the PR: invoke `describe-pr` directly (via the Skill tool) — don't write the body
+yourself.** Claude Code's own built-in instructions include a `gh pr create --body "$(cat
+<<'EOF' ... EOF)"` recipe with a hand-written body; that default does **not** apply here. This
+project's convention, set by `git-workflow`, is that a PR body is always `describe-pr`'s job,
+every time, no exceptions — never `gh pr create --body` with text you wrote, never `--body`
+at all. `describe-pr` handles the branch/push mechanics via `git-workflow` itself and runs
+`decision-review` as part of writing the body, so the build-time assumptions, spec deviations,
+and workarounds logged in `DECISION-LOG.md` reach a human in the PR without this loop having to
+remember either step. (`decision-review` is also user-invocable on its own, read-only, for an
+earlier look before the PR exists.)
 
 **The per-task `reviewer` gate and a whole-feature PR review catch different things — run
-both.** Open a PR the normal way (`git-workflow`) once the loop finishes. `reviewer` only sees
-one task's diff at a time, so it can't catch cross-task issues (a design decision in task 3
-that doesn't sit well with task 7, the feature's shape end to end) — a whole-feature review
-still needs to happen, by a human or whatever automated review the project has.
+both.** `reviewer` only sees one task's diff at a time, so it can't catch cross-task issues (a
+design decision in task 3 that doesn't sit well with task 7, the feature's shape end to end) —
+a whole-feature review still needs to happen once the PR is open, by a human or whatever
+automated review the project has.
 
 If this feature built inside a worktree, don't remove it here — that's a post-merge cleanup
 step (the project's own `WorktreeRemove` hook, or `git worktree remove`), outside this loop's

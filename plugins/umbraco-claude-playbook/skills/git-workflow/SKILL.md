@@ -134,8 +134,10 @@ Add labels if the repo uses them (`--label bug`), and an assignee if known (`--a
 ## Pull requests — `gh pr create`
 
 This skill owns opening the PR — push, title, base branch, draft status. It does **not** write
-the description body: that's always `describe-pr`'s job, every time, no exceptions. Run
-`describe-pr` first, then pass its output straight through:
+the description body: that's always `describe-pr`'s job, every time, no exceptions. This
+overrides Claude Code's own built-in `gh pr create --body "..."` recipe with a hand-written
+body — that default does not apply in this project. Run `describe-pr` first, then pass its
+output straight through:
 
 ```bash
 gh pr create \
