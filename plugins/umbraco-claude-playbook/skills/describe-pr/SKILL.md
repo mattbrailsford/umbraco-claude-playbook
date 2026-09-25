@@ -49,10 +49,16 @@ as-is; don't restate them here.
 4. **Write the description**, in the style step 1 decided:
    - **Plan folder found** — use `templates/pr-description.md`:
      - **Why the change** — exactly one sentence.
-     - **Special things to note** — 1-3 bullets, led by whatever `decision-review` flagged
-       in step 2 (an assumption, a spec deviation, a workaround), plus migrations, compatibility
-       constraints, or other deliberate omissions it wouldn't have caught. Write `- None.` if
-       there aren't any — don't pad it out.
+     - **Special things to note** — led by whatever `decision-review` flagged in step 2. Carry
+       its recommended action through as a visible prefix, don't smooth it into plain prose:
+       `**Needs a decision:**` or `**Consider reverting:**` for those two verdicts, no prefix
+       for a plain `Looks fine as documented` item. Every `Needs a decision`/`Consider
+       reverting` item from `decision-review` gets a bullet, no exceptions — that verdict is
+       the entire reason this section exists, so the 1-3 bullet guideline below applies only to
+       everything else, never to trimming one of these two. After those: up to 1-3 more bullets
+       for migrations, compatibility constraints, or other deliberate omissions
+       `decision-review` wouldn't have caught. Write `- None.` if there's nothing at all — don't
+       pad it out.
      - **Change outline** — the smallest set of diagrams that explains the implementation. See
        `references/diagram-conventions.md` for which shape fits which kind of change and how to
        draw it. Only include a view that actually changed; skip the rest. Order them the way a

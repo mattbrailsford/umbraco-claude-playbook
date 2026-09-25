@@ -9,8 +9,11 @@ Omit the whole line if there's nothing to link.}
 
 ## Special things to note
 
-- {1-3 bullets: reviewer warnings, migrations, compatibility constraints, deliberate
-  omissions, or surprising decisions. Write "- None." if there genuinely aren't any.}
+- {Every `Needs a decision`/`Consider reverting` item decision-review flagged, first, each
+  prefixed with its verdict — e.g. "**Needs a decision:** {what and why}" or "**Consider
+  reverting:** {what and why}". A plain `Looks fine as documented` item gets no prefix.}
+- {Then up to 1-3 more bullets: migrations, compatibility constraints, or other deliberate
+  omissions decision-review wouldn't have caught. Write "- None." if there's nothing at all.}
 
 ## Change outline
 
