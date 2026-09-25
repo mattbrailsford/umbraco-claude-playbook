@@ -88,9 +88,9 @@ returning `PASS` or `FAIL`.
   always-ask-before-touching-main rule for AI agents
 - `describe-pr` — `git-workflow` always delegates the PR description to this skill; it writes a
   diagram-based outline (file trees, before/after diffs, call chains, table/manifest diffs) for
-  a feature-sized change, or a plain summary otherwise. Always runs `umb-decision-review` first
+  a feature-sized change, or a plain summary otherwise. Always runs `decision-review` first
   when a plan folder exists, so the PR is the guaranteed checkpoint for a fully autonomous run.
-- `umb-decision-review` — digests `DECISION-LOG.md`, `BUILD-LOG.md`, and the feature diff into
+- `decision-review` — digests `DECISION-LOG.md`, `BUILD-LOG.md`, and the feature diff into
   a short list of assumptions, spec deviations, and workarounds worth the user's attention.
   Read-only, never gates or fixes anything. Runs automatically inside `describe-pr`; also
   user-invocable on its own for an earlier look once `umb-build-loop` finishes, before a PR

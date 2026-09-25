@@ -1,5 +1,5 @@
 ---
-name: umb-decision-review
+name: decision-review
 description: >-
   Digests a finished build into the handful of things the human should actually look at —
   assumptions the builder made, spec deviations, workarounds, judgment calls on ambiguous plan
@@ -10,7 +10,7 @@ user-invocable: true
 argument-hint: [path to the feature's plan folder, optional]
 ---
 
-# umb-decision-review
+# decision-review
 
 `umb-build-loop` runs unsupervised across many tasks. Each `builder` dispatch reports back
 "any decision the plan left implicit that it had to make," and the loop logs those to

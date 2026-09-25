@@ -122,7 +122,7 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
    left implicit that you had to make" (step 5 of its workflow) — an assumption, a spec
    deviation, a workaround — append a dated one-line entry to `DECISION-LOG.md` for it too,
    even though `BUILD-LOG.md` is this loop's own file. Otherwise that decision only ever
-   existed in a subagent's report and is gone the moment the task ends; `umb-decision-review`
+   existed in a subagent's report and is gone the moment the task ends; `decision-review`
    depends on it being on disk.
 
 7. Next task.
@@ -135,9 +135,9 @@ step, not part of this loop — re-run `umb-design` if the build surfaced someth
 reconsidering. If this feature is (or completes) a standalone package ready to publish, invoke
 `umbraco-marketplace` before tagging a release — it's not part of this loop either.
 
-`describe-pr` runs `umb-decision-review` itself as part of writing the PR, so the build-time
+`describe-pr` runs `decision-review` itself as part of writing the PR, so the build-time
 assumptions, spec deviations, and workarounds logged in `DECISION-LOG.md` reach a human without
-this loop having to remember to trigger it. Also not part of this loop: `umb-decision-review` is
+this loop having to remember to trigger it. Also not part of this loop: `decision-review` is
 read-only and never gates a commit the way `reviewer` does — if you want an earlier look before
 the PR exists, it's user-invocable on its own too.
 
