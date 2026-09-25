@@ -135,10 +135,11 @@ step, not part of this loop — re-run `umb-design` if the build surfaced someth
 reconsidering. If this feature is (or completes) a standalone package ready to publish, invoke
 `umbraco-marketplace` before tagging a release — it's not part of this loop either.
 
-Before `describe-pr`, run `umb-decision-review` — it digests `DECISION-LOG.md`, `BUILD-LOG.md`,
-and the feature diff into a short list of build-time assumptions, spec deviations, and
-workarounds worth a human look before the PR opens. Also not part of this loop: it's read-only
-and never gates a commit the way `reviewer` does.
+`describe-pr` runs `umb-decision-review` itself as part of writing the PR, so the build-time
+assumptions, spec deviations, and workarounds logged in `DECISION-LOG.md` reach a human without
+this loop having to remember to trigger it. Also not part of this loop: `umb-decision-review` is
+read-only and never gates a commit the way `reviewer` does — if you want an earlier look before
+the PR exists, it's user-invocable on its own too.
 
 **The per-task `reviewer` gate and a whole-feature PR review catch different things — run
 both.** Open a PR the normal way (`git-workflow`) once the loop finishes. `reviewer` only sees

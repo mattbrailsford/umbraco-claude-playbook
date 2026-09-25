@@ -3,8 +3,9 @@ name: umb-decision-review
 description: >-
   Digests a finished build into the handful of things the human should actually look at —
   assumptions the builder made, spec deviations, workarounds, judgment calls on ambiguous plan
-  wording. Read-only, never gates or fixes anything. Use once umb-build-loop finishes a
-  feature, before describe-pr writes the PR.
+  wording. Read-only, never gates or fixes anything. describe-pr invokes this automatically
+  while writing every PR, so it doesn't normally need to be run by hand — but it's
+  user-invocable for an earlier look once umb-build-loop finishes a feature, before a PR exists.
 user-invocable: true
 argument-hint: [path to the feature's plan folder, optional]
 ---
@@ -13,9 +14,11 @@ argument-hint: [path to the feature's plan folder, optional]
 
 `umb-build-loop` runs unsupervised across many tasks. Each `builder` dispatch reports back
 "any decision the plan left implicit that it had to make," and the loop logs those to
-`DECISION-LOG.md` (see that skill's step 6). Nobody reads that log end to end afterward unless
-told to — this skill is that read. It doesn't decide anything itself; it decides what's worth
-*the user's* attention and hands them a short list.
+`DECISION-LOG.md` (see that skill's step 6). In a fully autonomous run, the PR is the one
+checkpoint guaranteed to get a human look, so `describe-pr` always invokes this skill while
+writing that PR — nobody has to remember to trigger a separate review step. This skill doesn't
+decide anything itself; it decides what's worth *the user's* attention and hands back a short,
+ranked list.
 
 ## Scope
 

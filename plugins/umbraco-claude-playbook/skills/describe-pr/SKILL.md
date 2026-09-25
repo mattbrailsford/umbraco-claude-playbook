@@ -29,13 +29,14 @@ as-is; don't restate them here.
    `quick-fix` or trunk-based commit won't have one, and that's expected, not an error.
 
 2. **Gather context.**
-   - Plan folder found: read `BRIEF.md`, `ARCHITECTURE.md`/`SPEC.md`, `PLAN.md`, and
-     `DECISION-LOG.md`. That's the "why" and the decisions already made — read it instead of
-     reverse-engineering intent from the diff. If `umb-decision-review` already ran for this
-     feature, its output is the ranked list for step 4's "Special things to note" — don't
-     re-derive it from `DECISION-LOG.md` by hand.
+   - Plan folder found: read `BRIEF.md`, `ARCHITECTURE.md`/`SPEC.md`, and `PLAN.md` for the
+     "why." Then invoke `umb-decision-review` (via the Skill tool) — always, not only if it
+     happens to have already run — and use its ranked output as-is for step 4's "Special
+     things to note." The PR is the one checkpoint a fully autonomous run is guaranteed to get
+     a human look at, so this step never skips it: don't fall back to reading `DECISION-LOG.md`
+     by hand and don't re-derive the list yourself.
    - No plan folder: read the branch's commit messages instead — there's no separate plan
-     artifact to draw on.
+     artifact to draw on, and `umb-decision-review` needs a plan folder to run against.
    - Either way, read the full diff against the base branch (`git diff <base>...HEAD`, or
      `gh pr diff <number>` if a PR already exists) — enough of it, and enough surrounding code,
      to explain behavior and ownership, not just line counts.
@@ -48,9 +49,10 @@ as-is; don't restate them here.
 4. **Write the description**, in the style step 1 decided:
    - **Plan folder found** — use `templates/pr-description.md`:
      - **Why the change** — exactly one sentence.
-     - **Special things to note** — 1-3 bullets: reviewer warnings, migrations, compatibility
-       constraints, deliberate omissions, surprising decisions. Write `- None.` if there aren't
-       any — don't pad it out.
+     - **Special things to note** — 1-3 bullets, led by whatever `umb-decision-review` flagged
+       in step 2 (an assumption, a spec deviation, a workaround), plus migrations, compatibility
+       constraints, or other deliberate omissions it wouldn't have caught. Write `- None.` if
+       there aren't any — don't pad it out.
      - **Change outline** — the smallest set of diagrams that explains the implementation. See
        `references/diagram-conventions.md` for which shape fits which kind of change and how to
        draw it. Only include a view that actually changed; skip the rest. Order them the way a
