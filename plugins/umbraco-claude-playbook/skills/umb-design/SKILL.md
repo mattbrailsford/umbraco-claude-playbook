@@ -88,6 +88,30 @@ missed cross-cutting concern on the *same class* after the code is written; this
 missed *subsystem* before a single task is planned. Skipping this step doesn't fail review —
 it just means the gap ships, because nothing else in the pipeline looks for it.
 
+## Backoffice UX check (features with a UI)
+
+A backoffice extension has a real user: the editor sitting in front of it. A feature that
+technically works but leaves them guessing is still a bug, just one the build/test suite can't
+see. If `SPEC.md`'s "Frontend components" section isn't "none," walk through these five spots
+before finalizing it and decide, deliberately, whether each needs a line:
+
+1. **First run.** Nothing's been created yet — does the empty state say what goes here and
+   offer the first action, or is it a blank table?
+2. **The mistake.** The editor picks a bad value or clicks the wrong thing — does the error
+   say what happened and what to do next, or just "invalid input"?
+3. **The wait.** Something takes more than a second (a save, a fetch, an import) — does the
+   editor know it's working?
+4. **The finish.** It worked — how do they know, beyond a modal just closing?
+5. **The return.** They come back tomorrow — is their last choice (a filter, a tab, a sort
+   order) still where they left it?
+
+Most requests describe only the main action and skip the other four. Each spot that applies
+becomes one ordinary line in `SPEC.md`, same as any other observable behavior — no new
+dependency, no new component, no schema change; `umb-plan` slices it into a task like anything
+else. If a spot genuinely doesn't apply, note it as a deliberate skip rather than leaving it
+unconsidered, the same way the connected-pattern check above handles a system that doesn't
+apply.
+
 ## Skills to pull in
 
 - Extension-point idioms, DI registration patterns → `umbraco-extensibility`.
@@ -104,9 +128,31 @@ it just means the gap ships, because nothing else in the pipeline looks for it.
 - Rendering externally-sourced/AI-generated content in the frontend, or a design that would
   expose a secret to the client → `security-lit`, now, not at review time.
 
+## Assume, then show
+
+Not every topic below needs a spoken question. Before asking:
+
+1. **Check whether it's a checkable fact** — the codebase's existing conventions, how a
+   sibling feature is built, what an extension point actually supports — and go find it
+   instead of asking.
+2. **If it's a judgment call and a wrong guess is cheap to correct once it's written down**
+   (component boundaries, a non-functional target, which pattern to reach for), write it as
+   `> ASSUMPTION: ...` under the relevant section of `ARCHITECTURE.md`/`SPEC.md` instead of
+   asking, and let the human correct it when they read the design. Correcting a written-down
+   guess costs them a sentence; answering a live question costs them a context switch.
+3. **Ask directly only when a wrong guess is expensive to undo here** — which extension point
+   to hang the feature off (hard to walk back once built against), the data model/migration
+   shape, which CMS version(s) to support, or an auth/trust boundary crossing into the
+   public-facing site. Everything else defaults to assume-and-show.
+
+This doesn't relax "stop, don't guess" — that rule is about a phase's *required input* being
+missing (no `BRIEF.md` to read). This is about which of *this* phase's own questions you put
+to the human versus answer yourself and show your work.
+
 ## Interview
 
-Up to ~10 questions, adaptive, batched (4 at a time):
+Up to ~10 questions, adaptive, batched (4 at a time) — only what's left after the filter
+above:
 
 1. Which Umbraco extension point(s) does this hang off? (property editor, dashboard,
    content app, notification handler, middleware, custom section, tree...)
