@@ -42,18 +42,22 @@ Pick the minimum set the task actually needs; don't load all of them.
    surrounding code — don't impose a different style even if you'd prefer it. If
    `.claude/memory/` exists, skim `.claude/memory/MEMORY.md` for any `gotcha` or `decision`
    relevant to what you're about to touch.
-2. Implement the task.
-3. **Trace from the real entry point.** If the task touches a deployed code path, open the
+2. **Activate this task's specs.** `bdd-specs` generates specs pending by default. Find the
+   ones this task covers, turn off their pending marker, run them, and confirm they fail for
+   the right reason before you write any implementation. Leave every other pending spec in
+   the suite alone — a different task owns making those pass.
+3. Implement the task.
+4. **Trace from the real entry point.** If the task touches a deployed code path, open the
    Management API controller action, the Composer that registers the service, or the
    backoffice manifest that wires up the component, and follow the call graph by hand to the
    side effect the plan promises (a DB write, a notification published, a UI element that
    actually renders). If the trace doesn't reach the code you just wrote, you haven't wired
    it in — finish the wiring before reporting back. A passing unit test through an internal
    seam is not enough.
-4. Run the project's build and test suite (`dotnet build`, `dotnet test`, and any frontend
+5. Run the project's build and test suite (`dotnet build`, `dotnet test`, and any frontend
    `npm run build` / `npm test` the task touches). Fix until the relevant specs pass. Do not
    weaken or skip specs to go green.
-5. Report back: what you changed, which files, test result, the entry-point trace, and any
+6. Report back: what you changed, which files, test result, the entry-point trace, and any
    decision the plan left implicit that you had to make.
 
 ## Hard rules

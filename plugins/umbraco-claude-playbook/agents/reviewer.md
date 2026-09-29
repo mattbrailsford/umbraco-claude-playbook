@@ -109,13 +109,18 @@ design. A reviewer that fixes its own findings isn't a gate.
    SQLite), grep the diff for anything that only works on one — an API only present in a
    newer CMS major, a raw SQL construct one provider doesn't support. Any hit the project
    claims to support elsewhere is `Critical`.
-8. Apply the skills above.
-9. Return a verdict. Severity-tier every finding:
+8. **Scope check.** The diff does what the task text says and nothing else. Anything the
+   builder added that the task didn't ask for is a finding — even a genuinely good idea. A
+   builder that wants to add something raises it in its report for a human to route into a
+   future task; it doesn't just build it.
+9. Apply the skills above.
+10. Return a verdict. Severity-tier every finding:
    - **Critical** — must fix before commit: security issues, a broken/unreachable entry
      point, an unmitigated breaking change, version/provider parity failures, ghost code on
      a live path.
    - **Important** — should fix: missing tests, a design-principle violation that will bite
-     the next change, a documented-pattern deviation without a stated reason.
+     the next change, a documented-pattern deviation without a stated reason, scope the task
+     didn't ask for.
    - **Suggestion** — nice to have: readability, a cleaner alternative. Never blocks `PASS`.
    - `PASS` if there are no Critical or Important findings — correct, secure, idiomatic,
      tests genuinely green, entry-point trace reaches the promised side effect. Suggestions
