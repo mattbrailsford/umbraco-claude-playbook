@@ -68,10 +68,29 @@ than going fully freeform.
    notification handler) or introducing a new one — that framing shapes several of the
    interview questions below.
 
+## Assume, then show
+
+Not every topic below needs a spoken question. Before asking:
+
+1. **Check whether it's a checkable fact** — does Umbraco core already expose this, how does
+   a sibling package handle it — and go find it instead of asking.
+2. **If it's a judgment call and a wrong guess is cheap to correct once it's written down**
+   (a scope boundary, a success metric, the smallest shippable slice), write it as
+   `> ASSUMPTION: ...` under the relevant section of `BRIEF.md` instead of asking, and let the
+   human correct it when they read the brief. Correcting a written-down guess costs them a
+   sentence; answering a live question costs them a context switch.
+3. **Ask directly only when a wrong guess is expensive to undo here** — which CMS version(s)
+   to support (locks in a compatibility promise you'd have to walk back), or anything only the
+   human can actually know (why this, now; what would kill it).
+
+This doesn't relax "stop, don't guess" — that rule is about a phase's *required input* being
+missing (no prior phase's file to read). This is about which of *this* phase's own questions
+you put to the human versus answer yourself and show your work.
+
 ## Interview
 
-Up to ~10 questions, adaptive — only ask what's missing. Batch them (4 at a time,
-2–3 rounds, not an interrogation):
+Up to ~10 questions, adaptive — only ask what's missing **and fails the filter above**. Batch
+what's left (4 at a time, 2–3 rounds, not an interrogation):
 
 1. What problem, concretely? What does an editor/developer do today without it?
 2. Who is it for? Backoffice editors, developers consuming the package, front-end site
@@ -104,8 +123,9 @@ Write/update `BRIEF.md`:
 # Brief
 
 ## Problem
-<what, who, why-now, success criteria, constraints, riskiest unknowns — mark unresolved
-items TODO rather than guessing>
+<what, who, why-now, success criteria, constraints, riskiest unknowns. A guess you're showing
+the human is `> ASSUMPTION: ...`. Something genuinely unresolved that needs a real decision,
+not just a correction, is `TODO`.>
 
 ## Non-goals
 <explicitly out of scope, and why>
