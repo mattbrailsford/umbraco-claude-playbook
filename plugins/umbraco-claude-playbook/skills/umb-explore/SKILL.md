@@ -24,6 +24,11 @@ to `CLAUDE.md` so the next phase doesn't have to ask again.
 Owns exactly one file: `BRIEF.md`. Never edit `ARCHITECTURE.md`, `SPEC.md`, `STORIES.md`,
 `PLAN.md`, or `BUILD-LOG.md` — those belong to later phases.
 
+**Also creates `README.md`, the folder's read-order index — the one time any phase creates
+it.** Every later phase updates its own line in this file when it finishes (same append-only
+discipline as `DECISION-LOG.md`): never recreate it if it already exists, and never edit a line
+that isn't `BRIEF.md`'s own.
+
 **Stays uncommitted, stays on trunk.** `umb-explore` never runs `git commit`, never creates a
 branch. The plan folder is just plain files on disk until `umb-build-loop` decides the feature
 is actually being built — see "Branch/worktree per feature" in `git-workflow` for why. If the
@@ -111,6 +116,27 @@ Do targeted research only when an answer hinges on a checkable fact (e.g. does U
 already expose the extension point this needs).
 
 ## Produce
+
+**First run only (`README.md` doesn't exist yet):** create it as the folder's index:
+
+```md
+# <Feature name>
+
+Read these in order:
+
+1. [ ] **BRIEF.md** — <pending>
+2. [ ] **ARCHITECTURE.md** — <pending>
+3. [ ] **SPEC.md** — <pending>
+4. [ ] **STORIES.md** — <pending>
+5. [ ] **PLAN.md** — <pending>
+6. [ ] **BUILD-LOG.md** — <pending>
+
+See `DECISION-LOG.md` for why things changed along the way.
+```
+
+Every run (first run or a refinement), update only the `BRIEF.md` line: check its box and
+replace `<pending>` with one plain-English line summarizing the current problem. Never touch
+any other phase's line.
 
 When revising an existing `BRIEF.md`, rewrite the affected sections to reflect the current
 understanding only — don't leave the old answer in place alongside a note about what

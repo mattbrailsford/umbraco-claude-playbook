@@ -35,6 +35,9 @@ Read `BRIEF.md` — design must serve it, not redefine it. As with `umb-explore`
 has its own plan-folder convention, fold this content into that shape, but keep the discipline
 of touching only these two files; that's the point, not the specific file names.
 
+Also updates its own two lines in `README.md` (the index `umb-explore` created) — same
+append-only discipline as `DECISION-LOG.md`: never touch a line owned by another phase.
+
 ## Scope
 
 - IN: which Umbraco extension point(s) to use (property editor, dashboard, content app,
@@ -237,6 +240,9 @@ why, or "none — not this kind of change">
 <component boundaries, which package/library they live in, and what each must observably
 do/render/emit — or "none">
 ```
+
+Update the `ARCHITECTURE.md` and `SPEC.md` lines in `README.md`: check each box and replace
+`<pending>` with one plain-English line for what each file now says.
 
 Append dated entries to `DECISION-LOG.md` for each architectural call made here. If a call is
 a standing, project-wide decision rather than one scoped to this feature (the CMS major

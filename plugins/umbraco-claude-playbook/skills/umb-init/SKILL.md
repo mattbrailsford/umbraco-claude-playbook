@@ -100,10 +100,11 @@ Almost none. Ask at most:
 2. If this is a brand-new package with no solution yet: use the `opinionated-package-starter`
    template (default yes, if its targeted CMS major fits), and its `-an`/`-gu`/`-gr`
    parameters.
-3. The plan-folder path convention (default `docs/plans/<feature-slug>/`, holding `BRIEF.md`,
-   `ARCHITECTURE.md`, `SPEC.md`, `STORIES.md`, `PLAN.md`, `DECISION-LOG.md`, `BUILD-LOG.md` —
-   one file per pipeline phase; offer a monorepo/worktree-scoped alternative if the repo
-   already uses worktrees or has more than one deployable product in it).
+3. The plan-folder path convention (default `docs/plans/<feature-slug>/`, holding `README.md`
+   (read-order index), `BRIEF.md`, `ARCHITECTURE.md`, `SPEC.md`, `STORIES.md`, `PLAN.md`,
+   `DECISION-LOG.md`, `BUILD-LOG.md` — one file per pipeline phase; offer a
+   monorepo/worktree-scoped alternative if the repo already uses worktrees or has more than one
+   deployable product in it).
 4. Only if trunk-branch detection above was ambiguous: which branch new features should start
    from and be cut against (see `git-workflow`'s "Branch/worktree per feature" section — this
    is where `umb-build-loop` commits the plan folder and cuts the feature branch/worktree).
@@ -144,8 +145,9 @@ through unfilled:
 
 **`docs/plans/`** (or the agreed path) — create the empty folder with a `.gitkeep` if the
 convention is a fresh folder, so the path exists before the first feature needs it. Don't
-pre-create a per-feature subfolder or any of its seven files — `umb-explore` creates
-`docs/plans/<feature-slug>/` and its own `BRIEF.md` when the first real feature starts.
+pre-create a per-feature subfolder or any of its eight files — `umb-explore` creates
+`docs/plans/<feature-slug>/`, its own `BRIEF.md`, and the folder's `README.md` index when the
+first real feature starts.
 
 ## Hand off
 

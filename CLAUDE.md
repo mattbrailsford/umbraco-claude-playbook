@@ -49,10 +49,13 @@ in a per-feature folder (default `docs/plans/<feature-slug>/`) in a *consumer* p
 in this repo. The rules that make this work, if editing any of these skill files:
 
 - **Re-entrant** — re-running a phase refines its file; it never restarts it.
-- **One owner per file** — `umb-explore` owns `BRIEF.md`, `umb-design` owns `ARCHITECTURE.md`
-  + `SPEC.md`, `umb-plan` owns `STORIES.md` + `PLAN.md`, `umb-build-loop` owns
-  `BUILD-LOG.md`, every phase may append to `DECISION-LOG.md`. File-level (not
-  section-level) ownership means two phases never touch the same file.
+- **One owner per file** — `umb-explore` owns `BRIEF.md` and creates `README.md` (the
+  folder's read-order index, the only file it creates once and never recreates), `umb-design`
+  owns `ARCHITECTURE.md` + `SPEC.md`, `umb-plan` owns `STORIES.md` + `PLAN.md`,
+  `umb-build-loop` owns `BUILD-LOG.md`. File-level (not section-level) ownership means two
+  phases never touch the same file — with two narrow, deliberate exceptions: every phase may
+  append to `DECISION-LOG.md`, and every phase updates its own single line in `README.md`
+  when it finishes, never another phase's line.
 - **Stop, don't guess** — a phase missing its expected input hands off to the owning phase
   rather than inventing the missing content.
 

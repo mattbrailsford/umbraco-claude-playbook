@@ -29,6 +29,9 @@ The same per-feature plan folder. Owns two files:
 Read `ARCHITECTURE.md` and `SPEC.md` — this is confirmation and slicing, not a fresh
 interview.
 
+Also updates its own two lines in `README.md` — same append-only discipline as
+`DECISION-LOG.md`: never touch a line owned by another phase.
+
 A checklist of small, dependency-ordered, independently reviewable tasks forces sizing and
 sequencing decisions up front and gives `umb-build-loop` something mechanically parseable to
 gate against. Keep this discipline (small, ordered, reviewable units) even for a project that
@@ -93,6 +96,10 @@ Light — confirmation, not elicitation. ~3–5 questions, batched:
   request or resolution through the deployed artifact, not just "unit tests pass." A task
   whose only acceptance criterion is unit-test-green is not allowed for anything on that
   path — that's how stubs ship.
+
+Update the `STORIES.md` and `PLAN.md` lines in `README.md`: check each box and replace
+`<pending>` with one plain-English line (e.g. "N stories" / "M tasks, first parallel group
+is...").
 
 Append dated `DECISION-LOG.md` entries for non-obvious sequencing decisions (why task X
 blocks task Y, why a slice was deferred).

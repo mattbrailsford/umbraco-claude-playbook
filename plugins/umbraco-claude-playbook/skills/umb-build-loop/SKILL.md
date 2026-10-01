@@ -130,7 +130,10 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
 ## Finish
 
 When every box is checked: run the full test suite once more, then report a summary (tasks
-completed, commits, anything still red). A final architecture/design pass is a separate
+completed, commits, anything still red). Update the `BUILD-LOG.md` line in `README.md`: check
+its box and replace `<pending>` with one plain-English line (task count, commit count). Same
+append-only discipline as `DECISION-LOG.md` — never touch another phase's line. A final
+architecture/design pass is a separate
 step, not part of this loop — re-run `umb-design` if the build surfaced something worth
 reconsidering. If this feature is (or completes) a standalone package ready to publish, invoke
 `umbraco-marketplace` before tagging a release — it's not part of this loop either.
@@ -160,6 +163,6 @@ job.
 
 - Sequential, dependency-ordered. This is a pipeline, not a parallel team.
 - Builder owns code; reviewer owns the gate; this loop owns sequencing, `PLAN.md` checkbox
-  state, and `BUILD-LOG.md`. Never collapse these roles.
+  state, `BUILD-LOG.md`, and its own line in `README.md`. Never collapse these roles.
 - If a gate can't pass after repeated attempts and the builder is stuck, stop and report the
   task + findings rather than committing degraded code.
