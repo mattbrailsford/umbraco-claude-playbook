@@ -7,6 +7,24 @@ Omit the whole line if there's nothing to link.}
 
 {Exactly one sentence: the problem this PR solves and what becomes possible once it ships.}
 
+## What it looks like
+
+{Only when the PR adds or changes backoffice UI. Omit the whole section otherwise.}
+
+**Where to find it:** {Section › tree item › … › tab, one line per new or changed screen}
+
+**Who can see it:** {the section, user group or permission that grants access, in plain words}
+
+{New screen: the built screenshot.}
+
+![{Screen name}](https://github.com/{owner}/{repo}/blob/{sha}/{plan-folder}/screenshots/{screen}.png?raw=true)
+
+{Changed screen: before and after side by side.}
+
+| Before | After |
+|---|---|
+| ![{Screen name} before](https://github.com/{owner}/{repo}/blob/{sha}/{plan-folder}/screenshots/{screen}-before.png?raw=true) | ![{Screen name} after](https://github.com/{owner}/{repo}/blob/{sha}/{plan-folder}/screenshots/{screen}.png?raw=true) |
+
 ## Special things to note
 
 - {Every `Needs a decision`/`Consider reverting` item decision-review flagged, first, each
@@ -31,5 +49,6 @@ uses it.}
 ```
 
 {Repeat for each relevant view — file tree, component tree, call chain, table/contract diff,
-manifest registration diff, pseudocode. Prefer `diff` for a change to an existing shape; show
+manifest registration diff, backoffice registrations table, settings, API endpoints,
+pseudocode. Prefer `diff` for a change to an existing shape; show
 the whole block only when most of it is new or a diff would hide ownership or order.}

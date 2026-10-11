@@ -95,8 +95,9 @@ returning `PASS` or `FAIL`.
 - `git-workflow` — Conventional Commits, branch-per-CMS-major-version, an
   always-ask-before-touching-main rule for AI agents
 - `describe-pr` — `git-workflow` always delegates the PR description to this skill; it writes a
-  diagram-based outline (file trees, before/after diffs, call chains, table/manifest diffs) for
-  a feature-sized change, or a plain summary otherwise. Always runs `decision-review` first
+  diagram-based outline (file trees, before/after diffs, call chains, table/manifest diffs,
+  settings, API endpoints) for a feature-sized change, or a plain summary otherwise. For a UI
+  change it also shows where to find each screen, who can see it, and screenshots. Always runs `decision-review` first
   when a plan folder exists, so the PR is the guaranteed checkpoint for a fully autonomous run.
 - `decision-review` — digests `DECISION-LOG.md`, `BUILD-LOG.md`, and the feature diff into
   a short list of assumptions, spec deviations, and workarounds worth the user's attention.

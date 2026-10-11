@@ -120,7 +120,13 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
    it as a deliberate departure. Small spacing and colour differences are not. Once the screen
    is complete, save its screenshot in the plan folder as `screenshots/<screen>.png` (this
    loop's own folder; `mockups/` belongs to `umb-design`) and link it from that task's
-   `BUILD-LOG.md` entry, so the human can view mockup and build side by side.
+   `BUILD-LOG.md` entry, along with the click path used to reach it ("Settings › Webhooks ›
+   any webhook › Deliveries tab"), so the human can view mockup and build side by side and
+   `describe-pr` can tell reviewers where to find it.
+
+   **If the task changes a screen that already exists,** screenshot it *before* dispatching
+   the builder, the same way, as `screenshots/<screen>-before.png`. Once the builder has
+   started, the old screen is gone, and the PR needs it to show before and after.
 
 5. **Commit.** On `PASS` + smoke green, have the builder commit *only this task's changes*
    with a message naming the task, following the project's commit conventions (see
