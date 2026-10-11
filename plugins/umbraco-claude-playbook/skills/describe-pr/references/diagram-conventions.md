@@ -83,6 +83,50 @@ diff otherwise.
  }
 ```
 
+## Backoffice registrations — what was added to the backoffice
+
+The manifest diff above shows the exact JSON; this table is the readable summary of it. One
+row per extension the PR adds or changes, so a reviewer can see the whole footprint at once.
+
+| Type | Name | Where it appears |
+|---|---|---|
+| Workspace view | Deliveries | Webhook editor, as a tab after Details |
+| Entity action | Resend delivery | "..." menu on a webhook in the tree |
+| Dashboard | Usage | AI section, second dashboard tab |
+
+Use the editor-facing name and place, not the alias. Leave out extensions with no visible
+footprint (a condition, a repository) unless they're the point of the PR.
+
+## Settings — new or changed configuration
+
+Show any new `appsettings.json` options as they'd appear in a site's config, with their
+default values and a short comment on each. Site owners copy this straight into their own
+config, so it must be valid JSON once the comments are removed.
+
+```jsonc
+{
+  "Umbraco": {
+    "MyPackage": {
+      "Deliveries": {
+        "RetryCount": 3,          // attempts before a delivery is marked failed
+        "RetentionDays": 30       // how long delivery history is kept
+      }
+    }
+  }
+}
+```
+
+## Management API endpoints — new or changed routes
+
+One row per endpoint. "Who can call it" is the authorization policy in plain words.
+
+| Method | Route | Who can call it | What it does |
+|---|---|---|---|
+| `GET` | `/umbraco/management/api/v1/my-package/deliveries` | Users with access to the Settings section | Lists deliveries, newest first |
+| `POST` | `/umbraco/management/api/v1/my-package/deliveries/{id}/resend` | Same | Queues a delivery to send again |
+
+Diff the table when changing an existing set of routes.
+
 ## Data structure / contract — a new or changed type
 
 Show the complete shape when it's new or central to the change; diff it when adding to an

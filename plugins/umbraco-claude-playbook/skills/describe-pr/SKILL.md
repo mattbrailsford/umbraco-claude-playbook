@@ -4,9 +4,10 @@ description: >-
   Writes the pull request description — the one skill git-workflow always delegates to for
   this, never done by hand. Produces a diagram-based outline (file trees, before/after code
   diffs, call chains, EF Core/SQL table changes, Lit component trees, manifest registration
-  changes) when the feature's `docs/plans/<feature-slug>/` folder exists, or a plain
-  summary/why/verify/risk write-up when it doesn't. Use whenever a PR is being opened or
-  updated.
+  changes, backoffice registrations, settings, API endpoints) plus, for UI changes, where to
+  find each screen, who can see it, and built or before/after screenshots, when the feature's
+  `docs/plans/<feature-slug>/` folder exists, or a plain summary/why/verify/risk write-up when
+  it doesn't. Use whenever a PR is being opened or updated.
 user-invocable: true
 argument-hint: [PR number | leave blank for the current branch]
 ---
@@ -49,6 +50,23 @@ as-is; don't restate them here.
 4. **Write the description**, in the style step 1 decided:
    - **Plan folder found** — use `templates/pr-description.md`:
      - **Why the change** — exactly one sentence.
+     - **What it looks like** — only when the PR adds or changes backoffice UI; omit the
+       whole section otherwise. In this order:
+       - **Where to find it**: the click path through the backoffice to each new or changed
+         screen, from its `BUILD-LOG.md` entry ("Settings › Webhooks › any webhook ›
+         Deliveries tab").
+       - **Who can see it**: the section, user group or permission that decides access, read
+         from the manifest `conditions` and the Management API authorization policy. "Anyone
+         with access to the Settings section" beats quoting the condition alias.
+       - **Screenshots** from the plan folder's `screenshots/`: the built screen for a new
+         one; a two-column table with `<screen>-before.png` and `<screen>.png` for a changed
+         one. No screenshots on disk means no screenshots in the PR. Never stand a mockup in
+         for the built screen.
+       - Image links in a PR body must be full URLs: a relative path renders as a broken
+         image. Use `https://github.com/<owner>/<repo>/blob/<sha>/<path>?raw=true`, with
+         `<owner>/<repo>` from `gh repo view --json nameWithOwner` and `<sha>` the pushed
+         commit that contains the file (`git rev-parse HEAD` after pushing). Pinning to a
+         commit keeps the image working after the branch is deleted.
      - **Special things to note** — led by whatever `decision-review` flagged in step 2. Carry
        its recommended action through as a visible prefix, don't smooth it into plain prose:
        `**Needs a decision:**` or `**Consider reverting:**` for those two verdicts, no prefix
