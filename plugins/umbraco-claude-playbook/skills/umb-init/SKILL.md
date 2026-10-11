@@ -97,9 +97,9 @@ The starter is the default because it generates the most: the solution, the pack
 a SQLite test site that references the package locally, `Directory.Packages.props`, an
 `.editorconfig`, a tag-triggered NuGet release workflow, and doc templates.
 
-1. **Confirm the CMS major this template currently targets is right for this project.** As of
-   this writing it targets the current Umbraco LTS (17) — that will drift as new LTS versions
-   ship, so check the template's own docs rather than trusting this number blindly. If the
+1. **Confirm the CMS major this template targets is right for this project.** It follows the
+   current Umbraco LTS; check the template's own docs for which major that is, rather than
+   assuming. If the
    project needs an older major this template doesn't cover, say so and fall back to the
    official `Umbraco.Templates` package (`dotnet new umbraco-package` / `umbraco-extension`)
    for the base project, then hand-scaffold just the pieces that template doesn't include
@@ -112,8 +112,8 @@ a SQLite test site that references the package locally, `Directory.Packages.prop
    dotnet new install Umbraco.Community.Templates.PackageStarter
    dotnet new umbracopackagestarter -n <PackageName> -an "<Author>" -gu "<GitHubUsername>" -gr "<GitHubRepoName>"
    ```
-   Sourced from the template's own README as of this writing — a package id, short name, or
-   parameter can change upstream; if `dotnet new install` fails or the short name isn't found,
+   From the template's own README — a package id, short name, or parameter can change
+   upstream; if `dotnet new install` fails or the short name isn't found,
    check https://github.com/LottePitcher/opinionated-package-starter directly rather than
    retrying the command as-is.
 3. Run it, then continue below — seed `CLAUDE.md` from what it just generated (same as the

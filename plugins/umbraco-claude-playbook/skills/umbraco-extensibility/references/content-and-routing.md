@@ -1,5 +1,12 @@
 # Content, routing, and search extension points
 
+## Contents
+
+- 1\. Property value converter
+- 5\. Content finder
+- 6\. URL segment provider
+- 7\. Examine custom indexing
+
 Rows 1, 5, 6, 7 of the catalogue in `SKILL.md` — the extension points that define a
 property's shape and sit between a request/query and the content it resolves to. A property
 editor's own C# schema (`DataEditor`, `IConfigurationEditor`) is covered by the official

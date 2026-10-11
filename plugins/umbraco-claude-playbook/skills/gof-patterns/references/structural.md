@@ -1,5 +1,15 @@
 # Structural patterns (C#)
 
+## Contents
+
+- Adapter
+- Bridge
+- Composite
+- Decorator
+- Facade
+- Flyweight
+- Proxy
+
 Patterns that compose classes and objects into larger structures without making those
 structures brittle.
 

@@ -1,5 +1,19 @@
 # Behavioral patterns (C#)
 
+## Contents
+
+- Chain of Responsibility
+- Command
+- Interpreter
+- Iterator
+- Mediator
+- Memento
+- Observer
+- State
+- Strategy
+- Template Method
+- Visitor
+
 Patterns concerned with how objects communicate and divide responsibility.
 
 ## Chain of Responsibility

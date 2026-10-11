@@ -1,7 +1,7 @@
 ---
 name: user-stories
 description: >-
-  Write, split, and refine user stories with Given/When/Then acceptance criteria, feeding
+  Writes, splits, and refines user stories with Given/When/Then acceptance criteria, feeding
   directly into bdd-specs. Writes STORIES.md in the feature's plan folder. Normally
   dispatched by umb-plan, but usable standalone when someone just wants help drafting or
   tightening a story. Use whenever turning a feature request or a vague ask into a

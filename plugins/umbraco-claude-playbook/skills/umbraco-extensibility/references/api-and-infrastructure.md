@@ -1,5 +1,15 @@
 # API and infrastructure extension points
 
+## Contents
+
+- 2\. Management API endpoint
+- 3\. Health check
+- 4\. Cache refresher
+- 8\. Custom file system
+- 9\. Package migration plan
+- 10\. Recurring background job
+- 11\. Custom Management API authorization policy
+
 Rows 2, 3, 4, 8, 9, 10, 11 of the catalogue in `SKILL.md`.
 
 ## 2. Management API endpoint

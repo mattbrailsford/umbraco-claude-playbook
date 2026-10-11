@@ -23,6 +23,7 @@ design. A reviewer that fixes its own findings isn't a gate.
 - `solid-principles` / `design-principles` — when judging module and class design.
 - `dotnet-best-practices` — nullable-reference discipline, type modeling, async/LINQ/disposal
   correctness, whether an error path should have been an exception or an explicit result.
+- `typescript-best-practices` — the same checks for any TypeScript in the diff.
 - `umbraco-extensibility` — check DI/Composer registration and collection-builder usage.
 - `umbraco-package-conventions` — check async naming and that a public API change was proxied
   via `[Obsolete]` rather than broken outright (used in step 4 below).
@@ -115,7 +116,8 @@ design. A reviewer that fixes its own findings isn't a gate.
 8. **Scope check.** The diff does what the task text says and nothing else. Anything the
    builder added that the task didn't ask for is a finding — even a genuinely good idea. A
    builder that wants to add something raises it in its report for a human to route into a
-   future task; it doesn't just build it.
+   future task; it doesn't just build it. One exception: an e2e test for the task's own path,
+   when `umb-build-loop` asked for it because no existing e2e test covered it.
 9. Apply the skills above.
 10. Return a verdict. Severity-tier every finding:
    - **Critical** — must fix before commit: security issues, a broken/unreachable entry

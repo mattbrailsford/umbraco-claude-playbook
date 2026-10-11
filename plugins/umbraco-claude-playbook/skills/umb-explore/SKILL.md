@@ -57,6 +57,9 @@ than going fully freeform.
    current feature's plan folder" rule) — this is the normal case for a refinement run once
    `umb-build-loop` has started. If nothing matches and only one plan folder exists, or the
    argument names a brand-new idea, use that instead; ask only if it's still ambiguous. If
+   the argument is an issue handed over by `issue-resolve` (title, body, triage findings,
+   notes), treat it as a brand-new feature and use it to answer interview questions up front.
+   If
    `BRIEF.md` already exists in the resolved folder, read it. Summarize current state in 1–2
    lines ("problem defined, no success metric yet"). Re-entrant: refine, don't restart. **Skip
    step 2 below** when refining an existing `BRIEF.md`.

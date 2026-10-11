@@ -24,12 +24,13 @@ Write commits and branches that read clearly weeks later. Direct, specific, no f
 - New feature or capability, even a small one.
 - A schema/migration change.
 - Anything that could break the default branch for someone else.
-- A task with its own id in a feature's `PLAN.md`.
+- A feature with a plan folder. All of its `PLAN.md` tasks go on that one feature branch (see
+  "Branch/worktree per feature" below), not a branch per task.
 
 Branch naming: `<type>/<short-slug>` — `feat/order-fulfillment`, `fix/missing-null-check`,
 `chore/bump-deps` — for a project supporting a single CMS version line. **Supporting more
 than one Umbraco CMS major at once? Prefix with the version instead** (see "Umbraco packages
-and version tracking" below) — `v17/fix/missing-null-check`, `v18/feature/order-fulfillment`.
+and version tracking" below) — `v17/fix/missing-null-check`, `v18/feat/order-fulfillment`.
 Prefer the `vN/` **prefix** form for a new project (it sorts and greps better than a suffix);
 match whatever a project with existing history already does otherwise. Keep branches
 short-lived; open the PR early, even as draft.
@@ -61,7 +62,7 @@ before. The reasoning:
   name and lets that hook do its job. **Don't build a second, bespoke hook mechanism inside
   this playbook** — reuse the one Claude Code already has. If a project has no such hook,
   `umb-build-loop` falls back to a plain `git checkout -b <feature-slug>` off trunk, using the
-  naming table above if the project wants a `<type>/` or `vN/` prefix on top of the slug.
+  branch-naming rules above if the project wants a `<type>/` or `vN/` prefix on top of the slug.
 - **The commit-to-trunk step still needs a yes.** It's a real commit on the trunk branch, so
   the "always ask before touching main" rule below applies to it exactly as it would to any
   other trunk commit — don't skip the confirmation just because the change is "only docs."
@@ -136,8 +137,9 @@ Add labels if the repo uses them (`--label bug`), and an assignee if known (`--a
 This skill owns opening the PR — push, title, base branch, draft status. It does **not** write
 the description body: that's always `describe-pr`'s job, every time, no exceptions. This
 overrides Claude Code's own built-in `gh pr create --body "..."` recipe with a hand-written
-body — that default does not apply in this project. Run `describe-pr` first, then pass its
-output straight through:
+body — that default does not apply in this project. To open a PR, invoke `describe-pr`: it
+writes the body, then opens the PR with the command below, following the rules in this
+section. Always `--body-file`, never `--body`:
 
 ```bash
 gh pr create \

@@ -1,7 +1,7 @@
 ---
 name: bdd-specs
 description: >-
-  Behavior-driven design: write executable specs from a feature's STORIES.md and PLAN.md,
+  Writes behavior-driven executable specs from a feature's STORIES.md and PLAN.md,
   structured as Feature > Scenario > Specification with exactly one logical assertion per
   test, using whichever test framework the project already has. Covers both layers a feature
   might touch — C# and Lit/TypeScript, in this skill's references/ files — the discipline is

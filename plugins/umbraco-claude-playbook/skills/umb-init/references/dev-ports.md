@@ -1,7 +1,7 @@
 # Step 3: Demo site ports
 
-`umb-build-loop` builds each feature in its own git worktree, and the smoke step starts the
-demo site from there. If the site has a fixed port, two worktrees running at once collide, and
+`umb-build-loop` usually builds each feature in its own git worktree, and the smoke step
+starts the demo site from there. If the site has a fixed port, two worktrees running at once collide, and
 the failure looks like a broken build rather than a setup problem. This step gives every
 worktree its own stable port. Skip it if there's no demo/test site.
 

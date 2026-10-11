@@ -1,5 +1,19 @@
 # Diagram conventions for a PR description
 
+## Contents
+
+- Pseudocode — a changed algorithm or business rule
+- Call chain — changed control flow
+- Shallow file tree — changed responsibilities
+- EF Core / SQL — a table or migration change
+- Lit component tree — changed backoffice UI
+- Manifest / composer registration — a changed extension point
+- Backoffice registrations — what was added to the backoffice
+- Settings — new or changed configuration
+- Management API endpoints — new or changed routes
+- Data structure / contract — a new or changed type
+- Rule of thumb
+
 Pick the smallest view that makes the key point clear. Skip any view that doesn't apply — a
 one-file bug fix might use none of these and just need "Why" and "Special things to note."
 

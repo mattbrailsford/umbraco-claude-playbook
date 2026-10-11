@@ -63,8 +63,10 @@ public class ConnectionController : ManagementApiControllerBase
 
 `AuthorizationPolicies.BackOfficeAccess` is real, on `ManagementApiControllerBase` itself.
 `MyPackageAuthorizationPolicies.DeleteConnection` is not — it's a policy your own package
-defines and registers (via `AddAuthorizationPolicy` in your Composer) when backoffice access
-alone isn't a strict enough gate. Don't reference a built-in-sounding policy name without
+defines and registers in a Composer (`builder.Services.AddAuthorization(options =>
+options.AddPolicy(...))`, full example in `umbraco-extensibility`'s
+`references/api-and-infrastructure.md`) when backoffice access alone isn't a strict enough
+gate. Don't reference a built-in-sounding policy name without
 checking it actually exists — a policy that doesn't resolve fails closed in some setups and
 silently no-ops in others.
 
