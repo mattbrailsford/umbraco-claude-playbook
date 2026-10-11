@@ -203,6 +203,12 @@ html:not([data-mockup-ready]) body {
 	--uui-tab-background: var(--uui-color-surface);
 }
 
+/* Count badge in a tab's "extra" slot, pinned to the tab's top right. */
+uui-tab uui-badge[slot='extra'] {
+	position: absolute;
+	inset: 0 0 auto auto;
+}
+
 /* ---- Footer (umb-footer-layout) ---- */
 
 .footer {
@@ -231,6 +237,16 @@ html:not([data-mockup-ready]) body {
 }
 
 /* ---- Workspace editor header ---- */
+
+/* Workspace "..." actions: sits between the name and the view tabs. */
+.action-menu {
+	height: 100%;
+	margin-left: calc(var(--uui-size-layout-1) * -1);
+}
+
+.action-menu > uui-button {
+	height: 100%;
+}
 
 .workspace-header uui-button.back {
 	margin-right: var(--uui-size-space-4);
@@ -338,6 +354,18 @@ html:not([data-mockup-ready]) body {
 	min-height: 180px;
 }
 
+/* Media cards (umb-media-grid-collection-view). */
+.media-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	grid-auto-rows: 200px;
+	gap: var(--uui-size-space-5);
+}
+
+.media-grid uui-card-media {
+	height: 100%;
+}
+
 .collection-grid ul {
 	list-style: none;
 	padding: 0;
@@ -393,10 +421,44 @@ uui-box.table-box {
 	--uui-box-default-padding: 0;
 }
 
-/* ---- Popover menu ("..." actions) ---- */
+/* ---- Popover menus ("..." actions, save options) ---- */
+
+/* Wrap a trigger in .popover-anchor and put the open .popover-menu beside it. */
+.popover-anchor {
+	position: relative;
+}
+
+.popover-menu.below-end {
+	position: absolute;
+	top: calc(100% + 6px);
+	right: 0;
+	z-index: 5;
+}
+
+.popover-menu.above-end {
+	position: absolute;
+	bottom: calc(100% + 6px);
+	right: 0;
+	z-index: 5;
+}
+
+/* A second open state for the same page, shown at <page>.html#<id> instead of the default one. */
+.popover-menu.on-target {
+	display: none;
+}
+
+.popover-menu.on-target:target {
+	display: block;
+}
+
+body:has(.on-target:target) .popover-menu:not(.on-target),
+body:has(.on-target:target) .toasts {
+	display: none;
+}
 
 .popover-menu {
 	min-width: 200px;
+	width: max-content;
 	background: var(--uui-color-surface);
 	border: 1px solid var(--uui-color-border);
 	border-radius: var(--uui-border-radius);

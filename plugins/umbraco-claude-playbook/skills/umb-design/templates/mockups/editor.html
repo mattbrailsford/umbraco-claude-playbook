@@ -3,8 +3,9 @@
   Editor (workspace) starter. Shows: section tab, tree with an active item and hover actions,
   workspace header (back, icon, name, view tabs), content tabs, property groups with the
   label-left / editor-right layout, a picker property, the footer (breadcrumb, Save,
-  Save and publish), an open "..." action menu, and the toast after saving. Delete what the
-  screen doesn't use.
+  Save and publish), the workspace "..." menu open top right, a count badge on a tab, and the
+  toast after saving. Open as editor.html#save-options to see the save options menu instead.
+  Delete what the screen doesn't use.
 -->
 <html lang="en">
 <head>
@@ -46,12 +47,6 @@
 					</uui-action-bar>
 				</uui-menu-item>
 			</uui-menu-item>
-			<!-- "..." action menu, shown open beside the item it belongs to. -->
-			<div class="popover-menu" style="position:absolute; left:250px; top:230px; z-index:5">
-				<uui-menu-item label="Rename…"><uui-icon slot="icon" name="icon-edit"></uui-icon></uui-menu-item>
-				<uui-menu-item label="Duplicate"><uui-icon slot="icon" name="icon-documents"></uui-icon></uui-menu-item>
-				<uui-menu-item label="Delete…"><uui-icon slot="icon" name="icon-delete"></uui-icon></uui-menu-item>
-			</div>
 		</nav>
 
 		<main class="section-main">
@@ -61,6 +56,15 @@
 						<uui-button compact class="back" label="Back"><uui-icon name="icon-arrow-left"></uui-icon></uui-button>
 						<uui-icon class="entity-icon" name="icon-webhook"></uui-icon>
 						<uui-input class="name" label="Name" value="Content published"></uui-input>
+					</div>
+					<!-- Workspace "..." actions, top right. Shown open; the same menu a tree item's "..." opens. -->
+					<div class="action-menu popover-anchor">
+						<uui-button compact label="Actions"><uui-symbol-more></uui-symbol-more></uui-button>
+						<div class="popover-menu below-end">
+							<uui-menu-item label="Rename…"><uui-icon slot="icon" name="icon-edit"></uui-icon></uui-menu-item>
+							<uui-menu-item label="Duplicate"><uui-icon slot="icon" name="icon-documents"></uui-icon></uui-menu-item>
+							<uui-menu-item label="Delete…"><uui-icon slot="icon" name="icon-delete"></uui-icon></uui-menu-item>
+						</div>
 					</div>
 					<div class="navigation">
 						<uui-tab-group class="view-tabs">
@@ -78,7 +82,8 @@
 							<div class="header-content">
 								<uui-tab-group class="header-tabs">
 									<uui-tab label="Settings" active>Settings</uui-tab>
-									<uui-tab label="Headers">Headers</uui-tab>
+									<!-- Count badge: a tab with validation errors on it that isn't the active tab. -->
+									<uui-tab label="Headers">Headers<uui-badge slot="extra" color="danger" attention>2</uui-badge></uui-tab>
 								</uui-tab-group>
 							</div>
 						</div>
@@ -144,11 +149,19 @@
 					</uui-breadcrumbs>
 					<div class="actions">
 						<uui-button look="secondary" color="positive" label="Save">Save</uui-button>
-						<!-- Split button: only for an editor with more than one save action. -->
-						<uui-button-group class="split-expand">
-							<uui-button look="primary" color="positive" label="Save and publish">Save and publish</uui-button>
-							<uui-button compact look="primary" color="positive" label="More publishing options"><uui-symbol-expand></uui-symbol-expand></uui-button>
-						</uui-button-group>
+						<!-- Split button: only for an editor with more than one save action. Its options
+						     menu shows when the page is opened as editor.html#save-options. -->
+						<div class="popover-anchor">
+							<uui-button-group class="split-expand">
+								<uui-button look="primary" color="positive" label="Save and publish">Save and publish</uui-button>
+								<uui-button compact look="primary" color="positive" label="More publishing options"><uui-symbol-expand></uui-symbol-expand></uui-button>
+							</uui-button-group>
+							<div id="save-options" class="popover-menu above-end on-target">
+								<uui-menu-item label="Schedule…"><uui-icon slot="icon" name="icon-time"></uui-icon></uui-menu-item>
+								<uui-menu-item label="Publish with descendants…"><uui-icon slot="icon" name="icon-globe"></uui-icon></uui-menu-item>
+								<uui-menu-item label="Unpublish…"><uui-icon slot="icon" name="icon-globe"></uui-icon></uui-menu-item>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

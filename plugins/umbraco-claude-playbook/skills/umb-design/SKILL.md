@@ -167,8 +167,9 @@ For each screen the feature adds or visibly changes:
    | Pattern | Starter | Covers |
    |---|---|---|
    | Dashboard | `dashboard.html` | Dashboard tabs, summary boxes, chart box, box with an edge-to-edge table |
-   | Collection (list) view | `collection.html` | Toolbar (create, filter, view switch), table with status tags and selection, bulk action bar, pagination; card view and empty state as alternatives |
-   | Editor (workspace) | `editor.html` | Header (back, icon, name, view tabs), content tabs, property groups, a picker property, footer with save actions, "..." action menu, toast |
+   | Collection (list) view | `collection.html` | Toolbar (create, filter, view switch), table with status tags and selection, bulk action bar, pagination; content cards and empty state as alternatives |
+   | Media card view | `collection-media.html` | Grid of folder, image and file cards, selection, bulk action bar |
+   | Editor (workspace) | `editor.html` | Header (back, icon, name, "..." actions menu, view tabs), content tabs with a count badge, property groups, a picker property, footer with save actions, toast; `editor.html#save-options` shows the save options menu |
    | Sidebar modal | `modal-sidebar.html` | Slide-in panel for pickers and create flows, small/medium/large widths |
    | Dialog modal | `modal-dialog.html` | Centred confirm box, positive or danger action |
 
@@ -176,7 +177,9 @@ For each screen the feature adds or visibly changes:
    sidebar with the **tree**, so those are set on whichever starter the screen uses — mark the
    new section tab or tree item active. Copy `_mockup.css` and `_mockup.js` into `mockups/`
    once, copy the starter to `mockups/<screen>.html`, and replace what's between its "Replace
-   from here" and "Replace to here" comments. Delete the parts the screen doesn't use.
+   from here" and "Replace to here" comments. Delete the parts the screen doesn't use. Open
+   menus (`.popover-menu`) sit in a `.popover-anchor` beside their trigger; a page that needs
+   a second open state uses the `on-target` class and is shot at `<screen>.html#<id>`.
 
    A few more patterns build from these: a **property editor** is one `.property` row in
    `editor.html`; an editor's **Info view** is the editor's main area as a two-column grid
