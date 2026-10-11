@@ -131,7 +131,7 @@ public sealed class EFCoreTestFixture : IDisposable
 Use `Context.Database.Migrate()`, not `EnsureCreated()` — the latter builds the schema
 straight from the current model and skips the migrations entirely, so a broken or missing
 migration would pass tests and still break real installs. Build this fixture once per
-package and share it (`IClassFixture<EFCoreTestFixture>`) across every repository test rather
+package and share it (a `[OneTimeSetUp]` in NUnit, `IClassFixture<T>` in xUnit) across every repository test rather
 than reinventing it per test class.
 
 ## SQLite tests don't prove SQL Server

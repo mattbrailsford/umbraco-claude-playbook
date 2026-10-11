@@ -57,7 +57,7 @@ question.
 4. **Apply the edit.** Use `Edit`, not `Write`. Match surrounding style.
 5. **Verify.** Run the project's build/test if fast. If slow or absent, run the narrowest
    check that proves the fix (the single related test, or a targeted build of just the
-   changed project). If the fix changes something a person can see or call (a screen, a
+   changed project). Run the lint/format check from `CLAUDE.md` on the changed files. If the fix changes something a person can see or call (a screen, a
    Management API endpoint, a property editor), also smoke it through the real entry point,
    using the same order as `umb-build-loop`'s "Smoke the real entry point" step. One
    difference: writing a new e2e test is beyond a quick fix, so if none covers the path, say

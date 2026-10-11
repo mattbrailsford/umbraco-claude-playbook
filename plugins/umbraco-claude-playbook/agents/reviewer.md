@@ -42,7 +42,8 @@ design. A reviewer that fixes its own findings isn't a gate.
    apply to a diff with no production code in it.
 2. Run the build and test suite yourself (`dotnet build`, `dotnet test`, and any frontend
    build/test the diff touches) — confirm it actually passes and that specs weren't weakened
-   or skipped to fake green.
+   or skipped to fake green. Run the lint/format check from `CLAUDE.md`'s "Build & test" too;
+   a failure in a changed file is an Important finding.
 3. **Validate against documented patterns first, sibling code second.** A diff is a proposed
    solution, not the source of truth for what "correct" looks like.
    - **Docs first.** For each changed file, walk up from its directory to find the nearest

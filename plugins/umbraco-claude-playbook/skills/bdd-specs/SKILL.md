@@ -81,7 +81,7 @@ only the reference file(s) that layer needs:
 ## Examples and per-stack mechanics
 
 - **`references/backend-csharp.md`** — test framework detection, the shape mapped onto
-  xUnit/NUnit, a full worked example, file/naming convention.
+  NUnit (or xUnit), a full worked example, file/naming convention.
 - **`references/frontend-lit.md`** — test framework detection, the shape mapped onto native
   `describe`/`it` blocks, a full worked example, file/naming convention.
 

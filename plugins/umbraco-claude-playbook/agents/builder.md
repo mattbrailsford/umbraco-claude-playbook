@@ -60,7 +60,9 @@ Pick the minimum set the task actually needs; don't load all of them.
    seam is not enough.
 5. Run the project's build and test suite (`dotnet build`, `dotnet test`, and any frontend
    `npm run build` / `npm test` the task touches). Fix until the relevant specs pass. Do not
-   weaken or skip specs to go green.
+   weaken or skip specs to go green. Then run the lint/format check `CLAUDE.md` lists under
+   "Build & test" and fix what it reports in the files you changed. If `CLAUDE.md` lists no
+   check, say so in your report.
 6. Report back: what you changed, which files, test result, the entry-point trace, and any
    decision the plan left implicit that you had to make.
 
