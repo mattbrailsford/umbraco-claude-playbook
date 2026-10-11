@@ -35,8 +35,8 @@ shouldn't make for you.
 ## Quickstart
 
 ```
-/umb-init          # once per project — scaffolds the solution (if new) via a real dotnet
-                   # template, then CLAUDE.md, .gitignore, README stub
+/umb-init          # setup wizard: solution (if new), CLAUDE.md, .gitignore, lint,
+                   # tests. Asks before each step; re-run to fill gaps
 /umb-explore       # talk through what you're building
 /umb-design        # decide which extension points, data model, API surface,
                    # and mock up any new screens for review
@@ -86,7 +86,7 @@ returning `PASS` or `FAIL`.
   come up often in backoffice component work (State, Strategy, Command, Composite)
 
 **Process:**
-- `bdd-specs` — Feature/Scenario/Specification shape for both backend (xUnit + Shouldly + Moq)
+- `bdd-specs` — Feature/Scenario/Specification shape for both backend (NUnit + Moq)
   and frontend (Web Test Runner + `@open-wc/testing`)
 - `user-stories` — Given/When/Then acceptance criteria feeding straight into specs
 - `plain-writing` — how every document a person reads gets written: lead with the point,

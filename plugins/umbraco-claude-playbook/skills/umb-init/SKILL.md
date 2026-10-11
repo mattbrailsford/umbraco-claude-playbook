@@ -1,12 +1,12 @@
 ---
 name: umb-init
 description: >-
-  Scaffolds the working files a fresh Umbraco package or project needs before the pipeline
-  skills can run — CLAUDE.md, .gitignore, a README stub, .claude/memory/, and the plan-folder
-  path convention. For a brand-new package with no solution yet, offers to generate the
-  solution itself from a real dotnet new template rather than hand-rolling one. Use when
-  starting a brand-new Umbraco package/add-on/site repo and nothing has been written down yet,
-  or when an existing repo is missing CLAUDE.md and wants one.
+  Setup wizard for an Umbraco package or project. Walks through each piece the pipeline relies
+  on, checks what's already there, and offers to add what's missing, one step at a time: the
+  solution (from a real dotnet new template), CLAUDE.md, .gitignore, .claude/memory/ and the
+  plan-folder convention, lint and format, backend tests, frontend tests and e2e tests. Never
+  adds anything without asking. Use when starting a new repo, when an existing repo is missing
+  CLAUDE.md, or again later to fill gaps such as a project with no tests yet.
 user-invocable: true
 argument-hint: [project name, optional]
 ---
@@ -19,14 +19,30 @@ with headings and decisions to make, never invented decisions. For the solution 
 brand-new package, you don't improvise scaffolding by hand — you defer to a real `dotnet new`
 template, the same way you'd defer to a formatter instead of hand-fixing whitespace.
 
+**It runs as a wizard.** Go through the steps below in order. For each one: say what you
+found, skip it if it's already there, otherwise ask whether to add it (with the default you'd
+pick) and act only on a yes. One question at a time. Re-running the skill later picks up
+whatever was skipped, so "not now" is always a fine answer.
+
+| Step | What | Detail |
+|---|---|---|
+| 1 | Solution | "Step 1: Solution" below |
+| 2 | Working files: `CLAUDE.md`, `.gitignore`, README stub, `.claude/memory/`, plan folder | "Step 2: Working files" below |
+| 3 | Lint and format | `references/lint.md` |
+| 4 | Backend tests | `references/backend-tests.md` |
+| 5 | Frontend tests (only if there's a `Client/` frontend) | `references/frontend-tests.md` |
+| 6 | End-to-end (e2e) tests | `references/e2e-tests.md` |
+
 ## Scope
 
 - IN: for a brand-new package with no solution yet, offering to scaffold the solution itself
-  from a real `dotnet new` template (see "Scaffolding a brand-new package" below) — **not**
-  hand-rolling a solution/test-site/editorconfig yourself. Once there's a solution (whether
-  the template just made one, or one already existed): create/update `CLAUDE.md`,
-  `.gitignore`, a `README.md` stub, `.claude/memory/`, and the empty `docs/plans/` folder (or
-  whatever path convention the interview settles on).
+  from a real `dotnet new` template (see "Step 1: Solution" below) — **not** hand-rolling a
+  solution/test-site yourself. Once there's a solution (whether the template just made one, or
+  one already existed): create/update `CLAUDE.md`, `.gitignore`, a `README.md` stub,
+  `.claude/memory/`, and the empty `docs/plans/` folder (or whatever path convention the
+  interview settles on). Then offer the tooling the build loop depends on: lint and format
+  checks, and backend, frontend and e2e test projects, each set up with real tools
+  (`dotnet new`, `npm`) and recorded in `CLAUDE.md`.
 - OUT: deciding what the project *is* (that's `umb-explore`), architecture
   (`umb-design`), tasks (`umb-plan`). This command does not interview the problem —
   if you're asked "what should this do," stop and point at `umb-explore`. Also out: writing
@@ -46,7 +62,7 @@ template, the same way you'd defer to a formatter instead of hand-fixing whitesp
      test project(s) and their framework. Be factual, no guessing — if something can't be
      detected, leave it `TODO` rather than assuming.
    - Empty dir, and this is a distributable package/add-on (not a single site) → **don't stub
-     a solution by hand.** Go to "Scaffolding a brand-new package" below first, then come back
+     a solution by hand.** Go to "Step 1: Solution" below first, then come back
      and seed `CLAUDE.md` from what the template generated, the same way as the
      code-already-present branch above.
    - Empty dir, and this genuinely isn't a package (a full Umbraco site, or the template
@@ -60,15 +76,25 @@ template, the same way you'd defer to a formatter instead of hand-fixing whitesp
      separate long-lived `vN/dev` line exist and it's unclear which one new features should
      branch from).
 
-## Scaffolding a brand-new package
+## Step 1: Solution
 
-Before writing anything else, if there's no `.sln`/project yet and this is a distributable
-package: offer `opinionated-package-starter` (Lotte Pitcher's `dotnet new` template) instead of
-building the solution by hand. It generates the solution, the package project, a SQLite test
-site that references the package locally, `Directory.Packages.props`, an `.editorconfig`, a
-tag-triggered NuGet release workflow, and doc templates — all the things this skill used to
-have to reconstruct by hand, done consistently by an actual tool instead of improvised per
-project.
+Skip this step if a solution (`.slnx` or `.sln`) or project already exists. Otherwise, if
+this is a distributable package, ask which way to create the solution. Never install a
+template without a yes:
+
+- **`opinionated-package-starter`** (Lotte Pitcher's `dotnet new` template). The default if
+  the CMS major it targets fits.
+- **The official `Umbraco.Templates`** (`dotnet new umbraco-extension`), for a CMS major the
+  starter doesn't cover, or if the user prefers it.
+- **Neither**, if the user wants to set it up themselves. Stop the wizard here and pick it up
+  on a re-run once a solution exists.
+
+New solutions use the `.slnx` format. If a template creates a `.sln`, offer to convert it
+with `dotnet sln migrate`. Leave an existing `.sln` alone unless the user asks.
+
+The starter is the default because it generates the most: the solution, the package project,
+a SQLite test site that references the package locally, `Directory.Packages.props`, an
+`.editorconfig`, a tag-triggered NuGet release workflow, and doc templates.
 
 1. **Confirm the CMS major this template currently targets is right for this project.** As of
    this writing it targets the current Umbraco LTS (17) — that will drift as new LTS versions
@@ -76,8 +102,8 @@ project.
    project needs an older major this template doesn't cover, say so and fall back to the
    official `Umbraco.Templates` package (`dotnet new umbraco-package` / `umbraco-extension`)
    for the base project, then hand-scaffold just the pieces that template doesn't include
-   (`.editorconfig`, a test site, `Directory.Packages.props`) — don't silently force a CMS
-   version the project didn't ask for.
+   (a test site, `Directory.Packages.props`; `.editorconfig` is step 3) — don't silently
+   force a CMS version the project didn't ask for.
 2. **Confirm before running** — this creates a whole solution structure, so show the exact
    commands and get a yes first, the same discipline `git-remote` uses before creating a
    remote:
@@ -92,13 +118,14 @@ project.
 3. Run it, then continue below — seed `CLAUDE.md` from what it just generated (same as the
    "code already present" branch), rather than writing a blank stub.
 
-## Interview
+## Step 2: Working files
+
+### Interview
 
 Almost none. Ask at most:
 
-1. Project name, if not given and not obvious from the folder/`.sln`/`.csproj`.
-2. If this is a brand-new package with no solution yet: use the `opinionated-package-starter`
-   template (default yes, if its targeted CMS major fits), and its `-an`/`-gu`/`-gr`
+1. Project name, if not given and not obvious from the folder/solution/`.csproj`.
+2. If step 1 is running the `opinionated-package-starter` template: its `-an`/`-gu`/`-gr`
    parameters.
 3. The plan-folder path convention (default `docs/plans/<feature-slug>/`, holding `README.md`
    (read-order index), `BRIEF.md`, `ARCHITECTURE.md`, `SPEC.md`, `STORIES.md`, `PLAN.md`,
@@ -113,7 +140,7 @@ Almost none. Ask at most:
 
 Otherwise stay silent and scaffold.
 
-## Produce
+### Produce
 
 If the `opinionated-package-starter` template just ran, it already produced its own
 `.gitignore`, `README.md`, and test site — the re-entrant rule in Preflight means the
@@ -149,8 +176,28 @@ pre-create a per-feature subfolder or any of its eight files — `umb-explore` c
 `docs/plans/<feature-slug>/`, its own `BRIEF.md`, and the folder's `README.md` index when the
 first real feature starts.
 
+## Steps 3 to 6: Lint, format and tests
+
+Each step has its own reference file with what to detect, the default to offer, and how to
+set it up. Read only the one for the step you're on. The same rules apply to all four:
+
+- **Detect first.** If the project already has a tool for this (a linter, a test framework),
+  keep it. The defaults are only for a project that has nothing yet.
+- **Match the CMS.** The defaults follow what Umbraco CMS itself uses, so Umbraco's own test
+  helpers and examples work. Helper package versions match the CMS version the project
+  targets.
+- **Install, don't hand-write.** Use `dotnet new`, `dotnet add package` and `npm install` so
+  versions come from the real feeds. Let them pick the current versions, then pin only where
+  the CMS version requires it.
+- **No sample tests.** Set up the project and check it builds and runs. Real tests come from
+  `bdd-specs` when a feature needs them.
+- **Record the commands.** Put each working command in `CLAUDE.md`'s "Build & test" section.
+  The `builder`, `reviewer` and `umb-build-loop` smoke step read them from there.
+- **Commit nothing.** Leave the changes for the user to review, like every other file this
+  skill creates.
+
 ## Hand off
 
-End with the file list (created vs. skipped vs. appended-to), the plan-folder path convention
-settled on, then:
+End with one line per step (found, added, or skipped), the file list (created vs. skipped vs.
+appended-to), the plan-folder path convention settled on, then:
 `Suggested next: umb-explore — to define the first feature.`

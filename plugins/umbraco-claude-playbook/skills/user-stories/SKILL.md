@@ -39,7 +39,7 @@ Map deliberately:
 | One story | One Feature (one test class) |
 | One acceptance criterion | One Scenario (a nested test-class group, or a `#region`) |
 | Given/When/Then steps | The Scenario's arrange / act / assert |
-| Each distinct Then | One Specification (one `[Fact]`, one assertion) |
+| Each distinct Then | One Specification (one `[Test]`, one assertion) |
 | Happy-path criteria | Listed first, exhaustively |
 | Error/edge criteria | A separate, clearly-named "sad path" group |
 

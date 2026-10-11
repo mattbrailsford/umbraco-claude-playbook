@@ -12,11 +12,16 @@ README/package description.]
 ## Build & test
 
 ```bash
-dotnet build <solution>.sln
-dotnet test <solution>.sln
+dotnet build <solution>.slnx
+dotnet test <solution>.slnx
+dotnet format <solution>.slnx --verify-no-changes   # lint/format check
 ```
-[Fill in the real commands once detected; TODO otherwise. Add npm build/test lines only if
-a frontend project exists.]
+[Fill in the real commands once detected or set up by umb-init's wizard; TODO otherwise. Add
+the frontend lines (build, `npm test`, `npm run lint`, `npm run format`) only if a frontend
+project exists, and the e2e line (how to start the demo site, then `npx playwright test`) only
+if e2e tests exist.]
+
+The `builder` runs the lint/format check before reporting a task done.
 
 ## Feature workflow
 
