@@ -1,12 +1,12 @@
 ---
 name: quick-fix
 description: >-
-  Make a small, obvious fix directly on the current branch — no umb-explore, no umb-design, no
+  Makes a small, obvious fix directly on the current branch — no umb-explore, no umb-design, no
   umb-plan, no umb-build-loop. Use for a typo, a reversed condition, a dead try/catch, a
   misnamed variable, a stray import, or a missing null check — single concern, usually under
   ~20 lines, in either C# or Lit/TypeScript. Not a sixth pipeline phase: this is the deliberate
-  escape hatch around the pipeline for a fix too small to justify it. Escalates to umb-plan/
-  umb-build-loop the moment a fix turns out not to be this small.
+  escape hatch around the pipeline for a fix too small to justify it. Escalates to umb-plan
+  or umb-explore the moment a fix turns out not to be this small.
 user-invocable: true
 argument-hint: <describe the fix>
 ---

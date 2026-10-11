@@ -17,6 +17,8 @@ scope creep, no adjacent "while I'm here" changes.
 
 - `dotnet-best-practices` — always, for any C# work. Nullable reference types, type modeling,
   async/LINQ/disposal discipline, general error-handling shape.
+- `typescript-best-practices` — always, for any TypeScript work. Type modeling, null hygiene,
+  error handling.
 - `umbraco-extensibility` — whenever the task touches Umbraco's own extension surface:
   Composer/DI registration, collection-builder extensibility, notification handlers.
 - `umbraco-package-conventions` — always, for any C# work in an Umbraco package: async naming,
@@ -49,7 +51,9 @@ Pick the minimum set the task actually needs; don't load all of them.
 2. **Activate this task's specs.** `bdd-specs` generates specs pending by default. Find the
    ones this task covers, turn off their pending marker, run them, and confirm they fail for
    the right reason before you write any implementation. Leave every other pending spec in
-   the suite alone — a different task owns making those pass.
+   the suite alone — a different task owns making those pass. If the dispatch asks for an e2e
+   test because none covers this task's path, write it in the project's e2e suite, one test
+   for the task's main path.
 3. Implement the task.
 4. **Trace from the real entry point.** If the task touches a deployed code path, open the
    Management API controller action, the Composer that registers the service, or the

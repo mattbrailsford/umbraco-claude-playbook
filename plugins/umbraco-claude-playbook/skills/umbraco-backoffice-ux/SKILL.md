@@ -39,7 +39,24 @@ copy it.
    editor, a picker, a collection view), use it instead of building a lookalike.
 
 Spacing and colour come from UUI's custom properties (`--uui-size-*`, `--uui-color-*`), never
-hand-picked values, so the screen moves with the backoffice when its theme changes.
+hand-picked values, so the screen moves with the backoffice when its theme changes, including
+dark mode:
+
+```css
+/* BAD — hardcoded, ignores the active theme */
+.thing-card {
+  background: #ffffff;
+  padding: 12px;
+  color: #1b264f;
+}
+
+/* GOOD — tracks whatever theme (including dark mode) is active */
+.thing-card {
+  background: var(--uui-color-surface);
+  padding: var(--uui-size-space-4);
+  color: var(--uui-color-text);
+}
+```
 
 ## Choosing things: picker, not select
 

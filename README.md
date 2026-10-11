@@ -55,7 +55,8 @@ phase any time to refine its file; nothing gets clobbered. See
 ## What's included
 
 **Pipeline** — the five skills above, plus a `builder`/`reviewer` subagent pair
-`umb-build-loop` dispatches per task. The reviewer is read-only by design (no `Edit`/`Write`
+`umb-build-loop` dispatches per task, with one more whole-branch review once every task is
+built, to catch problems that build up across tasks. The reviewer is read-only by design (no `Edit`/`Write`
 tools): it runs the build and test suite, checks the diff against documented patterns,
 traces impact on any public API change, and traces the change to its real entry point before
 returning `PASS` or `FAIL`.
@@ -108,10 +109,12 @@ returning `PASS` or `FAIL`.
 - `umbraco-marketplace` — gets a finished package listed: the required NuGet tag and Umbraco
   dependency reference, the v14+ compatibility gotcha, the optional `umbraco-marketplace.json`
 - `quick-fix` — the escape hatch around the five-step pipeline for a fix too small to justify
-  it (a typo, a dead try/catch); escalates to `umb-plan`/`umb-explore` the moment it isn't
+  it (a typo, a dead try/catch); still gets one `reviewer` pass unless it's text only, and a
+  smoke check if it changes something a person sees or calls; escalates to
+  `umb-plan`/`umb-explore` the moment it isn't
 - `issue-triage` — classifies, duplicate-checks, and security-flags issues from a tracker that
-  may live outside the source repo; one issue runs inline, a range or the whole backlog fans
-  out to one `issue-triager` subagent each. Report only — never labels, comments, or closes
+  may live outside the source repo; each issue goes to its own `issue-triager` subagent, run
+  in parallel batches for a range or the whole backlog. Report only — never labels, comments, or closes
   anything itself.
 - `issue-resolve` — takes one triaged issue and routes it into `quick-fix` or the full pipeline
   depending on size, then drafts (never posts) the tracker resolution once the fix lands.
@@ -128,7 +131,7 @@ if your project needs that — say so once in `CLAUDE.md` and every phase follow
 |---|---|
 | `BRIEF.md` | `umb-explore` |
 | `ARCHITECTURE.md`, `SPEC.md`, `mockups/` | `umb-design` |
-| `STORIES.md`, `PLAN.md` | `umb-plan` |
+| `STORIES.md`, `PLAN.md` | `umb-plan` (`umb-build-loop` only ticks `PLAN.md`'s task checkboxes) |
 | `DECISION-LOG.md` | every phase appends |
 | `BUILD-LOG.md`, `screenshots/` | `umb-build-loop` |
 | `PR-DESCRIPTION.md` | `describe-pr` (only when the plan folder exists — otherwise the description goes straight into the PR, not to disk) |
@@ -199,8 +202,8 @@ umbraco-claude-playbook/
 ├── plugins/umbraco-claude-playbook/
 │   ├── .claude-plugin/
 │   │   └── plugin.json               # the plugin's own manifest
-│   ├── skills/                       # all 26 skills, one folder each
-│   └── agents/                       # builder.md, reviewer.md
+│   ├── skills/                       # all 28 skills, one folder each
+│   └── agents/                       # builder.md, reviewer.md, issue-triager.md
 ├── settings.example.json             # optional, copy-paste, not auto-installed
 ├── README.md
 └── QUICKSTART.md

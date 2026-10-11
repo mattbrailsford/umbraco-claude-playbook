@@ -9,11 +9,9 @@ description: >-
   deciding how to make a feature extensible by other packages, or when choosing which CMS
   extension point fits a given task. For general backend package conventions that aren't
   about extension mechanisms specifically (async naming, repository visibility, public-API
-  compatibility), see `umbraco-package-conventions` instead. Anything already covered by the
-  official Backoffice Extension Skills plugin — a property editor's Lit UI and its C# schema
-  (`umbraco-property-editor-ui`, `umbraco-property-editor-schema`), dashboards, sections,
-  trees — is deliberately left out here rather than duplicated. Complements
-  `dotnet-best-practices` (general C#/.NET language discipline, not Umbraco-specific).
+  compatibility), see `umbraco-package-conventions` instead. Leaves out what the official
+  Backoffice Extension Skills plugin already covers: property editor UI and schema,
+  dashboards, sections, trees.
 ---
 
 # Extending Umbraco, not just building on top of it
@@ -131,8 +129,8 @@ file you need.
 - **`references/content-and-routing.md`** — rows 1, 5, 6, 7.
 - **`references/api-and-infrastructure.md`** — rows 2, 3, 4, 8, 9, 10, 11.
 
-¹ A new `Umbraco.Cms.Search` layer (still beta as of this writing) wraps Examine and becomes
-the default search stack from v19 — see the note at the end of `content-and-routing.md`'s
+¹ A newer `Umbraco.Cms.Search` layer wraps Examine and is planned as the default search
+stack from v19 (check its release status for the target version) — see the note at the end of `content-and-routing.md`'s
 Examine section before assuming `IValueSetBuilder` is still the only indexing surface on a
 v19+ target.
 

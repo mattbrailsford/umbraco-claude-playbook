@@ -77,7 +77,8 @@ name.
 
 This is the same rule `umbraco-package-conventions` states for the codebase generally — this
 skill's job is the EF Core-specific half of it. The `DbContext` itself, and every repository
-built on it, should be `internal` to the persistence assembly:
+built on it, should be `internal` to the persistence assembly by default (that skill covers
+the one exception: a specific, nameable reason for a `public` repository):
 
 ```
 Controller / other service ──▶ EntityService ──▶ EntityRepository (internal) ──▶ DbContext (internal)

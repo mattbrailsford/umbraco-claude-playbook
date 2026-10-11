@@ -67,25 +67,32 @@ things.
    match `<feature-slug>` (or whatever the project's hook actually named it) — before touching
    any code.
 6. **Check the demo/test site is worktree-safe, if one exists.** Find the demo/test site
-   project (if this repo has one) and check its `Properties/launchSettings.json` for a fixed
-   `applicationUrl`. A fixed port there means two worktrees smoke-testing at the same time
-   will collide, and the failure will look like a broken build rather than a setup problem. If
-   found, **stop and flag it** — don't build on top of it. The fix is `umb-init`'s "Demo site
-   ports" step, which adds `Umbraco.Community.WorktreeDevPort` and fixes anything else that
-   finds the site by a hardcoded port; suggest re-running `umb-init`. If no demo/test site
-   exists at all, this step is a no-op.
+   project (if this repo has one) and check its `.csproj` references
+   `Umbraco.Community.WorktreeDevPort`. Without it, the site runs on a fixed port, so two
+   worktrees smoke-testing at the same time collide and the failure looks like a broken build
+   rather than a setup problem (or on a random `:0` port that nothing else can find). If it's
+   missing, **stop and flag it** — don't build on top of it. The fix is `umb-init`'s "Demo
+   site ports" step, which adds the package and fixes anything else that finds the site by a
+   hardcoded port; suggest re-running `umb-init`. If no demo/test site exists at all, this
+   step is a no-op.
 
 ## The loop
 
 For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
 
-1. **Build.** Dispatch a `builder` subagent (Agent tool, `subagent_type: builder`, model
+1. **Build.** If the task changes a screen that already exists, first screenshot it as it is
+   now, at 1440×900, as `screenshots/<screen>-before.png`. Once the builder starts, the old
+   screen is gone, and the PR needs it to show before and after.
+
+   Then dispatch a `builder` subagent (Agent tool, `subagent_type: builder`, model
    sonnet). Give it: the exact task text, the relevant sections of `ARCHITECTURE.md` and
    `SPEC.md`, the path to any mockup for a screen the task touches, the files/extension points
    it owns, and an instruction to invoke the project's
    stack skills (`dotnet-best-practices`, `umbraco-extensibility`, `umbraco-package-
    conventions`, `ef-core-data`, `umbraco-backoffice-conventions`, etc. as relevant) and run
-   the existing specs before reporting back. The builder does not commit.
+   the existing specs before reporting back. If the project has e2e tests and none covers the
+   task's path, tell the builder to add one (the smoke step below runs it). The builder does
+   not commit.
 
 2. **Review.** Dispatch a `reviewer` subagent (Agent tool, `subagent_type: reviewer`, model
    opus — must be ≥ builder). It invokes `security-dotnet`/`security-lit` (whichever the diff
@@ -132,18 +139,15 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
    any webhook › Deliveries tab"), so the human can view mockup and build side by side and
    `describe-pr` can tell reviewers where to find it.
 
-   **If the task changes a screen that already exists,** screenshot it *before* dispatching
-   the builder, the same way, as `screenshots/<screen>-before.png`. Once the builder has
-   started, the old screen is gone, and the PR needs it to show before and after.
-
 5. **Commit.** On `PASS` + smoke green, have the builder commit *only this task's changes*
    with a message naming the task, following the project's commit conventions (see
    `git-workflow`). One commit per task.
 
 6. **Check the box.** Edit `PLAN.md`: `- [ ]` → `- [x]` for the completed task, and add a
-   one-line entry to `BUILD-LOG.md` (commit SHA, what was verified). Commit that change with
-   the task commit or immediately after. If the builder's report named "any decision the plan
-   left implicit that you had to make" (step 5 of its workflow) — an assumption, a spec
+   one-line entry to `BUILD-LOG.md` (commit SHA, what was verified). Commit that change, plus
+   any `screenshots/` this task saved, with the task commit or immediately after. `describe-pr`
+   links screenshots by commit, so one that was never committed is a broken image in the PR. If the builder's report named "any decision the plan
+   left implicit that you had to make" (step 6 of its workflow) — an assumption, a spec
    deviation, a workaround — append a dated one-line entry to `DECISION-LOG.md` for it too,
    even though `BUILD-LOG.md` is this loop's own file. Otherwise that decision only ever
    existed in a subagent's report and is gone the moment the task ends; `decision-review`

@@ -52,7 +52,7 @@ Minimum sections: prerequisites + how to get the project running locally (one co
 possible), how to run tests, where the coding conventions live (point at `CLAUDE.md`, don't
 repeat it), and how to propose a change (issue first vs. PR first — link `git-workflow`'s
 commit-format section). If the project supports more than one CMS major at once, add the
-branch-naming table `git-workflow` describes (`vN/feature/…`, `vN/release/…`, etc.). 60–150
+branch-naming rules `git-workflow` describes (`vN/feature/…`, `vN/release/…`, etc.). 60–150
 lines is plenty; don't split this into multiple files the way a large flagship project might.
 
 ### LICENSE — real SPDX text

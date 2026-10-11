@@ -1,5 +1,12 @@
 # BDD specs — Backend: C#
 
+## Contents
+
+- Matching the project's framework and assertion library
+- The shape: Feature > Scenario > Specification (with a worked NUnit example)
+- New specs pending by default
+- File / naming
+
 **Detect and match the project's actual test framework and assertion library — don't import
 new ones to follow this skill.** NUnit with its own `Assert.That` is shown as the default
 because Umbraco CMS uses it, and so do Umbraco's test helper packages (`Umbraco.Cms.Tests`,
@@ -109,6 +116,10 @@ public class AtomicCreateOrderWithShippingProfileTests
     }
 }
 ```
+
+**New specs pending by default** — mark each new `[Test]` with `[Ignore("Pending")]` (xUnit:
+`[Fact(Skip = "Pending")]`) until a `builder` task makes it pass. The runner reports them as
+skipped, not failed, and the builder removes the marker when it activates them.
 
 **File / naming:** one test class per Feature, named for the feature, never for the story id.
 Put the story id in a single comment at the top of the file — the only place it appears.

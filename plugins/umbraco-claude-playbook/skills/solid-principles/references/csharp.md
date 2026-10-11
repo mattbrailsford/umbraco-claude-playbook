@@ -1,5 +1,13 @@
 # SOLID principles — C# examples
 
+## Contents
+
+- Single Responsibility — one reason to change
+- Open/Closed — extend without modifying
+- Liskov Substitution — a subtype must honor its supertype's contract
+- Interface Segregation — don't force a consumer to implement what it doesn't need
+- Dependency Inversion — depend on abstractions, not concrete implementations
+
 ## Single Responsibility — one reason to change
 
 A class should have one reason to change. In an Umbraco package, the classic violation is a

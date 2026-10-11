@@ -99,8 +99,10 @@ not full history, to keep the prompt small).
 3. Build one combined table for everything else: issue, type, likely area, priority/urgency,
    duplicate-of (if any), recommended action, one-line why (written following
    `plain-writing`).
-4. Append every triaged issue to the triage log (id, title, type, date, outcome) — this is
-   what makes whole-tracker mode incremental on the next run.
+4. Append every triaged issue to the triage log (id, title, type, likely area, recommended
+   action, date, outcome) — this is what makes whole-tracker mode incremental on the next
+   run, and what `issue-resolve` reads. For anything flagged as a possible security report,
+   record only the id, date and outcome `security`, with no details.
 5. Present the table and the security list (if non-empty) to the user. Nothing gets written
    back to the tracker — no label, comment, or close — until the user says which
    recommendations to apply.

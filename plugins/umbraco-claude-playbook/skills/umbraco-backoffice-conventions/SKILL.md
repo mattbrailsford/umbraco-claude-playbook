@@ -162,8 +162,12 @@ TypeScript client from that spec (e.g. `@hey-api/openapi-ts`) instead of hand-wr
 calls and DTO types. Pick one generation script name and keep it consistent for your package.
 
 ```bash
-npm run generate-client -- https://localhost:44331/umbraco/swagger/my-package/swagger.json
+npm run generate-client -- https://localhost:$(git wdp-port)/umbraco/swagger/my-package/swagger.json
 ```
+
+Don't hardcode the demo site's port. With `Umbraco.Community.WorktreeDevPort` (set up by
+`umb-init`'s "Demo site ports" step), `git wdp-port` gives the current worktree's port, and a
+Node script can use `getPort()` from `worktree-dev-port`.
 
 Build the backend project first so the spec you generate against is current, then regenerate
 the client whenever the API surface changes. Treat the generated output as build output, not
@@ -220,25 +224,3 @@ constructor() {
 down automatically on `disconnectedCallback` — no manual `unsubscribe()` to remember, and no
 risk of a callback firing after the component is gone. A raw `.subscribe()` anywhere in a Lit
 component is worth a second look in review — it's usually meant to be `this.observe()`.
-
-## Design tokens and styling
-
-Prefer UUI's own CSS custom properties over hardcoded colors, spacing, or font values, so your
-package's UI stays visually consistent with backoffice theming — including dark mode where the
-design system supports it — without any extra work on your part:
-
-```css
-/* BAD — hardcoded, ignores the active theme */
-.thing-card {
-  background: #ffffff;
-  padding: 12px;
-  color: #1b264f;
-}
-
-/* GOOD — tracks whatever theme (including dark mode) is active */
-.thing-card {
-  background: var(--uui-color-surface);
-  padding: var(--uui-size-space-4);
-  color: var(--uui-color-text);
-}
-```

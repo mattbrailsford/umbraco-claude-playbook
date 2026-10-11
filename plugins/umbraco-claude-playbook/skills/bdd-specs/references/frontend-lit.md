@@ -69,5 +69,5 @@ describe("Feature: feature card", () => {
   it pass.
 
 **File / naming:** one spec file per Feature, kebab-case, matching the component it exercises
-(e.g. `feature-card.spec.ts`), never named for the story id. Put the story id in a single
+(e.g. `feature-card.test.ts`, the suffix the CMS backoffice's test runner looks for), never named for the story id. Put the story id in a single
 comment at the top of the file — the only place it appears.

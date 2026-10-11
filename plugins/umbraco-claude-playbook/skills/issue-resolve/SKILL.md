@@ -35,11 +35,11 @@ draft, never a live action.
    once against the same working tree is exactly the kind of collision worktrees exist to
    prevent; unlike triage, this isn't a fan-out job.
 3. Look up the issue in the triage log. If it's there, read its entry (type, likely area,
-   security flag, recommended action). If it isn't, dispatch a single `issue-triager` subagent
-   for it first, the same as `issue-triage`'s single-issue mode — never move straight to
-   fixing an issue nobody's actually read.
-4. **A security flag stops everything here.** If the triage — existing or fresh — marked this
-   `security: true`, do not proceed with a normal fix. Tell the user and point at the
+   recommended action, outcome). If it isn't, invoke `issue-triage` (Skill tool) for that one
+   issue first, so it gets triaged and logged the usual way — never move straight to fixing an
+   issue nobody's actually read.
+4. **A security flag stops everything here.** If the triage — existing or fresh — recorded
+   the outcome `security`, do not proceed with a normal fix. Tell the user and point at the
    responsible-disclosure process instead. A public commit, PR, or comment referencing an
    unpatched vulnerability is a leak, not a fix.
 5. Capture any notes given in the argument — how the user wants it fixed, constraints,
@@ -56,12 +56,11 @@ but the real judgment stays where it already lives:
   triage's likely-area finding, and the user's notes. `quick-fix` still makes its own
   escalation call if the fix turns out bigger once someone's actually in the code; this skill
   doesn't override that.
-- **Looks bigger, or `quick-fix` escalates** → write a first-draft `BRIEF.md` before handing
-  off to `umb-explore`: a Problem section from the issue's title/body plus the triage's
-  findings, the user's notes folded in as constraints or success criteria. `umb-explore`'s own
-  preflight finds a `BRIEF.md` already started and refines it rather than interviewing from
-  zero. From there the normal pipeline runs: `umb-explore` → `umb-design` → `umb-plan` →
-  `umb-build-loop`.
+- **Looks bigger, or `quick-fix` escalates** → invoke `umb-explore` (Skill tool) with the
+  issue as its starting material: the issue's title and body, the triage's findings, and the
+  user's notes as constraints or success criteria. `umb-explore` owns `BRIEF.md`, so it writes
+  the brief from that and only asks about what's still missing. From there the normal pipeline
+  runs: `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop`.
 
 Either way, this skill hands off and waits — it does not write the fix itself.
 

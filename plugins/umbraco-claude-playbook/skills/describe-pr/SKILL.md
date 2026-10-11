@@ -5,8 +5,8 @@ description: >-
   this, never done by hand. Produces a diagram-based outline (file trees, before/after code
   diffs, call chains, EF Core/SQL table changes, Lit component trees, manifest registration
   changes, backoffice registrations, settings, API endpoints) plus, for UI changes, where to
-  find each screen, who can see it, and built or before/after screenshots, when the feature's
-  `docs/plans/<feature-slug>/` folder exists, or a plain summary/why/verify/risk write-up when
+  find each screen, who can see it, and built or before/after screenshots, when the feature has a
+  plan folder under `docs/plans/`, or a plain summary/why/verify/risk write-up when
   it doesn't. Use whenever a PR is being opened or updated.
 user-invocable: true
 argument-hint: [PR number | leave blank for the current branch]
@@ -44,8 +44,9 @@ as-is; don't restate them here.
 
 3. **Find or create the PR.**
    - `gh pr view --json url,number,title,state,baseRefName,headRefName` on the current branch.
-   - No PR yet: follow `git-workflow`'s "Pull requests" section to push and open one. Don't
-     duplicate those steps here — this skill picks up once a PR exists (or is about to).
+   - No PR yet: carry on and write the description first. Step 5 opens the PR with it, using
+     `git-workflow`'s "Pull requests" section for the push, title and base branch. Don't
+     duplicate those rules here.
 
 4. **Write the description**, in the style step 1 decided:
    - **Plan folder found** — use `templates/pr-description.md`:
@@ -92,9 +93,11 @@ as-is; don't restate them here.
    - Plan folder found: save the draft to `docs/plans/<feature-slug>/PR-DESCRIPTION.md` first —
      this skill owns that file, the same way `umb-build-loop` owns `BUILD-LOG.md`. Then
      `gh pr edit <number> --body-file docs/plans/<feature-slug>/PR-DESCRIPTION.md`.
-   - No plan folder: nothing to save alongside — pass the description straight through with
-     `gh pr edit <number> --body "$(cat <<'EOF' ... EOF)"` (or `gh pr create` if step 3 is
-     opening the PR for the first time).
+   - No plan folder: save the draft to a temporary file outside the repo, then
+     `gh pr edit <number> --body-file <that file>`.
+   - No PR yet (either case): open it with `gh pr create --body-file <the saved draft>`,
+     following `git-workflow`'s "Pull requests" section, instead of `gh pr edit`. Always
+     `--body-file`, never `--body`.
    - Confirm the update succeeded.
 
 6. **Report back**, briefly: the PR URL, the saved description's path (if any), and a short

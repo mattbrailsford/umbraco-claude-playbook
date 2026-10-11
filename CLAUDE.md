@@ -54,9 +54,10 @@ in this repo. The rules that make this work, if editing any of these skill files
   owns `ARCHITECTURE.md` + `SPEC.md` + `mockups/` (and the project-wide
   `docs/mockups/starters/`), `umb-plan` owns `STORIES.md` + `PLAN.md`,
   `umb-build-loop` owns `BUILD-LOG.md` + `screenshots/`. File-level (not section-level) ownership means two
-  phases never touch the same file — with two narrow, deliberate exceptions: every phase may
-  append to `DECISION-LOG.md`, and every phase updates its own single line in `README.md`
-  when it finishes, never another phase's line.
+  phases never touch the same file — with three narrow, deliberate exceptions: every phase may
+  append to `DECISION-LOG.md`; every phase updates its own single line in `README.md` when it
+  finishes, never another phase's line; and `umb-build-loop` ticks task checkboxes in
+  `PLAN.md` (`- [ ]` → `- [x]`), never editing a task's text.
 - **Stop, don't guess** — a phase missing its expected input hands off to the owning phase
   rather than inventing the missing content.
 
