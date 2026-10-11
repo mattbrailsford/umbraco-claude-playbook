@@ -53,18 +53,26 @@ question.
    - **`security-dotnet` / `security-lit`: always, if the fix touches auth, user input, the
      Management API, secrets, or `unsafeHTML`/`unsafeSVG`.** "Quick" doesn't exempt a fix from
      these — they're non-negotiable in this playbook regardless of diff size.
-   - No `builder`/`reviewer` dispatch. A quick-fix is single-threaded by definition — sized
-     specifically to not need the two-subagent gate `umb-build-loop` uses for everything else.
+   - No `builder` dispatch. You make the edit yourself; the fix is too small to hand off.
 4. **Apply the edit.** Use `Edit`, not `Write`. Match surrounding style.
 5. **Verify.** Run the project's build/test if fast. If slow or absent, run the narrowest
    check that proves the fix (the single related test, or a targeted build of just the
-   changed project).
-6. **Report and ask before committing.** Show the diff summary and propose a one-line commit
+   changed project). If the fix changes something a person can see or call (a screen, a
+   Management API endpoint, a property editor) and the project has a demo site, start it and
+   go through the fixed path once. A passing test doesn't prove the fix reached the real
+   entry point.
+6. **Review.** Unless the change is text only (a typo, a comment, a log string, a label),
+   dispatch one `reviewer` subagent (Agent tool, `subagent_type: reviewer`) against the
+   uncommitted diff, with the fix description as its task. Small diffs still break things a
+   person doesn't see from the changed lines: a public signature, a caller in another file, a
+   manifest `alias`. Fix any Critical or Important finding yourself and review again until
+   `PASS`. If a finding shows the fix isn't small after all, stop and escalate as in step 2.
+7. **Report and ask before committing.** Show the diff summary and propose a one-line commit
    message, following `git-workflow`'s Conventional Commits format. Do **not** commit unless
    the user says go — committing straight to the default branch is a shared-state action, per
    `git-workflow`'s always-ask-before-touching-main rule for AI agents.
 
 ## Hand off
 
-One sentence: what changed, what you verified, awaiting commit confirmation (or confirming
+One sentence: what changed, what you verified (tests, demo site, review verdict), awaiting commit confirmation (or confirming
 the commit if the user pre-authorized it).
