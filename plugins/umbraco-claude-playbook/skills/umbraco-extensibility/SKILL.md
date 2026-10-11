@@ -18,22 +18,16 @@ description: >-
 
 ## 🎯 Why: Design for Change
 
-Umbraco packages live a long time and get extended by code you'll never see. The mechanisms
-below exist to keep the extension surface stable while the implementation behind it changes
-freely. If a convention here doesn't make the *next* change (by you, or by a package consumer)
-easier, it's the wrong convention for this project.
-
-Umbraco itself is built from a small set of extension mechanisms. A package that reuses them
-feels native; one that invents its own DI/config/plugin system feels bolted on. This skill
-covers only those mechanisms — for the conventions that make a package well-behaved beyond its
-extension points, see `umbraco-package-conventions`.
+Packages get extended by code you'll never see. Reuse Umbraco's own extension mechanisms so
+the extension surface stays stable while the implementation changes; don't invent your own
+DI/config/plugin system. For package conventions beyond extension points, see
+`umbraco-package-conventions`.
 
 ## Composers — your package's DI entry point
 
-A `Composer` (implementing `IComposer`) is how a package registers itself into Umbraco's
-startup pipeline, auto-discovered via assembly scanning. Keep one composer per package (or
-per logical concern, if the package is large), and keep it thin — it wires things up, it
-doesn't contain logic:
+A `Composer` (`IComposer`) registers a package into Umbraco's startup, auto-discovered via
+assembly scanning. Keep one per package (or per logical concern in a large package). Keep it
+thin: it wires things up, no logic.
 
 ```csharp
 public class MyPackageComposer : IComposer
@@ -48,9 +42,9 @@ public class MyPackageComposer : IComposer
 
 ## Collection builders — how you make *your own* extension points
 
-If other packages (or the same package's own future features) need to plug into yours,
-expose a collection builder rather than a raw list or a config flag. This is the same
-mechanism Umbraco itself uses for content finders, editors, and notification handlers:
+If other packages (or your own future features) need to plug in, expose a collection builder,
+not a raw list or config flag. Umbraco uses the same mechanism for content finders, editors,
+and notification handlers:
 
 ```csharp
 public class MyPackageThingCollectionBuilder
@@ -66,51 +60,46 @@ public static class MyPackageBuilderExtensions
 }
 ```
 
-Consumers then get `builder.MyPackageThings().Add<Custom>().InsertBefore<Custom, Default>()`
-instead of a config setting or a hardcoded `if`. Ordering via `Append()`/`InsertBefore<T>()`/
-`InsertAfter<T>()` is more change-safe than an `Order` property on the interface — the
-registration site controls ordering, not every implementation having to know its place.
+Consumers then call `builder.MyPackageThings().Add<Custom>().InsertBefore<Custom, Default>()`.
+Order via `Append()`/`InsertBefore<T>()`/`InsertAfter<T>()`, not an `Order` property on the
+interface, so the registration site controls ordering, not each implementation.
 
 ## Attribute-based discovery, when the extension point is "plugins"
 
-If your package supports pluggable implementations shipped as separate NuGet packages
-(providers, connectors, adapters), prefer attribute + assembly-scan discovery over a config
-list the consumer has to remember to update:
+For pluggable implementations shipped as separate NuGet packages (providers, connectors,
+adapters), prefer attribute + assembly-scan discovery over a config list the consumer must
+update:
 
 ```csharp
 [MyPackageProvider("cool-vendor", "Cool Vendor")]
 public class CoolVendorProvider : MyPackageProviderBase { /* ... */ }
 ```
 
-This is what lets `dotnet add package My.Package.CoolVendor` be the whole integration step —
-no code change required in the consuming project.
+Then `dotnet add package My.Package.CoolVendor` is the whole integration step, with no code
+change in the consuming project.
 
 ## Notification handlers, not raw event subscriptions
 
-If your package needs to react to Umbraco content/media/member lifecycle events, implement
-`INotificationHandler<T>` and register it via the composer, rather than subscribing to a
-static event. Handlers are testable in isolation and don't leak subscriptions across app
-restarts.
+To react to content/media/member lifecycle events, implement `INotificationHandler<T>` and
+register it via the composer, not a static event subscription. Handlers test in isolation and
+don't leak subscriptions across restarts.
 
-Don't confuse this with the official Backoffice Extension Skills plugin's
-`umbraco-notifications` skill — that one is the backoffice's toast-style UI messages
-(`UMB_NOTIFICATION_CONTEXT`), a completely different, frontend-only concept that just
-happens to share the name.
+Not the same as the official Backoffice Extension Skills plugin's `umbraco-notifications`
+skill: that covers backoffice toast messages (`UMB_NOTIFICATION_CONTEXT`), a frontend-only
+concept that shares the name.
 
 ## Catalogue: which CMS extension point for which job
 
-Excludes anything the official Backoffice Extension Skills plugin already documents rather
-than duplicating it: the Lit/UUI element and manifest for a backoffice-UI surface
-(`umbraco-property-editor-ui`, `umbraco-dashboard`, `umbraco-sections`, `umbraco-tree`), and
-the C# property editor schema itself (`umbraco-property-editor-schema` — covers `DataEditor`,
-`IConfigurationEditor`, and even its own value converter example end to end). Property value
-converters stay in this catalogue anyway, since you write one for any property editor,
-built-in or custom, not only when authoring a new schema.
+Excludes what the official Backoffice Extension Skills plugin documents: the Lit/UUI element
+and manifest for a backoffice-UI surface (`umbraco-property-editor-ui`, `umbraco-dashboard`,
+`umbraco-sections`, `umbraco-tree`), and the C# property editor schema
+(`umbraco-property-editor-schema`, covering `DataEditor`, `IConfigurationEditor`, and its own
+value converter example). Property value converters stay here anyway, since you write one for
+any property editor, built-in or custom.
 
-Signatures below can drift across Umbraco majors — this skill isn't version-pinned the way
-the official plugin is, so check docs.umbraco.com against the target version before trusting
-a base class or attribute shape verbatim. Full skeletons are in `references/`; read only the
-file you need.
+Signatures can drift across Umbraco majors and this skill isn't version-pinned, so check
+docs.umbraco.com for the target version before trusting a base class or attribute shape
+verbatim. Full skeletons are in `references/`; read only the file you need.
 
 | # | Extension point | Interface / base class | Registered via | Reach for it when |
 |---|---|---|---|---|
@@ -130,24 +119,22 @@ file you need.
 - **`references/api-and-infrastructure.md`** — rows 2, 3, 4, 8, 9, 10, 11.
 
 ¹ A newer `Umbraco.Cms.Search` layer wraps Examine and is planned as the default search
-stack from v19 (check its release status for the target version) — see the note at the end of `content-and-routing.md`'s
-Examine section before assuming `IValueSetBuilder` is still the only indexing surface on a
-v19+ target.
+stack from v19 (check its release status for the target version). Read the note at the end of
+`content-and-routing.md`'s Examine section before assuming `IValueSetBuilder` is the only
+indexing surface on a v19+ target.
 
 ## Scope note
 
-This skill is Umbraco's extension mechanisms, and the concrete backend-side CMS extension
-points built on them, only. Async naming, repository visibility, public-API backwards
-compatibility, and where extension methods live are general package conventions, not
-extension mechanisms — that's `umbraco-package-conventions`. Product-specific extension
-points that other packages expose (an Umbraco Commerce payment provider, a Forms workflow
-type, a Contentment data source) belong to *that* package's own docs, not here — this skill
-is about what Umbraco CMS itself lets you plug into. Anything the official Backoffice
-Extension Skills plugin already owns end to end — a backoffice-UI surface's Lit element and
-manifest, and a property editor's C# schema (`umbraco-property-editor-ui`,
-`umbraco-dashboard`, `umbraco-sections`, `umbraco-tree`, `umbraco-property-editor-schema`) —
-is left to that plugin rather than duplicated here, even where the underlying code is plain
-C#. A couple of names collide across the two plugins without meaning the same thing: that
-plugin's `umbraco-notifications` and `umbraco-health-check` skills are both frontend/UI
-concepts (toast messages, a health check's backoffice manifest), distinct from this skill's
-`INotificationHandler<T>` and `HealthCheck` C# base class.
+This skill covers Umbraco's extension mechanisms and the backend-side CMS extension points
+built on them, only.
+
+- Async naming, repository visibility, public-API backwards compatibility, and where extension
+  methods live: `umbraco-package-conventions`.
+- Extension points other products expose (a Commerce payment provider, a Forms workflow type, a
+  Contentment data source): that package's own docs.
+- What the official Backoffice Extension Skills plugin owns (`umbraco-property-editor-ui`,
+  `umbraco-dashboard`, `umbraco-sections`, `umbraco-tree`, `umbraco-property-editor-schema`):
+  left to that plugin, even where the code is plain C#.
+- Name collisions: that plugin's `umbraco-notifications` and `umbraco-health-check` are
+  frontend concepts (toast messages, a health check's backoffice manifest), distinct from this
+  skill's `INotificationHandler<T>` and `HealthCheck` C# base class.
