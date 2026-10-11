@@ -28,3 +28,6 @@ uui-combobox            # a UUI element, not a skill
 uui-ref-list            # a UUI element, not a skill
 uui-ref-node            # a UUI element, not a skill
 uui-select              # a UUI element, not a skill
+eslint-config-prettier  # an npm package, cited in umb-init's lint reference
+eslint-plugin-lit       # an npm package, cited in umb-init's lint reference
+typescript-eslint       # an npm package, cited in umb-init's lint reference

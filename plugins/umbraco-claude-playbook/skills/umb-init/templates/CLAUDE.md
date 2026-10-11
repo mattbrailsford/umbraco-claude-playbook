@@ -12,9 +12,9 @@ README/package description.]
 ## Build & test
 
 ```bash
-dotnet build <solution>.sln
-dotnet test <solution>.sln
-dotnet format <solution>.sln --verify-no-changes   # lint/format check
+dotnet build <solution>.slnx
+dotnet test <solution>.slnx
+dotnet format <solution>.slnx --verify-no-changes   # lint/format check
 ```
 [Fill in the real commands once detected or set up by umb-init's wizard; TODO otherwise. Add
 the frontend lines (build, `npm test`, `npm run lint`, `npm run format`) only if a frontend

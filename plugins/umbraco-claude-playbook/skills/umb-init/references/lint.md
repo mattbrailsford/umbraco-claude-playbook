@@ -21,7 +21,7 @@ Ask first. Both defaults copy what Umbraco CMS itself uses.
 - Start from the CMS's own `.editorconfig` (repo root of `umbraco/Umbraco-CMS`, at the release
   tag the project targets) rather than writing rules from scratch. Trim rules that only make
   sense inside the CMS.
-- Check: `dotnet format <solution>.sln --verify-no-changes`. Fix: `dotnet format <solution>.sln`.
+- Check: `dotnet format <solution>.slnx --verify-no-changes`. Fix: `dotnet format <solution>.slnx`.
 
 **Frontend: ESLint + Prettier**
 - Install with npm: `eslint`, `@eslint/js`, `typescript-eslint`, `eslint-plugin-lit`,

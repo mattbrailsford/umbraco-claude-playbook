@@ -78,8 +78,9 @@ whatever was skipped, so "not now" is always a fine answer.
 
 ## Step 1: Solution
 
-Skip this step if a `.sln`/project already exists. Otherwise, if this is a distributable
-package, ask which way to create the solution. Never install a template without a yes:
+Skip this step if a solution (`.slnx` or `.sln`) or project already exists. Otherwise, if
+this is a distributable package, ask which way to create the solution. Never install a
+template without a yes:
 
 - **`opinionated-package-starter`** (Lotte Pitcher's `dotnet new` template). The default if
   the CMS major it targets fits.
@@ -87,6 +88,9 @@ package, ask which way to create the solution. Never install a template without 
   starter doesn't cover, or if the user prefers it.
 - **Neither**, if the user wants to set it up themselves. Stop the wizard here and pick it up
   on a re-run once a solution exists.
+
+New solutions use the `.slnx` format. If a template creates a `.sln`, offer to convert it
+with `dotnet sln migrate`. Leave an existing `.sln` alone unless the user asks.
 
 The starter is the default because it generates the most: the solution, the package project,
 a SQLite test site that references the package locally, `Directory.Packages.props`, an
@@ -120,7 +124,7 @@ a SQLite test site that references the package locally, `Directory.Packages.prop
 
 Almost none. Ask at most:
 
-1. Project name, if not given and not obvious from the folder/`.sln`/`.csproj`.
+1. Project name, if not given and not obvious from the folder/solution/`.csproj`.
 2. If step 1 is running the `opinionated-package-starter` template: its `-an`/`-gu`/`-gr`
    parameters.
 3. The plan-folder path convention (default `docs/plans/<feature-slug>/`, holding `README.md`
