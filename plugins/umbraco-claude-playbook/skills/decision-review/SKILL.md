@@ -74,7 +74,8 @@ layout inside an already-agreed extension point. Nobody needs to sign off on tho
 
 ## Report
 
-Print the list directly in the reply — don't create a new file in the plan folder. If nothing
+Print the list directly in the reply — don't create a new file in the plan folder. Write each
+item following `plain-writing`. If nothing
 survives steps 1–4, say plainly "nothing needs your review" and stop; don't pad an empty
 result with the search process.
 

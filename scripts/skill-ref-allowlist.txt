@@ -22,3 +22,9 @@ umbraco-notifications   # a skill in the official Backoffice Skills plugin, not 
 umbraco-health-check    # a skill in the official Backoffice Skills plugin, not ours
 issue-triager           # the subagent issue-triage dispatches, not a skill itself
 worktree-dev-port       # the Umbraco.Community.WorktreeDevPort npm package, cited in umb-build-loop
+on-target               # a CSS class in the umb-design mockup starters, not a skill
+aria-label              # an HTML attribute, cited in umbraco-backoffice-ux
+uui-combobox            # a UUI element, not a skill
+uui-ref-list            # a UUI element, not a skill
+uui-ref-node            # a UUI element, not a skill
+uui-select              # a UUI element, not a skill

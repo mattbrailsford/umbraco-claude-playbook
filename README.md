@@ -72,6 +72,10 @@ returning `PASS` or `FAIL`.
 - `umbraco-backoffice-conventions` — package-level frontend structure the official Backoffice
   Skills plugin doesn't cover: required compiler setup, barrel-export entry points, OpenAPI
   client generation, observable-subscription lifecycle, monorepo build order
+- `umbraco-backoffice-ux` — how a backoffice screen should look and behave: match the screen next door,
+  pickers instead of select boxes for choosing items, the five moments (first run, mistake,
+  wait, finish, return), components shown in more than one place, and the small details that
+  most often get sent back
 - `ef-core-data` — dual SQL Server/SQLite support, product-prefixed migrations, repositories
   internal to their owning service
 - `security-dotnet` — Management API authz, EF Core injection, secrets handling
@@ -85,6 +89,9 @@ returning `PASS` or `FAIL`.
 - `bdd-specs` — Feature/Scenario/Specification shape for both backend (xUnit + Shouldly + Moq)
   and frontend (Web Test Runner + `@open-wc/testing`)
 - `user-stories` — Given/When/Then acceptance criteria feeding straight into specs
+- `plain-writing` — how every document a person reads gets written: lead with the point,
+  plain words, concise without dropping names, numbers or conditions, and no text repeating
+  what a screenshot or table already shows
 - `git-workflow` — Conventional Commits, branch-per-CMS-major-version, an
   always-ask-before-touching-main rule for AI agents
 - `describe-pr` — `git-workflow` always delegates the PR description to this skill; it writes a
