@@ -3,9 +3,11 @@ name: umb-design
 description: >-
   Solution-space interview for an Umbraco feature — which extension points, data model,
   Management API surface, and frontend components to use. Owns ARCHITECTURE.md, SPEC.md and
-  any screen mockups in the feature's plan folder. Use once umb-explore has defined the problem and it's time to
-  decide how to build it: which CMS extension point fits, whether it needs persistence, what
-  the package/project structure should look like.
+  any screen mockups in the feature's plan folder. Use once umb-explore has defined the problem
+  and it's time to decide how to build it: which CMS extension point fits, whether it needs
+  persistence, what the package/project structure should look like. Also use on its own to
+  capture a project mockup starter for a product surface ("capture a mockup starter for the
+  Copilot sidebar"), with no feature in progress.
 user-invocable: true
 argument-hint: [area to focus, optional]
 ---
@@ -58,6 +60,10 @@ append-only discipline as `DECISION-LOG.md`: never touch a line owned by another
   (`umb-plan`), actual code (`umb-build-loop`).
 
 ## Preflight
+
+If the request is only to capture a project mockup starter, skip this preflight: no plan
+folder or `BRIEF.md` is needed. Read the project's `CLAUDE.md` for the Umbraco version, then
+go straight to "Project starters".
 
 1. Resolve which feature this run is for. If more than one plan folder exists, prefer a match
    between the current branch/worktree name and a folder name (see `CLAUDE.md`'s "Finding the
@@ -190,7 +196,18 @@ Copilot feature on a generic editor page hides the questions that matter (does i
 narrow sidebar, how does it sit among flow nodes). A project starter captures that surface
 once so every later feature reuses it.
 
-**Capture one only when both are true:**
+A starter gets made one of two ways:
+
+- **On first need:** while mocking a feature's screen, the surface passes the test below and
+  no starter exists yet.
+- **On request:** someone asks for one ahead of time, usually because they know several
+  upcoming features will land on that surface. Apply the first test only; the second is the
+  requester's call, since they know what's coming. If the surface can be drawn from a general
+  starter, say which one and don't save a project starter. Show the finished starter's
+  screenshot for approval, then leave it uncommitted and tell the user, since there's no
+  build to commit it with (committing follows `git-workflow`).
+
+**On first need, capture one only when both are true:**
 
 1. **It can't be drawn from a general starter.** The surface's own layout or chrome differs
    (a docked panel over the backoffice, a canvas of connected nodes, a chat thread), not just
