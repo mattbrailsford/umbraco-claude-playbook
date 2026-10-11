@@ -216,9 +216,10 @@ Fidelity is "close enough to judge the layout and the content choices," not pixe
 real components, real spacing tokens, real data shapes. Final colour tweaks and dark-mode
 polish still happen on the built screen.
 
-`SPEC.md`'s "Frontend components" section links each mockup, and the mockup is part of the
-contract: the builder matches its layout and content, and the build loop's smoke step
-compares the built screen against it. A deliberate change from the mockup during the build
+`SPEC.md`'s "Frontend components" section shows each mockup's screenshot inline at full size
+(GitHub fits it to the page; a thumbnail is too small to judge layout) with a link to its
+HTML source underneath. The mockup is part of the contract: the builder matches its layout
+and content, and the build loop's smoke step compares the built screen against it. A deliberate change from the mockup during the build
 is a decision, logged in `DECISION-LOG.md` and reflected back into the mockup by re-running
 this phase.
 
@@ -323,7 +324,13 @@ why, or "none — not this kind of change">
 <component boundaries, which package/library they live in, and what each must observably
 do/render/emit — or "none">
 
-Mockups: [<screen>](./mockups/<screen>.png) ([source](./mockups/<screen>.html)), one per screen
+### <Screen name>
+
+![<Screen name> mockup](./mockups/<screen>.png)
+
+[Mockup source](./mockups/<screen>.html)
+
+<one block like this per mocked-up screen>
 ```
 
 Update the `ARCHITECTURE.md` and `SPEC.md` lines in `README.md`: check each box and replace
