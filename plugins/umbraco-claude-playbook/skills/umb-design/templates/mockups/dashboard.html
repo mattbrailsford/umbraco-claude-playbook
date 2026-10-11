@@ -1,0 +1,116 @@
+<!doctype html>
+<!--
+  Dashboard starter. Shows: section tab, tree, dashboard tabs (only when the section has more
+  than one dashboard), summary boxes, a chart box, and a box with an edge-to-edge table.
+  Charts: a rough inline SVG of the right chart type is enough. Delete what the screen doesn't use.
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Mockup: Dashboard</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@umbraco-ui/uui@2/dist/themes/light.css">
+	<link rel="stylesheet" href="_mockup.css">
+	<script type="module" src="_mockup.js"></script>
+	<style>
+		.stat { font-size: 2rem; font-weight: 700; line-height: 1.2; }
+		.muted { color: var(--uui-color-text-alt); }
+	</style>
+</head>
+<body class="uui-font uui-text">
+	<header class="app-header">
+		<span class="logo">Umbraco</span>
+		<uui-tab-group class="sections">
+			<uui-tab label="Content" active>Content</uui-tab>
+			<uui-tab label="Media">Media</uui-tab>
+			<uui-tab label="Settings">Settings</uui-tab>
+			<uui-tab label="Users">Users</uui-tab>
+		</uui-tab-group>
+		<div class="apps">
+			<uui-button look="primary" compact label="Search"><uui-icon name="icon-search"></uui-icon></uui-button>
+			<uui-button look="primary" compact label="Help"><uui-icon name="icon-help-alt"></uui-icon></uui-button>
+			<uui-button look="primary" compact label="User"><uui-avatar name="Matt Brailsford"></uui-avatar></uui-button>
+		</div>
+	</header>
+
+	<div class="section">
+		<nav class="section-sidebar">
+			<h3>Content</h3>
+			<uui-menu-item label="Home" has-children><uui-icon slot="icon" name="icon-home"></uui-icon></uui-menu-item>
+		</nav>
+
+		<main class="section-main">
+			<div class="body-layout">
+				<!-- Dashboard tabs. With a single dashboard there is no header at all. -->
+				<div class="header">
+					<div class="header-content" style="padding:0">
+						<uui-tab-group style="height:100%">
+							<uui-tab label="Welcome">Welcome</uui-tab>
+							<uui-tab label="Usage" active>Usage</uui-tab>
+							<uui-tab label="Redirects">Redirects</uui-tab>
+						</uui-tab-group>
+					</div>
+				</div>
+
+				<div class="main no-padding">
+					<div class="dashboard">
+						<!-- Replace from here: the dashboard being designed. -->
+						<div class="dashboard-grid">
+							<uui-box headline="Requests">
+								<div class="stat">1,284</div>
+								<div class="muted">in the last 7 days</div>
+							</uui-box>
+							<uui-box headline="Tokens">
+								<div class="stat">2.4 M</div>
+								<div class="muted">input and output</div>
+							</uui-box>
+							<uui-box headline="Models">
+								<div class="stat">4</div>
+								<div class="muted">in use</div>
+							</uui-box>
+
+							<uui-box headline="Requests over time" class="wide">
+								<svg viewBox="0 0 700 160" width="100%" height="160" role="img" aria-label="Requests per day">
+									<g fill="var(--uui-color-selected)" opacity=".85">
+										<rect x="20" y="90" width="70" height="60"/><rect x="120" y="60" width="70" height="90"/>
+										<rect x="220" y="75" width="70" height="75"/><rect x="320" y="30" width="70" height="120"/>
+										<rect x="420" y="50" width="70" height="100"/><rect x="520" y="95" width="70" height="55"/>
+										<rect x="620" y="110" width="70" height="40"/>
+									</g>
+									<line x1="0" y1="150" x2="700" y2="150" stroke="var(--uui-color-border)"/>
+								</svg>
+							</uui-box>
+
+							<!-- Box with an edge-to-edge table. -->
+							<uui-box headline="By model" class="wide table-box">
+								<uui-table>
+									<uui-table-head>
+										<uui-table-head-cell>Model</uui-table-head-cell>
+										<uui-table-head-cell>Requests</uui-table-head-cell>
+										<uui-table-head-cell>Tokens</uui-table-head-cell>
+									</uui-table-head>
+									<uui-table-row>
+										<uui-table-cell>gpt-4o</uui-table-cell>
+										<uui-table-cell>812</uui-table-cell>
+										<uui-table-cell>1.5 M</uui-table-cell>
+									</uui-table-row>
+									<uui-table-row>
+										<uui-table-cell>claude-sonnet-a-much-longer-model-name-that-might-wrap</uui-table-cell>
+										<uui-table-cell>402</uui-table-cell>
+										<uui-table-cell>0.8 M</uui-table-cell>
+									</uui-table-row>
+									<uui-table-row>
+										<uui-table-cell>unknown-model <uui-tag size="s" look="secondary" color="warning">Not matched</uui-tag></uui-table-cell>
+										<uui-table-cell>70</uui-table-cell>
+										<uui-table-cell>0.1 M</uui-table-cell>
+									</uui-table-row>
+								</uui-table>
+							</uui-box>
+						</div>
+						<!-- Replace to here. -->
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+</body>
+</html>

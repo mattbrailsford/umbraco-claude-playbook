@@ -1,0 +1,50 @@
+<!doctype html>
+<!--
+  Dialog modal starter: the small centred box for confirms and short questions. Confirm button
+  is color="positive", or color="danger" for anything destructive. The page behind is only
+  context, keep it minimal.
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Mockup: Dialog modal</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@umbraco-ui/uui@2/dist/themes/light.css">
+	<link rel="stylesheet" href="_mockup.css">
+	<script type="module" src="_mockup.js"></script>
+</head>
+<body class="uui-font uui-text">
+	<header class="app-header">
+		<span class="logo">Umbraco</span>
+		<uui-tab-group class="sections">
+			<uui-tab label="Content">Content</uui-tab>
+			<uui-tab label="Media">Media</uui-tab>
+			<uui-tab label="Settings" active>Settings</uui-tab>
+		</uui-tab-group>
+		<div class="apps">
+			<uui-button look="primary" compact label="User"><uui-avatar name="Matt Brailsford"></uui-avatar></uui-button>
+		</div>
+	</header>
+	<div class="section">
+		<nav class="section-sidebar">
+			<h3>Settings</h3>
+			<uui-menu-item label="Content published" active>
+				<uui-icon slot="icon" name="icon-webhook"></uui-icon>
+			</uui-menu-item>
+		</nav>
+		<main class="section-main"></main>
+	</div>
+
+	<div class="modal-backdrop"></div>
+	<div class="modal-dialog">
+		<uui-dialog>
+			<uui-dialog-layout class="uui-text" headline="Delete webhook">
+				<!-- Replace from here: the dialog's message. -->
+				<p>Delete <strong>Content published</strong>? Deliveries stop straight away and its delivery history is removed.</p>
+				<!-- Replace to here. -->
+				<uui-button slot="actions" label="Cancel">Cancel</uui-button>
+				<uui-button slot="actions" look="primary" color="danger" label="Delete">Delete</uui-button>
+			</uui-dialog-layout>
+		</uui-dialog>
+	</div>
+</body>
+</html>

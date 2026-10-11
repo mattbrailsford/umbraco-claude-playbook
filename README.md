@@ -38,7 +38,8 @@ shouldn't make for you.
 /umb-init          # once per project — scaffolds the solution (if new) via a real dotnet
                    # template, then CLAUDE.md, .gitignore, README stub
 /umb-explore       # talk through what you're building
-/umb-design        # decide which extension points, data model, API surface
+/umb-design        # decide which extension points, data model, API surface,
+                   # and mock up any new screens for review
 /umb-plan          # slice into tasks + generate pending specs
 /umb-build-loop    # build, review, commit — task by task
 ```
@@ -118,10 +119,10 @@ if your project needs that — say so once in `CLAUDE.md` and every phase follow
 | File | Owned by |
 |---|---|
 | `BRIEF.md` | `umb-explore` |
-| `ARCHITECTURE.md`, `SPEC.md` | `umb-design` |
+| `ARCHITECTURE.md`, `SPEC.md`, `mockups/` | `umb-design` |
 | `STORIES.md`, `PLAN.md` | `umb-plan` |
 | `DECISION-LOG.md` | every phase appends |
-| `BUILD-LOG.md` | `umb-build-loop` |
+| `BUILD-LOG.md`, `screenshots/` | `umb-build-loop` |
 | `PR-DESCRIPTION.md` | `describe-pr` (only when the plan folder exists — otherwise the description goes straight into the PR, not to disk) |
 
 One file per owner, not one section per owner in a shared doc — two phases (or two sessions)
