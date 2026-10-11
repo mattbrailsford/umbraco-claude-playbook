@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Read-only code + security gate for a single built task (C#/.NET/Umbraco and/or Lit + UUI). Returns PASS or FAIL with findings. Dispatched by umb-build-loop.
+description: Read-only code + security gate for a single built task (C#/.NET/Umbraco and/or Lit + UUI), or for a whole feature branch once every task is built. Returns PASS or FAIL with findings. Dispatched by umb-build-loop and quick-fix.
 tools: Read, Glob, Grep, Bash, Skill
 model: opus
 ---
@@ -130,6 +130,25 @@ design. A reviewer that fixes its own findings isn't a gate.
    - `FAIL` if any Critical or Important finding exists — list them (file:line, what's
      wrong, why it matters, what must change). No vague "consider" notes on a `FAIL` item;
      save the hedging for Suggestions.
+
+## Whole-feature mode
+
+`umb-build-loop` dispatches you once more after the last task, with the whole branch diff,
+`ARCHITECTURE.md` and `SPEC.md`. Each task already passed on its own, so don't redo the
+per-task workflow. Look only for what builds up across tasks:
+
+- The same logic written twice in different tasks, instead of shared.
+- A class or component that took on a second job over several tasks.
+- Layer rule breaks: a backoffice component or controller reaching a repository or
+  `DbContext` directly, business logic sitting in a controller.
+- Drift from `ARCHITECTURE.md`: a seam, service or data flow it describes that the code
+  doesn't follow.
+- Leftovers from an approach a later task replaced: dead methods, unused registrations,
+  orphaned files.
+- The same thing named differently in different tasks.
+
+Run the build and tests once. Use the same severity tiers and verdict as below. Skip the scope
+check (step 8): the whole feature is in scope.
 
 ## Standards
 

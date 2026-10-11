@@ -134,6 +134,22 @@ migration would pass tests and still break real installs. Build this fixture onc
 package and share it (`IClassFixture<EFCoreTestFixture>`) across every repository test rather
 than reinventing it per test class.
 
+## SQLite tests don't prove SQL Server
+
+The fixture above only runs SQLite. A SQL Server migration that has been read but never
+applied is not tested: column types, defaults, index names and the generated SQL all differ
+between providers. When a change adds or edits a migration and the project supports SQL
+Server, apply it to a real SQL Server before calling the work done:
+
+- A throwaway container, e.g. `mcr.microsoft.com/mssql/server:2022-latest` in Docker, with the
+  demo site's connection string pointed at it. Keep the password out of committed settings
+  (user secrets or an environment variable).
+- Or the project's own SQL Server dev database, if it has one.
+
+Start the site so Umbraco runs the migrations, check the tables are there, and do one real
+read and write through the feature. If no SQL Server is available, say so in the build log and
+the PR ("SQL Server migration read, not run"). Never imply it was tested.
+
 ## Schema conventions worth defaulting to
 
 - **Surrogate keys** (`Guid` or `int` primary keys), not natural keys — a natural key (an

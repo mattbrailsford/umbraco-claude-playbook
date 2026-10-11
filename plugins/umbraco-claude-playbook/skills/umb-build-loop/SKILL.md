@@ -104,16 +104,26 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
    once it's fixed, so the next dispatch doesn't repeat it.
 
 4. **Smoke the real entry point.** Before commit, actually exercise the deployed artifact.
-   Most packages/add-ons generate a throwaway demo site for exactly this — start it and drive
-   one real request through the Management API controller, resolve the newly-registered
-   service via DI the way Umbraco actually would, or drive the backoffice UI through it
-   (Playwright or equivalent). If this project doesn't have a separate demo/site environment —
-   you're building something that *is* the host, like Umbraco CMS itself, rather than a
-   package installed into one — a thorough integration test that boots the real hosting/DI
-   pipeline (not a unit test through an internal seam) is the equivalent gate. Fakes for
-   external services are fine either way; the request must travel through the real entry
-   point, not an internal function that bypasses it. If the smoke fails, recurse to step 3
+   Use the first of these the project has:
+   - **An end-to-end (e2e) test suite.** Run the e2e test that covers the task's path. If no
+     test covers it, the builder adds one as part of the task. An e2e suite passing without
+     touching the new code proves nothing.
+   - **A demo site.** Most packages/add-ons generate a throwaway one for exactly this. Start
+     it and run through the change yourself: drive the backoffice UI (Playwright or
+     equivalent), or send one real request through the Management API controller for a change
+     with no screen.
+   - **Neither**, because you're building something that *is* the host, like Umbraco CMS
+     itself, rather than a package installed into one: a thorough integration test that boots
+     the real hosting/DI pipeline (not a unit test through an internal seam) is the
+     equivalent gate.
+
+   Fakes for external services are fine in all three; the request must travel through the
+   real entry point, not an internal function that bypasses it. If the smoke fails, recurse to step 3
    with a finding — a green unit test suite is not enough to ship.
+
+   **If the task adds or changes a migration** and the project supports SQL Server, the smoke
+   includes running it on a real SQL Server, as `ef-core-data` describes. Note in the task's
+   `BUILD-LOG.md` entry which providers it actually ran on.
 
    **If the task renders a screen that has a mockup,** screenshot the built screen at the same
    viewport (1440×900) and compare it with `mockups/<screen>.png`. A difference in layout,
@@ -147,13 +157,25 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
 
 ## Finish
 
-When every box is checked: run the full test suite once more, then report a summary (tasks
-completed, commits, anything still red). Update the `BUILD-LOG.md` line in `README.md`: check
+When every box is checked: run the full test suite once more, then run the whole-feature
+review below, then report a summary (tasks completed, commits, anything still red).
+
+**Whole-feature review.** The per-task `reviewer` only ever sees one task's diff, so it can't
+see what builds up across tasks: the same logic written twice, a class that slowly took on a
+second job, a component that started calling a repository directly, a design that drifted from
+`ARCHITECTURE.md`. Dispatch one `reviewer` subagent in whole-feature mode with the full branch
+diff (`git diff <base>...HEAD`), `ARCHITECTURE.md` and `SPEC.md`.
+
+- On `FAIL`, send the findings to a fresh `builder`, then review the whole branch again. Repeat
+  until `PASS`, the same as the per-task gate. Commit each round as its own `refactor:` commit
+  and add a line to `BUILD-LOG.md` for it.
+- If a finding means the design itself is wrong, not just the code, stop and hand off to
+  `umb-design` instead of fixing it here.
+
+A human still reviews the PR. This pass makes sure they aren't the first to see cross-task
+problems. Update the `BUILD-LOG.md` line in `README.md`: check
 its box and replace `<pending>` with one plain-English line (task count, commit count). Same
-append-only discipline as `DECISION-LOG.md` — never touch another phase's line. A final
-architecture/design pass is a separate
-step, not part of this loop — re-run `umb-design` if the build surfaced something worth
-reconsidering. If this feature is (or completes) a standalone package ready to publish, invoke
+append-only discipline as `DECISION-LOG.md` — never touch another phase's line. If this feature is (or completes) a standalone package ready to publish, invoke
 `umbraco-marketplace` before tagging a release — it's not part of this loop either.
 
 **Open the PR: invoke `describe-pr` directly (via the Skill tool) — don't write the body
@@ -166,12 +188,6 @@ at all. `describe-pr` handles the branch/push mechanics via `git-workflow` itsel
 and workarounds logged in `DECISION-LOG.md` reach a human in the PR without this loop having to
 remember either step. (`decision-review` is also user-invocable on its own, read-only, for an
 earlier look before the PR exists.)
-
-**The per-task `reviewer` gate and a whole-feature PR review catch different things — run
-both.** `reviewer` only sees one task's diff at a time, so it can't catch cross-task issues (a
-design decision in task 3 that doesn't sit well with task 7, the feature's shape end to end) —
-a whole-feature review still needs to happen once the PR is open, by a human or whatever
-automated review the project has.
 
 If this feature built inside a worktree, don't remove it here — that's a post-merge cleanup
 step (the project's own `WorktreeRemove` hook, or `git worktree remove`), outside this loop's
