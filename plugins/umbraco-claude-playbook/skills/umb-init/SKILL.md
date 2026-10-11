@@ -4,10 +4,9 @@ description: >-
   Setup wizard for an Umbraco package or project. Walks through each piece the pipeline relies
   on, checks what's already there, and offers to add what's missing, one step at a time: the
   solution (from a real dotnet new template), CLAUDE.md, .gitignore, .claude/memory/ and the
-  plan-folder convention, lint and format, backend and frontend tests, per-worktree demo site
-  ports, and e2e tests. Never
-  adds anything without asking. Use when starting a new repo, when an existing repo is missing
-  CLAUDE.md, or again later to fill gaps such as a project with no tests yet.
+  plan-folder convention, per-worktree demo site ports, lint and format, and backend,
+  frontend and e2e tests. Never adds anything without asking. Use when starting a new repo,
+  when an existing repo is missing CLAUDE.md, or again later to fill gaps such as a project with no tests yet.
 user-invocable: true
 argument-hint: [project name, optional]
 ---
@@ -29,10 +28,10 @@ whatever was skipped, so "not now" is always a fine answer.
 |---|---|---|
 | 1 | Solution | "Step 1: Solution" below |
 | 2 | Working files: `CLAUDE.md`, `.gitignore`, README stub, `.claude/memory/`, plan folder | "Step 2: Working files" below |
-| 3 | Lint and format | `references/lint.md` |
-| 4 | Backend tests | `references/backend-tests.md` |
-| 5 | Frontend tests (only if there's a `Client/` frontend) | `references/frontend-tests.md` |
-| 6 | Demo site ports, so worktrees don't collide (only if there's a demo site) | `references/dev-ports.md` |
+| 3 | Demo site ports, so worktrees don't collide (only if there's a demo site) | `references/dev-ports.md` |
+| 4 | Lint and format | `references/lint.md` |
+| 5 | Backend tests | `references/backend-tests.md` |
+| 6 | Frontend tests (only if there's a `Client/` frontend) | `references/frontend-tests.md` |
 | 7 | End-to-end (e2e) tests | `references/e2e-tests.md` |
 
 ## Scope
@@ -42,9 +41,9 @@ whatever was skipped, so "not now" is always a fine answer.
   solution/test-site yourself. Once there's a solution (whether the template just made one, or
   one already existed): create/update `CLAUDE.md`, `.gitignore`, a `README.md` stub,
   `.claude/memory/`, and the empty `docs/plans/` folder (or whatever path convention the
-  interview settles on). Then offer the tooling the build loop depends on: lint and format
-  checks, backend, frontend and e2e test projects, and per-worktree demo site ports, each set up with real tools
-  (`dotnet new`, `npm`) and recorded in `CLAUDE.md`.
+  interview settles on). Then offer the tooling the build loop depends on: per-worktree demo
+  site ports, lint and format checks, and backend, frontend and e2e test projects, each set up
+  with real tools (`dotnet new`, `npm`) and recorded in `CLAUDE.md`.
 - OUT: deciding what the project *is* (that's `umb-explore`), architecture
   (`umb-design`), tasks (`umb-plan`). This command does not interview the problem —
   if you're asked "what should this do," stop and point at `umb-explore`. Also out: writing
@@ -104,7 +103,7 @@ a SQLite test site that references the package locally, `Directory.Packages.prop
    project needs an older major this template doesn't cover, say so and fall back to the
    official `Umbraco.Templates` package (`dotnet new umbraco-package` / `umbraco-extension`)
    for the base project, then hand-scaffold just the pieces that template doesn't include
-   (a test site, `Directory.Packages.props`; `.editorconfig` is step 3) — don't silently
+   (a test site, `Directory.Packages.props`; `.editorconfig` is step 4) — don't silently
    force a CMS version the project didn't ask for.
 2. **Confirm before running** — this creates a whole solution structure, so show the exact
    commands and get a yes first, the same discipline `git-remote` uses before creating a
@@ -178,7 +177,7 @@ pre-create a per-feature subfolder or any of its eight files — `umb-explore` c
 `docs/plans/<feature-slug>/`, its own `BRIEF.md`, and the folder's `README.md` index when the
 first real feature starts.
 
-## Steps 3 to 7: Lint, format, ports and tests
+## Steps 3 to 7: Ports, lint, format and tests
 
 Each step has its own reference file with what to detect, the default to offer, and how to
 set it up. Read only the one for the step you're on. The same rules apply to all of them:

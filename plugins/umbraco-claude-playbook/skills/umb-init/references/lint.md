@@ -1,4 +1,4 @@
-# Step 3: Lint and format
+# Step 4: Lint and format
 
 Without a lint/format check, nobody checks style: the `reviewer` is told to ignore formatting
 because "that's what a formatter/linter is for". This step makes sure there is one, and that
