@@ -4,13 +4,15 @@
   Recreates the backoffice's own layout elements (umb-backoffice-header, umb-section-sidebar,
   umb-body-layout, umb-property-layout, umb-footer-layout...) with plain CSS, because those
   umb-* elements aren't loadable outside a running site. Values are copied from the
-  Umbraco 17.6 backoffice source. Everything else is real UUI.
+  Umbraco 17.6 and 18.1 backoffice source (they're the same apart from the 17-only rules
+  marked below). Everything else is real UUI.
 
   Screen-specific styles go in a <style> block in the screen's own file, not here.
 */
 
-/* Backoffice token overrides (umb-css.css): every corner is 3px, "current" is Spanish pink. */
-:root:root {
+/* Umbraco 17 only (umb-css.css): every corner is 3px, "current" is Spanish pink. Umbraco 18
+   drops these and uses UUI 2's rounder defaults. */
+html[data-umbraco='17']:root {
 	--uui-border-radius: var(--uui-size-1);
 	--uui-border-radius-2: var(--uui-size-1);
 	--uui-border-radius-3: var(--uui-size-1);
@@ -338,7 +340,8 @@ uui-tab uui-badge[slot='extra'] {
 	flex: 1 1 auto;
 }
 
-.collection-table {
+/* Umbraco 17 only: 18 drops the table shadow. */
+html[data-umbraco='17'] .collection-table {
 	box-shadow: var(--uui-shadow-depth-1);
 }
 

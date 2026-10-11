@@ -191,9 +191,11 @@ For each screen the feature adds or visibly changes:
    CDN (`<uui-icon name="icon-*">` uses the same icon names the code will), and
    `_mockup.css` recreates the `umb-*` layout elements with values copied from the backoffice
    source. So the mockup is built from the same parts the code will be, with no separate
-   design system to keep in sync. Match the UUI major to the project's Umbraco version:
-   Umbraco 17.6+ and 18 use UUI 2 (the default); 17.5 and older use UUI 1 (see the note at
-   the top of `_mockup.js`). Static HTML only: no build step, no data fetching, no charting
+   design system to keep in sync. Set `UMBRACO_VERSION` at the top of `_mockup.js` to the
+   Umbraco major the project targets (from `CLAUDE.md`; the newest one when it targets more
+   than one). It picks the look: 18 has UUI's rounder corners, 17 the squarer 3px ones and
+   pink highlight. Umbraco 17.6+ and 18 use UUI 2 (the default); 17.5 and older use UUI 1
+   (see the note in `_mockup.js`). Static HTML only: no build step, no data fetching, no charting
    library (a rough inline SVG of the right chart type is enough).
 3. **Use realistic fake data.** Real-looking names and real magnitudes, one long value that
    might wrap, one row in a warning or error state. Placeholder text hides the questions that
