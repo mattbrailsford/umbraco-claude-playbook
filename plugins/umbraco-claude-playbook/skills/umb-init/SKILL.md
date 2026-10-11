@@ -4,7 +4,8 @@ description: >-
   Setup wizard for an Umbraco package or project. Walks through each piece the pipeline relies
   on, checks what's already there, and offers to add what's missing, one step at a time: the
   solution (from a real dotnet new template), CLAUDE.md, .gitignore, .claude/memory/ and the
-  plan-folder convention, lint and format, backend tests, frontend tests and e2e tests. Never
+  plan-folder convention, lint and format, backend and frontend tests, per-worktree demo site
+  ports, and e2e tests. Never
   adds anything without asking. Use when starting a new repo, when an existing repo is missing
   CLAUDE.md, or again later to fill gaps such as a project with no tests yet.
 user-invocable: true
@@ -31,7 +32,8 @@ whatever was skipped, so "not now" is always a fine answer.
 | 3 | Lint and format | `references/lint.md` |
 | 4 | Backend tests | `references/backend-tests.md` |
 | 5 | Frontend tests (only if there's a `Client/` frontend) | `references/frontend-tests.md` |
-| 6 | End-to-end (e2e) tests | `references/e2e-tests.md` |
+| 6 | Demo site ports, so worktrees don't collide (only if there's a demo site) | `references/dev-ports.md` |
+| 7 | End-to-end (e2e) tests | `references/e2e-tests.md` |
 
 ## Scope
 
@@ -41,7 +43,7 @@ whatever was skipped, so "not now" is always a fine answer.
   one already existed): create/update `CLAUDE.md`, `.gitignore`, a `README.md` stub,
   `.claude/memory/`, and the empty `docs/plans/` folder (or whatever path convention the
   interview settles on). Then offer the tooling the build loop depends on: lint and format
-  checks, and backend, frontend and e2e test projects, each set up with real tools
+  checks, backend, frontend and e2e test projects, and per-worktree demo site ports, each set up with real tools
   (`dotnet new`, `npm`) and recorded in `CLAUDE.md`.
 - OUT: deciding what the project *is* (that's `umb-explore`), architecture
   (`umb-design`), tasks (`umb-plan`). This command does not interview the problem —
@@ -176,10 +178,10 @@ pre-create a per-feature subfolder or any of its eight files — `umb-explore` c
 `docs/plans/<feature-slug>/`, its own `BRIEF.md`, and the folder's `README.md` index when the
 first real feature starts.
 
-## Steps 3 to 6: Lint, format and tests
+## Steps 3 to 7: Lint, format, ports and tests
 
 Each step has its own reference file with what to detect, the default to offer, and how to
-set it up. Read only the one for the step you're on. The same rules apply to all four:
+set it up. Read only the one for the step you're on. The same rules apply to all of them:
 
 - **Detect first.** If the project already has a tool for this (a linter, a test framework),
   keep it. The defaults are only for a project that has nothing yet.

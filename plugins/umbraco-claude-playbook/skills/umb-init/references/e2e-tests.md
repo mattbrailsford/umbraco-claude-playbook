@@ -1,4 +1,4 @@
-# Step 6: End-to-end (e2e) tests
+# Step 7: End-to-end (e2e) tests
 
 e2e tests drive the real backoffice in a browser against a running site. When they exist,
 `umb-build-loop`'s smoke step runs them first, and adds one for any task they don't cover.
@@ -23,7 +23,8 @@ generates. If there isn't one, skip this step and say so.
   `@umbraco/playwright-testhelpers`. Read the package's README for its login and setup
   pattern; don't guess its API.
 - `playwright.config.ts`:
-  - `baseURL` from an environment variable (the demo site's URL).
+  - `baseURL` built from the worktree's port (`getPort()` from `worktree-dev-port`, see step
+    6), so each worktree tests its own site. Without step 6, use an environment variable.
   - `webServer` to start the demo site (`dotnet run --project <demo site>`) if it isn't
     already running.
   - Backoffice login details from environment variables or a gitignored `.env`. Never commit

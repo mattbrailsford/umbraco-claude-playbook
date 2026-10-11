@@ -36,7 +36,7 @@ shouldn't make for you.
 
 ```
 /umb-init          # setup wizard: solution (if new), CLAUDE.md, .gitignore, lint,
-                   # tests. Asks before each step; re-run to fill gaps
+                   # ports, tests. Asks before each step; re-run to fill gaps
 /umb-explore       # talk through what you're building
 /umb-design        # decide which extension points, data model, API surface,
                    # and mock up any new screens for review
