@@ -169,7 +169,7 @@ For each screen the feature adds or visibly changes:
    | Dashboard | `dashboard.html` | Dashboard tabs, summary boxes, chart box, box with an edge-to-edge table |
    | Collection (list) view | `collection.html` | Toolbar (create, filter, view switch), table with status tags and selection, bulk action bar, pagination; content cards and empty state as alternatives |
    | Media card view | `collection-media.html` | Grid of folder, image and file cards, selection, bulk action bar |
-   | Editor (workspace) | `editor.html` | Header (back, icon, name, "..." actions menu, view tabs), content tabs with a count badge, property groups, a picker property, footer with save actions, toast; `editor.html#save-options` shows the save options menu |
+   | Editor (workspace) | `editor.html` | Header (back, icon, name, "..." actions menu, view tabs), count badges on a view tab and a content tab, property groups, a picker property, footer with save actions, toast; `editor.html#save-options` shows the save options menu |
    | Sidebar modal | `modal-sidebar.html` | Slide-in panel for pickers and create flows, small/medium/large widths |
    | Dialog modal | `modal-dialog.html` | Centred confirm box, positive or danger action |
 

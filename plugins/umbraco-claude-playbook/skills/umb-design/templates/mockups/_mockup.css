@@ -203,7 +203,18 @@ html:not([data-mockup-ready]) body {
 	--uui-tab-background: var(--uui-color-surface);
 }
 
-/* Count badge in a tab's "extra" slot, pinned to the tab's top right. */
+/* Count badge on a view tab's icon (workspace-editor's umb-badge). */
+.view-tabs div[slot='icon'] {
+	position: relative;
+}
+
+.view-tabs div[slot='icon'] uui-badge {
+	position: absolute;
+	inset: -8px -1.5em auto auto;
+	font-size: var(--uui-type-small-size);
+}
+
+/* Count badge in a content tab's "extra" slot, pinned to the tab's top right. */
 uui-tab uui-badge[slot='extra'] {
 	position: absolute;
 	inset: 0 0 auto auto;

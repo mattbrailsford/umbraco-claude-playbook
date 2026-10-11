@@ -69,7 +69,8 @@
 					<div class="navigation">
 						<uui-tab-group class="view-tabs">
 							<uui-tab label="Details" active><uui-icon slot="icon" name="icon-edit"></uui-icon>Details</uui-tab>
-							<uui-tab label="Deliveries"><uui-icon slot="icon" name="icon-box"></uui-icon>Deliveries</uui-tab>
+							<!-- Count badge on a view tab: sits on the icon's top right, only on a tab that isn't active. -->
+							<uui-tab label="Deliveries"><div slot="icon"><uui-icon name="icon-box"></uui-icon><uui-badge color="danger" attention>3</uui-badge></div>Deliveries</uui-tab>
 						</uui-tab-group>
 					</div>
 				</div>
