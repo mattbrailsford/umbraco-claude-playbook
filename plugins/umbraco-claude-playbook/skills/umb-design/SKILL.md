@@ -2,8 +2,8 @@
 name: umb-design
 description: >-
   Solution-space interview for an Umbraco feature — which extension points, data model,
-  Management API surface, and frontend components to use. Owns ARCHITECTURE.md and SPEC.md in
-  the feature's plan folder. Use once umb-explore has defined the problem and it's time to
+  Management API surface, and frontend components to use. Owns ARCHITECTURE.md, SPEC.md and
+  any screen mockups in the feature's plan folder. Use once umb-explore has defined the problem and it's time to
   decide how to build it: which CMS extension point fits, whether it needs persistence, what
   the package/project structure should look like.
 user-invocable: true
@@ -22,7 +22,8 @@ component shape (if any).
 
 ## Where this writes
 
-The same per-feature plan folder `umb-explore` started. Owns two files:
+The same per-feature plan folder `umb-explore` started. Owns two files, plus a `mockups/`
+folder when the feature has a UI:
 
 - **`ARCHITECTURE.md`** — the internal structural decisions: which extension point(s), the
   data model, key decisions with their rationale and the rejected alternative. This answers
@@ -30,10 +31,13 @@ The same per-feature plan folder `umb-explore` started. Owns two files:
 - **`SPEC.md`** — the externally observable contract: the Management API surface and the
   frontend components' expected behavior, in concrete, testable terms. This answers "what must
   it do," and is what `umb-plan` slices into stories — keep it testable, not vague.
+- **`mockups/<screen>.html` + `mockups/<screen>.png`** — one static mockup per new or changed
+  screen, and its screenshot. This answers "what will it look like," and is what the human
+  approves before any UI code is written. See "Mockup each screen" below.
 
 Read `BRIEF.md` — design must serve it, not redefine it. As with `umb-explore`: if the project
 has its own plan-folder convention, fold this content into that shape, but keep the discipline
-of touching only these two files; that's the point, not the specific file names.
+of touching only these files; that's the point, not the specific file names.
 
 Also updates its own two lines in `README.md` (the index `umb-explore` created) — same
 append-only discipline as `DECISION-LOG.md`: never touch a line owned by another phase.
@@ -43,7 +47,8 @@ append-only discipline as `DECISION-LOG.md`: never touch a line owned by another
 - IN: which Umbraco extension point(s) to use (property editor, dashboard, content app,
   section, notification handler, middleware, tree, workspace, etc.), data model & persistence
   (EF Core entities/migrations, or none), Management API surface (controllers, DTOs, routes),
-  frontend component boundaries, build-vs-buy, key tradeoffs, which connected systems a change
+  frontend component boundaries, static mockups of each new or changed screen, build-vs-buy,
+  key tradeoffs, which connected systems a change
   of this kind conventionally touches (see "Connected-pattern check" below).
 - OUT: the problem/why (`umb-explore` — read it, don't redo it), task breakdown
   (`umb-plan`), actual code (`umb-build-loop`).
@@ -138,6 +143,79 @@ dependency, no new component, no schema change; `umb-plan` slices it into a task
 else. If a spot genuinely doesn't apply, note it as a deliberate skip rather than leaving it
 unconsidered, the same way the connected-pattern check above handles a system that doesn't
 apply.
+
+### Mockup each screen
+
+A screen described in words can't be judged until it's built. "A summary box and a by-model
+table, styled like the Usage dashboard" reads fine in `SPEC.md` and still ships with the wrong
+box layout, a column nobody needs, and a chart people misread — each one found only once the
+code exists, and each one a fix-and-rebuild round trip. A picture gets the same feedback in
+minutes, before a task is planned.
+
+For each screen the feature adds or visibly changes:
+
+1. **Match the sibling screen first.** Open the nearest existing screen of the same kind (the
+   dashboard next to it, the workspace view it sits beside — in this codebase, the host
+   product, or Umbraco core) and write down its layout rules: how boxes are arranged and
+   spaced, whether tables run edge to edge inside a box, how headers, help/info icons and
+   actions are styled, which icon colours it uses. Same docs-first, siblings-second order as
+   the component convention above. A new screen that looks like a stranger next to its
+   neighbours is the most common UI fix, and the cheapest to prevent.
+2. **Start from the matching pattern in `templates/mockups/`.** Almost every backoffice screen
+   is one of a handful of patterns, and each has a starter:
+
+   | Pattern | Starter | Covers |
+   |---|---|---|
+   | Dashboard | `dashboard.html` | Dashboard tabs, summary boxes, chart box, box with an edge-to-edge table |
+   | Collection (list) view | `collection.html` | Toolbar (create, filter, view switch), table with status tags and selection, bulk action bar, pagination; card view and empty state as alternatives |
+   | Editor (workspace) | `editor.html` | Header (back, icon, name, view tabs), content tabs, property groups, a picker property, footer with save actions, "..." action menu, toast |
+   | Sidebar modal | `modal-sidebar.html` | Slide-in panel for pickers and create flows, small/medium/large widths |
+   | Dialog modal | `modal-dialog.html` | Centred confirm box, positive or danger action |
+
+   Every starter carries the backoffice chrome: the header with **section tabs** and the
+   sidebar with the **tree**, so those are set on whichever starter the screen uses — mark the
+   new section tab or tree item active. Copy `_mockup.css` and `_mockup.js` into `mockups/`
+   once, copy the starter to `mockups/<screen>.html`, and replace what's between its "Replace
+   from here" and "Replace to here" comments. Delete the parts the screen doesn't use.
+
+   A few more patterns build from these: a **property editor** is one `.property` row in
+   `editor.html`; an editor's **Info view** is the editor's main area as a two-column grid
+   (`1fr 350px`, 24px gap) with stacked boxes left and a "General" box right; a **search or
+   filter bar** above a box is the collection toolbar without its create button. A screen
+   that fits none of them starts from the closest starter, and the mockup notes which.
+
+   The starters load the real UUI elements, theme and Umbraco's own backoffice icons from the
+   CDN (`<uui-icon name="icon-*">` uses the same icon names the code will), and
+   `_mockup.css` recreates the `umb-*` layout elements with values copied from the backoffice
+   source. So the mockup is built from the same parts the code will be, with no separate
+   design system to keep in sync. Match the UUI major to the project's Umbraco version:
+   Umbraco 17.6+ and 18 use UUI 2 (the default); 17.5 and older use UUI 1 (see the note at
+   the top of `_mockup.js`). Static HTML only: no build step, no data fetching, no charting
+   library (a rough inline SVG of the right chart type is enough).
+3. **Use realistic fake data.** Real-looking names and real magnitudes, one long value that
+   might wrap, one row in a warning or error state. Placeholder text hides the questions that
+   matter — whether a range reads better as one number, whether a column earns its space,
+   whether a first-time viewer understands what a chart is showing.
+4. **Mock the five spots that apply.** The empty state and error state are their own small
+   variants (a second section in the same file, or `<screen>-empty.html`), not something left
+   for the builder to invent.
+5. **Screenshot and show it.** Serve the folder locally (the pages load ES modules, so
+   `file://` won't work), wait for `html[data-mockup-ready]` so UUI, icons and any toast have
+   finished loading, screenshot each mockup at a backoffice-sized viewport (1440×900), save it
+   beside the HTML as `<screen>.png`, and show
+   it to the human with the two or three choices you're least sure of named underneath.
+   Revise the HTML on feedback and re-shoot; the screenshot in the folder is always the
+   current one.
+
+Fidelity is "close enough to judge the layout and the content choices," not pixel-perfect:
+real components, real spacing tokens, real data shapes. Final colour tweaks and dark-mode
+polish still happen on the built screen.
+
+`SPEC.md`'s "Frontend components" section links each mockup, and the mockup is part of the
+contract: the builder matches its layout and content, and the build loop's smoke step
+compares the built screen against it. A deliberate change from the mockup during the build
+is a decision, logged in `DECISION-LOG.md` and reflected back into the mockup by re-running
+this phase.
 
 ## Skills to pull in
 
@@ -239,6 +317,8 @@ why, or "none — not this kind of change">
 ## Frontend components
 <component boundaries, which package/library they live in, and what each must observably
 do/render/emit — or "none">
+
+Mockups: [<screen>](./mockups/<screen>.png) ([source](./mockups/<screen>.html)), one per screen
 ```
 
 Update the `ARCHITECTURE.md` and `SPEC.md` lines in `README.md`: check each box and replace
@@ -252,4 +332,5 @@ follow), write it to `.claude/memory/` instead (type: `decision`) — see
 
 ## Hand off
 
-Note any `TODO` in `ARCHITECTURE.md`/`SPEC.md`, then: `Suggested next: umb-plan.`
+Note any `TODO` in `ARCHITECTURE.md`/`SPEC.md`, and any screen mockup the human hasn't
+approved yet, then: `Suggested next: umb-plan.`

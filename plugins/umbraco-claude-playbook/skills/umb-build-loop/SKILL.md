@@ -83,7 +83,8 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
 
 1. **Build.** Dispatch a `builder` subagent (Agent tool, `subagent_type: builder`, model
    sonnet). Give it: the exact task text, the relevant sections of `ARCHITECTURE.md` and
-   `SPEC.md`, the files/extension points it owns, and an instruction to invoke the project's
+   `SPEC.md`, the path to any mockup for a screen the task touches, the files/extension points
+   it owns, and an instruction to invoke the project's
    stack skills (`dotnet-best-practices`, `umbraco-extensibility`, `umbraco-package-
    conventions`, `ef-core-data`, `umbraco-backoffice-conventions`, etc. as relevant) and run
    the existing specs before reporting back. The builder does not commit.
@@ -111,6 +112,15 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
    external services are fine either way; the request must travel through the real entry
    point, not an internal function that bypasses it. If the smoke fails, recurse to step 3
    with a finding — a green unit test suite is not enough to ship.
+
+   **If the task renders a screen that has a mockup,** screenshot the built screen at the same
+   viewport (1440×900) and compare it with `mockups/<screen>.png`. A difference in layout,
+   which components are used, or what's shown (a missing or extra column, a box that's split
+   or merged, a different chart type) is a smoke failure unless the builder's report flagged
+   it as a deliberate departure. Small spacing and colour differences are not. Once the screen
+   is complete, save its screenshot in the plan folder as `screenshots/<screen>.png` (this
+   loop's own folder; `mockups/` belongs to `umb-design`) and link it from that task's
+   `BUILD-LOG.md` entry, so the human can view mockup and build side by side.
 
 5. **Commit.** On `PASS` + smoke green, have the builder commit *only this task's changes*
    with a message naming the task, following the project's commit conventions (see
@@ -163,6 +173,6 @@ job.
 
 - Sequential, dependency-ordered. This is a pipeline, not a parallel team.
 - Builder owns code; reviewer owns the gate; this loop owns sequencing, `PLAN.md` checkbox
-  state, `BUILD-LOG.md`, and its own line in `README.md`. Never collapse these roles.
+  state, `BUILD-LOG.md`, `screenshots/`, and its own line in `README.md`. Never collapse these roles.
 - If a gate can't pass after repeated attempts and the builder is stuck, stop and report the
   task + findings rather than committing degraded code.

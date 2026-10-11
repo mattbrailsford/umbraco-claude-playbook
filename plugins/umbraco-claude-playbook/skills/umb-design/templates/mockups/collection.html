@@ -1,0 +1,126 @@
+<!doctype html>
+<!--
+  Collection (list) view starter. Shows: section tab, tree, collection toolbar, table view with
+  status tags and row selection, bulk action bar, pagination. Swap the table for the .collection-grid
+  block at the bottom for a card view. For the empty state, replace the table with the
+  .empty-state div. Delete what the screen doesn't use.
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Mockup: Collection</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@umbraco-ui/uui@2/dist/themes/light.css">
+	<link rel="stylesheet" href="_mockup.css">
+	<script type="module" src="_mockup.js"></script>
+</head>
+<body class="uui-font uui-text">
+	<header class="app-header">
+		<span class="logo">Umbraco</span>
+		<uui-tab-group class="sections">
+			<uui-tab label="Content">Content</uui-tab>
+			<uui-tab label="Media">Media</uui-tab>
+			<uui-tab label="Settings" active>Settings</uui-tab>
+			<uui-tab label="Users">Users</uui-tab>
+		</uui-tab-group>
+		<div class="apps">
+			<uui-button look="primary" compact label="Search"><uui-icon name="icon-search"></uui-icon></uui-button>
+			<uui-button look="primary" compact label="Help"><uui-icon name="icon-help-alt"></uui-icon></uui-button>
+			<uui-button look="primary" compact label="User"><uui-avatar name="Matt Brailsford"></uui-avatar></uui-button>
+		</div>
+	</header>
+
+	<div class="section">
+		<nav class="section-sidebar">
+			<h3>Settings</h3>
+			<uui-menu-item label="Document Types" has-children><uui-icon slot="icon" name="icon-folder"></uui-icon></uui-menu-item>
+			<uui-menu-item label="Media Types" has-children><uui-icon slot="icon" name="icon-folder"></uui-icon></uui-menu-item>
+			<uui-menu-item label="Redirects" active><uui-icon slot="icon" name="icon-trafic"></uui-icon></uui-menu-item>
+			<uui-menu-item label="Webhooks"><uui-icon slot="icon" name="icon-webhook"></uui-icon></uui-menu-item>
+		</nav>
+
+		<main class="section-main">
+			<div class="body-layout">
+				<div class="header">
+					<div class="header-content workspace-header">
+						<uui-icon class="entity-icon" name="icon-trafic"></uui-icon>
+						<h3 class="title">Redirects</h3>
+					</div>
+				</div>
+
+				<div class="main">
+					<!-- Replace from here: the collection being designed. -->
+					<div class="collection">
+						<div class="collection-toolbar">
+							<uui-button look="outline" label="Create">Create</uui-button>
+							<uui-input placeholder="Filter" label="Filter">
+								<uui-icon slot="prepend" name="icon-search" style="margin-left:9px"></uui-icon>
+							</uui-input>
+							<uui-button compact label="Table view"><uui-icon name="icon-list"></uui-icon></uui-button>
+						</div>
+
+						<uui-table class="collection-table">
+							<uui-table-head>
+								<uui-table-head-cell class="select-cell"><uui-checkbox aria-label="Select all"></uui-checkbox></uui-table-head-cell>
+								<uui-table-head-cell>Name</uui-table-head-cell>
+								<uui-table-head-cell>Status</uui-table-head-cell>
+								<uui-table-head-cell>Last edited</uui-table-head-cell>
+								<uui-table-head-cell>Edited by</uui-table-head-cell>
+							</uui-table-head>
+							<uui-table-row selectable selected>
+								<uui-table-cell class="select-cell"><uui-checkbox aria-label="Select" checked></uui-checkbox></uui-table-cell>
+								<uui-table-cell><a href="#">/products/old-catalogue</a></uui-table-cell>
+								<uui-table-cell><uui-tag look="secondary" color="positive">Active</uui-tag></uui-table-cell>
+								<uui-table-cell>09-10-2026 14:32</uui-table-cell>
+								<uui-table-cell>Anna Jensen</uui-table-cell>
+							</uui-table-row>
+							<uui-table-row selectable>
+								<uui-table-cell class="select-cell"><uui-icon name="icon-trafic"></uui-icon></uui-table-cell>
+								<uui-table-cell><a href="#">/about-us/our-history-and-a-much-longer-path-that-might-wrap</a></uui-table-cell>
+								<uui-table-cell><uui-tag look="secondary" color="warning">Pending changes</uui-tag></uui-table-cell>
+								<uui-table-cell>07-10-2026 09:05</uui-table-cell>
+								<uui-table-cell>Lars Nielsen</uui-table-cell>
+							</uui-table-row>
+							<uui-table-row selectable>
+								<uui-table-cell class="select-cell"><uui-icon name="icon-trafic"></uui-icon></uui-table-cell>
+								<uui-table-cell><a href="#">/news/2024</a></uui-table-cell>
+								<uui-table-cell><uui-tag look="secondary" color="default">Disabled</uui-tag></uui-table-cell>
+								<uui-table-cell>02-09-2026 16:47</uui-table-cell>
+								<uui-table-cell>Anna Jensen</uui-table-cell>
+							</uui-table-row>
+						</uui-table>
+
+						<uui-pagination current="1" total="4"></uui-pagination>
+					</div>
+					<!-- Replace to here. -->
+				</div>
+
+				<!-- Bulk action bar: only while rows are selected. Delete if the collection has no bulk actions. -->
+				<div class="bulk-bar">
+					<div>
+						<uui-button look="secondary" label="Clear selection">Clear selection</uui-button>
+						<span>1 of 38 selected</span>
+					</div>
+					<div>
+						<uui-button look="secondary" label="Disable">Disable</uui-button>
+						<uui-button look="secondary" color="danger" label="Delete">Delete</uui-button>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<!--
+	Card view alternative:
+	<div class="collection-grid">
+		<uui-card-content-node name="Summer campaign" selectable>
+			<uui-icon slot="icon" name="icon-document"></uui-icon>
+			<uui-tag slot="tag" look="secondary" color="positive">Published</uui-tag>
+			<ul><li><strong>Edited:</strong> 09-10-2026</li></ul>
+		</uui-card-content-node>
+	</div>
+
+	Empty state alternative:
+	<div class="empty-state"><h4>No redirects yet</h4></div>
+	-->
+</body>
+</html>

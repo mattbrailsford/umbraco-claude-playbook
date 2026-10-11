@@ -41,7 +41,10 @@ Pick the minimum set the task actually needs; don't load all of them.
 1. Read the task and the files/extension points you own. Match existing conventions in the
    surrounding code — don't impose a different style even if you'd prefer it. If
    `.claude/memory/` exists, skim `.claude/memory/MEMORY.md` for any `gotcha` or `decision`
-   relevant to what you're about to touch.
+   relevant to what you're about to touch. If the task builds or changes a screen and the plan
+   folder has a mockup for it (`mockups/<screen>.png`, linked from `SPEC.md`), look at it
+   before writing UI code and match its layout, components and content. If you have to
+   depart from it, say so in your report as a decision the plan left implicit.
 2. **Activate this task's specs.** `bdd-specs` generates specs pending by default. Find the
    ones this task covers, turn off their pending marker, run them, and confirm they fail for
    the right reason before you write any implementation. Leave every other pending spec in

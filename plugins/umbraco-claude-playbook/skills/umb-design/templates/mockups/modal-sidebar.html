@@ -1,0 +1,61 @@
+<!doctype html>
+<!--
+  Sidebar modal starter: the panel that slides in from the right for pickers, create flows and
+  "edit in place". Width: add class "small" (500px) or "large" (1200px); default is medium
+  (800px). The page behind is only context, keep it minimal.
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Mockup: Sidebar modal</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@umbraco-ui/uui@2/dist/themes/light.css">
+	<link rel="stylesheet" href="_mockup.css">
+	<script type="module" src="_mockup.js"></script>
+</head>
+<body class="uui-font uui-text">
+	<header class="app-header">
+		<span class="logo">Umbraco</span>
+		<uui-tab-group class="sections">
+			<uui-tab label="Content" active>Content</uui-tab>
+			<uui-tab label="Media">Media</uui-tab>
+			<uui-tab label="Settings">Settings</uui-tab>
+		</uui-tab-group>
+		<div class="apps">
+			<uui-button look="primary" compact label="User"><uui-avatar name="Matt Brailsford"></uui-avatar></uui-button>
+		</div>
+	</header>
+	<div class="section">
+		<nav class="section-sidebar"><h3>Content</h3></nav>
+		<main class="section-main"></main>
+	</div>
+
+	<div class="modal-backdrop"></div>
+	<aside class="modal-sidebar">
+		<div class="body-layout">
+			<div class="header">
+				<h3 class="headline">Choose content types</h3>
+			</div>
+
+			<div class="main">
+				<!-- Replace from here: the modal's content. -->
+				<uui-input placeholder="Search" label="Search" style="width:100%; margin-bottom: var(--uui-size-space-5)">
+					<uui-icon slot="prepend" name="icon-search" style="margin-left:9px"></uui-icon>
+				</uui-input>
+				<uui-box style="--uui-box-default-padding: var(--uui-size-space-3)">
+					<uui-menu-item label="Product page" selectable selected><uui-icon slot="icon" name="icon-document"></uui-icon></uui-menu-item>
+					<uui-menu-item label="News article" selectable><uui-icon slot="icon" name="icon-document"></uui-icon></uui-menu-item>
+					<uui-menu-item label="Landing page with a much longer name that might wrap" selectable><uui-icon slot="icon" name="icon-document"></uui-icon></uui-menu-item>
+				</uui-box>
+				<!-- Replace to here. -->
+			</div>
+
+			<div class="footer">
+				<div class="actions">
+					<uui-button label="Close">Close</uui-button>
+					<uui-button look="primary" color="positive" label="Choose">Choose</uui-button>
+				</div>
+			</div>
+		</div>
+	</aside>
+</body>
+</html>

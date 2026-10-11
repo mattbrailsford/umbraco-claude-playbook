@@ -1,0 +1,167 @@
+<!doctype html>
+<!--
+  Editor (workspace) starter. Shows: section tab, tree with an active item and hover actions,
+  workspace header (back, icon, name, view tabs), content tabs, property groups with the
+  label-left / editor-right layout, a picker property, the footer (breadcrumb, Save,
+  Save and publish), an open "..." action menu, and the toast after saving. Delete what the
+  screen doesn't use.
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Mockup: Editor</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@umbraco-ui/uui@2/dist/themes/light.css">
+	<link rel="stylesheet" href="_mockup.css">
+	<script type="module" src="_mockup.js"></script>
+</head>
+<body class="uui-font uui-text">
+	<header class="app-header">
+		<span class="logo">Umbraco</span>
+		<uui-tab-group class="sections">
+			<uui-tab label="Content">Content</uui-tab>
+			<uui-tab label="Media">Media</uui-tab>
+			<uui-tab label="Settings" active>Settings</uui-tab>
+			<uui-tab label="Users">Users</uui-tab>
+		</uui-tab-group>
+		<div class="apps">
+			<uui-button look="primary" compact label="Search"><uui-icon name="icon-search"></uui-icon></uui-button>
+			<uui-button look="primary" compact label="Help"><uui-icon name="icon-help-alt"></uui-icon></uui-button>
+			<uui-button look="primary" compact label="User"><uui-avatar name="Matt Brailsford"></uui-avatar></uui-button>
+		</div>
+	</header>
+
+	<div class="section">
+		<nav class="section-sidebar">
+			<h3>Settings</h3>
+			<uui-menu-item label="Webhooks" has-children show-children>
+				<uui-icon slot="icon" name="icon-folder"></uui-icon>
+				<uui-menu-item label="Order placed">
+					<uui-icon slot="icon" name="icon-webhook"></uui-icon>
+				</uui-menu-item>
+				<uui-menu-item label="Content published" active>
+					<uui-icon slot="icon" name="icon-webhook"></uui-icon>
+					<!-- Hover actions on a tree item: first action + "..." menu. -->
+					<uui-action-bar slot="actions">
+						<uui-button compact label="Actions"><uui-symbol-more></uui-symbol-more></uui-button>
+					</uui-action-bar>
+				</uui-menu-item>
+			</uui-menu-item>
+			<!-- "..." action menu, shown open beside the item it belongs to. -->
+			<div class="popover-menu" style="position:absolute; left:250px; top:230px; z-index:5">
+				<uui-menu-item label="Rename…"><uui-icon slot="icon" name="icon-edit"></uui-icon></uui-menu-item>
+				<uui-menu-item label="Duplicate"><uui-icon slot="icon" name="icon-documents"></uui-icon></uui-menu-item>
+				<uui-menu-item label="Delete…"><uui-icon slot="icon" name="icon-delete"></uui-icon></uui-menu-item>
+			</div>
+		</nav>
+
+		<main class="section-main">
+			<div class="body-layout">
+				<div class="header">
+					<div class="header-content workspace-header">
+						<uui-button compact class="back" label="Back"><uui-icon name="icon-arrow-left"></uui-icon></uui-button>
+						<uui-icon class="entity-icon" name="icon-webhook"></uui-icon>
+						<uui-input class="name" label="Name" value="Content published"></uui-input>
+					</div>
+					<div class="navigation">
+						<uui-tab-group class="view-tabs">
+							<uui-tab label="Details" active><uui-icon slot="icon" name="icon-edit"></uui-icon>Details</uui-tab>
+							<uui-tab label="Deliveries"><uui-icon slot="icon" name="icon-box"></uui-icon>Deliveries</uui-tab>
+						</uui-tab-group>
+					</div>
+				</div>
+
+				<div class="main no-padding">
+					<!-- The Content view is its own body layout: a white tab bar, then the groups.
+					     The tab bar only shows when the editor has more than one tab of groups. -->
+					<div class="body-layout">
+						<div class="header fit-height">
+							<div class="header-content">
+								<uui-tab-group class="header-tabs">
+									<uui-tab label="Settings" active>Settings</uui-tab>
+									<uui-tab label="Headers">Headers</uui-tab>
+								</uui-tab-group>
+							</div>
+						</div>
+						<div class="main">
+
+							<!-- Replace from here: the groups and properties being designed. -->
+							<uui-box class="group" headline="Delivery">
+								<div class="property">
+									<div>
+										<uui-label required>URL</uui-label>
+										<div class="description">Where the payload is posted.</div>
+									</div>
+									<div><uui-input label="URL" value="https://hooks.example.dk/umbraco/published"></uui-input></div>
+								</div>
+								<div class="property">
+									<div>
+										<uui-label>Enabled</uui-label>
+										<div class="description">Turn off to pause deliveries without losing settings.</div>
+									</div>
+									<div><uui-toggle label="Enabled" checked></uui-toggle></div>
+								</div>
+								<div class="property">
+									<div>
+										<uui-label>Content types</uui-label>
+										<div class="description">Only fire for these. Leave empty for all.</div>
+									</div>
+									<!-- Picker: picked items as ref nodes, then a Choose button. -->
+									<div class="picker">
+										<uui-ref-list>
+											<uui-ref-node name="Product page" detail="/products">
+												<uui-icon slot="icon" name="icon-document"></uui-icon>
+												<uui-action-bar slot="actions"><uui-button label="Remove">Remove</uui-button></uui-action-bar>
+											</uui-ref-node>
+											<uui-ref-node name="News article" detail="/news">
+												<uui-icon slot="icon" name="icon-document"></uui-icon>
+												<uui-tag size="s" slot="tag" look="secondary">Draft</uui-tag>
+												<uui-action-bar slot="actions"><uui-button label="Remove">Remove</uui-button></uui-action-bar>
+											</uui-ref-node>
+										</uui-ref-list>
+										<uui-button class="choose" look="placeholder" label="Choose">Choose</uui-button>
+									</div>
+								</div>
+							</uui-box>
+
+							<uui-box class="group" headline="Retries">
+								<div class="property">
+									<div>
+										<uui-label>Retry count</uui-label>
+										<div class="description">How many times to retry a failed delivery.</div>
+									</div>
+									<div><uui-input type="number" label="Retry count" value="3" style="width:120px"></uui-input></div>
+								</div>
+							</uui-box>
+							<!-- Replace to here. -->
+						</div>
+					</div>
+				</div>
+
+				<div class="footer">
+					<uui-breadcrumbs>
+						<uui-breadcrumb-item href="#">Webhooks</uui-breadcrumb-item>
+						<uui-breadcrumb-item last-item>Content published</uui-breadcrumb-item>
+					</uui-breadcrumbs>
+					<div class="actions">
+						<uui-button look="secondary" color="positive" label="Save">Save</uui-button>
+						<!-- Split button: only for an editor with more than one save action. -->
+						<uui-button-group class="split-expand">
+							<uui-button look="primary" color="positive" label="Save and publish">Save and publish</uui-button>
+							<uui-button compact look="primary" color="positive" label="More publishing options"><uui-symbol-expand></uui-symbol-expand></uui-button>
+						</uui-button-group>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<!-- Toast: bottom right, after an action finishes. -->
+	<uui-toast-notification-container bottom-up class="toasts">
+		<uui-toast-notification color="positive" open>
+			<uui-toast-notification-layout headline="Webhook saved" class="uui-text">
+				<div>Deliveries will use the new settings.</div>
+			</uui-toast-notification-layout>
+		</uui-toast-notification>
+	</uui-toast-notification-container>
+</body>
+</html>
