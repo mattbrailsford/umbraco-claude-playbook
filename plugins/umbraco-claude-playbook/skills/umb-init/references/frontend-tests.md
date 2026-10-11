@@ -1,7 +1,7 @@
-# Step 5: Frontend tests
+# Step 6: Frontend tests
 
 Only if the project has a `Client/` frontend. These are component tests: Lit elements
-rendered in a real browser. Full journeys through a running backoffice are step 6.
+rendered in a real browser. Full journeys through a running backoffice are step 7.
 
 ## Detect
 
