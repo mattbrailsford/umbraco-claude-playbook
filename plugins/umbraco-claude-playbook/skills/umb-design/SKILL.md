@@ -35,6 +35,10 @@ folder when the feature has a UI:
   screen, and its screenshot. This answers "what will it look like," and is what the human
   approves before any UI code is written. See "Mockup each screen" below.
 
+Outside the plan folder, it also owns the project's shared mockup starters in
+`docs/mockups/starters/` (see "Project starters" below), created only when a product surface
+is distinct enough to need one.
+
 Read `BRIEF.md` — design must serve it, not redefine it. As with `umb-explore`: if the project
 has its own plan-folder convention, fold this content into that shape, but keep the discipline
 of touching only these files; that's the point, not the specific file names.
@@ -125,8 +129,10 @@ For each screen the feature adds or visibly changes:
    there", open the nearest existing screen of the same kind and write down its layout rules
    before drawing anything. A new screen that looks like a stranger next to its neighbours is
    the most common UI fix, and the cheapest to prevent.
-2. **Start from the matching pattern in `templates/mockups/`.** Almost every backoffice screen
-   is one of a handful of patterns, and each has a starter:
+2. **Start from a project starter if one fits, otherwise the matching pattern in
+   `templates/mockups/`.** Check the project's `docs/mockups/starters/` first (see "Project
+   starters" below). Otherwise, almost every backoffice screen is one of a handful of
+   patterns, and each has a starter:
 
    | Pattern | Starter | Covers |
    |---|---|---|
@@ -175,6 +181,46 @@ For each screen the feature adds or visibly changes:
    it to the human with the two or three choices you're least sure of named underneath.
    Revise the HTML on feedback and re-shoot; the screenshot in the folder is always the
    current one.
+
+#### Project starters
+
+Some products have their own surface that most of their features land on: Umbraco.AI's
+Copilot sidebar, Automate's flow editor. The general starters can't draw these, and mocking a
+Copilot feature on a generic editor page hides the questions that matter (does it fit a
+narrow sidebar, how does it sit among flow nodes). A project starter captures that surface
+once so every later feature reuses it.
+
+**Capture one only when both are true:**
+
+1. **It can't be drawn from a general starter.** The surface's own layout or chrome differs
+   (a docked panel over the backoffice, a canvas of connected nodes, a chat thread), not just
+   the content between the "Replace from here" comments. A dashboard with unusual boxes is
+   still a dashboard: use `dashboard.html`.
+2. **Features keep landing on it.** It's a host surface the product's features are built
+   into, not one screen of this feature. If it's a one-off, draw it inside this feature's own
+   mockup and don't save a starter.
+
+When both are true and no starter exists yet:
+
+- **It's a drawing of the surface, not the surface.** Like the general starters, it's static
+  HTML and CSS plus UUI elements, built to look like the real thing. Never load the product's
+  own components, bundles or libraries into it (a flow editor's React canvas, the Copilot's
+  chat element, the package's built JS): they need the running app, they break outside it, and
+  they make the starter as hard to change as the product. Draw a flow node as a styled box and
+  a connector as an inline SVG line; draw a chat thread as stacked message boxes.
+- Build it the same way the general starters were built: read the product's own source for
+  that surface and copy its layout, spacing and colours into an HTML page that uses
+  `_mockup.css` and `_mockup.js`, with a "Replace from here" / "Replace to here" region where
+  feature content goes. Screenshot the real surface, if a running site is available, and
+  compare.
+- Save it to `docs/mockups/starters/<surface>.html` with a copy of `_mockup.css` and
+  `_mockup.js` beside it, so it previews on its own.
+- Start the file with a comment naming the source files it copies and the commit it was
+  copied from (`git rev-parse HEAD`).
+
+When reusing a project starter, first check whether its source files have changed since that
+commit (`git log --oneline <commit>..HEAD -- <source files>`). If they have, refresh the
+starter before copying it, and update the commit in its comment.
 
 Fidelity is "close enough to judge the layout and the content choices," not pixel-perfect:
 real components, real spacing tokens, real data shapes. Final colour tweaks and dark-mode
@@ -319,5 +365,6 @@ follow), write it to `.claude/memory/` instead (type: `decision`) — see
 
 ## Hand off
 
-Note any `TODO` in `ARCHITECTURE.md`/`SPEC.md`, and any screen mockup the human hasn't
-approved yet, then: `Suggested next: umb-plan.`
+Note any `TODO` in `ARCHITECTURE.md`/`SPEC.md`, any screen mockup the human hasn't approved
+yet, and any project starter created or refreshed in `docs/mockups/starters/`, then:
+`Suggested next: umb-plan.`
