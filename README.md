@@ -133,6 +133,11 @@ if your project needs that — say so once in `CLAUDE.md` and every phase follow
 | `BUILD-LOG.md`, `screenshots/` | `umb-build-loop` |
 | `PR-DESCRIPTION.md` | `describe-pr` (only when the plan folder exists — otherwise the description goes straight into the PR, not to disk) |
 
+Outside the per-feature folders, `umb-design` also owns `docs/mockups/starters/`: mockup
+starters for a product's own surfaces (a Copilot sidebar, a flow editor) that the general
+starters can't draw. One is saved only when the surface is both distinct and something
+features keep landing on.
+
 One file per owner, not one section per owner in a shared doc — two phases (or two sessions)
 never touch the same file, so there's nothing to merge-conflict over. Rules: **re-entrant**
 (re-run a phase to refine its file, never restart), **stop, don't guess** (a phase missing its

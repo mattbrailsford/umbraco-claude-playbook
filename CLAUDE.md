@@ -51,7 +51,8 @@ in this repo. The rules that make this work, if editing any of these skill files
 - **Re-entrant** — re-running a phase refines its file; it never restarts it.
 - **One owner per file** — `umb-explore` owns `BRIEF.md` and creates `README.md` (the
   folder's read-order index, the only file it creates once and never recreates), `umb-design`
-  owns `ARCHITECTURE.md` + `SPEC.md` + `mockups/`, `umb-plan` owns `STORIES.md` + `PLAN.md`,
+  owns `ARCHITECTURE.md` + `SPEC.md` + `mockups/` (and the project-wide
+  `docs/mockups/starters/`), `umb-plan` owns `STORIES.md` + `PLAN.md`,
   `umb-build-loop` owns `BUILD-LOG.md` + `screenshots/`. File-level (not section-level) ownership means two
   phases never touch the same file — with two narrow, deliberate exceptions: every phase may
   append to `DECISION-LOG.md`, and every phase updates its own single line in `README.md`

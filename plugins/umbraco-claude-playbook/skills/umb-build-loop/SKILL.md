@@ -47,15 +47,17 @@ things.
 4. **Cut the feature's branch/worktree.** This is the one point in the whole pipeline that
    touches git before any feature code exists — see `git-workflow`'s "Branch/worktree per
    feature" section for the full reasoning. In order:
-   1. Confirm the working tree is clean *except* for the plan folder itself (expected —
-      `umb-explore`/`umb-design`/`umb-plan` never commit it). Any *other* uncommitted change is
-      unrelated work; stop and report rather than building on top of it.
+   1. Confirm the working tree is clean *except* for the plan folder itself and any new or
+      refreshed project mockup starters in `docs/mockups/starters/` (expected —
+      `umb-explore`/`umb-design`/`umb-plan` never commit them). Any *other* uncommitted change
+      is unrelated work; stop and report rather than building on top of it.
    2. Confirm you're on the project's trunk branch (see `CLAUDE.md`'s Feature workflow
       section). If not, stop and ask — don't guess which branch to fork the feature from.
    3. **Ask the user to confirm before running any of this** — it commits to trunk, which the
       "always ask before touching main" rule covers regardless of how small the change is.
-   4. Commit the plan folder as-is, on trunk: `git add <plan-folder> && git commit -m "docs:
-      add plan folder for <feature-slug>"`.
+   4. Commit the plan folder as-is, on trunk, with any changed project starters: `git add
+      <plan-folder> docs/mockups/starters && git commit -m "docs: add plan folder for
+      <feature-slug>"`.
    5. Create the branch/worktree named after `<feature-slug>`, off that commit. Prefer Claude
       Code's native worktree mechanism (`isolation: "worktree"` on the `Agent` tool, or the
       project's own configured `WorktreeCreate` hook) so the project decides the real branch
