@@ -58,9 +58,11 @@ question.
 5. **Verify.** Run the project's build/test if fast. If slow or absent, run the narrowest
    check that proves the fix (the single related test, or a targeted build of just the
    changed project). If the fix changes something a person can see or call (a screen, a
-   Management API endpoint, a property editor) and the project has a demo site, start it and
-   go through the fixed path once. A passing test doesn't prove the fix reached the real
-   entry point.
+   Management API endpoint, a property editor), also check it through the real entry point:
+   run the e2e test that covers it if the project has one, otherwise start the demo site and
+   go through the fixed path once. Writing a new e2e test is beyond a quick fix; if none
+   covers the path, say so in the hand-off. A passing unit test doesn't prove the fix reached
+   the real entry point.
 6. **Review.** Unless the change is text only (a typo, a comment, a log string, a label),
    dispatch one `reviewer` subagent (Agent tool, `subagent_type: reviewer`) against the
    uncommitted diff, with the fix description as its task. Small diffs still break things a

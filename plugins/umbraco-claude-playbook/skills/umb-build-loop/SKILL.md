@@ -104,15 +104,21 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
    once it's fixed, so the next dispatch doesn't repeat it.
 
 4. **Smoke the real entry point.** Before commit, actually exercise the deployed artifact.
-   Most packages/add-ons generate a throwaway demo site for exactly this — start it and drive
-   one real request through the Management API controller, resolve the newly-registered
-   service via DI the way Umbraco actually would, or drive the backoffice UI through it
-   (Playwright or equivalent). If this project doesn't have a separate demo/site environment —
-   you're building something that *is* the host, like Umbraco CMS itself, rather than a
-   package installed into one — a thorough integration test that boots the real hosting/DI
-   pipeline (not a unit test through an internal seam) is the equivalent gate. Fakes for
-   external services are fine either way; the request must travel through the real entry
-   point, not an internal function that bypasses it. If the smoke fails, recurse to step 3
+   Use the first of these the project has:
+   - **An end-to-end (e2e) test suite.** Run the e2e test that covers the task's path. If no
+     test covers it, the builder adds one as part of the task. An e2e suite passing without
+     touching the new code proves nothing.
+   - **A demo site.** Most packages/add-ons generate a throwaway one for exactly this. Start
+     it and run through the change yourself: drive the backoffice UI (Playwright or
+     equivalent), or send one real request through the Management API controller for a change
+     with no screen.
+   - **Neither**, because you're building something that *is* the host, like Umbraco CMS
+     itself, rather than a package installed into one: a thorough integration test that boots
+     the real hosting/DI pipeline (not a unit test through an internal seam) is the
+     equivalent gate.
+
+   Fakes for external services are fine in all three; the request must travel through the
+   real entry point, not an internal function that bypasses it. If the smoke fails, recurse to step 3
    with a finding — a green unit test suite is not enough to ship.
 
    **If the task adds or changes a migration** and the project supports SQL Server, the smoke
