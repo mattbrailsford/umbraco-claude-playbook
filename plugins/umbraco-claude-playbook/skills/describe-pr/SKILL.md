@@ -67,8 +67,8 @@ as-is; don't restate them here.
        most of it is new or the diff notation would obscure ownership or order.
    - **No plan folder** — use `templates/pr-plain.md`: Summary, Why, How to verify, Risk /
      rollback. A diagram-heavy outline on a five-line fix is noise, not help.
-   - Either way, write it as one person explaining a change to another — plain language, no
-     jargon that isn't already in the codebase.
+   - Either way, write it following `plain-writing`: one person explaining a change to
+     another, plain language, no jargon that isn't already in the codebase.
 
 5. **Save and publish.**
    - Plan folder found: save the draft to `docs/plans/<feature-slug>/PR-DESCRIPTION.md` first —

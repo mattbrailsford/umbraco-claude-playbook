@@ -25,9 +25,10 @@ scope creep, no adjacent "while I'm here" changes.
   `gof-patterns` only if a pattern genuinely fits.
 - Persistence work → `ef-core-data`. Check whether the project targets SQL Server only or
   SQL Server *and* SQLite before writing a migration — most Umbraco packages need both.
-- Frontend work (Lit components, UUI, backoffice manifests) → the installed Umbraco
-  Backoffice Skills for the specific extension point, plus `umbraco-backoffice-conventions`
-  for package-level structure (barrel exports, OpenAPI client usage).
+- Frontend work (Lit components, UUI, backoffice manifests) → `umbraco-backoffice-ux` for how the
+  screen should look and behave, the installed Umbraco Backoffice Skills for the specific
+  extension point, plus `umbraco-backoffice-conventions` for package-level structure (barrel
+  exports, OpenAPI client usage).
 - Anything touching auth, user input, the Management API, or secrets → `security-dotnet`
   while writing, so the reviewer has less to send back.
 - Any Lit template rendering user-generated/AI-generated/external content via

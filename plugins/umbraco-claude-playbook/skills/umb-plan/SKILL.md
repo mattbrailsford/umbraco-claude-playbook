@@ -82,6 +82,9 @@ Light — confirmation, not elicitation. ~3–5 questions, batched:
 
 ## Produce
 
+Write every file this phase produces following `plain-writing`: a person reads it before the
+next phase runs, so it should be quick to read without leaving anything out.
+
 `PLAN.md`, a checklist `umb-build-loop` can execute:
 
 - Every task is `- [ ]`, top-to-bottom in dependency order.

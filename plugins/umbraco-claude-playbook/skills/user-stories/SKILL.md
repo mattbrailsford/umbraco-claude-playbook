@@ -130,6 +130,9 @@ too, plus whatever the team adds (review, docs, deployed behind a flag, etc.).
 
 ## Output
 
+Write stories following `plain-writing`: plain words, one behaviour per criterion, and
+every name, number and condition kept.
+
 Write or update `STORIES.md`. If stories already exist there, merge — preserve story ids
 already in use (specs reference them) and append or amend rather than rewriting wholesale.
 After writing, report how many stories the file now holds and that it's ready for

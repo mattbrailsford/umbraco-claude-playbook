@@ -29,6 +29,8 @@ design. A reviewer that fixes its own findings isn't a gate.
 - `ef-core-data` — if a migration was added, check it's prefixed to avoid colliding with
   other packages in a shared Umbraco database, and that it works for every database provider
   the project supports (not just the one the builder happened to test against).
+- `umbraco-backoffice-ux` — for any diff that adds or changes backoffice UI; its "Reviewing a UI diff"
+  list is what to look for.
 - `umbraco-backoffice-conventions` — for the public-API-surface rule (only barrel-exported
   symbols are real public API) and the manifest-alias-rename hazard, both used in step 4 below.
 

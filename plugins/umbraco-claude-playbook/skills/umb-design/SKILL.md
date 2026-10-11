@@ -98,51 +98,18 @@ it just means the gap ships, because nothing else in the pipeline looks for it.
 
 ## Backoffice UX check (features with a UI)
 
-A backoffice extension has a real user: the editor sitting in front of it. A feature that
-technically works but leaves them guessing is still a bug, just one the build/test suite can't
-see. If `SPEC.md`'s "Frontend components" section isn't "none," run the check below before
-finalizing it.
+If `SPEC.md`'s "Frontend components" section isn't "none," invoke `umbraco-backoffice-ux` and apply
+it before finalizing the design:
 
-### Component convention, before anything else
-
-The plainest working control satisfies the acceptance criteria with the least code, so that's
-what gets picked by default — a bare `<select>` or text input for anything that references
-another piece of content, media, a member, or a user. Umbraco's own convention for that is
-usually richer: a **picker** that opens a modal, lets the editor search or browse, and shows
-enough context (a thumbnail, a path, a status badge) to pick correctly instead of guessing from
-a bare name or ID. Decide the component the same way the connected-pattern check above decides
-a fan-out system:
-
-1. **Check docs first.** If `CLAUDE.md` or the official Backoffice Skills plugin already names
-   the pattern for this kind of reference, that's ground truth.
-2. **Otherwise, sample 2–3 sibling inputs** that reference the same kind of thing elsewhere in
-   this codebase or in Umbraco core, and match what they use.
-3. A plain `<select>`/combobox is a deliberate choice, not a shortcut, only for a short, static,
-   self-explanatory list (a fixed set of enum-like options) that doesn't need extra context to
-   pick correctly. Note in `ARCHITECTURE.md` when you've chosen it over a richer picker, and
-   why — so it reads as a decision, not an oversight.
-
-### The five spots
-
-Once the component is chosen, walk through these before finalizing `SPEC.md` and decide,
-deliberately, whether each needs a line:
-
-1. **First run.** Nothing's been created yet — does the empty state say what goes here and
-   offer the first action, or is it a blank table?
-2. **The mistake.** The editor picks a bad value or clicks the wrong thing — does the error
-   say what happened and what to do next, or just "invalid input"?
-3. **The wait.** Something takes more than a second (a save, a fetch, an import) — does the
-   editor know it's working?
-4. **The finish.** It worked — how do they know, beyond a modal just closing?
-5. **The return.** They come back tomorrow — is their last choice (a filter, a tab, a sort
-   order) still where they left it?
-
-Most requests describe only the main action and skip the other four. Each spot that applies
-becomes one ordinary line in `SPEC.md`, same as any other observable behavior — no new
-dependency, no new component, no schema change; `umb-plan` slices it into a task like anything
-else. If a spot genuinely doesn't apply, note it as a deliberate skip rather than leaving it
-unconsidered, the same way the connected-pattern check above handles a system that doesn't
-apply.
+1. **Pick each component by its convention**, not the plainest control that works. Above all,
+   anything that chooses an entity is a picker, not a select box. A select chosen over a picker
+   gets a line in `ARCHITECTURE.md` saying why.
+2. **Walk the five moments** (first run, mistake, wait, finish, return) for each screen. Each
+   one that applies becomes one ordinary line in `SPEC.md`, same as any other observable
+   behaviour, that `umb-plan` slices into a task like anything else. One that doesn't apply is
+   noted as a deliberate skip.
+3. **List every place each component will appear**, so the mockups and the spec cover all of
+   them.
 
 ### Mockup each screen
 
@@ -154,13 +121,10 @@ minutes, before a task is planned.
 
 For each screen the feature adds or visibly changes:
 
-1. **Match the sibling screen first.** Open the nearest existing screen of the same kind (the
-   dashboard next to it, the workspace view it sits beside — in this codebase, the host
-   product, or Umbraco core) and write down its layout rules: how boxes are arranged and
-   spaced, whether tables run edge to edge inside a box, how headers, help/info icons and
-   actions are styled, which icon colours it uses. Same docs-first, siblings-second order as
-   the component convention above. A new screen that looks like a stranger next to its
-   neighbours is the most common UI fix, and the cheapest to prevent.
+1. **Match the sibling screen first.** Following `umbraco-backoffice-ux`'s "Match what's already
+   there", open the nearest existing screen of the same kind and write down its layout rules
+   before drawing anything. A new screen that looks like a stranger next to its neighbours is
+   the most common UI fix, and the cheapest to prevent.
 2. **Start from the matching pattern in `templates/mockups/`.** Almost every backoffice screen
    is one of a handful of patterns, and each has a starter:
 
@@ -201,7 +165,7 @@ For each screen the feature adds or visibly changes:
    might wrap, one row in a warning or error state. Placeholder text hides the questions that
    matter — whether a range reads better as one number, whether a column earns its space,
    whether a first-time viewer understands what a chart is showing.
-4. **Mock the five spots that apply.** The empty state and error state are their own small
+4. **Mock the five moments that apply.** The empty state and error state are their own small
    variants (a second section in the same file, or `<screen>-empty.html`), not something left
    for the builder to invent.
 5. **Screenshot and show it.** Serve the folder locally (the pages load ES modules, so
@@ -218,7 +182,10 @@ polish still happen on the built screen.
 
 `SPEC.md`'s "Frontend components" section shows each mockup's screenshot inline at full size
 (GitHub fits it to the page; a thumbnail is too small to judge layout) with a link to its
-HTML source underneath. The mockup is part of the contract: the builder matches its layout
+HTML source underneath. The text under a screenshot covers only what the picture can't show
+(see `plain-writing`'s "Let pictures carry what they show"): what happens on click, save and
+failure, rules and permissions, where the data comes from, and the states not pictured. It
+doesn't walk through the layout, labels or columns the reader can already see. The mockup is part of the contract: the builder matches its layout
 and content, and the build loop's smoke step compares the built screen against it. A deliberate change from the mockup during the build
 is a decision, logged in `DECISION-LOG.md` and reflected back into the mockup by re-running
 this phase.
@@ -229,9 +196,11 @@ this phase.
 - Async naming, repository visibility, public-API compatibility → `umbraco-package-conventions`.
 - General C# type/error-handling shape for a new service or model → `dotnet-best-practices`.
 - Persistence needed → `ef-core-data`.
-- Backoffice UI needed → the official Umbraco Backoffice Skills plugin for the specific
-  extension point (dashboard, property editor, tree, etc.), plus
-  `umbraco-backoffice-conventions` for package-level frontend structure.
+- Backoffice UI needed → `umbraco-backoffice-ux` for how screens should look and behave, the official
+  Umbraco Backoffice Skills plugin for the specific extension point (dashboard, property
+  editor, tree, etc.), plus `umbraco-backoffice-conventions` for package-level frontend
+  structure.
+- Writing `ARCHITECTURE.md` and `SPEC.md` → `plain-writing`.
 - Module/class boundaries → `solid-principles`, `design-principles`. Pattern choice →
   `gof-patterns`.
 - Anything touching auth, user input, or the Management API → `security-dotnet`, now, not
@@ -285,6 +254,9 @@ above:
 
 ## Produce
 
+Write every file this phase produces following `plain-writing`: a person reads it before the
+next phase runs, so it should be quick to read without leaving anything out.
+
 When revising an existing `ARCHITECTURE.md`/`SPEC.md`, rewrite the affected sections to
 reflect the current approach only — don't leave the old approach in place alongside a note
 about what changed. These files are a snapshot of the current design, not a changelog. Past
@@ -329,6 +301,9 @@ do/render/emit — or "none">
 ![<Screen name> mockup](./mockups/<screen>.png)
 
 [Mockup source](./mockups/<screen>.html)
+
+<behaviour the screenshot can't show: what happens on each action, rules, data source,
+states not pictured>
 
 <one block like this per mocked-up screen>
 ```

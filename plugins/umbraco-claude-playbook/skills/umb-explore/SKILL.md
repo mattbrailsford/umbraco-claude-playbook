@@ -117,6 +117,9 @@ already expose the extension point this needs).
 
 ## Produce
 
+Write every file this phase produces following `plain-writing`: a person reads it before the
+next phase runs, so it should be quick to read without leaving anything out.
+
 **First run only (`README.md` doesn't exist yet):** create it as the folder's index:
 
 ```md
