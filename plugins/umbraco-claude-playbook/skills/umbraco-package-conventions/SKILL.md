@@ -2,11 +2,12 @@
 name: umbraco-package-conventions
 description: >-
   Backend package conventions for an Umbraco package that aren't about extension mechanisms
-  specifically — async method naming, repository visibility, public-API backwards
-  compatibility, and where extension methods live. Use when naming a service method, deciding
-  a repository's accessibility, changing a public method's signature, or organizing extension
-  methods. For Umbraco's own extension mechanisms (Composers, collection builders, notification
-  handlers, attribute-based discovery), see `umbraco-extensibility` instead. Complements
+  specifically — async method naming, type and member visibility (internal by default),
+  public-API backwards compatibility, and where extension methods live. Use when naming a
+  service method, deciding whether a type or member should be public, changing a public
+  method's signature, or organizing extension methods. For Umbraco's own extension mechanisms
+  (Composers, collection builders, notification handlers, attribute-based discovery), see
+  `umbraco-extensibility` instead. Complements
   `dotnet-best-practices` (general C#/.NET language discipline, not Umbraco-specific) — this
   skill is Umbraco-package-specific convention, not general language discipline.
 ---
@@ -34,7 +35,28 @@ checks: `[Entity][Qualifier]ExistsAsync` (e.g. `ItemAliasExistsAsync`).
 This is the dominant shape across real Umbraco service interfaces, though not universal —
 treat it as a strong default, not a rule worth blocking a PR over on its own.
 
-## Repository access: internal to the owning service, as a strong default
+## Visibility: `internal` by default
+
+Every `public` type or member is a contract. Once it ships, changing it falls under the
+deprecation rules in "Public API backwards compatibility" below. So start everything
+`internal`, and make it `public` only when it is one of these:
+
+- **Public API**: something consumers are meant to call, plus the models they pass in or get
+  back.
+- **An extension point**: something others hook into, such as an interface to implement, a
+  base class, a collection builder, or a notification and its payload.
+- **Required by a base type or DI**: an override of a public member, or a type that the
+  framework, the DI container or assembly scanning can only use when it's public.
+
+Sharing code between your own assemblies isn't one of these. Keep it `internal` and add an
+`InternalsVisibleTo` for the consuming assembly in the owning project. Visibility is also
+per member: a notification class and its name can be public while the factory methods that
+build it stay internal.
+
+Before adding a `public` type or member, name which of the three it is. If you can't, it's
+`internal`.
+
+### Repositories: internal to the owning service
 
 Repositories should be `internal` to the persistence assembly. Only the entity's own service
 may touch its repository — controllers and other services go through the service layer:

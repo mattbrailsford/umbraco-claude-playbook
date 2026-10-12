@@ -66,7 +66,7 @@ returning `PASS` or `FAIL`.
   discipline — general C#, not Umbraco-specific
 - `umbraco-extensibility` — Composers, collection builders, notification handlers,
   attribute-based discovery
-- `umbraco-package-conventions` — async naming, repository visibility,
+- `umbraco-package-conventions` — async naming, visibility (internal by default),
   `[Obsolete]`-proxied public API changes
 - `typescript-best-practices` — discriminated unions, `{ data, error }` error handling, null
   hygiene, the `toString()`/`toJSON()` rule — general TypeScript, not Umbraco-specific

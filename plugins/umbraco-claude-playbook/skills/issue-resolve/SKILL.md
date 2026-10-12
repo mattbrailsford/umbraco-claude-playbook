@@ -64,6 +64,13 @@ but the real judgment stays where it already lives:
 
 Either way, this skill hands off and waits — it does not write the fix itself.
 
+Either way, ask the lane to fix the cause, not just the reported spot. A reported bug often has
+siblings with the same cause (other endpoints missing the same check, other components with
+the same pattern), especially when the same kind of bug has been reported before. `quick-fix`
+searches for them in its own loop. For the pipeline route, include "find other places with
+the same cause" in what you hand `umb-explore`, so the brief can bring them into scope or
+list them as follow-ups.
+
 ## Closing the loop
 
 Once the fix is committed — right after commit for `quick-fix`, or once `umb-build-loop`

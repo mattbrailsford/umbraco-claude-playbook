@@ -106,6 +106,10 @@ build it once as a shared component.
 
 - **Help and info buttons** are a compact, borderless button holding just the icon. An
   outlined button makes the row taller and draws more attention than help should.
+- **Icons exist in Umbraco's set.** The backoffice ships its own icon set, not every Lucide
+  icon, so an icon name that looks right can render blank. Check each new icon name against
+  the project's Umbraco version and look at it on screen. Where items sit side by side (a list
+  of actions, a picker), give each one its own icon that fits what it does.
 - **Disabled controls** show the not-allowed cursor and say why they're disabled where that
   isn't obvious.
 - **Colour and contrast**: use UUI colour tokens; never put text, tags or icons in a colour
@@ -135,3 +139,4 @@ Things to look for in the code, before anyone sees the screen:
 - a list or table with no empty state, a fetch with no loading state, a save with no
   confirmation
 - a component used in more than one place that sets a fixed width
+- a new `icon-*` name that hasn't been checked against the backoffice icon set
