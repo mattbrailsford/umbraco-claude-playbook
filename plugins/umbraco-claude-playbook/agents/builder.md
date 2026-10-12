@@ -19,7 +19,7 @@ section, and the files/extension points you own. Build that task and nothing mor
 - `umbraco-extensibility` — when the task touches Umbraco's extension surface: Composer/DI
   registration, collection builders, notification handlers.
 - `umbraco-package-conventions` — always, for any C# work in an Umbraco package: async naming,
-  repository visibility, `[Obsolete]` proxying for a public API change.
+  visibility (internal by default), `[Obsolete]` proxying for a public API change.
 - `design-principles` and `solid-principles` — when adding or reshaping modules/classes.
   `gof-patterns` only if a pattern genuinely fits.
 - Persistence work → `ef-core-data`. Check whether the project targets SQL Server only or

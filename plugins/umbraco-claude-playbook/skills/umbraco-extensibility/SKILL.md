@@ -8,7 +8,7 @@ description: >-
   finders, URL segment providers, health checks, Examine indexing, and more). Use when
   deciding how to make a feature extensible by other packages, or when choosing which CMS
   extension point fits a given task. For general backend package conventions that aren't
-  about extension mechanisms specifically (async naming, repository visibility, public-API
+  about extension mechanisms specifically (async naming, visibility (internal by default), public-API
   compatibility), see `umbraco-package-conventions` instead. Leaves out what the official
   Backoffice Extension Skills plugin already covers: property editor UI and schema,
   dashboards, sections, trees.
@@ -88,6 +88,34 @@ Not the same as the official Backoffice Extension Skills plugin's `umbraco-notif
 skill: that covers backoffice toast messages (`UMB_NOTIFICATION_CONTEXT`), a frontend-only
 concept that shares the name.
 
+## Publish your own notifications at extension points
+
+When a feature adds an extensible API or extension point, propose notifications for it in the
+design. Don't wait to be asked, and don't cut them as "add later". They're cheap, and they're
+the easiest way for someone to extend a feature without replacing a service or writing a
+plugin. List the feature's lifecycle moments (selected, executing, executed, saved) and
+propose one for each moment that adds value. Match the shape of the package's or Umbraco's
+existing notifications.
+
+Pick the kind by what the extender needs:
+
+- **An "-ed" notification** (`ThingSavedNotification`) when they want to watch or react
+  after the fact.
+- **A cancelable "-ing" notification** (`ThingSavingNotification`) when they want to add to,
+  change or block what happens. Several handlers can each add something, and any one can
+  cancel.
+- **A replaceable service or ordered collection** when they want to own the whole behavior,
+  when there must be one answer, or when order matters. Notification handlers have no
+  reliable order.
+
+Skip a cancelable "-ing" notification when another mechanism already decides that outcome,
+such as an ordered collection that picks the result. Two ways to decide the same thing will
+conflict. Record that choice in `DECISION-LOG.md`.
+
+If an "-ing" notification lets handlers change content you generate, such as text, pass it as
+named parts that handlers add, remove or reorder. If handlers search and replace your raw
+text, every wording change you make breaks someone.
+
 ## Catalogue: which CMS extension point for which job
 
 Excludes what the official Backoffice Extension Skills plugin documents: the Lit/UUI element
@@ -128,7 +156,7 @@ indexing surface on a v19+ target.
 This skill covers Umbraco's extension mechanisms and the backend-side CMS extension points
 built on them, only.
 
-- Async naming, repository visibility, public-API backwards compatibility, and where extension
+- Async naming, visibility (internal by default), public-API backwards compatibility, and where extension
   methods live: `umbraco-package-conventions`.
 - Extension points other products expose (a Commerce payment provider, a Forms workflow type, a
   Contentment data source): that package's own docs.

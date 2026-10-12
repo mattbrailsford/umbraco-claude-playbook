@@ -158,7 +158,7 @@ disposal, immutability. Not covered here:
 
 - Umbraco extension mechanisms (Composers, collection builders, notification handlers):
   `umbraco-extensibility`.
-- Async *naming*, repository visibility, public-API compatibility:
+- Async *naming*, visibility (internal by default), public-API compatibility:
   `umbraco-package-conventions`.
 - EF Core/persistence specifics: `ef-core-data`.
 - Security-sensitive patterns: `security-dotnet`.

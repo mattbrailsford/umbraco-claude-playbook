@@ -256,7 +256,7 @@ this phase.
 ## Skills to pull in
 
 - Extension-point idioms, DI registration patterns → `umbraco-extensibility`.
-- Async naming, repository visibility, public-API compatibility → `umbraco-package-conventions`.
+- Async naming, visibility (internal by default), public-API compatibility → `umbraco-package-conventions`.
 - General C# type/error-handling shape for a new service or model → `dotnet-best-practices`.
 - Persistence needed → `ef-core-data`.
 - Backoffice UI needed → `umbraco-backoffice-ux` for how screens should look and behave, the official
