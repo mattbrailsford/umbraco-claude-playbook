@@ -1,224 +1,96 @@
 # Umbraco Claude Playbook
 
-A Claude Code plugin for building Umbraco packages and backoffice extensions: C# / .NET backend, EF Core
-persistence, Lit + UUI frontend for the backoffice. It gives you a five-step feature pipeline
-(`umb-init` → `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop`), a builder/reviewer
-gate that reviews and tests every change before it's committed, and a set of skills teaching
-the C#, EF Core, and Lit + UUI idioms Umbraco itself uses.
+A Claude Code plugin for building Umbraco packages and backoffice extensions: C# / .NET
+backend, EF Core persistence, Lit + UUI backoffice frontend.
 
-**This is a foundation, not a finished house.** Drop it into a new package or a fresh add-on,
-and build on top of it for whatever that project needs next — see
-[Building on top](#building-on-top) below.
+- **A five-step feature pipeline.** Explore, design, plan, then build, one file per step in a
+  per-feature folder.
+- **A builder/reviewer gate.** Every task is built by one agent and checked by a read-only
+  reviewer that runs the build and tests before anything is committed.
+- **Stack knowledge.** Skills for the C#, EF Core, and Lit + UUI idioms Umbraco itself uses,
+  read against the real CMS source and docs for the version you target.
 
-## Install
+**This is a foundation, not a finished house.** Drop it into a new package or add-on and
+build on it as the project grows.
 
-From inside the Umbraco project you want to use this in:
+## Get started
 
-```bash
-# 1. This playbook.
-claude plugin marketplace add https://github.com/mattbrailsford/umbraco-claude-playbook --scope project
-claude plugin install umbraco-claude-playbook@umbraco-claude-playbook --scope project
-
-# 2. The official backoffice extension-point skills (58 skills, Lit/UUI-specific).
-claude plugin marketplace add https://github.com/umbraco/Umbraco-CMS-Backoffice-Skills.git#main --scope project
-claude plugin install umbraco-cms-backoffice-skills@umbraco-backoffice-marketplace --scope project
-```
-
-(Or, from inside Claude Code: `/plugin marketplace add ...` / `/plugin install ...` with the
-same arguments.)
-
-Then, optionally, copy [`settings.example.json`](./settings.example.json) → your project's
-`.claude/settings.json` (or merge it in) and uncomment the hooks you want — this isn't part of
-the installed plugin, since permissions and hooks are a per-project trust decision a plugin
-shouldn't make for you.
-
-## Quickstart
+Install it from inside your Umbraco project, then run:
 
 ```
-/umb-init          # setup wizard: solution (if new), CLAUDE.md, .gitignore, ports,
-                   # lint, tests, CMS source and docs clones. Asks before each step;
-                   # re-run to fill gaps
-/umb-explore       # talk through what you're building
-/umb-design        # decide which extension points, data model, API surface,
-                   # and mock up any new screens for review
-/umb-plan          # slice into tasks + generate pending specs
-/umb-build-loop    # build, review, commit — task by task
+/umb-init          # one-time setup wizard
+/umb-explore       # what are we building, and for whom?
+/umb-design        # extension points, data model, API, mockups
+/umb-plan          # stories and an ordered task list
+/umb-build-loop    # build, review, commit, task by task
 ```
 
-Or just describe what you want ("I want to add a dashboard that...") — these skills
-auto-surface when the description matches, you don't have to invoke them by name. Full
-walkthrough: [QUICKSTART.md](./QUICKSTART.md).
+Or just describe what you want ("I want to add a dashboard that..."). The right skill picks
+it up.
 
-Everything writes into one folder per feature: `docs/plans/<feature-slug>/`. Re-run any
-phase any time to refine its file; nothing gets clobbered. See
-[How it works](#how-it-works) for the file-ownership rules.
+**[QUICKSTART.md](./QUICKSTART.md)** has the install commands and a short walkthrough.
 
 ## What's included
 
-**Pipeline** — the five skills above, plus a `builder`/`reviewer` subagent pair
-`umb-build-loop` dispatches per task, with one more whole-branch review once every task is
-built, to catch problems that build up across tasks. The reviewer is read-only by design (no `Edit`/`Write`
-tools): it runs the build and test suite, checks the diff against documented patterns,
-traces impact on any public API change, and traces the change to its real entry point before
-returning `PASS` or `FAIL`.
+**Pipeline:**
+[`umb-init`](plugins/umbraco-claude-playbook/skills/umb-init/SKILL.md),
+[`umb-explore`](plugins/umbraco-claude-playbook/skills/umb-explore/SKILL.md),
+[`umb-design`](plugins/umbraco-claude-playbook/skills/umb-design/SKILL.md),
+[`umb-plan`](plugins/umbraco-claude-playbook/skills/umb-plan/SKILL.md),
+[`umb-build-loop`](plugins/umbraco-claude-playbook/skills/umb-build-loop/SKILL.md), with the
+[`builder`](plugins/umbraco-claude-playbook/agents/builder.md) and
+[`reviewer`](plugins/umbraco-claude-playbook/agents/reviewer.md) agents.
 
-**Stack knowledge:**
-- `dotnet-best-practices` — nullable reference types, type modeling, async/LINQ/disposal
-  discipline — general C#, not Umbraco-specific
-- `umbraco-extensibility` — Composers, collection builders, notification handlers,
-  attribute-based discovery
-- `umbraco-cms-source` — reads the CMS's own source from a local clone at the release tag the
-  project targets, with a `gh` fallback; `umb-init` offers to make the clone
-- `umbraco-docs` — reads the official docs for the project's major from a local clone of
-  UmbracoDocs, with the live site's Markdown pages as a fallback; `umb-init` offers the clone
-- `umbraco-package-conventions` — async naming, visibility (internal by default),
-  `[Obsolete]`-proxied public API changes
-- `typescript-best-practices` — discriminated unions, `{ data, error }` error handling, null
-  hygiene, the `toString()`/`toJSON()` rule — general TypeScript, not Umbraco-specific
-- `umbraco-backoffice-conventions` — package-level frontend structure the official Backoffice
-  Skills plugin doesn't cover: required compiler setup, barrel-export entry points, OpenAPI
-  client generation, observable-subscription lifecycle, monorepo build order
-- `umbraco-backoffice-ux` — how a backoffice screen should look and behave: match the screen next door,
-  pickers instead of select boxes for choosing items, the five moments (first run, mistake,
-  wait, finish, return), components shown in more than one place, and the small details that
-  most often get sent back
-- `ef-core-data` — dual SQL Server/SQLite support, product-prefixed migrations, repositories
-  internal to their owning service
-- `security-dotnet` — Management API authz, EF Core injection, secrets handling
-- `security-lit` — XSS in Lit templates, secrets in a client bundle, browser storage, npm
-  supply chain
-- `solid-principles`, `design-principles` — both C# and Lit/TypeScript examples throughout
-- `gof-patterns` — all 23 patterns in C#, plus Lit/TypeScript examples for the ones that
-  come up often in backoffice component work (State, Strategy, Command, Composite)
+**Smaller jobs:**
 
-**Process:**
-- `bdd-specs` — Feature/Scenario/Specification shape for both backend (NUnit + Moq)
-  and frontend (Web Test Runner + `@open-wc/testing`)
-- `user-stories` — Given/When/Then acceptance criteria feeding straight into specs
-- `plain-writing` — how every document a person reads gets written: lead with the point,
-  plain words, concise without dropping names, numbers or conditions, and no text repeating
-  what a screenshot or table already shows
-- `git-workflow` — Conventional Commits, branch-per-CMS-major-version, an
-  always-ask-before-touching-main rule for AI agents
-- `describe-pr` — `git-workflow` always delegates the PR description to this skill; it writes a
-  diagram-based outline (file trees, before/after diffs, call chains, table/manifest diffs,
-  settings, API endpoints) for a feature-sized change, or a plain summary otherwise. For a UI
-  change it also shows where to find each screen, who can see it, and screenshots. Always runs `decision-review` first
-  when a plan folder exists, so the PR is the guaranteed checkpoint for a fully autonomous run.
-- `decision-review` — digests `DECISION-LOG.md`, `BUILD-LOG.md`, and the feature diff into
-  a short list of assumptions, spec deviations, and workarounds worth the user's attention.
-  Read-only, never gates or fixes anything. Runs automatically inside `describe-pr`; also
-  user-invocable on its own for an earlier look once `umb-build-loop` finishes, before a PR
-  exists.
-- `git-remote` — bootstraps a new GitHub remote: real README, LICENSE, one CONTRIBUTING.md
-- `umbraco-marketplace` — gets a finished package listed: the required NuGet tag and Umbraco
-  dependency reference, the v14+ compatibility gotcha, the optional `umbraco-marketplace.json`
-- `quick-fix` — the escape hatch around the five-step pipeline for a fix too small to justify
-  it (a typo, a dead try/catch); still gets one `reviewer` pass unless it's text only, and a
-  smoke check if it changes something a person sees or calls; escalates to
-  `umb-plan`/`umb-explore` the moment it isn't
-- `issue-triage` — classifies, duplicate-checks, and security-flags issues from a tracker that
-  may live outside the source repo; each issue goes to its own `issue-triager` subagent, run
-  in parallel batches for a range or the whole backlog. Report only — never labels, comments, or closes
-  anything itself.
-- `issue-resolve` — takes one triaged issue and routes it into `quick-fix` or the full pipeline
-  depending on size, then drafts (never posts) the tracker resolution once the fix lands.
+| Skill | What it's for |
+|---|---|
+| [`quick-fix`](plugins/umbraco-claude-playbook/skills/quick-fix/SKILL.md) | A fix too small for the pipeline, still reviewed |
+| [`issue-triage`](plugins/umbraco-claude-playbook/skills/issue-triage/SKILL.md) | Classify and duplicate-check tracker issues (report only) |
+| [`issue-resolve`](plugins/umbraco-claude-playbook/skills/issue-resolve/SKILL.md) | Route a triaged issue into `quick-fix` or the pipeline |
+| [`describe-pr`](plugins/umbraco-claude-playbook/skills/describe-pr/SKILL.md) | Write the PR description, with diagrams and screenshots |
+| [`decision-review`](plugins/umbraco-claude-playbook/skills/decision-review/SKILL.md) | Pull out the assumptions and workarounds worth a human look |
+| [`git-remote`](plugins/umbraco-claude-playbook/skills/git-remote/SKILL.md) | Set up a new GitHub repo: README, LICENSE, CONTRIBUTING |
+| [`umbraco-marketplace`](plugins/umbraco-claude-playbook/skills/umbraco-marketplace/SKILL.md) | Get a finished package listed on the Umbraco Marketplace |
+
+**Umbraco knowledge:**
+
+| Skill | What it covers |
+|---|---|
+| [`umbraco-extensibility`](plugins/umbraco-claude-playbook/skills/umbraco-extensibility/SKILL.md) | Composers, collection builders, notification handlers |
+| [`umbraco-package-conventions`](plugins/umbraco-claude-playbook/skills/umbraco-package-conventions/SKILL.md) | Naming, visibility, safe public API changes |
+| [`umbraco-backoffice-conventions`](plugins/umbraco-claude-playbook/skills/umbraco-backoffice-conventions/SKILL.md) | Package-level frontend setup, OpenAPI clients, build order |
+| [`umbraco-backoffice-ux`](plugins/umbraco-claude-playbook/skills/umbraco-backoffice-ux/SKILL.md) | How a backoffice screen should look and behave |
+| [`ef-core-data`](plugins/umbraco-claude-playbook/skills/ef-core-data/SKILL.md) | SQL Server + SQLite, migrations, repositories |
+| [`umbraco-cms-source`](plugins/umbraco-claude-playbook/skills/umbraco-cms-source/SKILL.md) | Read the CMS source at the version you target |
+| [`umbraco-docs`](plugins/umbraco-claude-playbook/skills/umbraco-docs/SKILL.md) | Read the official docs for the version you target |
+| [`security-dotnet`](plugins/umbraco-claude-playbook/skills/security-dotnet/SKILL.md), [`security-lit`](plugins/umbraco-claude-playbook/skills/security-lit/SKILL.md) | Backend and frontend security checklists |
+
+**General craft:**
+
+| Skill | What it covers |
+|---|---|
+| [`dotnet-best-practices`](plugins/umbraco-claude-playbook/skills/dotnet-best-practices/SKILL.md), [`typescript-best-practices`](plugins/umbraco-claude-playbook/skills/typescript-best-practices/SKILL.md) | Everyday C# and TypeScript discipline |
+| [`solid-principles`](plugins/umbraco-claude-playbook/skills/solid-principles/SKILL.md), [`design-principles`](plugins/umbraco-claude-playbook/skills/design-principles/SKILL.md), [`gof-patterns`](plugins/umbraco-claude-playbook/skills/gof-patterns/SKILL.md) | Design principles and patterns, in C# and Lit |
+| [`bdd-specs`](plugins/umbraco-claude-playbook/skills/bdd-specs/SKILL.md), [`user-stories`](plugins/umbraco-claude-playbook/skills/user-stories/SKILL.md) | Stories with acceptance criteria, turned into tests |
+| [`git-workflow`](plugins/umbraco-claude-playbook/skills/git-workflow/SKILL.md) | Commits, branches, and asking before touching `main` |
+| [`plain-writing`](plugins/umbraco-claude-playbook/skills/plain-writing/SKILL.md) | How every document a person reads gets written |
+
+It works alongside the official
+[Umbraco Backoffice Skills](https://github.com/umbraco/Umbraco-CMS-Backoffice-Skills)
+plugin, which covers the individual backoffice extension points.
 
 ## How it works
 
-### One plan folder per feature
-
-Each pipeline phase owns one file in a per-feature folder, by default at
-`docs/plans/<feature-slug>/` (point it at a worktree-relative or monorepo-scoped path instead
-if your project needs that — say so once in `CLAUDE.md` and every phase follows it):
-
-| File | Owned by |
-|---|---|
-| `BRIEF.md` | `umb-explore` |
-| `ARCHITECTURE.md`, `SPEC.md`, `mockups/` | `umb-design` |
-| `STORIES.md`, `PLAN.md` | `umb-plan` (`umb-build-loop` only ticks `PLAN.md`'s task checkboxes) |
-| `DECISION-LOG.md` | every phase appends |
-| `BUILD-LOG.md`, `screenshots/` | `umb-build-loop` |
-| `PR-DESCRIPTION.md` | `describe-pr` (only when the plan folder exists — otherwise the description goes straight into the PR, not to disk) |
-
-Outside the per-feature folders, `umb-design` also owns `docs/mockups/starters/`: mockup
-starters for a product's own surfaces (a Copilot sidebar, a flow editor) that the general
-starters can't draw. One is saved only when the surface is both distinct and something
-features keep landing on.
-
-One file per owner, not one section per owner in a shared doc — two phases (or two sessions)
-never touch the same file, so there's nothing to merge-conflict over. Rules: **re-entrant**
-(re-run a phase to refine its file, never restart), **stop, don't guess** (a phase missing its
-input sends you back to the owning phase), **one owner per file**.
-
-### Project memory
-
-Not every decision belongs in a per-feature plan file or in the root `CLAUDE.md` forever.
-`umb-init` scaffolds `.claude/memory/` alongside `CLAUDE.md` for exactly the facts that don't
-fit either: standing project-wide decisions (`decision`), corrections learned from a
-`reviewer` `FAIL` so the next `builder` dispatch doesn't repeat them (`gotcha`), and pointers
-to external systems (`reference`). A convention scoped to one directory still belongs in a
-nested `CLAUDE.md` there instead — `reviewer` already reads the nearest one on every task. See
-`.claude/memory/README.md` (created by `umb-init`) for the format.
-
-### Docs vs. worktrees
-
-These solve different problems. Worktrees isolate the *filesystem* — two features get two
-full checkouts, no risk of one session's edits colliding with another's. The per-feature plan
-folder isolates the *decision record* — what was decided, why, what's left. Because the
-folder's path is scoped to the feature, the two never collide, with or without worktrees.
-
-They're also linked at one specific moment, not throughout. `umb-explore`/`umb-design`/
-`umb-plan` never touch git — the plan folder is just files on disk, so a feature explored then
-dropped never cost a branch. `umb-build-loop` is what connects the two: at the start of the
-first build, it commits the plan folder to trunk, then cuts a branch or worktree named after
-the plan folder (using Claude Code's native `WorktreeCreate` hook if the project has one
-configured, otherwise a plain branch). The docs end up in the feature branch's history because
-they were committed just before it was cut, not because of any special copying step. See
-`git-workflow`'s "Branch/worktree per feature" section for the full reasoning.
-
-## Building on top
-
-The gap between this playbook and a mature product's toolkit is real, and it's meant to be
-filled by your project, not guessed at in advance. Once a project's needs grow past what's
-here, it typically needs:
-
-- **A real release pipeline** — calendar or semver release branches, changelog generation,
-  multi-product manifests — once you have a real release cadence. `git-workflow` here stops
-  at "commit and branch well."
-- **Merge/cleanup automation on top of branch-per-feature** — `umb-build-loop` already cuts a
-  branch/worktree per feature (see "Docs vs. worktrees" above); a project can add its own
-  `WorktreeCreate`/`WorktreeRemove` hooks for custom naming, local-file copying, and
-  post-merge cleanup once parallel feature development earns that investment.
-- **Project-specific scaffolding and environment automation** — every non-trivial project
-  ends up with a few of these.
-
-Don't reach for these on day one; add them when the need actually shows up.
-
-## Repository layout
-
-This repo is both a Claude Code marketplace and the one plugin it lists, the same shape the
-official Umbraco Backoffice Skills repo uses:
-
-```
-umbraco-claude-playbook/
-├── .claude-plugin/
-│   └── marketplace.json              # lists the plugin below
-├── plugins/umbraco-claude-playbook/
-│   ├── .claude-plugin/
-│   │   └── plugin.json               # the plugin's own manifest
-│   ├── skills/                       # all 28 skills, one folder each
-│   └── agents/                       # builder.md, reviewer.md, issue-triager.md
-├── settings.example.json             # optional, copy-paste, not auto-installed
-├── README.md
-└── QUICKSTART.md
-```
+Each feature gets one folder, `docs/plans/<feature-slug>/`. Each step owns its own file in
+it, so re-running a step refines its file and never clobbers another's.
+[docs/HOW-IT-WORKS.md](./docs/HOW-IT-WORKS.md) covers the folder, project memory, branches
+and worktrees, and what to build on top.
 
 ## Contributing
 
-Issues and PRs welcome. [`git-remote`](plugins/umbraco-claude-playbook/skills/git-remote/SKILL.md)
-and [`git-workflow`](plugins/umbraco-claude-playbook/skills/git-workflow/SKILL.md) describe
-the commit/branch conventions this repo itself follows.
+Issues and PRs welcome. This repo follows its own
+[`git-workflow`](plugins/umbraco-claude-playbook/skills/git-workflow/SKILL.md) skill.
 
 ## License
 
@@ -226,5 +98,5 @@ the commit/branch conventions this repo itself follows.
 
 ## Credits
 
-Based on [Rob Conery's `claude-playbook`](https://bigmachine.io/freebies/claude-playbook) starter template,
-adapted for Umbraco package and backoffice extension development.
+Based on [Rob Conery's `claude-playbook`](https://bigmachine.io/freebies/claude-playbook)
+starter template, adapted for Umbraco package and backoffice extension development.

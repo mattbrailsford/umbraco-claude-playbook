@@ -1,47 +1,70 @@
 # Quickstart
 
-Two plugin installs, then five skills. Five minutes.
+Two plugin installs, one setup wizard, then five steps per feature.
+
+## 1. Install
 
 From inside the Umbraco project you want to use this in:
 
 ```bash
-# 1. This playbook.
+# This playbook.
 claude plugin marketplace add https://github.com/mattbrailsford/umbraco-claude-playbook --scope project
 claude plugin install umbraco-claude-playbook@umbraco-claude-playbook --scope project
 
-# 2. The official Umbraco backoffice extension-point skills.
+# The official Umbraco backoffice extension-point skills.
 claude plugin marketplace add https://github.com/umbraco/Umbraco-CMS-Backoffice-Skills.git#main --scope project
 claude plugin install umbraco-cms-backoffice-skills@umbraco-backoffice-marketplace --scope project
 ```
 
-(Or run the equivalent `/plugin marketplace add` / `/plugin install` commands from inside
-Claude Code itself.)
+You can also run the same commands inside Claude Code as `/plugin marketplace add ...` and
+`/plugin install ...`.
 
-Then, inside Claude Code:
+**Optional:** copy [`settings.example.json`](./settings.example.json) to your project's
+`.claude/settings.json` and uncomment the permissions and hooks you want. It isn't installed
+with the plugin, because what to allow is your call.
+
+## 2. Set up the project
+
+Inside Claude Code, run:
 
 ```
-/umb-init          # setup wizard: solution (if new), CLAUDE.md, .gitignore, ports,
-                   # lint, tests, CMS source and docs clones. Asks before each step;
-                   # re-run to fill gaps
-/umb-explore       # talk through what you're building
-/umb-design        # decide which extension points, data model, API surface
-/umb-plan          # slice into tasks + generate pending specs
-/umb-build-loop    # build, review, commit — task by task
+/umb-init
 ```
 
-Or just describe what you want ("I want to add a dashboard that...") — these skills
-auto-surface when the description matches, you don't have to invoke them by name.
+It's a wizard. It asks before each step: the solution (if new), `CLAUDE.md`, `.gitignore`,
+demo site ports, lint, tests, and local clones of the CMS source and docs. Run it again any
+time to fill gaps.
 
-For a fix too small to justify any of that — a typo, a reversed condition, a dead
-`try/catch` — use `/quick-fix` instead. It's deliberately not part of the pipeline above; it
-escalates to `umb-plan`/`umb-explore` the moment the fix turns out not to be that small.
+When it's done, open `CLAUDE.md` and check the **Stack** section. The CMS version(s) you
+target and the database(s) you support (SQL Server only, or SQL Server + SQLite) should be
+filled in, with no `TODO` left. Many skills and the reviewer's checks depend on them.
 
-Everything writes into one folder per feature: `docs/plans/<feature-slug>/`. Re-run
-any phase any time to refine its file; nothing gets clobbered.
+## 3. Build a feature
 
-**Before your first real feature:** open your project's `CLAUDE.md` and write down which
-CMS major version(s) you target and which database provider(s) you support (SQL Server
-only, or SQL Server + SQLite). The stack-knowledge skills (`umbraco-extensibility`,
-`ef-core-data`, the `reviewer` agent's parity checks) all key off that.
+```
+/umb-explore       # what are we building, and for whom?
+/umb-design        # extension points, data model, API, mockups of new screens
+/umb-plan          # stories and an ordered task list
+/umb-build-loop    # build, review, commit, task by task
+```
 
-**Full docs:** [README.md](./README.md)
+You don't have to type the commands. Describe what you want ("I want to add a dashboard
+that...") and the right skill picks it up.
+
+Everything for a feature lands in one folder: `docs/plans/<feature-slug>/`. Re-run any step
+to refine its file. Nothing gets overwritten.
+
+`/umb-build-loop` is the first step that touches git. It asks before committing the plan to
+your trunk branch (usually `main`) and cutting a feature branch.
+
+## Small fixes
+
+For a typo, a reversed condition, or a dead `try/catch`, use `/quick-fix`. It skips the
+pipeline but still gets a review, unless the change is text only. If the fix turns out
+bigger than it looked, it sends you to `/umb-plan` or `/umb-explore`.
+
+## More
+
+- [README.md](./README.md): what's in the box.
+- [docs/HOW-IT-WORKS.md](./docs/HOW-IT-WORKS.md): plan folders, the review gate, memory, and
+  branches.
