@@ -1,5 +1,5 @@
 {
-  "$comment": "Rename to settings.json (project-shared) or settings.local.json (personal, gitignored). Hooks below are examples — uncomment to enable. See https://docs.claude.com/claude-code/hooks for the full schema.",
+  "$comment": "Rename to settings.json (project-shared) or settings.local.json (personal, gitignored). The hooks below are live once copied: delete any you don't want. They read the edited file's path from the JSON Claude Code sends on stdin, so they need jq. See https://code.claude.com/docs/en/hooks for the full schema.",
   "$comment_validation": "The format-on-save and secret-file-blocking hooks below are a recommendation, not a universal convention. If your project adopts a worktree-per-feature workflow, add SessionStart/WorktreeCreate/WorktreeRemove hooks pointing at your own scripts — not included here since they're project-specific.",
 
   "permissions": {
@@ -34,14 +34,14 @@
   },
 
   "hooks": {
-    "$comment_PostToolUse": "Run after each Edit/Write — uncomment to auto-format C#/TS on save.",
+    "$comment_PostToolUse": "Run after each Edit/Write to auto-format C#/TS files. Delete if you don't want format-on-save.",
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"$CLAUDE_FILE_PATHS\" | grep -qE '\\.cs$' && dotnet format --include \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true"
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *.cs) dotnet format --include \"$f\" >/dev/null 2>&1 ;; esac; exit 0"
           }
         ]
       },
@@ -50,13 +50,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"$CLAUDE_FILE_PATHS\" | grep -qE '\\.(ts|tsx)$' && npx prettier --write \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true"
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *.ts|*.tsx) npx --no-install prettier --write \"$f\" >/dev/null 2>&1 ;; esac; exit 0"
           }
         ]
       }
     ],
 
-    "$comment_PreToolUse": "Block edits to sensitive/secret files. Uncomment to enable.",
+    "$comment_PreToolUse": "Block edits to sensitive/secret files. Delete if you don't want it.",
     "PreToolUse": [
       {
         "$comment": "Example: refuse to edit local secrets or environment files.",
@@ -64,13 +64,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"$CLAUDE_FILE_PATHS\" | grep -qE '(appsettings\\.Local|appsettings\\.Development|\\.env(\\..*)?)$' && { echo 'refuse: do not edit local secret/config files'; exit 2; } || exit 0"
+            "command": "jq -r '.tool_input.file_path // empty' | grep -qE '(appsettings\\.Local|appsettings\\.Development)\\.json$|(^|/)\\.env(\\..*)?$' && { echo 'Blocked: do not edit local secret/config files' >&2; exit 2; } || exit 0"
           }
         ]
       }
     ],
 
-    "$comment_Stop": "Run on session end — uncomment to print a summary or trigger CI.",
+    "$comment_Stop": "Runs when Claude finishes a reply. Empty here: add your own if you need one.",
     "Stop": []
   }
 }
