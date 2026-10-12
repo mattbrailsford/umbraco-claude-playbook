@@ -1,102 +1,130 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working in this repository.
 
-A Claude Code plugin marketplace + the one plugin it lists: a feature pipeline, a builder/
-reviewer build-loop gate, and stack-knowledge skills for Umbraco package and backoffice
-extension development (C#/.NET, EF Core, Lit + UUI). See [README.md](./README.md) for the
-full skill list and [QUICKSTART.md](./QUICKSTART.md) for the install flow.
+This repo is a Claude Code plugin marketplace plus the one plugin it lists: a feature
+pipeline, a builder/reviewer build-loop gate, and stack-knowledge skills for Umbraco package
+and backoffice extension development (C#/.NET, EF Core, Lit + UUI).
 
-## This repo has no build, lint, or test step
+## Layout
 
-Everything here is Markdown (skill/agent instructions) and two hand-written JSON manifests
-(`.claude-plugin/marketplace.json`, `plugins/umbraco-claude-playbook/.claude-plugin/plugin.json`).
-There is no source to compile and nothing to run. Before committing a manifest edit, check it
-still parses:
+```
+.claude-plugin/marketplace.json                   # marketplace manifest (lists the plugin)
+plugins/umbraco-claude-playbook/
+  .claude-plugin/plugin.json                      # plugin manifest
+  skills/<name>/SKILL.md                          # one folder per skill (+ references/, templates/)
+  agents/{builder,reviewer,issue-triager}.md      # subagents
+settings.example.json   # copy-by-hand example for consumers; NOT installed by the plugin
+scripts/                # check-skill-refs.sh + its allowlist; repo-only, not shipped
+docs/HOW-IT-WORKS.md    # human explainer: plan folder, gate, memory, branches
+docs/pr-examples/       # images used in PR descriptions; not shipped
+README.md, QUICKSTART.md  # human-facing; see "Human docs" below
+```
+
+## No build, lint, or test step
+
+Everything is Markdown plus two hand-written JSON manifests. There is no .NET code here.
+Don't run `dotnet build` or apply C# conventions to this repo. Checks that do exist:
 
 ```bash
 jq . .claude-plugin/marketplace.json
 jq . plugins/umbraco-claude-playbook/.claude-plugin/plugin.json
+scripts/check-skill-refs.sh   # stale backtick skill references; exit 1 = needs a look
 ```
-
-The two manifests duplicate each other's `description`/`version`/`keywords` for the one
-plugin — if you change one, check whether the other drifted.
-
-## Bump the version whenever a shipped change needs to reach consumers
-
-An installed consumer project only sees new/changed skill, agent, or template content after
-its plugin update picks up a newer version number — not automatically the moment `main`
-changes. A change merged here without a version bump can sit invisible to everyone who already
-installed the plugin.
-
-Bump `version` in **both** manifests (`marketplace.json`'s `metadata.version` and
-`plugins[0].version`, and `plugin.json`'s `version` — keep all three in sync) for any change to
-a skill, agent, or template a consumer project would actually load. Patch for edits to an
-existing skill/agent; minor for a new one. Skip the bump only for changes that never ship to a
-consumer — this file, `README.md`, `QUICKSTART.md`, repo scripts, CI config.
 
 ## This repo is not an Umbraco project
 
-The skills here (`umbraco-extensibility`, `ef-core-data`, `umb-init`, etc.) describe conventions
-for *consumer* projects that install this plugin — they don't apply to this repo's own
-content. Don't reach for `dotnet build` or C# conventions on this repo itself; there's no
-.NET code here.
+Skills like `umbraco-extensibility`, `ef-core-data`, and `umb-init` describe conventions for
+*consumer* projects that install the plugin. They don't apply to this repo's own content.
+Paths such as `docs/plans/`, `.claude/memory/`, or a `CLAUDE.md` mentioned inside a skill
+refer to the consumer project, not this repo.
+
+## Manifests and versioning
+
+- The two manifests duplicate `description`, `version`, and `keywords` for the one plugin.
+  Changing one means checking the other.
+- Bump `version` in all three places, kept in sync: `marketplace.json` `metadata.version`,
+  `marketplace.json` `plugins[0].version`, `plugin.json` `version`.
+- Bump for any change to a skill, agent, or template a consumer would load. Installed
+  consumers only see changes after their plugin update picks up a new version.
+  - Patch: edits to an existing skill/agent/template.
+  - Minor: a new skill or agent.
+- Skip the bump only for files that never ship: this file, `README.md`, `QUICKSTART.md`,
+  `docs/`, `scripts/`, `settings.example.json`, CI config.
+
+## Human docs: keep them in sync
+
+- `README.md` is a short shop window. It lists every skill once, grouped, with a one-line
+  description and a link to its `SKILL.md`. Detail belongs in `docs/HOW-IT-WORKS.md` or the
+  skill itself, not the README.
+- `QUICKSTART.md` is install + `umb-init` + the five pipeline commands + `quick-fix`.
+- `docs/HOW-IT-WORKS.md` explains the plan folder, the gate, project memory, branches and
+  worktrees, and what to build on top.
+- When adding, renaming, or removing a skill or agent: update the README tables and
+  `docs/HOW-IT-WORKS.md`'s layout block if affected.
+- When changing pipeline behavior (file ownership, when git is touched, what `umb-init`
+  asks): check QUICKSTART and HOW-IT-WORKS still describe it correctly.
+- Don't hard-code counts (number of skills, number of official Backoffice Skills). They drift.
 
 ## Architecture: one plan folder per feature, one file per owner
 
-`umb-init` → `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop` each own one file
-in a per-feature folder (default `docs/plans/<feature-slug>/`) in a *consumer* project — not
-in this repo. The rules that make this work, if editing any of these skill files:
+`umb-init` → `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop` each own files in
+a per-feature folder (default `docs/plans/<feature-slug>/`) in the consumer project. Rules
+to preserve when editing these skills:
 
-- **Re-entrant** — re-running a phase refines its file; it never restarts it.
-- **One owner per file** — `umb-explore` owns `BRIEF.md` and creates `README.md` (the
-  folder's read-order index, the only file it creates once and never recreates), `umb-design`
-  owns `ARCHITECTURE.md` + `SPEC.md` + `mockups/` (and the project-wide
-  `docs/mockups/starters/`), `umb-plan` owns `STORIES.md` + `PLAN.md`,
-  `umb-build-loop` owns `BUILD-LOG.md` + `screenshots/`. File-level (not section-level) ownership means two
-  phases never touch the same file — with three narrow, deliberate exceptions: every phase may
-  append to `DECISION-LOG.md`; every phase updates its own single line in `README.md` when it
-  finishes, never another phase's line; and `umb-build-loop` ticks task checkboxes in
-  `PLAN.md` (`- [ ]` → `- [x]`), never editing a task's text.
-- **Stop, don't guess** — a phase missing its expected input hands off to the owning phase
-  rather than inventing the missing content.
+- **Re-entrant.** Re-running a phase refines its file; it never restarts it.
+- **One owner per file:**
+  - `umb-explore`: `BRIEF.md`; creates the folder's `README.md` (read-order index) once and
+    never recreates it.
+  - `umb-design`: `ARCHITECTURE.md`, `SPEC.md`, `mockups/`, and project-wide
+    `docs/mockups/starters/`.
+  - `umb-plan`: `STORIES.md`, `PLAN.md`.
+  - `umb-build-loop`: `BUILD-LOG.md`, `screenshots/`.
+  - `describe-pr`: `PR-DESCRIPTION.md`, only when a plan folder exists.
+- **The only three cross-owner writes:**
+  1. Every phase may append to `DECISION-LOG.md`.
+  2. Every phase updates its own single line in `README.md` when it finishes, never
+     another phase's line.
+  3. `umb-build-loop` ticks `PLAN.md` checkboxes (`- [ ]` → `- [x]`), never editing task text.
+- **Stop, don't guess.** A phase missing its input hands off to the owning phase instead of
+  inventing the content.
+- **Git boundary.** `umb-explore`/`umb-design`/`umb-plan` never touch git. `umb-build-loop`
+  asks, then commits the plan folder to trunk and cuts the feature branch/worktree.
 
 ## Architecture: the builder/reviewer gate
 
 `umb-build-loop` dispatches `agents/builder.md` per task, then `agents/reviewer.md` against
-the diff. The split is load-bearing, not stylistic: `reviewer` has no `Edit`/`Write` in its
-frontmatter `tools:` list, so it can only read, run builds/tests, and report a `PASS`/`FAIL`
-verdict — a reviewer that can patch its own findings stops being a gate. `reviewer`'s
-workflow order matters when editing it: diff → build/test → validate against docs first,
-sibling code second → check impact on consumers (public API / manifest `alias` changes) →
-trace the real entry point → grep for ghost code → multi-version/provider parity → verdict.
+the diff, then one whole-branch review after the last task. `quick-fix` also dispatches
+`reviewer`.
 
-## Editing this repo's own skills
+- `reviewer` has no `Edit`/`Write` in its frontmatter `tools:` list. This is load-bearing:
+  a reviewer that can patch its own findings stops being a gate. Never add write tools to it.
+- `reviewer` workflow order matters: diff → build/test → validate against docs first,
+  sibling code second → impact on consumers (public API / manifest `alias` changes) → trace
+  the real entry point → grep for ghost code → multi-version/provider parity → verdict.
+- `issue-triager` is likewise read-only and report-only.
 
-Changes here follow the same `git-workflow` skill this repo ships to others: Conventional
-Commits, branch by change size, and — since this is a solo `main`-only repo right now — the
-**always ask before committing straight to `main`** rule applies to you as much as to any
-consumer project.
+## Committing in this repo
+
+Follow the `git-workflow` skill this repo ships: Conventional Commits, branch by change
+size. This is a solo repo that merges via PRs to `main`. Always ask before committing
+straight to `main`.
 
 ## Skill boundary discipline
 
-Skill scope drifts quietly: `dotnet-conventions` ended up entirely Umbraco-specific despite its
-generic name, `typescript-best-practices` absorbed Lit/Umbraco content, `security-dotnet`
-picked up frontend XSS guidance, and two pairs of skills ended up documenting the same rule
-twice — none of that was deliberate, it just accumulated one reasonable-looking edit at a time.
+Skill scope drifts one reasonable-looking edit at a time (past examples:
+`dotnet-conventions` became all-Umbraco despite its name, `typescript-best-practices`
+absorbed Lit content, `security-dotnet` picked up frontend XSS, two pairs of skills stated
+the same rule twice).
 
-**Before adding a section to an existing skill, ask:**
-1. Does this fit the skill's own frontmatter `description`? If not, that's a signal it
-   belongs in a different (possibly new) skill, not a reason to broaden the description.
-2. Is this generic language/stack discipline (portable to any project) or Umbraco/Lit-specific?
-   Generic goes in a `*-best-practices` skill; Umbraco-specific goes in a skill named for what
-   it actually covers.
-3. Is this already documented elsewhere? Grep for the concept before writing it — this repo
-   has twice ended up with the same rule stated in two skills because nobody checked first.
+Before adding a section to an existing skill:
 
-**Before renaming, splitting, or removing a skill,** run `scripts/check-skill-refs.sh` — it
-flags any backtick-quoted skill reference across the repo's Markdown that no longer resolves
-to an actual skill folder. It's a mechanical check for stale cross-references, not a judge of
-whether a boundary is *correct* — the three questions above still need a real read of the
-content, and a false positive gets added to `scripts/skill-ref-allowlist.txt`, not silenced by
-weakening the check.
+1. Does it fit that skill's frontmatter `description`? If not, it belongs in another (maybe
+   new) skill. Don't broaden the description to make it fit.
+2. Generic language/stack discipline goes in a `*-best-practices` skill. Umbraco- or
+   Lit-specific content goes in a skill named for what it covers.
+3. Grep for the concept first. Don't state a rule that another skill already states.
+
+Before renaming, splitting, or removing a skill, run `scripts/check-skill-refs.sh`. It only
+catches stale references, not wrong boundaries. A false positive goes in
+`scripts/skill-ref-allowlist.txt`; don't weaken the check.
