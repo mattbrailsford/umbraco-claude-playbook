@@ -12,9 +12,10 @@ description: >-
 
 # umbraco-docs
 
-The docs say how Umbraco *means* a thing to be used. The CMS source (`umbraco-cms-source`)
-says how it actually behaves. Check the docs for the intended pattern, and the source when
-the docs are thin or you need the exact contract.
+The CMS source (`umbraco-cms-source`) is the ground truth for how Umbraco behaves. The docs
+support it: they explain what a feature is for, show the intended way to use it, and point
+you at the right area of the source. Use them to get oriented and to understand intent, then
+confirm any exact contract (a signature, a base class, a default value) in the source.
 
 Read the docs for the major the project targets. Pages change between majors, and the
 site's unversioned links show the newest major, which may not be the project's.
@@ -46,8 +47,8 @@ one folder per product inside it:
 
 1. Get the CMS major the project targets: the `Umbraco.Cms.*` package version in
    `Directory.Packages.props` or the `.csproj`, or `CLAUDE.md`'s Stack section.
-2. Read from `<major>/<product>/`. Most lookups are `umbraco-cms`. A package that builds on
-   Forms, Commerce or another product reads that product's folder too.
+2. Read from `<major>/<product>/`. Most lookups are in `<major>/umbraco-cms/`. A package
+   that builds on Forms, Commerce or another product reads that product's folder too.
 3. Update the clone's view of `main` once per session, then read from `origin/main`:
    ```bash
    git -C "$DOCS" fetch --quiet origin main
@@ -105,6 +106,6 @@ all. It's only served from the site root, not per product.
   `origin/main`.
 - **Quote the page you read.** When a design, review finding, or decision relies on the docs,
   give the page's site link with the `<major>.latest` part, so the claim can be checked.
-- **Docs beat memory.** If what you remember about an Umbraco API or setting differs from the
-  docs for the project's major, the docs win. If the docs and the CMS source disagree, the
-  source is what runs: follow it, and say the docs differ.
+- **Source wins.** If the docs and the CMS source at the project's tag disagree, the source
+  is what runs: follow it, and say the docs differ. Docs still beat memory when there's no
+  source to check.

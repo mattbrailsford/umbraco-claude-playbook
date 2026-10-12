@@ -57,7 +57,8 @@ design. A reviewer that fixes its own findings isn't a gate.
      `.claude/memory/` exists, check `.claude/memory/MEMORY.md` for a relevant `gotcha` or
      `decision`; repeating a documented gotcha is a finding on its own. When the diff uses an
      Umbraco extension point, setting, or API the repo's docs don't cover, Umbraco's own docs
-     for the project's major are the documented pattern (`umbraco-docs`).
+     for the project's major show the intended pattern (`umbraco-docs`). Where they disagree
+     with the CMS source, the source wins.
    - **Sibling comparison, only when docs don't cover it.** Grep for the most similar existing
      method on the same class/interface (or the closest sibling class/component by base type,
      interface, or name suffix). Read its body, not just the signature, and compare for

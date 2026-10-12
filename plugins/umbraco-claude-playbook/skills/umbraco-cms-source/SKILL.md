@@ -79,8 +79,8 @@ of the same type is registered.
   user's own working copy. `fetch --tags` is the only write, and it only adds tags.
 - **Quote the tag you read.** When a design, review finding, or decision relies on CMS
   source, name the file and tag (`release-17.6.1:src/...`) so the claim can be checked.
-- **Source beats memory.** If what you remember about a CMS API differs from the source at
-  the project's tag, the source wins.
+- **Source beats memory and docs.** If what you remember about a CMS API, or what the docs
+  (`umbraco-docs`) say, differs from the source at the project's tag, the source wins.
 
 ## No clone: GitHub fallback
 
