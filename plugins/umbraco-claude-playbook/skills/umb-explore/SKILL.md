@@ -116,7 +116,8 @@ what's left (4 at a time, 2–3 rounds, not an interrogation):
 10. What would make you kill this?
 
 Do targeted research only when an answer hinges on a checkable fact (e.g. does Umbraco core
-already expose the extension point this needs).
+already expose the extension point this needs). Check the CMS itself with
+`umbraco-cms-source`.
 
 ## Produce
 
