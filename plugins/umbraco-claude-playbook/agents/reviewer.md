@@ -24,6 +24,8 @@ design. A reviewer that fixes its own findings isn't a gate.
   correctness, exception vs. explicit result on error paths.
 - `typescript-best-practices` — the same checks for any TypeScript in the diff.
 - `umbraco-extensibility` — DI/Composer registration and collection-builder usage.
+- `umbraco-cms-source` — when step 3's sibling is in the CMS itself, or the diff relies on
+  how a CMS API behaves.
 - `umbraco-package-conventions` — async naming, and that a public API change was proxied via
   `[Obsolete]` rather than broken (used in step 4).
 - `ef-core-data` — if a migration was added, check it's prefixed to avoid colliding with other
@@ -56,7 +58,9 @@ design. A reviewer that fixes its own findings isn't a gate.
      method on the same class/interface (or the closest sibling class/component by base type,
      interface, or name suffix). Read its body, not just the signature, and compare for
      missing cross-cutting concerns: validation, error handling, notifications/events, DI
-     scoping, authorization, audit logging. If a sibling deviates from the documented
+     scoping, authorization, audit logging. When the diff extends a CMS type or copies a
+     built-in extension, the closest sibling is often in the CMS; read it at the project's
+     release tag (`umbraco-cms-source`). If a sibling deviates from the documented
      pattern, the sibling is wrong; don't accept the diff copying it as "consistent".
 4. **Check impact on consumers, not just the diff.** For every public symbol the diff adds,
    removes, or reshapes (a `public`/`protected` C# member, or a symbol reachable through the

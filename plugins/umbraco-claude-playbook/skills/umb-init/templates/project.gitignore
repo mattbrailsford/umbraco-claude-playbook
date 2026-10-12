@@ -20,6 +20,9 @@ dist/
 .idea/
 .vscode/
 
+# Personal Claude Code settings (machine-specific paths, such as the CMS source clone)
+CLAUDE.local.md
+
 # Secrets — never commit these
 appsettings.Local.json
 appsettings.Development.json

@@ -36,7 +36,8 @@ shouldn't make for you.
 
 ```
 /umb-init          # setup wizard: solution (if new), CLAUDE.md, .gitignore, ports,
-                   # lint, tests. Asks before each step; re-run to fill gaps
+                   # lint, tests, CMS source clone. Asks before each step;
+                   # re-run to fill gaps
 /umb-explore       # talk through what you're building
 /umb-design        # decide which extension points, data model, API surface,
                    # and mock up any new screens for review
@@ -66,6 +67,8 @@ returning `PASS` or `FAIL`.
   discipline — general C#, not Umbraco-specific
 - `umbraco-extensibility` — Composers, collection builders, notification handlers,
   attribute-based discovery
+- `umbraco-cms-source` — reads the CMS's own source from a local clone at the release tag the
+  project targets, with a `gh` fallback; `umb-init` offers to make the clone
 - `umbraco-package-conventions` — async naming, visibility (internal by default),
   `[Obsolete]`-proxied public API changes
 - `typescript-best-practices` — discriminated unions, `{ data, error }` error handling, null
