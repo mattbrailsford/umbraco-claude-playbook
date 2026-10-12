@@ -37,18 +37,27 @@ clone it yourself from here; `umb-init` offers that, with the user's yes.
 
 ## Pick the folder
 
-The docs aren't tagged per release. Each supported major has its own folder on `main`, with
-one folder per product inside it:
+The docs aren't tagged per release. Most products have one folder per supported major on
+`main`, with one folder per product inside it. Some products aren't versioned and sit at the
+repo root instead:
 
 ```text
 17/umbraco-cms/        17/umbraco-forms/      17/umbraco-commerce/   ...
 18/umbraco-cms/        18/umbraco-forms/      ...
+umbraco-cloud/         marketplace-and-integrations/                  ...
 ```
+
+`gitbook-docs.yaml` at the repo root is the map. It lists every product on the site, each
+version's folder (`directory:`), and its site path (`path:`). Read it when you're not sure
+where a product lives, or when a product's site path doesn't match its folder name (the
+Marketplace docs are in `marketplace-and-integrations/` but served under `umbraco-dxp/`).
+Folders that aren't in the map aren't published, so don't rely on them.
 
 1. Get the CMS major the project targets: the `Umbraco.Cms.*` package version in
    `Directory.Packages.props` or the `.csproj`, or `CLAUDE.md`'s Stack section.
 2. Read from `<major>/<product>/`. Most lookups are in `<major>/umbraco-cms/`. A package
-   that builds on Forms, Commerce or another product reads that product's folder too.
+   that builds on Forms, Commerce or another product reads that product's folder too. For an
+   unversioned product, read its root folder: there's only one version of it.
 3. Update the clone's view of `main` once per session, then read from `origin/main`:
    ```bash
    git -C "$DOCS" fetch --quiet origin main
@@ -57,8 +66,8 @@ one folder per product inside it:
    ```bash
    git -C "$DOCS" ls-tree --name-only origin/main
    ```
-   Only supported majors have a folder. If the project's major has none, it's out of
-   support. Read the nearest newer major and say in your output that the page is for a
+   Only supported majors have a folder, and not every product has every major. If the
+   project's major has no folder for the product, it's out of support. Read the nearest newer major and say in your output that the page is for a
    different major.
 5. If the project supports more than one major, check each major's folder. A page that
    differs between them is a multi-version finding, not a detail to average out.
@@ -91,9 +100,12 @@ The site serves every page as Markdown. Add `.md` to the page's path:
 https://docs.umbraco.com/umbraco-cms/17.latest/extend-your-project/server-side-extensions/scheduling.md
 ```
 
-The repo path maps to the site path like this: `17/umbraco-cms/<path>.md` is
-`umbraco-cms/17.latest/<path>.md`. Always include the `<major>.latest` part. Without it you
-get the newest major. A folder's `README.md` is the folder's own path plus `.md`.
+For a versioned product, the repo path maps to the site path like this:
+`17/umbraco-cms/<path>.md` is `umbraco-cms/17.latest/<path>.md`. Always include the
+`<major>.latest` part. Without it you get the newest major. An unversioned product has no
+version part: `umbraco-cloud/<path>.md`. A few products break the pattern (a different site
+path, or a version part like `17.search.latest-lts`); `gitbook-docs.yaml` has the real
+mapping. A folder's `README.md` is the folder's own path plus `.md`.
 
 To find a page, fetch the site index at `https://docs.umbraco.com/llms.txt`. It lists every
 page with a one-line summary. It's large, so search it for the topic rather than reading it
@@ -105,7 +117,8 @@ all. It's only served from the site root, not per product.
   user's own working copy for writing docs. `fetch` is the only write, and it only updates
   `origin/main`.
 - **Quote the page you read.** When a design, review finding, or decision relies on the docs,
-  give the page's site link with the `<major>.latest` part, so the claim can be checked.
+  give the page's site link, with the version part if the product has one, so the claim can
+  be checked.
 - **Source wins.** If the docs and the CMS source at the project's tag disagree, the source
   is what runs: follow it, and say the docs differ. Docs still beat memory when there's no
   source to check.
