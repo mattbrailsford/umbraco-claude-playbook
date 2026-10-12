@@ -36,7 +36,7 @@ shouldn't make for you.
 
 ```
 /umb-init          # setup wizard: solution (if new), CLAUDE.md, .gitignore, ports,
-                   # lint, tests, CMS source clone. Asks before each step;
+                   # lint, tests, CMS source and docs clones. Asks before each step;
                    # re-run to fill gaps
 /umb-explore       # talk through what you're building
 /umb-design        # decide which extension points, data model, API surface,
@@ -69,6 +69,8 @@ returning `PASS` or `FAIL`.
   attribute-based discovery
 - `umbraco-cms-source` — reads the CMS's own source from a local clone at the release tag the
   project targets, with a `gh` fallback; `umb-init` offers to make the clone
+- `umbraco-docs` — reads the official docs for the project's major from a local clone of
+  UmbracoDocs, with the live site's Markdown pages as a fallback; `umb-init` offers the clone
 - `umbraco-package-conventions` — async naming, visibility (internal by default),
   `[Obsolete]`-proxied public API changes
 - `typescript-best-practices` — discriminated unions, `{ data, error }` error handling, null

@@ -61,7 +61,7 @@ A sibling `umbraco-marketplace-readme.md` file can override the listing's README
 of the one NuGet ships.
 
 **Field names and the category list change over time — confirm the current shape against
-docs.umbraco.com before hand-writing this file rather than copying an example verbatim.**
+the docs (`umbraco-docs`) before hand-writing this file rather than copying an example verbatim.**
 
 ## Behavior — before you tag a release
 

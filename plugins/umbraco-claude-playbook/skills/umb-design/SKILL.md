@@ -256,6 +256,8 @@ this phase.
 ## Skills to pull in
 
 - Extension-point idioms, DI registration patterns → `umbraco-extensibility`.
+- Umbraco's documented way to use an extension point, setting, or API → `umbraco-docs`, for
+  the project's major.
 - How the CMS itself implements something (a base class, an extension point's real contract,
   a built-in sibling) → `umbraco-cms-source`, read at the project's release tag.
 - Async naming, visibility (internal by default), public-API compatibility → `umbraco-package-conventions`.
@@ -279,7 +281,8 @@ Not every topic below needs a spoken question. Before asking:
 
 1. **Check whether it's a checkable fact** — the codebase's existing conventions, how a
    sibling feature is built, what an extension point actually supports — and go find it
-   instead of asking. Find it in the real source (the CMS's own via `umbraco-cms-source`). When the design says it mirrors a sibling's
+   instead of asking. Find it in the real source (the CMS's own via `umbraco-cms-source`) or Umbraco's docs
+   (`umbraco-docs`). When the design says it mirrors a sibling's
    method signature, type or settings pattern, open that sibling's file and copy from it, not
    from a `CLAUDE.md` summary or memory. A detail recalled from a summary can be wrong in ways
    nothing catches until a builder compiles against it, several tasks later.
