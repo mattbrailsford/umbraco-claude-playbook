@@ -277,7 +277,10 @@ Not every topic below needs a spoken question. Before asking:
 
 1. **Check whether it's a checkable fact** — the codebase's existing conventions, how a
    sibling feature is built, what an extension point actually supports — and go find it
-   instead of asking.
+   instead of asking. Find it in the real source. When the design says it mirrors a sibling's
+   method signature, type or settings pattern, open that sibling's file and copy from it, not
+   from a `CLAUDE.md` summary or memory. A detail recalled from a summary can be wrong in ways
+   nothing catches until a builder compiles against it, several tasks later.
 2. **If it's a judgment call and a wrong guess is cheap to correct once it's written down**
    (component boundaries, a non-functional target, which pattern to reach for), write it as
    `> ASSUMPTION: ...` under the relevant section of `ARCHITECTURE.md`/`SPEC.md` instead of
