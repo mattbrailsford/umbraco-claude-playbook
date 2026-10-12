@@ -221,5 +221,5 @@ the commit/branch conventions this repo itself follows.
 
 ## Credits
 
-Based on [Rob Conery's `claude-playbook`](https://github.com/robconery) starter template,
+Based on [Rob Conery's `claude-playbook`](https://bigmachine.io/freebies/claude-playbook) starter template,
 adapted for Umbraco package and backoffice extension development.
