@@ -12,10 +12,11 @@ the shared `CLAUDE.md`.
 
 1. `CLAUDE.local.md` already has an `Umbraco CMS source:` line whose path is a git repo with
    an `umbraco/Umbraco-CMS` remote → done, move on.
-2. Otherwise look for an existing clone: a git repo whose `origin` remote points at
-   `umbraco/Umbraco-CMS`. Check the remote, not the folder name:
+2. Otherwise look for an existing clone: a git repo with a remote that points at
+   `umbraco/Umbraco-CMS`. Check the remote, not the folder name: people who contribute to the
+   CMS often have a fork, so also accept an `upstream` remote that points there.
    ```bash
-   git -C <dir> remote get-url origin   # should contain umbraco/Umbraco-CMS
+   git -C <dir> remote -v   # origin or upstream should contain umbraco/Umbraco-CMS
    ```
    Look, in this order:
    - Folders next to this repo, and next to its parent folder. People tend to keep related
