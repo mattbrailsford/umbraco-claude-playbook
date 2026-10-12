@@ -22,10 +22,11 @@ The clone's path lives in the project's `CLAUDE.local.md` (personal, gitignored,
 `umb-init`), on a line like:
 
 ```markdown
-- Umbraco CMS source: ~/Code/Umbraco-CMS
+- Umbraco CMS source: /Users/jane/Code/Umbraco-CMS
 ```
 
-Use that path as `$CMS` in the commands below. If there's no such line, or the path isn't a
+Use that path as `$CMS` in the commands below. If it starts with `~`, expand it to the full
+home-folder path first: inside quotes, `~` isn't expanded and git can't find the folder. If there's no such line, or the path isn't a
 git repo, use the GitHub fallback below. Don't clone it yourself from here; `umb-init` offers
 that, with the user's yes.
 
