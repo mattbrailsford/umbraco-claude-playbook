@@ -5,7 +5,7 @@ description: >-
   on, checks what's already there, and offers to add what's missing, one step at a time: the
   solution (from a real dotnet new template), CLAUDE.md, .gitignore, .claude/memory/ and the
   plan-folder convention, per-worktree demo site ports, lint and format, and backend,
-  frontend and e2e tests, and a local clone of the Umbraco CMS source. Never adds anything
+  frontend and e2e tests, and local clones of the Umbraco CMS source and docs. Never adds anything
   without asking. Use when starting a new repo,
   when an existing repo is missing CLAUDE.md, or again later to fill gaps such as a project with no tests yet.
 user-invocable: true
@@ -35,6 +35,7 @@ whatever was skipped, so "not now" is always a fine answer.
 | 6 | Frontend tests (only if there's a `Client/` frontend) | `references/frontend-tests.md` |
 | 7 | End-to-end (e2e) tests | `references/e2e-tests.md` |
 | 8 | Local CMS source clone, recorded in `CLAUDE.local.md` | `references/cms-source.md` |
+| 9 | Local docs clone, recorded in `CLAUDE.local.md` | `references/docs-source.md` |
 
 ## Scope
 
@@ -45,8 +46,8 @@ whatever was skipped, so "not now" is always a fine answer.
   `.claude/memory/`, and the empty `docs/plans/` folder (or whatever path convention the
   interview settles on). Then offer the tooling the build loop depends on: per-worktree demo
   site ports, lint and format checks, and backend, frontend and e2e test projects, each set up
-  with real tools (`dotnet new`, `npm`) and recorded in `CLAUDE.md`. Last, offer a local clone
-  of the CMS source, recorded in the personal `CLAUDE.local.md`.
+  with real tools (`dotnet new`, `npm`) and recorded in `CLAUDE.md`. Last, offer local clones
+  of the CMS source and the docs, recorded in the personal `CLAUDE.local.md`.
 - OUT: deciding what the project *is* (that's `umb-explore`), architecture
   (`umb-design`), tasks (`umb-plan`). This command does not interview the problem —
   if you're asked "what should this do," stop and point at `umb-explore`. Also out: writing
@@ -180,7 +181,7 @@ pre-create a per-feature subfolder or any of its eight files — `umb-explore` c
 `docs/plans/<feature-slug>/`, its own `BRIEF.md`, and the folder's `README.md` index when the
 first real feature starts.
 
-## Steps 3 to 8: Ports, lint, format, tests and CMS source
+## Steps 3 to 9: Ports, lint, format, tests, CMS source and docs
 
 Each step has its own reference file with what to detect, the default to offer, and how to
 set it up. Read only the one for the step you're on. The same rules apply to all of them:
@@ -196,8 +197,8 @@ set it up. Read only the one for the step you're on. The same rules apply to all
 - **No sample tests.** Set up the project and check it builds and runs. Real tests come from
   `bdd-specs` when a feature needs them.
 - **Record the commands.** Put each working command in `CLAUDE.md`'s "Build & test" section.
-  The `builder`, `reviewer` and `umb-build-loop` smoke step read them from there. Step 8 is
-  the exception: the clone's path is personal, so it goes in `CLAUDE.local.md` instead.
+  The `builder`, `reviewer` and `umb-build-loop` smoke step read them from there. Steps 8 and
+  9 are the exception: a clone's path is personal, so it goes in `CLAUDE.local.md` instead.
 - **Commit nothing.** Leave the changes for the user to review, like every other file this
   skill creates.
 

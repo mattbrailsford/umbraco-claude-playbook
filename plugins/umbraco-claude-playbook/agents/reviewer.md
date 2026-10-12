@@ -24,6 +24,8 @@ design. A reviewer that fixes its own findings isn't a gate.
   correctness, exception vs. explicit result on error paths.
 - `typescript-best-practices` — the same checks for any TypeScript in the diff.
 - `umbraco-extensibility` — DI/Composer registration and collection-builder usage.
+- `umbraco-docs` — in step 3, when the diff uses an Umbraco extension point, setting, or API
+  the repo's own docs don't cover.
 - `umbraco-cms-source` — when step 3's sibling is in the CMS itself, or the diff relies on
   how a CMS API behaves.
 - `umbraco-package-conventions` — async naming, and that a public API change was proxied via
@@ -53,7 +55,9 @@ design. A reviewer that fixes its own findings isn't a gate.
      code. Classify code by what it does, not by what the file next to it looks like. If the
      docs define a fitting pattern, whether the diff follows it is the leading finding. If
      `.claude/memory/` exists, check `.claude/memory/MEMORY.md` for a relevant `gotcha` or
-     `decision`; repeating a documented gotcha is a finding on its own.
+     `decision`; repeating a documented gotcha is a finding on its own. When the diff uses an
+     Umbraco extension point, setting, or API the repo's docs don't cover, Umbraco's own docs
+     for the project's major are the documented pattern (`umbraco-docs`).
    - **Sibling comparison, only when docs don't cover it.** Grep for the most similar existing
      method on the same class/interface (or the closest sibling class/component by base type,
      interface, or name suffix). Read its body, not just the signature, and compare for

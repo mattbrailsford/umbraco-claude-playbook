@@ -21,7 +21,7 @@ Then, inside Claude Code:
 
 ```
 /umb-init          # setup wizard: solution (if new), CLAUDE.md, .gitignore, ports,
-                   # lint, tests, CMS source clone. Asks before each step;
+                   # lint, tests, CMS source and docs clones. Asks before each step;
                    # re-run to fill gaps
 /umb-explore       # talk through what you're building
 /umb-design        # decide which extension points, data model, API surface

@@ -126,7 +126,7 @@ value converter example). Property value converters stay here anyway, since you 
 any property editor, built-in or custom.
 
 Signatures can drift across Umbraco majors and this skill isn't version-pinned, so check
-docs.umbraco.com for the target version before trusting a base class or attribute shape
+the docs for the target major (`umbraco-docs`) before trusting a base class or attribute shape
 verbatim. Full skeletons are in `references/`; read only the file you need.
 
 | # | Extension point | Interface / base class | Registered via | Reach for it when |

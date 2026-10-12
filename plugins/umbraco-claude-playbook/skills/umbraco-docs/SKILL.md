@@ -1,0 +1,110 @@
+---
+name: umbraco-docs
+description: >-
+  How to look up the official Umbraco documentation (docs.umbraco.com) for the major version
+  the project targets — from a local clone of umbraco/UmbracoDocs, where the clone's path is
+  recorded, which version folder to read, and the read-only git commands for reading and
+  searching it. Falls back to the live site's Markdown pages and its llms.txt index when
+  there's no clone. Use whenever you need Umbraco's documented way of doing something: an
+  extension point's registration, a configuration setting, a package or marketplace
+  requirement, or a tutorial's recommended shape.
+---
+
+# umbraco-docs
+
+The docs say how Umbraco *means* a thing to be used. The CMS source (`umbraco-cms-source`)
+says how it actually behaves. Check the docs for the intended pattern, and the source when
+the docs are thin or you need the exact contract.
+
+Read the docs for the major the project targets. Pages change between majors, and the
+site's unversioned links show the newest major, which may not be the project's.
+
+## Find the clone
+
+The clone's path lives in the project's `CLAUDE.local.md` (personal, gitignored, set up by
+`umb-init`), on a line like:
+
+```markdown
+- Umbraco docs source: /Users/jane/Code/UmbracoDocs
+```
+
+Use that path as `$DOCS` in the commands below. If the line ends with `(remote: upstream)`,
+the clone is a fork: use `upstream` wherever the commands below say `origin`. If it starts with `~`, expand it to the full
+home-folder path first: inside quotes, `~` isn't expanded and git can't find the folder. If
+there's no such line, or the path isn't a git repo, use the live site fallback below. Don't
+clone it yourself from here; `umb-init` offers that, with the user's yes.
+
+## Pick the folder
+
+The docs aren't tagged per release. Each supported major has its own folder on `main`, with
+one folder per product inside it:
+
+```text
+17/umbraco-cms/        17/umbraco-forms/      17/umbraco-commerce/   ...
+18/umbraco-cms/        18/umbraco-forms/      ...
+```
+
+1. Get the CMS major the project targets: the `Umbraco.Cms.*` package version in
+   `Directory.Packages.props` or the `.csproj`, or `CLAUDE.md`'s Stack section.
+2. Read from `<major>/<product>/`. Most lookups are `umbraco-cms`. A package that builds on
+   Forms, Commerce or another product reads that product's folder too.
+3. Update the clone's view of `main` once per session, then read from `origin/main`:
+   ```bash
+   git -C "$DOCS" fetch --quiet origin main
+   ```
+4. List the top level to see which majors are there:
+   ```bash
+   git -C "$DOCS" ls-tree --name-only origin/main
+   ```
+   Only supported majors have a folder. If the project's major has none, it's out of
+   support. Read the nearest newer major and say in your output that the page is for a
+   different major.
+5. If the project supports more than one major, check each major's folder. A page that
+   differs between them is a multi-version finding, not a detail to average out.
+
+## Read, search, list
+
+Read straight from `origin/main`. These commands never touch the clone's working tree or
+current branch:
+
+```bash
+# Read one page
+git -C "$DOCS" show "origin/main:17/umbraco-cms/extend-your-project/server-side-extensions/scheduling.md"
+
+# Search one major's CMS docs
+git -C "$DOCS" grep -n -i "IRecurringBackgroundJob" origin/main -- '17/umbraco-cms/*.md'
+
+# List pages under a folder
+git -C "$DOCS" ls-tree -r --name-only origin/main -- 17/umbraco-cms/extend-your-project/
+```
+
+Each product folder has a `SUMMARY.md`: the site's table of contents for that product. Read
+it to find the right page by topic when a search for a class name or setting comes up empty.
+A folder's `README.md` is that folder's own landing page.
+
+## No clone: live site fallback
+
+The site serves every page as Markdown. Add `.md` to the page's path:
+
+```text
+https://docs.umbraco.com/umbraco-cms/17.latest/extend-your-project/server-side-extensions/scheduling.md
+```
+
+The repo path maps to the site path like this: `17/umbraco-cms/<path>.md` is
+`umbraco-cms/17.latest/<path>.md`. Always include the `<major>.latest` part. Without it you
+get the newest major. A folder's `README.md` is the folder's own path plus `.md`.
+
+To find a page, fetch the site index at `https://docs.umbraco.com/llms.txt`. It lists every
+page with a one-line summary. It's large, so search it for the topic rather than reading it
+all. It's only served from the site root, not per product.
+
+## Rules
+
+- **Never change the clone.** No `checkout`, `switch`, `pull`, `reset`, or edits. It may be the
+  user's own working copy for writing docs. `fetch` is the only write, and it only updates
+  `origin/main`.
+- **Quote the page you read.** When a design, review finding, or decision relies on the docs,
+  give the page's site link with the `<major>.latest` part, so the claim can be checked.
+- **Docs beat memory.** If what you remember about an Umbraco API or setting differs from the
+  docs for the project's major, the docs win. If the docs and the CMS source disagree, the
+  source is what runs: follow it, and say the docs differ.
