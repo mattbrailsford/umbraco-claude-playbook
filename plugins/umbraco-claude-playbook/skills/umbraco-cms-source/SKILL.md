@@ -30,6 +30,15 @@ home-folder path first: inside quotes, `~` isn't expanded and git can't find the
 git repo, use the GitHub fallback below. Don't clone it yourself from here; `umb-init` offers
 that, with the user's yes.
 
+Then find the remote that points at `umbraco/Umbraco-CMS`. In a direct clone it's `origin`;
+in a clone of someone's fork it's usually `upstream`. Check once per session:
+
+```bash
+REMOTE=$(git -C "$CMS" remote -v | awk 'tolower($2) ~ /[\/:]umbraco\/umbraco-cms(\.git)?$/ {print $1; exit}')
+```
+
+If `$REMOTE` comes back empty, no remote points at Umbraco's repo: use the GitHub fallback below.
+
 ## Pick the tag
 
 1. Get the exact CMS version the project targets: the `Umbraco.Cms.*` package version in
@@ -42,7 +51,7 @@ that, with the user's yes.
    ```
 3. If the tag isn't there, fetch tags once, then look again:
    ```bash
-   git -C "$CMS" fetch --tags --quiet origin
+   git -C "$CMS" fetch --tags --quiet "$REMOTE"
    ```
 4. If the project supports more than one CMS major, check each major's tag. Behavior that
    differs between them is a multi-version finding, not a detail to average out.

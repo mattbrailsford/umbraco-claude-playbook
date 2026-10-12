@@ -12,7 +12,7 @@ the shared `CLAUDE.md`.
 
 1. `CLAUDE.local.md` already has an `Umbraco docs source:` line whose path is a git repo with
    an `umbraco/UmbracoDocs` remote → done, move on.
-2. Otherwise look for an existing clone: a git repo whose `origin` remote points at
+2. Otherwise look for an existing clone: a git repo with a remote that points at
    `umbraco/UmbracoDocs`. Check the remote, not the folder name: people who contribute to the
    docs often have a fork, so also accept an `upstream` remote that points there.
    ```bash
@@ -51,8 +51,3 @@ On a no, record nothing. A re-run of `umb-init` offers it again.
    ```
    On Windows: `C:/Users/jane/source/repos/UmbracoDocs`.
 2. Make sure `.gitignore` lists `CLAUDE.local.md`. Add it if it's missing.
-3. If the clone's `umbraco/UmbracoDocs` remote is `upstream`, not `origin`, add it after the
-   path so `umbraco-docs` reads the right branch:
-   ```markdown
-   - Umbraco docs source: /Users/jane/Code/UmbracoDocs (remote: upstream)
-   ```

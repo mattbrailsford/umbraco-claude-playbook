@@ -29,11 +29,19 @@ The clone's path lives in the project's `CLAUDE.local.md` (personal, gitignored,
 - Umbraco docs source: /Users/jane/Code/UmbracoDocs
 ```
 
-Use that path as `$DOCS` in the commands below. If the line ends with `(remote: upstream)`,
-the clone is a fork: use `upstream` wherever the commands below say `origin`. If it starts with `~`, expand it to the full
+Use that path as `$DOCS` in the commands below. If it starts with `~`, expand it to the full
 home-folder path first: inside quotes, `~` isn't expanded and git can't find the folder. If
 there's no such line, or the path isn't a git repo, use the live site fallback below. Don't
 clone it yourself from here; `umb-init` offers that, with the user's yes.
+
+Then find the remote that points at `umbraco/UmbracoDocs`. In a direct clone it's `origin`;
+in a clone of someone's fork it's usually `upstream`. Check once per session:
+
+```bash
+REMOTE=$(git -C "$DOCS" remote -v | awk 'tolower($2) ~ /[\/:]umbraco\/umbracodocs(\.git)?$/ {print $1; exit}')
+```
+
+If `$REMOTE` comes back empty, no remote points at Umbraco's repo: use the live site fallback below.
 
 ## Pick the folder
 
@@ -58,13 +66,13 @@ Folders that aren't in the map aren't published, so don't rely on them.
 2. Read from `<major>/<product>/`. Most lookups are in `<major>/umbraco-cms/`. A package
    that builds on Forms, Commerce or another product reads that product's folder too. For an
    unversioned product, read its root folder: there's only one version of it.
-3. Update the clone's view of `main` once per session, then read from `origin/main`:
+3. Update the clone's view of `main` once per session, then read from `$REMOTE/main`:
    ```bash
-   git -C "$DOCS" fetch --quiet origin main
+   git -C "$DOCS" fetch --quiet "$REMOTE" main
    ```
 4. List the top level to see which majors are there:
    ```bash
-   git -C "$DOCS" ls-tree --name-only origin/main
+   git -C "$DOCS" ls-tree --name-only "$REMOTE/main"
    ```
    Only supported majors have a folder, and not every product has every major. If the
    project's major has no folder for the product, it's out of support. Read the nearest newer major and say in your output that the page is for a
@@ -74,18 +82,18 @@ Folders that aren't in the map aren't published, so don't rely on them.
 
 ## Read, search, list
 
-Read straight from `origin/main`. These commands never touch the clone's working tree or
+Read straight from `$REMOTE/main`. These commands never touch the clone's working tree or
 current branch:
 
 ```bash
 # Read one page
-git -C "$DOCS" show "origin/main:17/umbraco-cms/extend-your-project/server-side-extensions/scheduling.md"
+git -C "$DOCS" show "$REMOTE/main:17/umbraco-cms/extend-your-project/server-side-extensions/scheduling.md"
 
 # Search one major's CMS docs
-git -C "$DOCS" grep -n -i "IRecurringBackgroundJob" origin/main -- '17/umbraco-cms/*.md'
+git -C "$DOCS" grep -n -i "IRecurringBackgroundJob" "$REMOTE/main" -- '17/umbraco-cms/*.md'
 
 # List pages under a folder
-git -C "$DOCS" ls-tree -r --name-only origin/main -- 17/umbraco-cms/extend-your-project/
+git -C "$DOCS" ls-tree -r --name-only "$REMOTE/main" -- 17/umbraco-cms/extend-your-project/
 ```
 
 Each product folder has a `SUMMARY.md`: the site's table of contents for that product. Read
@@ -115,7 +123,7 @@ all. It's only served from the site root, not per product.
 
 - **Never change the clone.** No `checkout`, `switch`, `pull`, `reset`, or edits. It may be the
   user's own working copy for writing docs. `fetch` is the only write, and it only updates
-  `origin/main`.
+  `$REMOTE/main`.
 - **Quote the page you read.** When a design, review finding, or decision relies on the docs,
   give the page's site link, with the version part if the product has one, so the claim can
   be checked.
