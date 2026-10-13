@@ -19,7 +19,10 @@ is a pattern that's harmless on the demo site and costly in production.
 
 Verify version-specific APIs against the CMS source and docs for the major the project
 targets (`umbraco-cms-source`, `umbraco-docs`). The published content cache was rebuilt in
-v15, so caching advice written for v13 and earlier is often wrong now.
+v15, so caching advice written for v13 and earlier is often wrong now. Search changes in
+v19: Umbraco Search (`Umbraco.Cms.Search`) replaces the built-in Examine indexes and their
+hooks. It's also an add-on for v17 and v18, so check which one the site uses, not just the
+major.
 
 ## 🎯 Why: Design for Change
 
@@ -68,14 +71,17 @@ var sections = root.Children();
   media counterpart) answers parent/child/descendant/ancestor questions from an in-memory
   structure of keys, without loading content. Filter by key and type there, then load only
   the items you need from the cache.
-- Search with Examine, don't traverse. "Find every product with tag X" is a query, not a
-  tree walk.
+- Search the index, don't traverse. "Find every product with tag X" is a query, not a
+  tree walk. On v19, or v17/v18 with the Umbraco Search add-on, get an `ISearcher` from
+  `ISearcherResolver` and filter, sort and page in the query (`skip`/`take`). Without the
+  add-on on v17/v18, query Examine.
 - Store the result of a traversal you need twice. `Root()` walks up the tree each time it's
   called.
 - A descendant walk is fine when the subtree is small by design (a settings folder, a
   three-level navigation). Say so in a comment, so a reviewer doesn't have to guess.
 
-Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/application-code/common-pitfalls).
+Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/application-code/common-pitfalls),
+[Umbraco Search](https://docs.umbraco.com/umbraco-search).
 
 ## Cache your own expensive lookups
 
@@ -128,10 +134,12 @@ Some code runs far more often than it looks like it does:
 - **Notification handlers** on save/publish run inside the editor's save. A bulk publish
   runs them once per item. Do slow work (external calls, reindexing your own data)
   after the save: queue it, or hand it to a background job.
-- **Examine events** (`TransformingIndexValues` and similar) run once per item indexed. A
-  full rebuild runs them for every document and media item. A service lookup in there is
-  one database call per item. Use what the event already carries, or read from the published
-  cache.
+- **Indexing code** runs once per item indexed, and a full rebuild runs it for every
+  document and media item. With Umbraco Search, that's `IContentIndexer.GetIndexFieldsAsync`
+  and `IPropertyValueHandler.GetIndexFields`. With Examine on v17/v18, it's
+  `TransformingIndexValues` and similar events. A service lookup in there is one database
+  call per item. Build fields from the content item you're handed. If you need related
+  data, read it from the published cache or a cached lookup, not a service.
 - **Startup** code runs on every app start, on every site that installs the package. Do
   work lazily, when it's first needed. Run one-time setup through a migration, which
   records that it ran, not a check on every boot.
@@ -139,7 +147,8 @@ Some code runs far more often than it looks like it does:
   imported bulk data go in your own tables (`ef-core-data`). Content saves are slow by
   design: versioning, notifications, cache updates, reindexing.
 
-Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/application-code/common-pitfalls).
+Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/application-code/common-pitfalls),
+[Umbraco Search](https://docs.umbraco.com/umbraco-search).
 
 ## Backoffice screens: don't over-fetch
 
@@ -164,6 +173,6 @@ Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbr
 - A cache added with no rule for what clears it, or cleared without a cache refresher on a
   package that supports load balancing.
 - A cache key without the package prefix.
-- A database or HTTP call inside a notification handler, Examine event, or loop over
-  content.
+- A database or HTTP call inside a notification handler, a content indexer, a property
+  value handler, an Examine event, or a loop over content.
 - A list endpoint without paging, or a search box without a debounce.
