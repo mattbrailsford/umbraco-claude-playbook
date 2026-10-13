@@ -81,6 +81,9 @@ to preserve when editing these skills:
   - `umb-plan`: `STORIES.md`, `PLAN.md`.
   - `umb-build-loop`: `BUILD-LOG.md`, `screenshots/`.
   - `describe-pr`: `PR-DESCRIPTION.md`, only when a plan folder exists.
+
+  Outside the plan folders, `cms-upgrade` owns `docs/upgrades/v<major>.md`, one file per
+  CMS major upgrade, ticking its own checklist.
 - **The only three cross-owner writes:**
   1. Every phase may append to `DECISION-LOG.md`.
   2. Every phase updates its own single line in `README.md` when it finishes, never
@@ -95,7 +98,7 @@ to preserve when editing these skills:
 
 `umb-build-loop` dispatches `agents/builder.md` per task, then `agents/reviewer.md` against
 the diff, then one whole-branch review after the last task. `quick-fix` also dispatches
-`reviewer`.
+`reviewer`. `cms-upgrade` runs the same builder/reviewer loop over its upgrade checklist.
 
 - `reviewer` has no `Edit`/`Write` in its frontmatter `tools:` list. This is load-bearing:
   a reviewer that can patch its own findings stops being a gate. Never add write tools to it.

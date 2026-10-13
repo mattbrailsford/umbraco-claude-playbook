@@ -1,6 +1,6 @@
 ---
 name: builder
-description: Implements a single task from a feature's PLAN.md in C# (.NET / Umbraco) and/or Lit + UUI. Builds and self-tests; never commits unless told. Dispatched by umb-build-loop.
+description: Implements a single task from a feature's PLAN.md, or from a CMS upgrade's task list, in C# (.NET / Umbraco) and/or Lit + UUI. Builds and self-tests; never commits unless told. Dispatched by umb-build-loop and cms-upgrade.
 tools: Read, Write, Edit, Glob, Grep, Bash, Skill
 model: sonnet
 ---
