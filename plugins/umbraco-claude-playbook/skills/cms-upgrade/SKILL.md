@@ -158,6 +158,20 @@ or incomplete. Never treat "not in the docs" as "not a breaking change".
    ranges, `umbraco-marketplace.json`, README compatibility tables, and any CI matrix.
    Against a CMS pre-release, the package's own version is a pre-release too (for example
    `19.0.0-rc1`), and its dependency range must allow the CMS pre-release.
+9. **The package's own scheduled removals.** Work out the package version this upgrade will
+   release (from step 8). Then find everything the package itself deprecated with a removal
+   version at or below it. With version-aligned versioning that's the target CMS major; with
+   independent SemVer, ask the user which version this release will be:
+   - C# `[Obsolete]` members whose message names that version
+     (`umbraco-package-conventions` sets the "Will be removed in vN" format).
+   - Frontend exports tagged `@deprecated` with that version, and the runtime warnings that
+     go with them (`umbraco-backoffice-conventions`).
+   - Old manifest aliases kept registered only so other packages' references keep working.
+
+   Each is a removal task. Remove nothing that names a later version, and nothing that
+   doesn't name a version at all: list those as follow-ups for the user to decide. Every
+   removal is a breaking change for the package's consumers, so record each one in the
+   file's "Breaking changes for consumers" section.
 
 Write the file from `templates/UPGRADE.md`. Order the tasks so **every task ends in a green
 build**:
@@ -174,7 +188,9 @@ build**:
    default, a renamed URL, a changed notification).
 5. The frontend bump and its fixes: import paths, manifests, elements and contexts, UUI.
    Runtime deprecation warnings found in the smoke get added as tasks here.
-6. Compatibility markers.
+6. Remove the package's own deprecated code scheduled for this version (step 9). This goes
+   after the CMS work, so a test failing here points at the removal, not the bump.
+7. Compatibility markers.
 
 Show the user the inventory and the ordered tasks, and wait for a yes before building. This
 is the plan; a missing item here becomes a broken site later.
@@ -211,6 +227,10 @@ for each unchecked task, in order, follow `umb-build-loop`'s loop with these dif
 - **Review.** Dispatch `reviewer` as usual, with the inventory entry as the task. No
   `#pragma warning disable` or `<NoWarn>` to silence a removed-API warning, and no skipped or
   weakened tests to get green. Either one is a `FAIL`.
+  For a removal task from inventory step 9, give the reviewer the deprecation message that
+  scheduled it, so a planned removal isn't flagged as an unproxied public API break. It
+  still checks that nothing inside the package, its tests, or its demo site uses the removed
+  code.
 - **Smoke.** Use the order in `umb-build-loop`'s "Smoke the real entry point" step. Once the
   framework bump task lands, the demo site must start on the target major and the backoffice
   must load with the package's extensions registered. Open every screen the package adds and

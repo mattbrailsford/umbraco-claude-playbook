@@ -31,6 +31,7 @@ Each task ends in a green build.
 - [ ] [Replace APIs the target release made obsolete]
 - [ ] [Handle behavior changes]
 - [ ] [Bump `@umbraco-cms/backoffice`; fix the client]
+- [ ] [Remove this package's own code scheduled for removal in this version]
 - [ ] [Update compatibility markers]
 
 ## Decisions
@@ -39,8 +40,8 @@ Each task ends in a green build.
 
 ## Breaking changes for consumers
 
-[Changes to this package's own public API or manifest aliases that the upgrade forced, or
-"None".]
+[Changes to this package's own public API or manifest aliases: ones the upgrade forced, and
+the package's own deprecated code removed in this version. Or "None".]
 
 ## Follow-ups
 
