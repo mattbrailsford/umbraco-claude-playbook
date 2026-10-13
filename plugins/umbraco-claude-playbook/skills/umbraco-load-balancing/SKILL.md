@@ -3,13 +3,14 @@ name: umbraco-load-balancing
 description: >-
   Keeping an Umbraco package or backoffice extension correct when the site that installs it
   runs on more than one server — files that must not live on one server's disk, state that
-  must not live in one server's memory, background jobs and notification handlers that must
+  must not live in one server's memory, caches that must be cleared on every server,
+  background jobs and notification handlers that must
   run once rather than once per server, concurrent writes from two servers, absolute URLs
   behind a load balancer, and multi-step flows that can't assume the next request lands on
   the same server. Use when writing or reviewing package code that writes files, holds state
   between requests, runs on a timer, sends email or calls out from a handler, writes shared
-  rows, or builds absolute URLs. Not for configuring a load-balanced host. For clearing your
-  own caches on every server, see `umbraco-performance`.
+  rows, builds absolute URLs, or clears its own cache. Not for configuring a load-balanced
+  host. For what to cache and how to key it, see `umbraco-performance`.
 ---
 
 # Load balancing for Umbraco packages
@@ -74,7 +75,7 @@ A `static` field, a singleton's field, `IMemoryCache`, a `ConcurrentDictionary` 
 in-process queue lives on one server, and is lost when that server restarts.
 
 - **A cache is fine in memory** as long as every server clears its copy when the data
-  changes. That's a cache refresher: see `umbraco-performance`'s caching section.
+  changes. See "Caches: clear on every server" below.
 - **State every server must agree on goes in the database.** Counters, rate limits, feature
   flags, "this user already did X", import progress.
 - **In-process queues (`Channel<T>`, `ConcurrentQueue<T>`) lose work.** If a recycle mid-way
@@ -82,6 +83,22 @@ in-process queue lives on one server, and is lost when that server restarts.
   background job.
 - **`static` is fine for things that never change** after startup. Mutable `static` state
   drifts apart between servers.
+
+## Caches: clear on every server
+
+Clearing a key in `AppCaches` clears it on the server that ran the code. The others keep
+serving the old value until it expires.
+
+- **Route every clear through your package's cache refresher** (`umbraco-extensibility`'s
+  catalogue, row 4), via `DistributedCache`, so every server drops its copy. Don't clear the
+  key directly.
+- **Send what other servers can act on**: an ID or key they can re-read, not an object that
+  only exists in this server's memory.
+- **Don't lean on an expiry alone** for data that mirrors Umbraco content. Clear it from the
+  matching notification.
+
+Source: [Common load-balancing pitfalls](https://docs.umbraco.com/umbraco-cms/run-in-production/infrastructure-and-ops/server-setup/load-balancing/common-load-balancing-pitfalls),
+[ICacheRefresher](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/cache/icacherefresher).
 
 ## Work that must happen once
 
@@ -188,7 +205,8 @@ Source: [Common load-balancing pitfalls](https://docs.umbraco.com/umbraco-cms/ru
   request will read.
 - Mutable state in a `static` field, a singleton, `IMemoryCache` or an in-process queue
   that other servers need to see or that must survive a restart.
-- A cache with no cache refresher (`umbraco-performance` owns this check).
+- A package cache cleared directly instead of through its cache refresher, or a refresher
+  payload that carries an in-memory object instead of an ID.
 - A recurring background job that sends, calls out or writes shared data, relying on the
   default `ServerRoles` to run it once.
 - An `IDistributedBackgroundJob` without a package-prefixed `Name`, or one that drops the
