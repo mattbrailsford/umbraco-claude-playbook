@@ -121,12 +121,36 @@ or incomplete. Never treat "not in the docs" as "not a breaking change".
    Leave a warning as a follow-up only when its replacement doesn't exist in every CMS
    version the branch builds against (a branch that targets two majors at once). Say which
    version is missing it.
-6. **Frontend.** If there's a backoffice client, compare the `exports` map in
-   `src/Umbraco.Web.UI.Client/package.json` at the two release tags for every
-   `@umbraco-cms/backoffice/*` path the project imports, and check which UUI major the
-   target ships (`umbraco-backoffice-conventions` has the build-order and client rules). An
-   import path that's gone or moved is a task. TypeScript `@deprecated` warnings in the
-   client are handled like step 5.
+6. **Frontend.** If there's a backoffice client, give it the same care as the C#. Most
+   frontend breaks don't fail the build: a manifest field the backoffice no longer reads, or
+   a component tag that no longer exists, just renders nothing. Check each of these at the
+   target tag (`umbraco-cms-source`, under `src/Umbraco.Web.UI.Client/`), and treat every hit
+   as a task (`umbraco-backoffice-conventions` has the client build rules):
+   - **Import paths.** Compare the `exports` map in `package.json` at the two tags for every
+     `@umbraco-cms/backoffice/*` path the project imports. A path that's gone or moved is a
+     task.
+   - **`@deprecated` APIs.** The TypeScript compiler doesn't warn about these, so they're
+     easy to miss. Run ESLint with `@typescript-eslint/no-deprecated` (the rule the CMS
+     client uses itself) on the current version and again after the bump, like step 5's two
+     builds. If the project's lint config lacks the rule, run it once from the command line
+     rather than changing the config. Umbraco's `@deprecated` tags name the major that
+     removes the API ("Scheduled for removal in Umbraco 19").
+   - **Runtime deprecations.** Some backoffice deprecations only show in the browser. The
+     CMS logs them with `UmbDeprecation` as a console warning that starts "Umbraco
+     Backoffice:" and names the removal version. Newer releases add an "Origin:" line naming
+     the package when the caller is under `/App_Plugins/`; on older ones, match the warning
+     to the package's code yourself. Collect them during the smoke (see "Build").
+   - **Manifests.** Every extension `type`, `kind`, `meta` field, and condition `alias` the
+     package registers must still exist at the target tag. Validate `umbraco-package.json`
+     against the `umbraco-package-schema.json` that ships in the target's
+     `@umbraco-cms/backoffice` npm package (a JSON-schema validator run with `npx`, not a new
+     dependency).
+   - **Elements and contexts.** Every `umb-*` and `uui-*` tag the package's templates use,
+     and every context token it consumes, must still exist at the target tag. Lit templates
+     aren't type-checked, so a renamed tag fails silently.
+   - **UUI and styling.** If the target ships a new UUI major, read its breaking changes
+     and grep the package for each changed component, attribute, and `--uui-*` CSS custom
+     property.
 7. **Persistence.** If the project has EF Core migrations, the .NET bump moves EF Core too.
    Note it: `ef-core-data`'s provider checks apply to the smoke.
 8. **Compatibility markers.** List every place the supported CMS version is written down: the
@@ -138,15 +162,18 @@ or incomplete. Never treat "not in the docs" as "not a breaking change".
 Write the file from `templates/UPGRADE.md`. Order the tasks so **every task ends in a green
 build**:
 
-1. Fix obsolete usages while still on the current version. Each replacement API already
-   exists there, so this lands green and shrinks the bump.
+1. Fix obsolete and `@deprecated` usages, C# and frontend, while still on the current
+   version. Each replacement API already exists there, so this lands green and shrinks the
+   bump.
 2. Bump the target framework and packages, and fix what no longer compiles. This is the one
    big task. Split it by project if the solution has several.
-3. Move off APIs the target release made obsolete (step 5's second build). Add these tasks
-   once the bump compiles; you can't see them before.
+3. Move off APIs the target release made obsolete or `@deprecated` (the second build and
+   lint run in steps 5 and 6). Add these tasks once the bump compiles; you can't see them
+   before.
 4. Behavior changes: breaking changes that still compile but act differently (a setting's new
    default, a renamed URL, a changed notification).
-5. The frontend bump and its fixes.
+5. The frontend bump and its fixes: import paths, manifests, elements and contexts, UUI.
+   Runtime deprecation warnings found in the smoke get added as tasks here.
 6. Compatibility markers.
 
 Show the user the inventory and the ordered tasks, and wait for a yes before building. This
@@ -186,7 +213,9 @@ for each unchecked task, in order, follow `umb-build-loop`'s loop with these dif
   weakened tests to get green. Either one is a `FAIL`.
 - **Smoke.** Use the order in `umb-build-loop`'s "Smoke the real entry point" step. Once the
   framework bump task lands, the demo site must start on the target major and the backoffice
-  must load with the package's extensions registered (no console errors from the package).
+  must load with the package's extensions registered. Open every screen the package adds and
+  read the browser console: an error from the package fails the smoke, and an "Umbraco
+  Backoffice:" deprecation warning with the package as its origin becomes a task.
 - **Tick and log.** Tick the task in the upgrade file and add its commit SHA to the "Log"
   section. A decision the inventory left open goes in the file's "Decisions" section.
 
