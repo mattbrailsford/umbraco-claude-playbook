@@ -30,6 +30,8 @@ section, and the files/extension points you own. Build that task and nothing mor
   SQL Server *and* SQLite before writing a migration — most Umbraco packages need both.
 - Code that runs per request, per save, per indexed item or at startup, a property value
   converter, a cache, or a backoffice list or search → `umbraco-performance`.
+- Code that writes files, holds state between requests, runs on a timer, sends or calls out
+  from a handler, or writes shared rows → `umbraco-load-balancing`.
 - Frontend work (Lit components, UUI, backoffice manifests) → `umbraco-backoffice-ux` for how
   the screen should look and behave, the installed Umbraco Backoffice Skills for the specific
   extension point, and `umbraco-backoffice-conventions` for package structure (barrel exports,

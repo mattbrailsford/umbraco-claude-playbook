@@ -20,6 +20,9 @@ in the source at the project's tag (`umbraco-cms-source`), not from this list.
 - **Caching.** Stale data after a write: the package's own cache isn't cleared, or on a
   load-balanced site it's cleared on one server only because there's no cache refresher
   (`umbraco-extensibility`'s cache refresher entry).
+- **More than one server.** Works on one server, fails or repeats on several: a file on one
+  server's disk, state in one server's memory, a job or handler that runs once per server
+  (`umbraco-load-balancing`).
 - **Database provider.** Works on SQLite, fails on SQL Server, or the other way round: case
   sensitivity, date handling, or a migration that only ran on one (`ef-core-data`).
 - **Authorization.** A Management API endpoint that returns 401 or 403 for a user who should
