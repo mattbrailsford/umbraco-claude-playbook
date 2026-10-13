@@ -39,9 +39,7 @@ draft, never a live action.
    issue first, so it gets triaged and logged the usual way — never move straight to fixing an
    issue nobody's actually read.
 4. **A security flag stops everything here.** If the triage — existing or fresh — recorded
-   the outcome `security`, do not proceed with a normal fix. Tell the user and point at the
-   responsible-disclosure process instead. A public commit, PR, or comment referencing an
-   unpatched vulnerability is a leak, not a fix.
+   the outcome `security`, stop and follow `issue-triage`'s Security reports section.
 5. Capture any notes given in the argument — how the user wants it fixed, constraints,
    anything the triage didn't know. These get folded into whichever lane runs next; they don't
    replace it.
@@ -52,8 +50,10 @@ Use the triage's own read of size (`recommended action`, `likely area`) as the s
 but the real judgment stays where it already lives:
 
 - **Cause unknown** — a bug where neither the triage nor the user's notes say what's causing
-  it → invoke `investigate-bug` (Skill tool) with the issue first. Its report names the
-  cause and the lane below that fits, and becomes the starting material for that lane.
+  it → invoke `investigate-bug` (Skill tool) with the issue first, saying it was called from
+  `issue-resolve`. It reports back without starting a lane. Its report names the cause and a
+  suggested lane; take that as the starting call below, and pass the report on as the lane's
+  starting material.
 
 - **Looks small** — a single concern, the kind `quick-fix`'s own scope section describes →
   invoke `quick-fix` (Skill tool) with a description built from the issue's title/body, the
@@ -95,7 +95,6 @@ finishes and the PR is open for the pipeline route:
 
 - One issue per run. No fan-out, no subagent batch — this writes code, indirectly, via the
   mechanisms it calls, and that only happens on one working tree at a time.
-- Never treat a security-flagged issue as a normal fix.
 - Never post a tracker comment or change its status without explicit confirmation.
 - Don't re-triage an issue already in the triage log — read its entry, don't redo work
   `issue-triage` already did.

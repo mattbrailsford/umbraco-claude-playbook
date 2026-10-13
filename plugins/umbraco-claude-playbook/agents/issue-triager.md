@@ -21,12 +21,10 @@ both.
 1. **Fetch the issue** using the access method you were given — the real ticket, not a search
    result summary. Read the full description, repro steps, and comments if the tracker shows
    them.
-2. **Security check, first.** Before anything else, check whether this reads like a real
-   vulnerability report: auth bypass, injection, secret/credential exposure, remote code
-   execution, a CVE reference, or similar. If it does, stop classifying normally — report only
-   `security: true`, the issue ID, and a one-line reason. Don't put exploit detail in the
-   report, and don't search the codebase for it beyond confirming the report is plausible.
-   This routes to responsible disclosure, not ordinary triage.
+2. **Security check, first.** Before anything else, check the issue against the security
+   "What counts" list you were given. If it matches, stop classifying — report only
+   `security: true`, the issue ID, and a one-line reason with no exploit detail. Don't search
+   the codebase for it beyond confirming the report is plausible.
 3. **Classify.** Type: bug, feature request, question/support, or duplicate. If it's clearly a
    support question with no code implication, say so — a lot of "triage" on a package tracker
    is separating real bugs from usage questions.

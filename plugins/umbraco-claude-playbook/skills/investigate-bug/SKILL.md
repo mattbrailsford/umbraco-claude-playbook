@@ -46,10 +46,8 @@ Before reading code, get these. Ask for what's missing, one question at a time:
 
 A vague symptom ("saving is broken") gets one round of questions, not a guess.
 
-**Security check.** If the symptom looks like a vulnerability (data shown to someone who
-shouldn't see it, an action allowed without permission, injected script running), stop. Tell
-the user and point at the responsible-disclosure process. Don't write it up in a public
-commit, PR, or issue.
+**Security check.** If the symptom matches what `issue-triage`'s Security reports section
+counts as a vulnerability, stop and follow that section.
 
 ## 2. Reproduce it
 
@@ -135,7 +133,10 @@ Write the report in chat:
 **Route:** <quick-fix | umb-explore | upstream CMS issue>, because <one line>
 ```
 
-Then route it, the same way `issue-resolve` does:
+Then route it. **If `issue-resolve` called this skill**, skip this list: hand the report back
+and let `issue-resolve` pick and start the lane, so the tracker reply still gets drafted.
+**If the argument was an issue ID** and nothing called this skill, offer `issue-resolve` with
+that ID and the report, for the same reason. Otherwise:
 
 - **Small fix** (one concern, the size `quick-fix` describes): offer `quick-fix`, passing it
   the cause, the repro, and the places with the same cause.
@@ -156,5 +157,5 @@ If the cause is a mistake a future `builder` would likely repeat, offer to save 
 
 ## Hand off
 
-The report from step 6, then the route you'd take and a one-line question asking whether to
-start it.
+The report from step 6. Called from `issue-resolve`: stop there. Otherwise: the route you'd
+take and a one-line question asking whether to start it.

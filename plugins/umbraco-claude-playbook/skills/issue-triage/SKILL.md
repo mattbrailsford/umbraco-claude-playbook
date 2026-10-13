@@ -5,8 +5,9 @@ description: >-
   likely code area, checks for duplicates, flags anything that looks like a security report,
   and writes a report for human review. Never labels, comments, or closes anything itself.
   More than one issue spawns one issue-triager subagent per issue, orchestrated from the main
-  thread. Use when there's a backlog to work through, or a specific issue to understand before
-  fixing it.
+  thread. Use when there's a backlog to work through, or a specific issue to classify before
+  deciding whether to act on it. Proving a bug's cause is `investigate-bug`'s job, not this one.
+  Owns the playbook's rule for handling security reports.
 user-invocable: true
 argument-hint: [issue ID | ID range | leave blank for whole tracker]
 ---
@@ -20,9 +21,8 @@ report — then hands back a report. It never writes back to the tracker on its 
 ## Scope
 
 - IN: fetch, classify, find the likely code area, duplicate-check, security-flag, report.
-- OUT: applying labels/comments/closing issues, writing fixes, planning a feature. Once a
-  triaged issue turns into real work, hand off to `umb-explore` (or `quick-fix` if it's small
-  enough to skip the pipeline).
+- OUT: applying labels/comments/closing issues, proving a bug's cause, writing fixes, planning
+  a feature. Once a triaged issue turns into real work, hand off to `issue-resolve`.
 
 ## Preflight
 
@@ -87,25 +87,45 @@ user the issue count and the batch plan before starting — a few hundred open i
 few hundred subagent calls, and that's worth flagging before it runs.
 
 Every dispatch gets: the issue ID, the tracker's type/location/access method, the repo path,
-any dedup-pre-pass hint for that issue, and the relevant slice of the triage log (titles only,
-not full history, to keep the prompt small).
+any dedup-pre-pass hint for that issue, the "What counts" list from Security reports below,
+and the relevant slice of the triage log (titles only, not full history, to keep the prompt
+small).
 
 ## Aggregating and reporting
 
 1. Collect every subagent's report.
-2. Pull anything flagged as a possible security report into its own short list, named but not
-   detailed in the main output — point the user at responsible disclosure instead of normal
-   triage for those. Never draft a public response to one.
+2. Pull anything flagged as a possible security report into its own short list, handled as
+   Security reports below says.
 3. Build one combined table for everything else: issue, type, likely area, priority/urgency,
    duplicate-of (if any), recommended action, one-line why (written following
    `plain-writing`).
 4. Append every triaged issue to the triage log (id, title, type, likely area, recommended
    action, date, outcome) — this is what makes whole-tracker mode incremental on the next
-   run, and what `issue-resolve` reads. For anything flagged as a possible security report,
-   record only the id, date and outcome `security`, with no details.
+   run, and what `issue-resolve` reads. A security report is logged as Security reports below
+   says.
 5. Present the table and the security list (if non-empty) to the user. Nothing gets written
    back to the tracker — no label, comment, or close — until the user says which
    recommendations to apply.
+
+## Security reports
+
+This section is the playbook's one statement of this rule. `issue-triager`, `issue-resolve`,
+and `investigate-bug` all point here.
+
+**What counts.** An issue or symptom that reads like a real vulnerability: auth bypass, an
+action allowed without permission, data shown to someone who shouldn't see it, injection or
+injected script running, secret or credential exposure, remote code execution, a CVE
+reference, or similar.
+
+**What to do.**
+
+- Stop. Don't triage, investigate, or fix it as normal work.
+- Tell the user, naming the issue but not detailing it, and point them at the
+  responsible-disclosure process.
+- Never put it in a public commit, PR, comment, or issue, and never draft a public response
+  to it. A public reference to an unpatched vulnerability is a leak, not a fix.
+- Never quote exploit detail into a report, log, or plan file.
+- In the triage log, record only the id, date, and outcome `security`.
 
 ## Rules
 
@@ -114,13 +134,11 @@ not full history, to keep the prompt small).
 - Never post a comment, apply a label, or close an issue without the user picking that action
   explicitly — issue by issue, or as a stated "apply all." A draft is the default output, not
   an action.
-- A security-looking issue never gets the normal report treatment — flag it, name it, stop.
-  Don't quote exploit detail into a shared report; route it to responsible disclosure instead.
 - If the tracker is unreachable (auth, network, wrong location), stop and say so. Don't triage
   a stale cached copy or guess at an issue's content.
 
 ## Hand off
 
-A triaged issue that turns into real work goes to `umb-explore` next (or `quick-fix` for
-anything small enough to skip the pipeline) — this skill stops at "here's what I'd do," it
-doesn't start building.
+A triaged issue that turns into real work goes to `issue-resolve` next, with its ID. That
+picks `quick-fix` or the pipeline, and drafts the tracker reply once the fix lands. This skill
+stops at "here's what I'd do," it doesn't start building.
