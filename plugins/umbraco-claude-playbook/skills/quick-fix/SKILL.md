@@ -51,6 +51,9 @@ question.
      log strings, dead code removal.
    - `dotnet-best-practices` / `typescript-best-practices`: only if the fix involves types,
      nullability, async behavior, or error shape.
+   - `umbraco-performance` / `umbraco-load-balancing`: only if the fix touches a cache, a
+     per-request or per-save path, a background job, files on disk, or a handler's side
+     effects.
    - **`security-dotnet` / `security-lit`: always, if the fix touches auth, user input, the
      Management API, secrets, or `unsafeHTML`/`unsafeSVG`.** "Quick" doesn't exempt a fix from
      these — they're non-negotiable in this playbook regardless of diff size.

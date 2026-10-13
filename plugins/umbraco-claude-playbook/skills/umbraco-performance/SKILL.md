@@ -222,7 +222,8 @@ Some code runs far more often than it looks like it does:
 
 - **Notification handlers** on save/publish run inside the editor's save. A bulk publish
   runs them once per item. Do slow work (external calls, reindexing your own data)
-  after the save: queue it, or hand it to a background job.
+  after the save: record it and let a background job pick it up. An in-memory queue loses
+  work on a restart (`umbraco-load-balancing`).
 - **Bulk operations** (an import, a sync, a migration over many items) run in one scope, so
   the work is one transaction and its notifications fire once, when the scope completes.
   `scope.Notifications.Suppress()` stops them entirely, which is only safe for data your
