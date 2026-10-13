@@ -3,6 +3,25 @@
 The ideas behind the playbook, for when you want more than the
 [README](../README.md) and [QUICKSTART](../QUICKSTART.md) give you.
 
+## Three flows
+
+Work gets built in one of three flows:
+
+- **The pipeline**, `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop`, for a
+  feature or any fix too big to do in one go.
+- **`quick-fix`**, for a small fix of one concern. It hands over to the pipeline if the fix
+  turns out bigger.
+- **`major-upgrade`**, for moving to a new Umbraco major.
+
+Three helpers come before a flow, never instead of one. None of them writes code:
+
+- `investigate-bug` proves a bug's cause, then says which flow should fix it.
+- `issue-triage` reads tracker issues and recommends what to act on.
+- `issue-resolve` sends one triaged issue to `quick-fix` or the pipeline.
+
+You don't have to pick. Describe what you want and Claude picks the skill from its
+description.
+
 ## One plan folder per feature
 
 Each pipeline step owns one file in a per-feature folder, by default

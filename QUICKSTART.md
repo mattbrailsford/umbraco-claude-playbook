@@ -63,6 +63,15 @@ For a typo, a reversed condition, or a dead `try/catch`, use `/quick-fix`. It sk
 pipeline but still gets a review, unless the change is text only. If the fix turns out
 bigger than it looked, it sends you to `/umb-plan` or `/umb-explore`.
 
+## Not sure which to use?
+
+Just describe what you want. The right skill picks it up. Or pick one yourself:
+
+- `/quick-fix` for a small, obvious fix.
+- `/investigate-bug` for a bug nobody understands yet.
+- `/major-upgrade` to move to a new Umbraco major.
+- `/issue-triage`, then `/issue-resolve`, to work through tracker issues.
+
 ## More
 
 - [README.md](./README.md): what's in the box.
