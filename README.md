@@ -25,8 +25,19 @@ Install it from inside your Umbraco project, then run:
 /umb-build-loop    # build, review, commit, task by task
 ```
 
-Or just describe what you want ("I want to add a dashboard that..."). The right skill picks
-it up.
+Which flow fits:
+
+| I want to... | Run |
+|---|---|
+| Build a new feature | `/umb-explore`, then the steps above |
+| Make a small, obvious fix | `/quick-fix` |
+| Find out why something is broken | `/investigate-bug` |
+| Move to a new Umbraco major version | `/major-upgrade` |
+| Sort through the issue backlog | `/issue-triage` |
+| Fix one triaged tracker issue | `/issue-resolve` |
+
+You don't have to type the commands. Describe what you want ("I want to add a dashboard
+that...") and the right skill picks it up.
 
 **[QUICKSTART.md](./QUICKSTART.md)** has the install commands and a short walkthrough.
 
