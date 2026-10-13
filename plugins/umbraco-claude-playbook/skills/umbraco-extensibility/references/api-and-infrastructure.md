@@ -164,7 +164,10 @@ minutes) is the wait after startup before the first run. `ServerRoles` (default 
 SchedulingPublisher`) restricts which server role in a load-balanced setup actually executes
 it — leave the default unless the job must run on every server or a specific role. Implement
 `IRecurringBackgroundJob` directly only if the class already has to inherit from something
-else and can't take `RecurringBackgroundJobBase`. Inject services (`IContentService`,
+else and can't take `RecurringBackgroundJobBase`. From v19 the interface has no default
+members: a direct implementation declares `Delay`, `IgnoredDelay`, `ServerRoles`, both change
+events and `RunJobAsync(CancellationToken)` itself, and the parameterless `RunJobAsync()` is
+gone. The base class supplies all of them, on every version. Inject services (`IContentService`,
 `ICoreScopeProvider`, `ILogger<T>`, `IOptionsMonitor<T>`) via constructor DI as normal — the
 job is resolved from the container like anything else registered through the composer.
 

@@ -3,8 +3,9 @@ name: umbraco-backoffice-conventions
 description: >-
   Umbraco-backoffice-specific frontend conventions built with Lit and UUI — required compiler
   setup, local vs. global components, what actually gates your public API surface, generating
-  a typed client from a Management API's OpenAPI spec, observable/state subscription lifecycle,
-  and building a multi-package frontend workspace in the right order. Use when setting up or
+  a typed client from a Management API's OpenAPI spec, the lifecycle of observable
+  subscriptions and of extension APIs you create, build output (what stays external, cache
+  busting), and building a multi-package frontend workspace in the right order. Use when setting up or
   structuring a Lit + UUI backoffice frontend package, deciding whether a component should be
   exported, wiring up an OpenAPI-generated client, subscribing to a state/context observable,
   or setting up frontend builds in a monorepo — not when implementing a specific extension
@@ -144,6 +145,39 @@ activates. Use this first for anything registered directly on a manifest (`eleme
 `js`). The local/global-components split above is for components that *aren't*
 manifest-registered, only referenced by tag name inside another component's template.
 
+## Build output: externalise the backoffice, version every release
+
+The backoffice already loads `@umbraco-cms/backoffice` and Lit. A package that bundles its own
+copy ships both twice, and a second Lit runtime breaks in subtle ways. Keep them out of the
+bundle:
+
+```typescript
+// vite.config.ts
+build: {
+  rollupOptions: {
+    external: [/^@umbraco/], // provided by the backoffice at runtime
+  },
+},
+```
+
+```typescript
+// WRONG — bundles a second copy of Lit
+import { html, css } from "lit";
+
+// RIGHT — uses the backoffice's Lit
+import { html, css } from "@umbraco-cms/backoffice/external/lit";
+```
+
+**Bump `version` in `umbraco-package.json` for every release that changes frontend assets.**
+From 17.6 and 18.1, Umbraco appends that version to the manifest's entry points and import map
+URLs, so it's the browser's cache key. An unchanged version means editors keep running the
+old files. Code-split chunks don't get the version, so keep Vite's default content-hashed
+file names for them.
+
+Source: [Vite package setup](https://docs.umbraco.com/umbraco-cms/extend-your-project/backoffice-extensions/development-flow/vite-package-setup),
+[umbraco-package.json](https://docs.umbraco.com/umbraco-cms/extend-your-project/backoffice-extensions/umbraco-package),
+"The version is your cache key" and "Bundle your assets".
+
 ## Generating a typed API client from your Management API
 
 If your package ships a Management API with an OpenAPI/Swagger spec, generate a typed
@@ -210,3 +244,30 @@ constructor() {
 on `disconnectedCallback`: no manual `unsubscribe()`, no callback after the component is
 gone. In review, treat any raw `.subscribe()` in a Lit component as suspect; it usually
 should be `this.observe()`.
+
+## Extension APIs you create are yours to destroy
+
+`createExtensionApi` and `createExtensionApiByAlias` connect the new API to the host you
+pass, but don't clean up an API you created earlier. Code that creates one on every
+`connectedCallback`, property change or route change keeps every old instance alive, with
+its context listeners. Editors notice after a few dozen navigations.
+
+```typescript
+// WRONG — a new API on every value change, none destroyed
+override updated() {
+  createExtensionApiByAlias<MyApi>(this, this.alias).then((api) => (this.#api = api));
+}
+
+// RIGHT — destroy the previous instance before replacing it
+async #load(alias: string) {
+  this.#api?.destroy();
+  this.#api = await createExtensionApiByAlias<MyApi>(this, alias);
+}
+```
+
+Prefer creating it once, in the constructor. To run every extension of a manifest type, use
+`UmbExtensionsApiInitializer` (or `UmbExtensionApiInitializer` for one), which creates and
+destroys the APIs as extensions come and go.
+
+Source: CMS issue [#21828](https://github.com/umbraco/Umbraco-CMS/issues/21828) and
+PR [#24083](https://github.com/umbraco/Umbraco-CMS/pull/24083).
