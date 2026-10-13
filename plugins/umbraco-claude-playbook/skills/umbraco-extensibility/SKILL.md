@@ -5,7 +5,7 @@ description: >-
   Composer registration, collection-builder extensibility, notification handlers, and
   attribute-based discovery — plus a catalogue of the most common concrete, backend-side
   Umbraco CMS extension points (property value converters, Management API endpoints, content
-  finders, URL segment providers, health checks, Examine indexing, and more). Use when
+  finders, URL segment providers, health checks, search indexing, and more). Use when
   deciding how to make a feature extensible by other packages, or when choosing which CMS
   extension point fits a given task. For general backend package conventions that aren't
   about extension mechanisms specifically (async naming, visibility (internal by default), public-API
@@ -137,7 +137,7 @@ attribute shape verbatim. The docs for that major (`umbraco-docs`) help find the
 | 4 | Cache refresher | `ICacheRefresher` | auto-discovered | your package's own entities need to stay in sync across a load-balanced site |
 | 5 | Content finder | `IContentFinder` | `ContentFindersCollection` | resolving custom/virtual URLs to content |
 | 6 | URL segment provider | `IUrlSegmentProvider` | `UrlSegmentProviders().Insert<T>()` | generating those same custom URL segments |
-| 7 | Examine custom indexing | `IValueSetBuilder` | named options / composer | indexing something that isn't `IContentBase` |¹
+| 7 | Search indexing | `IContentIndexer`, `IPropertyValueHandler` (Umbraco Search); `IValueSetBuilder` (Examine) | DI / auto-discovered; named options + composer | adding fields to indexed content, indexing a custom property editor's value, or indexing data that isn't content |¹
 | 8 | Custom file system | `IFileSystem` | `builder.SetMediaFileSystem()` (or similar) | media/files live somewhere other than local disk |
 | 9 | Package migration plan | `PackageMigrationPlan` + `PackageMigrationBase`/`AsyncPackageMigrationBase` | `builder.PackageMigrationPlans().Append<T>()` | your package needs to import content/schema, or evolve it, across installs and upgrades |
 | 10 | Recurring background job | `RecurringBackgroundJobBase` (or `IRecurringBackgroundJob` directly) | `builder.Services.AddRecurringBackgroundJob<T>()` | your package needs scheduled/periodic work (cleanup, sync, digest) without a separate host |
@@ -146,10 +146,9 @@ attribute shape verbatim. The docs for that major (`umbraco-docs`) help find the
 - **`references/content-and-routing.md`** — rows 1, 5, 6, 7.
 - **`references/api-and-infrastructure.md`** — rows 2, 3, 4, 8, 9, 10, 11.
 
-¹ A newer `Umbraco.Cms.Search` layer wraps Examine and is planned as the default search
-stack from v19 (check its release status for the target version). Read the note at the end of
-`content-and-routing.md`'s Examine section before assuming `IValueSetBuilder` is the only
-indexing surface on a v19+ target.
+¹ v19 replaces the built-in Examine indexes and hooks with Umbraco Search, which is also an
+add-on for v17 and v18. Which API applies depends on the stack the site runs, not just the
+major; `content-and-routing.md` row 7 covers both.
 
 ## Scope note
 
