@@ -5,7 +5,7 @@
 - 1\. Property value converter
 - 5\. Content finder
 - 6\. URL segment provider
-- 7\. Examine custom indexing
+- 7\. Search indexing
 
 Rows 1, 5, 6, 7 of the catalogue in `SKILL.md` — the extension points that define a
 property's shape and sit between a request/query and the content it resolves to. A property
@@ -87,7 +87,76 @@ public class MyUrlSegmentProvider : IUrlSegmentProvider
 builder.UrlSegmentProviders().Insert<MyUrlSegmentProvider>();
 ```
 
-## 7. Examine custom indexing
+## 7. Search indexing
+
+Which API you extend depends on the search stack the site runs, not just the CMS major:
+
+- **Umbraco Search** (`Umbraco.Cms.Search`) is built into v19 and replaces the built-in
+  Examine indexes and their hooks (`IValueSetBuilder`, `TransformingIndexValues`). It's also
+  an add-on for v17 and v18, with the same contracts under `Umbraco.Cms.Search.Core.*`
+  namespaces instead of `Umbraco.Cms.Core.Search.*`.
+- **Examine** is the built-in stack on v17 and v18 without the add-on.
+
+A package supporting both needs both paths, behind its own seam. Check the project's
+supported majors and whether it targets the add-on before writing either.
+
+### Umbraco Search (v19, or v17/v18 with the add-on)
+
+Three extension points, from lightest to heaviest:
+
+- **`ContentIndexingNotification`** — cancelable, raised per item just before it's written.
+  Handlers can add, remove or replace `Fields`, or set `Cancel` to skip the item. Reach for
+  this to adjust what core already indexes.
+- **`IContentIndexer`** — contributes fields for every content item indexed, alongside
+  core's own system-field and property-value indexers. Reach for this to add derived fields
+  (a computed price band, a flattened category path) to content.
+- **`IPropertyValueHandler`** — turns one property's value into index fields. Reach for this
+  when your package ships a property editor whose stored value isn't plain text.
+  Auto-discovered (it's `IDiscoverable`); `CanHandle` picks the property types it owns.
+
+```csharp
+internal sealed class ProductSkuContentIndexer : IContentIndexer
+{
+    public Task<IEnumerable<IndexField>> GetIndexFieldsAsync(
+        IContentBase content, string?[] cultures, bool published, CancellationToken cancellationToken)
+    {
+        if (content.ContentType.Alias != "product"
+            || content.GetValue<string>("sku", published: published) is not { Length: > 0 } sku)
+        {
+            return Task.FromResult(Enumerable.Empty<IndexField>());
+        }
+
+        IEnumerable<IndexField> fields = [new IndexField("myPackageSku", new() { Keywords = [sku] }, null, null)];
+        return Task.FromResult(fields);
+    }
+}
+```
+
+```csharp
+public class MyPackageSearchComposer : IComposer
+{
+    public void Compose(IUmbracoBuilder builder)
+        => builder.Services.AddTransient<IContentIndexer, ProductSkuContentIndexer>();
+}
+```
+
+`IndexValue` has separate slots for each kind of value: `Keywords` for exact match,
+`Texts`/`TextsR1`–`TextsR3` for full text (R1 ranks highest), plus `Integers`, `Decimals` and
+`DateTimeOffsets`. Pick by how the field will be queried. Prefix custom field names with
+your package name.
+
+Indexing **data that isn't content** means registering your own index with
+`IndexOptions.RegisterIndex<TIndexer, TSearcher>(alias)` (via
+`builder.Services.Configure<IndexOptions>(...)`) and pushing documents through `IIndexer`
+yourself. Query any index through `ISearcherResolver.GetSearcher(alias)`.
+
+Indexer and handler code runs once per item, and a rebuild runs it for every item. Build
+fields from the item you're handed; a service lookup in there is one database call per item.
+
+Source: [Umbraco Search](https://docs.umbraco.com/umbraco-search),
+`src/Umbraco.Core/Search/` in the CMS source on the v19 branch.
+
+### Examine (v17/v18 without the add-on)
 
 Two levels of override depending on how much control you need:
 
@@ -104,18 +173,8 @@ public class MyValueSetBuilder : IValueSetBuilder
 }
 ```
 
-Most packages should extend the *default* content value set builder's output (via a
-notification handler on `Indexing*Notification` types) rather than replacing the builder
-outright — reach for a full `IValueSetBuilder` only when you're indexing something that
-isn't `IContentBase` at all.
+To add fields to the built-in indexes, handle the index's `TransformingIndexValues` event
+rather than replacing its builder. Reach for a full `IValueSetBuilder` only for your own
+index, or when you're indexing something that isn't `IContentBase` at all.
 
-**v19 watch item:** Umbraco is shipping a new search layer, `Umbraco.Cms.Search`, available
-as an add-on from v17/v18 and becoming the default search stack from v19 onward. It still
-uses Examine as its default provider underneath, so the `IValueSetBuilder` pattern above
-isn't obsolete, but it adds its own extension model (faceting, language/segment support,
-multiple providers) on top. It's still beta and its concrete interfaces weren't stable
-enough to document here at time of writing — check
-[docs.umbraco.com/umbraco-search](https://docs.umbraco.com/umbraco-search) and the
-[Umbraco.Cms.Search repo](https://github.com/umbraco/Umbraco.Cms.Search) before extending
-Examine indexing on a v19+ target, rather than assuming this section's guidance still covers
-the whole picture.
+Source: [Custom indexing](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/application-code/examine/indexing).
