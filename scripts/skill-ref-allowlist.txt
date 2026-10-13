@@ -24,6 +24,7 @@ issue-triager           # the subagent issue-triage dispatches, not a skill itse
 worktree-dev-port       # the Umbraco.Community.WorktreeDevPort npm package, cited in umb-build-loop
 on-target               # a CSS class in the umb-design mockup starters, not a skill
 aria-label              # an HTML attribute, cited in umbraco-backoffice-ux
+uui-button              # a UUI element, not a skill
 uui-combobox            # a UUI element, not a skill
 uui-ref-list            # a UUI element, not a skill
 uui-ref-node            # a UUI element, not a skill

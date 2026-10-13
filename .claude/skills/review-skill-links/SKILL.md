@@ -22,6 +22,7 @@ throughout.
 scripts/check-skill-refs.sh
 scripts/check-skill-wiring.sh
 scripts/check-version.sh
+scripts/check-frontmatter.sh
 ```
 
 Fix or report every failure before reading further. A failure here is a finding, not

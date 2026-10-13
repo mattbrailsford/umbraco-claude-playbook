@@ -94,6 +94,8 @@ panel's state, a remembered filter).
 - Be wary of a new dependency's `postinstall` script — it runs arbitrary code at install time,
   before any of your own code runs. A well-known, widely-used package doing this is normal; an
   obscure or newly-published one doing it is worth a second look before adding it.
+- When a change adds or bumps a package, run `npm audit` (or the package manager's
+  equivalent) and treat a known vulnerability in the result as a finding.
 - Don't introduce `curl | sh`-style install patterns in build or setup scripts — fetch a pinned
   artifact and verify it instead.
 

@@ -33,6 +33,7 @@ jq . plugins/umbraco-claude-playbook/.claude-plugin/plugin.json
 scripts/check-skill-refs.sh   # stale backtick skill references; exit 1 = needs a look
 scripts/check-skill-wiring.sh # every skill in the README and referenced from elsewhere
 scripts/check-version.sh      # version fields agree, and bumped if shipped files changed
+scripts/check-frontmatter.sh  # skill/agent headers parse, names match, descriptions fit
 ```
 
 ## This repo is not an Umbraco project
@@ -137,5 +138,5 @@ catches stale references, not wrong boundaries. A false positive goes in
 `scripts/skill-ref-allowlist.txt`; don't weaken the check.
 
 After adding, renaming, splitting, or substantially changing a skill, run the repo-only
-`review-skill-links` skill. It runs all three scripts, then reads for routing gaps,
+`review-skill-links` skill. It runs the check scripts, then reads for routing gaps,
 conflicting advice, and duplicated rules the scripts can't see.
