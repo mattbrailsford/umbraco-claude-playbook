@@ -165,7 +165,7 @@ Two servers can run the same code at the same moment. A "read, then write if mis
 shared rows can create duplicates or lose an update.
 
 - **Prefer a database constraint.** A unique index turns a race into an error you can
-  handle.
+  handle. Add it in the table's migration (`ef-core-data`).
 - **Take a lock when a constraint can't express it.** In a scope, `scope.WriteLock(id)`
   takes a lock all servers share, from the `umbracoLock` table. Packages can add their own
   rows there. Pick an ID that doesn't clash with the documented list, and don't reuse

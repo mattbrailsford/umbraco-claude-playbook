@@ -82,7 +82,9 @@ change in the consuming project.
 
 To react to content/media/member lifecycle events, implement `INotificationHandler<T>` and
 register it via the composer, not a static event subscription. Handlers test in isolation and
-don't leak subscriptions across restarts.
+don't leak subscriptions across restarts. Keep handlers light (`umbraco-performance`), and
+put side effects only in handlers that run once, not on every server
+(`umbraco-load-balancing`).
 
 Not the same as the official Backoffice Extension Skills plugin's `umbraco-notifications`
 skill: that covers backoffice toast messages (`UMB_NOTIFICATION_CONTEXT`), a frontend-only
@@ -140,7 +142,7 @@ attribute shape verbatim. The docs for that major (`umbraco-docs`) help find the
 | 7 | Search indexing | `IContentIndexer`, `IPropertyValueHandler` (Umbraco Search); `IValueSetBuilder` (Examine) | DI / auto-discovered; named options + composer | adding fields to indexed content, indexing a custom property editor's value, or indexing data that isn't content |¹
 | 8 | Custom file system | `IFileSystem` | `builder.SetMediaFileSystem()` (or similar) | media/files live somewhere other than local disk |
 | 9 | Package migration plan | `PackageMigrationPlan` + `PackageMigrationBase`/`AsyncPackageMigrationBase` | `builder.PackageMigrationPlans().Append<T>()` | your package needs to import content/schema, or evolve it, across installs and upgrades |
-| 10 | Recurring background job | `RecurringBackgroundJobBase` (or `IRecurringBackgroundJob` directly) | `builder.Services.AddRecurringBackgroundJob<T>()` | your package needs scheduled/periodic work (cleanup, sync, digest) without a separate host |
+| 10 | Recurring background job | `RecurringBackgroundJobBase` (or `IRecurringBackgroundJob` directly) | `builder.Services.AddRecurringBackgroundJob<T>()` | your package needs scheduled/periodic work (cleanup, sync, digest) without a separate host; for work that must run on one server only, `IDistributedBackgroundJob` (v17+, `umbraco-load-balancing`) |
 | 11 | Custom Management API authorization policy | `IAuthorizationRequirement` + `MustSatisfyRequirementAuthorizationHandler<T>` | `AddAuthorization` + `[Authorize(policyName)]` | a Management API endpoint (row 2) needs finer-grained access control than the built-in section/content policies |
 
 - **`references/content-and-routing.md`** — rows 1, 5, 6, 7.
