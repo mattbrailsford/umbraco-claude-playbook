@@ -30,7 +30,7 @@ known cause and a repro, not a theory.
 ## Argument
 
 `$ARGUMENTS` is the symptom in the user's words, or an issue ID. For an issue ID, read the
-issue and its entry in the triage log if `issue-triage` has run.
+issue, and use this session's `issue-triage` report for it if there is one.
 
 ## 1. Pin down the symptom
 
