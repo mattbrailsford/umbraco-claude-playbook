@@ -1,14 +1,16 @@
 ---
 name: umbraco-performance
 description: >-
-  Keeping an Umbraco package fast on the sites that install it — reading published content
-  from the cache instead of the services layer, tree traversal that doesn't walk the whole
-  site, caching your own expensive lookups, property value converter cache levels, keeping
-  hot paths (notification handlers, Examine events, startup) light, and backoffice screens
-  that don't over-fetch. Use when writing or reviewing code that runs per request, per save,
-  per indexed item, or at startup, or a backoffice screen that lists or searches data. For
-  EF Core query shape (tracking, projection, one query per row), see `ef-core-data`; for
-  when LINQ actually runs, see `dotnet-best-practices`.
+  Keeping an Umbraco package or backoffice extension fast on the sites that install it —
+  reading published content from the cache instead of the services layer, tree traversal
+  that doesn't walk the whole site, caching your own lookups and clearing them on every
+  server, data type configuration and property value converter cache levels, evicting output
+  caches when package data changes, keeping hot paths (notification handlers, indexing,
+  bulk operations, startup) light, and backoffice extensions that don't over-fetch. Use when
+  writing or reviewing package code that runs per request, per save, per indexed item, or at
+  startup, a Management API list endpoint, or a backoffice screen that lists or searches
+  data. Not for tuning a site's own templates or configuration. For EF Core query shape, see
+  `ef-core-data`; for when LINQ actually runs, see `dotnet-best-practices`.
 ---
 
 # Performance for Umbraco packages
@@ -16,6 +18,12 @@ description: >-
 A package's code runs on sites its author never sees: a 50-page brochure site and a
 200,000-node multi-site install get the same DLL. Write for the big one. Every rule below
 is a pattern that's harmless on the demo site and costly in production.
+
+This skill covers code a package ships: property value converters, content finders,
+Management API endpoints, notification handlers, indexers, background jobs, Delivery API
+output, and backoffice extensions. A site's own templates and its tuning (cache seed counts,
+turning output caching on, cache size limits) belong to the site owner. A package must
+stay fast with the site's defaults, not depend on the owner changing them.
 
 Verify version-specific APIs against the CMS source and docs for the major the project
 targets (`umbraco-cms-source`, `umbraco-docs`). The published content cache was rebuilt in
@@ -33,8 +41,9 @@ clears it, keeps a later speed fix a local change instead of a redesign.
 ## Read published content from the cache, not the services layer
 
 The services layer (`IContentService`, `IMediaService`, `IRelationService` and friends)
-reads and writes the database. It's for changing data, not rendering it. Anything that runs
-per front-end request reads from the published cache instead:
+reads and writes the database. It's for changing data, not reading it on a hot path. Package
+code that runs per front-end or Delivery API request (a converter, a content finder, a
+rendered component) reads from the published cache instead:
 
 ```csharp
 // Hits the database on every call
@@ -45,10 +54,8 @@ var item = _publishedContentCache.GetById(key);
 ```
 
 The published cache is lazy-loaded: an item is read from the database the first time it's
-requested, then served from memory. That makes the first read of a cold item a database
-call too, which matters when a loop touches thousands of them (next section). For pages
-that must be fast from first request, Umbraco's cache seeding (`ISeedKeyProvider`) preloads
-chosen items at startup.
+requested, then served from memory. A cold item costs a database call, which matters when
+package code touches thousands of them (next section).
 
 Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/application-code/common-pitfalls),
 [Cache seeding](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/cache/cache-seeding).
@@ -56,16 +63,19 @@ Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbr
 ## Don't walk the whole tree
 
 `Descendants()` / `DescendantsOrSelf()` visit every node below the starting point and load
-each one. From the root, that's the whole site. A `.Where(x => x.Level == 2)` after it
-still loads everything first:
+each one. From the root, that's the whole site. A filter after it still loads everything
+first:
 
 ```csharp
-// Loads every node in the site to find a handful
-var sections = root.DescendantsOrSelf().Where(x => x.Level == 2);
-
-// Loads only the root's children
-var sections = root.Children();
+// Loads every node in the site to find the products
+var products = root.DescendantsOrSelf().Where(x => x.ContentType.Alias == "product");
 ```
+
+Since v15 this costs more than it used to: each `IPublishedContent` is rebuilt from the
+cache when it's accessed, and items not yet cached come from the database. Package code that
+walked a large tree comfortably on v13 has been reported many times slower on v15 to v17.
+Test anything that traverses (sitemaps, feeds, link checkers, reports) against a large
+content tree on the target major, with the site's default cache settings.
 
 - Ask the navigation service tree questions. `IDocumentNavigationQueryService` (and its
   media counterpart) answers parent/child/descendant/ancestor questions from an in-memory
@@ -75,17 +85,19 @@ var sections = root.Children();
   tree walk. On v19, or v17/v18 with the Umbraco Search add-on, get an `ISearcher` from
   `ISearcherResolver` and filter, sort and page in the query (`skip`/`take`). Without the
   add-on on v17/v18, query Examine.
-- Store the result of a traversal you need twice. `Root()` walks up the tree each time it's
-  called.
-- A descendant walk is fine when the subtree is small by design (a settings folder, a
-  three-level navigation). Say so in a comment, so a reviewer doesn't have to guess.
+- Work that must cover the whole tree (a full sitemap, an export) runs in a background
+  job or on demand, and caches its result. It doesn't run per request.
+- A descendant walk is fine when the subtree is small by design (a settings folder). Say so
+  in a comment, so a reviewer doesn't have to guess.
 
 Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/application-code/common-pitfalls),
-[Umbraco Search](https://docs.umbraco.com/umbraco-search).
+[Umbraco Search](https://docs.umbraco.com/umbraco-search),
+CMS issues [#18869](https://github.com/umbraco/Umbraco-CMS/issues/18869) and
+[#18892](https://github.com/umbraco/Umbraco-CMS/issues/18892).
 
 ## Cache your own expensive lookups
 
-Anything slow that a request repeats (a relation lookup, a call to an external API, a
+Anything slow that package code repeats (a relation lookup, a call to an external API, a
 computed aggregate) goes through Umbraco's `AppCaches`, not a static field or a private
 `MemoryCache`:
 
@@ -107,8 +119,27 @@ var relations = _appCaches.RuntimeCache.GetCacheItem(
 - **Load-balanced sites need a cache refresher.** Clearing a key clears it on one server
   only. Route the clear through your package's `ICacheRefresher` so every server drops it
   (see `umbraco-extensibility`'s catalogue, row 4).
+- **Refresh many items in one call.** `DistributedCache.Refresh(refresherId, ids)` or
+  `RefreshByPayload(refresherId, payloads)` with the whole set, not one call per item in a
+  loop. Outside a web request (a background job, an import), each call is written to the
+  database for the other servers straight away.
+- **Never hold a request-scoped object in a singleton or static field.** `UmbracoHelper`,
+  `IUmbracoContext` and anything resolved per request belong to one request. Kept longer,
+  they pin memory and can serve one user's data to another.
 
-Source: [Accessing the cache](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/cache/application-cache).
+Source: [Accessing the cache](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/cache/application-cache),
+[Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/application-code/common-pitfalls),
+`BatchedDatabaseServerMessenger` in the CMS source.
+
+## Read data type configuration from its cache
+
+Converters, value editors and data sources often need their data type's configuration. Read
+it from `IDataTypeConfigurationCache` (`GetConfigurationAs<T>(dataTypeKey)`), not
+`IDataTypeService`. The service goes to the repository and clones the result on every call,
+and a value editor runs once per property, per variant, per load.
+
+Source: CMS issue [#14936](https://github.com/umbraco/Umbraco-CMS/issues/14936) and
+PR [#15731](https://github.com/umbraco/Umbraco-CMS/pull/15731).
 
 ## Property value converters: set the cache level
 
@@ -118,14 +149,37 @@ Source: [Accessing the cache](https://docs.umbraco.com/umbraco-cms/extend-your-p
 |---|---|---|
 | `Element` | the owning page or block changes | the default; values that only depend on their own data |
 | `Elements` | any content changes | values that reference other content (pickers) |
-| `None` | every read | almost never; it's a large cost on every page view |
+| `None` | every read | almost never; it's a large cost on every read |
 
 `PropertyValueConverterBase` returns `Snapshot`, which is obsolete and treated as `None`
 by the current published cache. A converter that inherits the base class without
 overriding `GetPropertyCacheLevel` runs its conversion on every read. Always override it.
 
-Source: [Property value converters](https://docs.umbraco.com/umbraco-cms/extend-your-project/backoffice-extensions/property-editors/property-value-converters);
+A converter that also implements `IDeliveryApiPropertyValueConverter` sets two more:
+`GetDeliveryApiPropertyCacheLevel` and `GetDeliveryApiPropertyCacheLevelForExpansion`
+(which defaults to the first). The same table applies, and `Snapshot` means `None` here
+too, even where a docs example uses it. Never put per-request data (the current time, the
+current user) in a converter's output: any cache level serves it stale, and it stops a site
+using Delivery API output caching.
+
+Source: [Property value converters](https://docs.umbraco.com/umbraco-cms/extend-your-project/backoffice-extensions/property-editors/property-value-converters),
+[Custom property editors support](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/headless-and-apis/content-delivery-api/custom-property-editors-support);
 `PublishedProperty.GetCacheValues` in `Umbraco.PublishedCache.HybridCache`.
+
+## Output caching: evict when your data changes
+
+From 17.4 (and every 18.x), a site can cache whole rendered pages and whole Delivery API
+responses. The package doesn't turn this on, but has to work when the site does:
+
+- **If package data feeds pages or API responses** and it changes outside a content
+  publish (a product price, a review count from your own tables), evict what shows it:
+  `IWebsiteOutputCacheManager` and `IDeliveryApiOutputCacheManager` evict by content key or
+  by tag. Otherwise visitors see the old value until the cache expires.
+- **If the package renders output that differs per visitor** (a member's name, a basket),
+  mark that response as not cacheable. A cached copy of it is served to the next visitor.
+
+Source: [Website output caching](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/caching/website-output-caching),
+[Delivery API output caching](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/headless-and-apis/content-delivery-api/output-caching).
 
 ## Keep hot paths light
 
@@ -134,6 +188,11 @@ Some code runs far more often than it looks like it does:
 - **Notification handlers** on save/publish run inside the editor's save. A bulk publish
   runs them once per item. Do slow work (external calls, reindexing your own data)
   after the save: queue it, or hand it to a background job.
+- **Bulk operations** (an import, a sync, a migration over many items) run in one scope, so
+  the work is one transaction and its notifications fire once, when the scope completes.
+  `scope.Notifications.Suppress()` stops them entirely, which is only safe for data your
+  package owns. Suppressing around content or media service calls leaves the published
+  cache and search index stale until they're rebuilt.
 - **Indexing code** runs once per item indexed, and a full rebuild runs it for every
   document and media item. With Umbraco Search, that's `IContentIndexer.GetIndexFieldsAsync`
   and `IPropertyValueHandler.GetIndexFields`. With Examine on v17/v18, it's
@@ -148,31 +207,52 @@ Some code runs far more often than it looks like it does:
   design: versioning, notifications, cache updates, reindexing.
 
 Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/application-code/common-pitfalls),
+[ContentService notifications](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/notifications/contentservice-notifications),
 [Umbraco Search](https://docs.umbraco.com/umbraco-search).
 
-## Backoffice screens: don't over-fetch
+## Management API endpoints: return what the list needs
 
-- **Page anything that can grow.** A list endpoint takes `skip`/`take` and returns a total;
-  the screen pages it. Never load "all items" to show the first twenty. Collection views
-  have paging built in; use it.
+- **Page anything that can grow.** A list endpoint takes `skip`/`take` and returns a total.
+  Never return "all items" for the screen to page.
+- **List-sized models.** A list returns what its columns show; the full model is for the
+  detail endpoint.
+- **No per-item URL building in lists.** Resolving a content URL is slow next to loading
+  the item. Core moved URLs out of its own document response into a separate endpoint for
+  this reason. Return keys, and let the screen ask for URLs where it shows them.
+
+Source: CMS issue [#18910](https://github.com/umbraco/Umbraco-CMS/issues/18910).
+
+## Backoffice extensions: don't over-fetch
+
+- **Use the paging the screen already has.** Collection views have paging built in; wire
+  them to the endpoint's `skip`/`take`.
 - **Debounce search-as-you-type.** Use `debounce` from `@umbraco-cms/backoffice/utils`, so
   a search fires when typing pauses, not on every key press.
 - **Fetch once, share it.** Two elements on one screen that need the same data read it from
   a shared context or repository, not one request each.
-- **Ask for what the screen shows.** A list endpoint returns list-sized models; the full
-  detail model is for the detail screen.
+- **Don't refetch when an element reconnects.** Block editors' sorting removes and re-adds
+  elements, so `connectedCallback` runs again on every drag. Server-rendered previews and
+  other expensive fetches cache their result (for example by a hash of the value) and reuse
+  it.
+
+Source: Block Preview issue [#149](https://github.com/rickbutterfield/BlockPreview/issues/149).
 
 ## Reviewing a diff for performance
 
-- A services-layer read (`IContentService`, `IMediaService`, ...) on a front-end request
-  path.
-- `Descendants()`/`DescendantsOrSelf()` from a root or other large node, without a comment
-  saying why the subtree is small.
-- A converter with no `GetPropertyCacheLevel` override, or one returning `None` without a
-  stated reason.
+- A services-layer read (`IContentService`, `IMediaService`, `IDataTypeService`, ...) on a
+  per-request, per-property or per-item path.
+- `Descendants()`/`DescendantsOrSelf()` from a root or other large node, on a per-request
+  path or without a comment saying why the subtree is small.
+- A converter with no `GetPropertyCacheLevel` override, or any cache level (including the
+  Delivery API ones) set to `None` or `Snapshot` without a stated reason.
 - A cache added with no rule for what clears it, or cleared without a cache refresher on a
   package that supports load balancing.
 - A cache key without the package prefix.
+- A request-scoped object stored in a singleton or static field.
+- Package data shown on pages or in Delivery API responses, changed with no output cache
+  eviction.
 - A database or HTTP call inside a notification handler, a content indexer, a property
   value handler, an Examine event, or a loop over content.
-- A list endpoint without paging, or a search box without a debounce.
+- Bulk work outside a single scope, or `Suppress()` around content or media service calls.
+- A list endpoint without paging, or with per-item URLs; a search box without a debounce;
+  an expensive fetch in `connectedCallback` with no cache.
