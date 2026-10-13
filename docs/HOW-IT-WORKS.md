@@ -39,6 +39,10 @@ and tests, and return `PASS` or `FAIL`. A reviewer that could patch its own find
 stop being a gate. Once every task is built, one more review covers the whole branch, to
 catch problems that build up across tasks.
 
+`quick-fix` uses the same reviewer for small fixes. `major-upgrade` uses the whole gate for
+a move to a new Umbraco major: it lists the breaking changes that hit the project in
+`docs/upgrades/v<major>.md`, then builds that list task by task, green at every commit.
+
 ## Project memory
 
 Some facts don't belong in a feature's plan folder or in `CLAUDE.md` forever. `umb-init`
