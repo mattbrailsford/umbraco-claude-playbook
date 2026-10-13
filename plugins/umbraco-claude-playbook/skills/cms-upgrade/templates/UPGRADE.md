@@ -15,6 +15,7 @@ first appeared in, and where it hits the project.
 | Change | Source | Since | Where it hits us |
 |---|---|---|---|
 | [.NET 10 → .NET 11] | [`release-19.0.0-rc1:Directory.Build.props`] | [rc1] | [every project] |
+| [EF Core 10.0.10 → 11.0.2, to match the CMS] | [`release-19.0.0-rc1:Directory.Packages.props`] | [rc1] | [`Directory.Packages.props`] |
 | [`UmbracoApiController` removed] | [umbraco/Umbraco-CMS#12345] | [rc1] | [`src/Api/ProductsController.cs`] |
 | [`IFooService.Get` obsolete, use `GetAsync`] | [CS0618 on `release-19.0.0-rc1`] | [rc1] | [`src/Services/Bar.cs:40`] |
 

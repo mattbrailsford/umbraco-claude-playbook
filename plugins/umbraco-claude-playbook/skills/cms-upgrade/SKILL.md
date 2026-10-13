@@ -80,10 +80,30 @@ A breaking change in an area the project never uses is noise.
 docs are often written after the code ships, and before a final release they can be missing
 or incomplete. Never treat "not in the docs" as "not a breaking change".
 
-1. **Target framework and SDK.** Read the CMS's `TargetFramework` at the target release tag
-   (`umbraco-cms-source`, `Directory.Build.props` at the repo root). If it differs from the
-   project's, the upgrade includes a .NET bump, and every `Microsoft.*` and EF Core package
-   moves with it. Check `global.json` too, if the project has one.
+1. **Target framework, SDK, and shared dependencies.** Read the CMS's `TargetFramework` at
+   the target release tag (`umbraco-cms-source`, `Directory.Build.props` at the repo root).
+   If it differs from the project's, the upgrade includes a .NET bump. Check `global.json`
+   too, if the project has one.
+
+   Then match every dependency the project shares with the CMS to the CMS's version. A
+   package that asks for a lower version than the CMS fails restore with a downgrade error;
+   one that asks for a higher version forces every site that installs it onto a version the
+   CMS wasn't tested with.
+   - **NuGet.** The CMS pins its versions in `Directory.Packages.props` at the repo root.
+     For every package the project references that also appears there (EF Core and its
+     providers, `Microsoft.Extensions.*`, `Microsoft.AspNetCore.*`, Serilog, and so on), use
+     the CMS's exact version at the target tag. A shared package the CMS doesn't list is
+     brought in by one that it does; find its version with `dotnet list package
+     --include-transitive` once the bump restores.
+   - **npm.** The backoffice ships its own copies of shared libraries (Lit, UUI, RxJS, and
+     others) under `@umbraco-cms/backoffice/external/*`, each pinned in
+     `src/Umbraco.Web.UI.Client/src/external/<library>/package.json`. If the client also
+     lists one of these itself, match that version, and check `npm ls <library>` resolves
+     to a single copy. Two copies of Lit or UUI at runtime break custom elements in ways the
+     build never shows. Importing from the `external/*` path instead of a separate
+     dependency avoids the problem; suggest it as a follow-up if the client doesn't.
+
+   List every shared dependency with its current and target version in the inventory.
 2. **Breaking-change PRs in the CMS repo.** Umbraco labels every breaking PR
    `category/breaking`. Find the ones that are in the target release but not in the
    project's current version, using the local CMS clone (`umbraco-cms-source` has how to
@@ -151,8 +171,8 @@ or incomplete. Never treat "not in the docs" as "not a breaking change".
    - **UUI and styling.** If the target ships a new UUI major, read its breaking changes
      and grep the package for each changed component, attribute, and `--uui-*` CSS custom
      property.
-7. **Persistence.** If the project has EF Core migrations, the .NET bump moves EF Core too.
-   Note it: `ef-core-data`'s provider checks apply to the smoke.
+7. **Persistence.** If the project has EF Core migrations and step 1 moves EF Core, note
+   it: `ef-core-data`'s provider checks apply to the smoke.
 8. **Compatibility markers.** List every place the supported CMS version is written down: the
    package's own version (per the project's choice in `git-workflow`), NuGet dependency
    ranges, `umbraco-marketplace.json`, README compatibility tables, and any CI matrix.
@@ -179,8 +199,9 @@ build**:
 1. Fix obsolete and `@deprecated` usages, C# and frontend, while still on the current
    version. Each replacement API already exists there, so this lands green and shrinks the
    bump.
-2. Bump the target framework and packages, and fix what no longer compiles. This is the one
-   big task. Split it by project if the solution has several.
+2. Bump the target framework and packages, with every shared dependency at the CMS's
+   version (step 1), and fix what no longer compiles. This is the one big task. Split it by
+   project if the solution has several.
 3. Move off APIs the target release made obsolete or `@deprecated` (the second build and
    lint run in steps 5 and 6). Add these tasks once the bump compiles; you can't see them
    before.
@@ -202,13 +223,14 @@ the last RC to the final release). Work on the same branch.
 
 1. Read the CMS release the file targets now. Find the newest release of the major. If it's
    the same, say so and stop.
-2. Run inventory steps 2 to 6 again, with the file's current release as the "current" tag
+2. Run inventory steps 1 to 6 again, with the file's current release as the "current" tag
    and the newer release as the target. Breaking changes between two RCs are rarer but do
    happen. Re-read the docs page too: it's often only finished for the final release.
 3. Append what you find to the file as new entries and new unchecked tasks. Don't rewrite or
    untick earlier ones; they're done and committed. Update the file's target release line.
-4. Always add a task to move the CMS packages, `@umbraco-cms/backoffice`, and the package's
-   own pre-release version to the newer release. On the final release, that drops the
+4. Always add a task to move the CMS packages, `@umbraco-cms/backoffice`, every shared
+   dependency (step 1 at the newer tag), and the package's own pre-release version to the
+   newer release. On the final release, that drops the
    package's pre-release suffix unless the user wants one more pre-release first.
 5. Show the user the new entries and tasks, wait for a yes, then build them as below.
 
