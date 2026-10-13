@@ -5,8 +5,9 @@ description: >-
   18): finds every breaking change that actually hits the project, writes an ordered upgrade
   checklist, then works through it task by task with the builder and reviewer agents, keeping
   the build green at every commit. Owns `docs/upgrades/v<major>.md`. Use when asked to
-  "upgrade to Umbraco N", "support v18", "port the package to the new major", or when a new
-  CMS major ships. Not for minor or patch bumps inside one major; those are a normal
+  "upgrade to Umbraco N", "support v18", "port the package to the new major", when a new
+  CMS major's first beta or RC ships, or to refresh an upgrade from one RC to the next or to
+  the final release. Not for minor or patch bumps of a released major; those are a normal
   dependency update.
 user-invocable: true
 argument-hint: <target CMS major, e.g. 18>
@@ -31,28 +32,36 @@ the same builder → reviewer → smoke → commit gate as `umb-build-loop`.
 
 ## Argument
 
-`$ARGUMENTS` is the target major (`18`, `v18`). If empty, ask. If the project already targets
-that major, say so and stop.
+`$ARGUMENTS` is the target major (`18`, `v18`). If empty, ask.
+
+**First run or refresh?** If `docs/upgrades/v<major>.md` already exists, an earlier run
+upgraded to a CMS release of this major, usually a beta or RC. This run is a **refresh**: move
+to the newest CMS release of the major (the next RC, or the final release) and handle only
+what changed since the release the file records. Skip to "Refresh" below. If the file doesn't
+exist and the project already targets that major, say so and stop.
 
 ## Preflight
 
 1. **Current version.** Read the exact `Umbraco.Cms.*` version from `Directory.Packages.props`
    or the `.csproj` files, and `@umbraco-cms/backoffice` from the frontend's `package.json`
    if there is one. If projects disagree, stop and report it; fix that first.
-2. **Is the hop allowed?** Use `umbraco-docs` to read the target major's breaking-changes
-   page, `<major>/umbraco-cms/get-started/upgrading-and-migrating/version-specific.md`. Its
-   "Preparation for Upgrade" section names the oldest version it upgrades from. If the project
-   is older than that, stop: upgrade to the named version first (run this skill for that
-   major), then come back.
-3. **Is the target released?** List its releases:
+2. **Which CMS release to target.** List the target major's releases:
    ```bash
    gh release list -R umbraco/Umbraco-CMS --limit 100 | grep "release-<major>\."
    ```
-   If there's only a beta or RC, tell the user and ask whether to go ahead against it. An
-   upgrade against a pre-release is fine for early testing; say so in the upgrade file.
+   Take the newest. If it's a beta or RC, that's the normal way to start: the package can
+   ship its own pre-release against it, and a later run refreshes to the next RC and then the
+   final release. Tell the user which release you'll target and record it in the upgrade
+   file. If the major has no release yet, stop: there's nothing stable enough to build on.
+3. **Is the hop allowed?** Use `umbraco-docs` to read the target major's breaking-changes
+   page, `<major>/umbraco-cms/get-started/upgrading-and-migrating/version-specific.md`. Its
+   "Preparation for Upgrade" section names the oldest version it upgrades from. If the project
+   is older than that, stop: upgrade to the named version first (run this skill for that
+   major), then come back. Before a major's final release, the docs often don't have this
+   page yet. Say so, and ask the user to confirm the hop instead of assuming it's fine.
 4. **Other Umbraco dependencies.** For every other Umbraco package the project depends on
    (Forms, Commerce, community packages), check NuGet for a release that supports the target
-   major. A missing one is a blocker: record it and ask before going on.
+   release. A missing one is a blocker: record it and ask before going on.
 5. **Branch.** Read `git-workflow`'s "Umbraco packages and version tracking" section and the
    project's `CLAUDE.md` to see how it carries more than one major.
    - Branch-per-major: the new line (for example `v18/dev`) is cut from the current major's
@@ -67,34 +76,64 @@ that major, say so and stop.
 Build the list of what has to change before touching code. Only list what hits this project.
 A breaking change in an area the project never uses is noise.
 
+**The CMS repo is the source of truth for what changed. The docs are a cross-check.** The
+docs are often written after the code ships, and before a final release they can be missing
+or incomplete. Never treat "not in the docs" as "not a breaking change".
+
 1. **Target framework and SDK.** Read the CMS's `TargetFramework` at the target release tag
    (`umbraco-cms-source`, `Directory.Build.props` at the repo root). If it differs from the
    project's, the upgrade includes a .NET bump, and every `Microsoft.*` and EF Core package
    moves with it. Check `global.json` too, if the project has one.
-2. **Breaking changes from the docs.** Read the target major's section of the
-   breaking-changes page from preflight step 2. For each entry, grep the project for the
-   types, settings, URLs, or patterns it names.
-3. **Breaking changes from the release notes.** Every beta, RC, and final release of the
-   target `.0.0` has a "💥 Breaking Changes" section:
+2. **Breaking-change PRs in the CMS repo.** Umbraco labels every breaking PR
+   `category/breaking`. Find the ones that are in the target release but not in the
+   project's current version, using the local CMS clone (`umbraco-cms-source` has how to
+   find it as `$CMS`):
    ```bash
-   gh release view release-<major>.0.0-beta1 -R umbraco/Umbraco-CMS --json body -q .body
+   gh pr list -R umbraco/Umbraco-CMS --label category/breaking --state merged \
+     --search "merged:>=<date the current major's .0.0 was released>" --limit 500 \
+     --json number,title,mergeCommit -q '.[] | "\(.number) \(.mergeCommit.oid) \(.title)"' |
+   while read -r pr sha title; do
+     git -C "$CMS" merge-base --is-ancestor "$sha" "$target_tag" 2>/dev/null &&
+     ! git -C "$CMS" merge-base --is-ancestor "$sha" "$current_tag" 2>/dev/null &&
+     echo "#$pr $title"
+   done
    ```
-   These name the PRs. Grep the project for what each PR changed or removed. When a PR's
-   title isn't enough, read its diff.
-4. **Obsolete APIs being removed.** On the current version, build and collect `CS0618`
-   warnings. Umbraco's `[Obsolete]` messages name the major that removes the member
-   ("Scheduled for removal in Umbraco 18"). Every warning naming the target major or earlier
-   is a task. Warnings naming a later major are follow-ups, not blockers.
-5. **Frontend.** If there's a backoffice client, compare the `exports` map in
+   Fetch tags first (`umbraco-cms-source`'s "Pick the tag"). Checking ancestry against the
+   tags, not the PR's base branch, catches PRs merged to any branch that fed the release.
+   With no clone, filter the same list by base branch instead: `v<major>/dev`,
+   `release/<major>.*`, and `v<major>/feature/*`. For each PR, grep the project for what it
+   changed or removed. When the title isn't enough, read the PR's description and diff.
+3. **Release notes.** Each beta, RC, and final release of the target major has a
+   "💥 Breaking Changes" section (`gh release view <tag> -R umbraco/Umbraco-CMS`). Use it to
+   check step 2 missed nothing; any PR listed there and not found in step 2 gets the same
+   treatment.
+4. **The docs page.** Read the target major's section of the breaking-changes page from
+   preflight step 3, if it exists. It covers changes no single PR shows: settings with new
+   defaults, migrations that now run automatically, steps to take before upgrading. Grep the
+   project for what each entry names.
+5. **Obsolete APIs.** Collect `CS0618` warnings twice: on the current version now, and on the
+   target release once the bump task compiles. Umbraco's `[Obsolete]` messages name the
+   replacement and the major that removes the member ("Use X instead. Scheduled for removal
+   in Umbraco 19."). Every warning is a task, whichever major it names: move to the
+   replacement now, while the upgrade is open. The second build catches APIs the target
+   major newly made obsolete, which no earlier version warned about.
+
+   Leave a warning as a follow-up only when its replacement doesn't exist in every CMS
+   version the branch builds against (a branch that targets two majors at once). Say which
+   version is missing it.
+6. **Frontend.** If there's a backoffice client, compare the `exports` map in
    `src/Umbraco.Web.UI.Client/package.json` at the two release tags for every
    `@umbraco-cms/backoffice/*` path the project imports, and check which UUI major the
    target ships (`umbraco-backoffice-conventions` has the build-order and client rules). An
-   import path that's gone or moved is a task.
-6. **Persistence.** If the project has EF Core migrations, the .NET bump moves EF Core too.
+   import path that's gone or moved is a task. TypeScript `@deprecated` warnings in the
+   client are handled like step 5.
+7. **Persistence.** If the project has EF Core migrations, the .NET bump moves EF Core too.
    Note it: `ef-core-data`'s provider checks apply to the smoke.
-7. **Compatibility markers.** List every place the supported CMS version is written down: the
+8. **Compatibility markers.** List every place the supported CMS version is written down: the
    package's own version (per the project's choice in `git-workflow`), NuGet dependency
    ranges, `umbraco-marketplace.json`, README compatibility tables, and any CI matrix.
+   Against a CMS pre-release, the package's own version is a pre-release too (for example
+   `19.0.0-rc1`), and its dependency range must allow the CMS pre-release.
 
 Write the file from `templates/UPGRADE.md`. Order the tasks so **every task ends in a green
 build**:
@@ -103,17 +142,37 @@ build**:
    exists there, so this lands green and shrinks the bump.
 2. Bump the target framework and packages, and fix what no longer compiles. This is the one
    big task. Split it by project if the solution has several.
-3. Behavior changes: breaking changes that still compile but act differently (a setting's new
+3. Move off APIs the target release made obsolete (step 5's second build). Add these tasks
+   once the bump compiles; you can't see them before.
+4. Behavior changes: breaking changes that still compile but act differently (a setting's new
    default, a renamed URL, a changed notification).
-4. The frontend bump and its fixes.
-5. Compatibility markers.
+5. The frontend bump and its fixes.
+6. Compatibility markers.
 
 Show the user the inventory and the ordered tasks, and wait for a yes before building. This
 is the plan; a missing item here becomes a broken site later.
 
+## Refresh: a newer release of the same major
+
+Run when the upgrade file exists and a newer CMS release of its major is out (rc1 to rc2, or
+the last RC to the final release). Work on the same branch.
+
+1. Read the CMS release the file targets now. Find the newest release of the major. If it's
+   the same, say so and stop.
+2. Run inventory steps 2 to 6 again, with the file's current release as the "current" tag
+   and the newer release as the target. Breaking changes between two RCs are rarer but do
+   happen. Re-read the docs page too: it's often only finished for the final release.
+3. Append what you find to the file as new entries and new unchecked tasks. Don't rewrite or
+   untick earlier ones; they're done and committed. Update the file's target release line.
+4. Always add a task to move the CMS packages, `@umbraco-cms/backoffice`, and the package's
+   own pre-release version to the newer release. On the final release, that drops the
+   package's pre-release suffix unless the user wants one more pre-release first.
+5. Show the user the new entries and tasks, wait for a yes, then build them as below.
+
 ## Build
 
-Commit the upgrade file on the new branch first (`docs: add upgrade plan for v<major>`). Then,
+Commit the upgrade file on the new branch first (`docs: add upgrade plan for v<major>`, or
+`docs: refresh upgrade plan for <release>` on a refresh). Then,
 for each unchecked task, in order, follow `umb-build-loop`'s loop with these differences:
 
 - **Build.** Give the `builder` the task text, the matching inventory entries (with their
@@ -140,15 +199,19 @@ When every task is ticked:
    with the package installed and some of its data in place. Move that site to the target
    major with the upgraded package. Check the package's migrations run and its data still
    shows. If the project has no demo site, say this was skipped in the PR.
+   On a refresh, the smoke still starts from the previous major, not from the last RC: that's
+   the upgrade users will run.
 3. Dispatch one `reviewer` in whole-feature mode over the branch diff, with the upgrade file
    as the design. Fix and re-review until `PASS`, as in `umb-build-loop`'s "Finish".
-4. Open the PR with `describe-pr`. It uses its plain style, since there's no plan folder.
-   Point it at the upgrade file, so the PR lists the breaking changes handled, any breaking
-   changes for consumers, and the follow-ups.
+4. Open the PR with `describe-pr`, or update it if a PR for this upgrade is already open. It
+   uses its plain style, since there's no plan folder. Point it at the upgrade file, so the PR
+   lists the breaking changes handled, any breaking changes for consumers, and the
+   follow-ups.
 
 ## Rules
 
-- One major per run. A two-major jump is two runs, each ending green.
+- One major per run. A two-major jump is two runs, each ending green. Refreshing to a newer
+  release of the same major is a run of its own, on the same branch and file.
 - The CMS source at the target tag beats the docs, and both beat memory. Quote the tag or
   page behind every inventory entry.
 - Never commit to the current major's line, or to `main`, without asking.
@@ -157,5 +220,5 @@ When every task is ticked:
 
 ## Hand off
 
-Report: current to target version, tasks done and commits, what the upgrade smoke showed,
+Report: current to target version (and the CMS release, if it's a pre-release), tasks done and commits, what the upgrade smoke showed,
 any breaking changes for consumers, and the follow-ups. Then the PR link.
