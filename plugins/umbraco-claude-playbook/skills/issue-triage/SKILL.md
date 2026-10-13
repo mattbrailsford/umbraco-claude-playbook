@@ -3,10 +3,12 @@ name: issue-triage
 description: >-
   Triages one issue, a range, or everything untriaged on the tracker — classifies type and
   likely code area, checks for duplicates, flags anything that looks like a security report,
-  and writes a report for human review. Never labels, comments, or closes anything itself.
+  and writes a report for human review. Tracks triage state with `state/*` labels on the
+  tracker itself, applied only once the user approves; keeps no log of its own.
   More than one issue spawns one issue-triager subagent per issue, orchestrated from the main
-  thread. Use when there's a backlog to work through, or a specific issue to understand before
-  fixing it.
+  thread. Use when there's a backlog to work through, or a specific issue to classify before
+  deciding whether to act on it. Proving a bug's cause is `investigate-bug`'s job, not this one.
+  Owns the playbook's state labels and its rule for handling security reports.
 user-invocable: true
 argument-hint: [issue ID | ID range | leave blank for whole tracker]
 ---
@@ -15,14 +17,15 @@ argument-hint: [issue ID | ID range | leave blank for whole tracker]
 
 Read the room on a bug tracker before anyone commits to fixing anything. Classifies, checks
 for duplicates, points at the likely code, and flags anything that smells like a security
-report — then hands back a report. It never writes back to the tracker on its own.
+report — then hands back a report. The tracker is the only record of what's been triaged,
+and nothing is written to it until the user says so.
 
 ## Scope
 
-- IN: fetch, classify, find the likely code area, duplicate-check, security-flag, report.
-- OUT: applying labels/comments/closing issues, writing fixes, planning a feature. Once a
-  triaged issue turns into real work, hand off to `umb-explore` (or `quick-fix` if it's small
-  enough to skip the pipeline).
+- IN: fetch, classify, find the likely code area, duplicate-check, security-flag, report,
+  and apply the state labels, comments, or closes the user approves.
+- OUT: any tracker write the user hasn't approved, proving a bug's cause, writing fixes,
+  planning a feature. Once a triaged issue turns into real work, hand off to `issue-resolve`.
 
 ## Preflight
 
@@ -36,14 +39,14 @@ report — then hands back a report. It never writes back to the tracker on its 
    tracker type, else its CLI (`gh` for GitHub, `jira` CLI, `az boards`), else a documented
    REST call. Record whichever one actually worked in `## Issue tracker` so the next run skips
    this detection step.
-4. Resolve the triage log path: `docs/triage/TRIAGE-LOG.md` by default, or whatever
-   `CLAUDE.md` says under `## Issue tracker`. Read it if it exists — every issue ID already
-   listed there counts as "already triaged" (whole-tracker mode skips it), and its
-   title/summary lines are the history the duplicate check further down compares against.
+4. Resolve the state label names: the defaults in State labels below, or the mapping
+   `CLAUDE.md` records under `## Issue tracker`. If that section exists but has no `State
+   labels` line, ask just the interview's state-labels question and add the line.
 5. Resolve which issues this run covers, from the argument:
-   - One ID → that issue.
+   - One ID → that issue, whatever its labels. Naming an issue means re-triage it.
    - A range (e.g. `120-135`) → every ID in that range that still exists and is open.
-   - No argument → every open issue not already in the triage log.
+   - No argument → every open issue with no state label, plus every `state/needs-info` issue
+     the reporter has replied to since the label went on.
 
 ### Interview (only if `## Issue tracker` is missing from `CLAUDE.md`)
 
@@ -53,6 +56,9 @@ Ask in one batch:
    source code or a separate one.
 3. **Access** — is there an MCP server already connected for it, or should this use the CLI or
    a token from the environment?
+4. **State labels** — does the tracker already have labels or tags for triage state? If so,
+   map them onto the states in State labels below. If not, may this create the default
+   `state/*` ones? Creating them is a tracker write, so it waits for a yes.
 
 Append the answers to `CLAUDE.md`:
 ```markdown
@@ -60,7 +66,7 @@ Append the answers to `CLAUDE.md`:
 - Type: <type>
 - Location: <repo/project/org — note explicitly if separate from the source repo>
 - Access: <MCP server name | CLI command | REST endpoint>
-- Triage log: docs/triage/TRIAGE-LOG.md   <!-- only if the user wants a non-default path -->
+- State labels: default   <!-- or a mapping, e.g. ready → status/accepted -->
 ```
 
 ## The dedup pre-pass (only when more than one issue is in scope)
@@ -68,7 +74,7 @@ Append the answers to `CLAUDE.md`:
 Parallel subagents in the same batch can't see each other's output, so run one cheap,
 deterministic check first, before spawning anything: pull just the title (and error
 text/stack trace, if the tracker's list view shows one) for every issue in scope, and
-exact- or near-exact-match them against each other and against the triage log's history.
+exact- or near-exact-match them against each other.
 This is a literal text comparison, not a judgment call — flag pairs, don't resolve them.
 Attach the flag ("possibly a duplicate of #N") to whichever subagent prompt(s) it applies to;
 the subagent still investigates and makes the final call, since a matching title or stack
@@ -87,40 +93,77 @@ user the issue count and the batch plan before starting — a few hundred open i
 few hundred subagent calls, and that's worth flagging before it runs.
 
 Every dispatch gets: the issue ID, the tracker's type/location/access method, the repo path,
-any dedup-pre-pass hint for that issue, and the relevant slice of the triage log (titles only,
-not full history, to keep the prompt small).
+any dedup-pre-pass hint for that issue, and the "What counts" list from Security reports
+below. The triager searches the tracker itself, open and closed, for earlier duplicates.
 
 ## Aggregating and reporting
 
 1. Collect every subagent's report.
-2. Pull anything flagged as a possible security report into its own short list, named but not
-   detailed in the main output — point the user at responsible disclosure instead of normal
-   triage for those. Never draft a public response to one.
+2. Pull anything flagged as a possible security report into its own short list, handled as
+   Security reports below says.
 3. Build one combined table for everything else: issue, type, likely area, priority/urgency,
    duplicate-of (if any), recommended action, one-line why (written following
    `plain-writing`).
-4. Append every triaged issue to the triage log (id, title, type, likely area, recommended
-   action, date, outcome) — this is what makes whole-tracker mode incremental on the next
-   run, and what `issue-resolve` reads. For anything flagged as a possible security report,
-   record only the id, date and outcome `security`, with no details.
+4. Next to each recommended action, show the tracker write it maps to (State labels below):
+   the label, any drafted comment, or a close.
 5. Present the table and the security list (if non-empty) to the user. Nothing gets written
-   back to the tracker — no label, comment, or close — until the user says which
-   recommendations to apply.
+   back to the tracker until the user says which recommendations to apply. Then apply exactly
+   those, and report what was written.
+
+## State labels
+
+The tracker holds triage state, so there's no separate log to commit or keep in sync. An open
+issue with no state label is untriaged.
+
+| Label | Means | Set by |
+|---|---|---|
+| `state/ready` | Triaged and worth fixing, with enough detail to start | `issue-triage` |
+| `state/needs-info` | Waiting on the reporter for a repro or detail | `issue-triage` |
+| `state/in-progress` | A fix lane has started | `issue-resolve` |
+
+- An issue carries one state label at a time. Setting one removes the others.
+- Duplicates and issues to close don't get a label. Close them with the tracker's own reason
+  (duplicate, not planned) where it has one, plus a comment naming the duplicate or the why.
+- A `state/needs-info` issue also gets a drafted comment asking for exactly what's missing.
+- A fixed issue leaves the label set through closing. The close is the record.
+- Use the label names recorded in `## Issue tracker` when the project maps these onto its own.
+  Never invent a label the tracker doesn't have; create one only with the user's yes.
+
+## Security reports
+
+This section is the playbook's one statement of this rule. `issue-triager`, `issue-resolve`,
+and `investigate-bug` all point here.
+
+**What counts.** An issue or symptom that reads like a real vulnerability: auth bypass, an
+action allowed without permission, data shown to someone who shouldn't see it, injection or
+injected script running, secret or credential exposure, remote code execution, a CVE
+reference, or similar.
+
+**What to do.**
+
+- Stop. Don't triage, investigate, or fix it as normal work.
+- Tell the user, naming the issue but not detailing it, and point them at the
+  responsible-disclosure process.
+- Never put it in a public commit, PR, comment, or issue, and never draft a public response
+  to it. A public reference to an unpatched vulnerability is a leak, not a fix.
+- Never quote exploit detail into a report, log, or plan file.
+- Never label it, in this tracker or any other public place, and never record it in a file.
+  The chat is the only place it appears. With no label, it stays untriaged and gets flagged
+  again on the next run, which is the reminder that it's still open.
 
 ## Rules
 
-- Read-only against the tracker and the codebase. The only files this skill writes are the
-  triage log, and, on first run only, the `## Issue tracker` section of `CLAUDE.md`.
+- Read-only against the codebase. The only file this skill writes is, on first run only, the
+  `## Issue tracker` section of `CLAUDE.md`. The tracker is written to only as the next rule
+  allows.
 - Never post a comment, apply a label, or close an issue without the user picking that action
   explicitly — issue by issue, or as a stated "apply all." A draft is the default output, not
   an action.
-- A security-looking issue never gets the normal report treatment — flag it, name it, stop.
-  Don't quote exploit detail into a shared report; route it to responsible disclosure instead.
 - If the tracker is unreachable (auth, network, wrong location), stop and say so. Don't triage
   a stale cached copy or guess at an issue's content.
 
 ## Hand off
 
-A triaged issue that turns into real work goes to `umb-explore` next (or `quick-fix` for
-anything small enough to skip the pipeline) — this skill stops at "here's what I'd do," it
-doesn't start building.
+A triaged issue that turns into real work goes to `issue-resolve` next, with its ID. That
+picks `quick-fix` or the pipeline, and drafts the tracker reply once the fix lands. This skill
+stops at "here's what I'd do," it doesn't start building.

@@ -34,15 +34,18 @@ draft, never a live action.
    resolves one issue at a time. A fix touches code and git history, and running several at
    once against the same working tree is exactly the kind of collision worktrees exist to
    prevent; unlike triage, this isn't a fan-out job.
-3. Look up the issue in the triage log. If it's there, read its entry (type, likely area,
-   recommended action, outcome). If it isn't, invoke `issue-triage` (Skill tool) for that one
-   issue first, so it gets triaged and logged the usual way — never move straight to fixing an
-   issue nobody's actually read.
-4. **A security flag stops everything here.** If the triage — existing or fresh — recorded
-   the outcome `security`, do not proceed with a normal fix. Tell the user and point at the
-   responsible-disclosure process instead. A public commit, PR, or comment referencing an
-   unpatched vulnerability is a leak, not a fix.
-5. Capture any notes given in the argument — how the user wants it fixed, constraints,
+3. Get a triage read, never moving straight to fixing an issue nobody's actually read:
+   - This session already has an `issue-triage` report for it → use that.
+   - The issue has no state label (see `issue-triage`'s State labels) → invoke `issue-triage`
+     (Skill tool) for that one issue first.
+   - It has a state label but this session has no report → dispatch one `issue-triager`
+     subagent for a fresh read, with the inputs `issue-triage`'s Dispatch section lists.
+     Don't change its labels.
+4. **A security flag stops everything here.** If the triage read says `security: true`,
+   stop and follow `issue-triage`'s Security reports section.
+5. A `state/needs-info` issue isn't ready. Say what's missing and stop, unless the user's
+   notes supply it.
+6. Capture any notes given in the argument — how the user wants it fixed, constraints,
    anything the triage didn't know. These get folded into whichever lane runs next; they don't
    replace it.
 
@@ -52,8 +55,10 @@ Use the triage's own read of size (`recommended action`, `likely area`) as the s
 but the real judgment stays where it already lives:
 
 - **Cause unknown** — a bug where neither the triage nor the user's notes say what's causing
-  it → invoke `investigate-bug` (Skill tool) with the issue first. Its report names the
-  cause and the lane below that fits, and becomes the starting material for that lane.
+  it → invoke `investigate-bug` (Skill tool) with the issue first, saying it was called from
+  `issue-resolve`. It reports back without starting a lane. Its report names the cause and a
+  suggested lane; take that as the starting call below, and pass the report on as the lane's
+  starting material.
 
 - **Looks small** — a single concern, the kind `quick-fix`'s own scope section describes →
   invoke `quick-fix` (Skill tool) with a description built from the issue's title/body, the
@@ -66,7 +71,8 @@ but the real judgment stays where it already lives:
   the brief from that and only asks about what's still missing. From there the normal pipeline
   runs: `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop`.
 
-Either way, this skill hands off and waits — it does not write the fix itself.
+Either way, this skill hands off and waits — it does not write the fix itself. When a lane
+starts, propose moving the issue to `state/in-progress` and apply it only on the user's yes.
 
 Either way, ask the lane to fix the cause, not just the reported spot. A reported bug often has
 siblings with the same cause (other endpoints missing the same check, other components with
@@ -95,10 +101,9 @@ finishes and the PR is open for the pipeline route:
 
 - One issue per run. No fan-out, no subagent batch — this writes code, indirectly, via the
   mechanisms it calls, and that only happens on one working tree at a time.
-- Never treat a security-flagged issue as a normal fix.
 - Never post a tracker comment or change its status without explicit confirmation.
-- Don't re-triage an issue already in the triage log — read its entry, don't redo work
-  `issue-triage` already did.
+- Don't change an issue's state label except to `state/in-progress`, and only on the user's
+  yes.
 
 ## Hand off
 
