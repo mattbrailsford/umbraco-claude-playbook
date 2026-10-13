@@ -32,7 +32,10 @@ design. A reviewer that fixes its own findings isn't a gate.
   `[Obsolete]` rather than broken (used in step 4).
 - `ef-core-data` — if a migration was added, check it's prefixed to avoid colliding with other
   packages in a shared Umbraco database, and works on every database provider the project
-  supports, not just the one the builder tested.
+  supports, not just the one the builder tested. Also check repository queries against its "Query shape" section.
+- `umbraco-performance` — for any diff on a per-request, per-save, per-indexed-item or
+  startup path, a property value converter, a new cache, or a backoffice list or search;
+  use its "Reviewing a diff for performance" list.
 - `umbraco-backoffice-ux` — for any diff that adds or changes backoffice UI; use its
   "Reviewing a UI diff" list.
 - `umbraco-backoffice-conventions` — the public-API-surface rule (only barrel-exported symbols
