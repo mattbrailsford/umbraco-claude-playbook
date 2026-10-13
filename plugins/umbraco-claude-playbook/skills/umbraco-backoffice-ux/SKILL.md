@@ -140,3 +140,7 @@ Things to look for in the code, before anyone sees the screen:
   confirmation
 - a component used in more than one place that sets a fixed width
 - a new `icon-*` name that hasn't been checked against the backoffice icon set
+- a form input with no label tied to it (`uui-label for=` or an `aria-label`), so a screen
+  reader announces nothing
+- a click handler on a plain `div` or `span` instead of a `uui-button` or `button`, so it
+  can't be reached or used from the keyboard

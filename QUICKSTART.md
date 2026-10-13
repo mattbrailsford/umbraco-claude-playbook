@@ -16,6 +16,10 @@ claude plugin marketplace add https://github.com/umbraco/Umbraco-CMS-Backoffice-
 claude plugin install umbraco-cms-backoffice-skills@umbraco-backoffice-marketplace --scope project
 ```
 
+The backoffice skills follow the CMS major. `#main` is the latest major. If your project
+targets an older one, swap `#main` for `#v<major>/main` (for example `#v17/main`). The
+backoffice API changes between majors, so the wrong line gives confidently wrong code.
+
 You can also run the same commands inside Claude Code as `/plugin marketplace add ...` and
 `/plugin install ...`.
 

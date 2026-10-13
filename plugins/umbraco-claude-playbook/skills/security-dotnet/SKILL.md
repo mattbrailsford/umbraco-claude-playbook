@@ -146,6 +146,9 @@ a silent gap.
 
 - Pin dependency versions deliberately (Central Package Management) so a transitive NuGet
   dependency can't silently change version on a routine restore.
+- When a change adds or bumps a package, run
+  `dotnet list package --vulnerable --include-transitive` and treat a known vulnerability in
+  the result as a finding.
 - Don't add `curl | sh`-style install patterns to build or setup scripts. Fetch a pinned
   artifact and verify it instead.
 
