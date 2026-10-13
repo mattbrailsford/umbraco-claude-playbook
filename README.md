@@ -46,6 +46,7 @@ it up.
 | Skill | What it's for |
 |---|---|
 | [`quick-fix`](plugins/umbraco-claude-playbook/skills/quick-fix/SKILL.md) | A fix too small for the pipeline, still reviewed |
+| [`investigate-bug`](plugins/umbraco-claude-playbook/skills/investigate-bug/SKILL.md) | Find and prove a bug's cause, then route the fix (report only) |
 | [`major-upgrade`](plugins/umbraco-claude-playbook/skills/major-upgrade/SKILL.md) | Move the package to a new Umbraco major, task by task, still reviewed |
 | [`issue-triage`](plugins/umbraco-claude-playbook/skills/issue-triage/SKILL.md) | Classify and duplicate-check tracker issues (report only) |
 | [`issue-resolve`](plugins/umbraco-claude-playbook/skills/issue-resolve/SKILL.md) | Route a triaged issue into `quick-fix` or the pipeline |

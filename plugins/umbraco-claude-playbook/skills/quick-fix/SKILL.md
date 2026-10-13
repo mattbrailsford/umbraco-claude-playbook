@@ -42,7 +42,8 @@ question.
 2. **Confirm it's actually small.** If reading the surrounding code reveals the fix is
    non-trivial (touches a class/component boundary, changes a public contract, needs new
    branches of test coverage), **stop and escalate** — tell the user this isn't a quick-fix
-   and suggest `umb-plan`.
+   and suggest `umb-plan`. If you can't say what's causing the bug, stop and suggest
+   `investigate-bug` instead: a quick fix needs a known cause.
 3. **Consult skills selectively.** Only load a skill if the fix genuinely touches its
    territory:
    - `solid-principles` / `design-principles` / `gof-patterns`: only if the fix sits at a
