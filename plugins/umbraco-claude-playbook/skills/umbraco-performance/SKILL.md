@@ -3,7 +3,7 @@ name: umbraco-performance
 description: >-
   Keeping an Umbraco package or backoffice extension fast on the sites that install it —
   reading published content from the cache instead of the services layer, tree traversal
-  that doesn't walk the whole site, caching your own lookups and clearing them on every
+  that doesn't walk the whole site, navigation extensions called with injected services, caching your own lookups and clearing them on every
   server, data type configuration and property value converter cache levels, evicting output
   caches when package data changes, keeping hot paths (notification handlers, indexing,
   bulk operations, startup) light, and backoffice extensions that don't over-fetch. Use when
@@ -68,7 +68,9 @@ first:
 
 ```csharp
 // Loads every node in the site to find the products
-var products = root.DescendantsOrSelf().Where(x => x.ContentType.Alias == "product");
+var products = root
+    .DescendantsOrSelf(_navigationQueryService, _publishedStatusFilteringService)
+    .Where(x => x.ContentType.Alias == "product");
 ```
 
 Since v15 this costs more than it used to: each `IPublishedContent` is rebuilt from the
@@ -94,6 +96,39 @@ Source: [Common pitfalls](https://docs.umbraco.com/umbraco-cms/develop-with-umbr
 [Umbraco Search](https://docs.umbraco.com/umbraco-search),
 CMS issues [#18869](https://github.com/umbraco/Umbraco-CMS/issues/18869) and
 [#18892](https://github.com/umbraco/Umbraco-CMS/issues/18892).
+
+## Navigation extensions: pass the services in
+
+`Children()`, `Parent()`, `Ancestors()`, `Descendants()`, `Siblings()` and the rest of the
+`IPublishedContent` navigation extensions (`Umbraco.Extensions`) are backed by the
+navigation service. Each has an overload that takes the navigation service
+(`IDocumentNavigationQueryService`, or `IMediaNavigationQueryService` for media) and
+`IPublishedStatusFilteringService`. Package code calls those overloads, with both services
+injected through the constructor:
+
+```csharp
+internal sealed class ProductListingService(
+    IDocumentNavigationQueryService navigationQueryService,
+    IPublishedStatusFilteringService publishedStatusFilteringService)
+{
+    public IEnumerable<IPublishedContent> GetProducts(IPublishedContent category)
+        => category.Children(navigationQueryService, publishedStatusFilteringService)
+            .Where(x => x.ContentType.Alias == "product");
+}
+```
+
+The short forms without those parameters (`content.Children()`, mostly in
+`FriendlyPublishedContentExtensions` in `Umbraco.Web.Common`) look both services up from
+`StaticServiceProvider` on every call. That's a service-locator lookup per call, repeated in
+every loop, plus a hidden dependency a unit test can't replace. A package project that only
+references `Umbraco.Core` doesn't get most of them at all. They're for templates, not
+package code.
+
+The `IPublishedContent.Children` *property* is obsolete in v17 and removed in v18. Use the
+extension method.
+
+Source: `PublishedContentExtensions` and `FriendlyPublishedContentExtensions` in the CMS
+source (17.7.1, 18.2.1, `v19/dev`); `IPublishedContent` at 17.7.1.
 
 ## Cache your own expensive lookups
 
@@ -243,6 +278,8 @@ Source: Block Preview issue [#149](https://github.com/rickbutterfield/BlockPrevi
   per-request, per-property or per-item path.
 - `Descendants()`/`DescendantsOrSelf()` from a root or other large node, on a per-request
   path or without a comment saying why the subtree is small.
+- A navigation extension (`Children()`, `Ancestors()`, ...) called without the injected
+  navigation and published-status services, or the obsolete `.Children` property.
 - A converter with no `GetPropertyCacheLevel` override, or any cache level (including the
   Delivery API ones) set to `None` or `Snapshot` without a stated reason.
 - A cache added with no rule for what clears it, or cleared without a cache refresher on a
