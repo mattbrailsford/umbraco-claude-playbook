@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Read-only code + security gate for a single built task (C#/.NET/Umbraco and/or Lit + UUI), or for a whole feature branch once every task is built. Returns PASS or FAIL with findings. Dispatched by umb-build-loop, quick-fix, and cms-upgrade.
+description: Read-only code + security gate for a single built task (C#/.NET/Umbraco and/or Lit + UUI), or for a whole feature branch once every task is built. Returns PASS or FAIL with findings. Dispatched by umb-build-loop, quick-fix, and major-upgrade.
 tools: Read, Glob, Grep, Bash, Skill
 model: opus
 ---
@@ -148,7 +148,7 @@ workflow. Look only for what builds up across tasks:
   orphaned files.
 - The same thing named differently in different tasks.
 
-`cms-upgrade` dispatches this mode with its upgrade file (`docs/upgrades/v<major>.md`) in
+`major-upgrade` dispatches this mode with its upgrade file (`docs/upgrades/v<major>.md`) in
 place of `ARCHITECTURE.md` and `SPEC.md`. There, drift means an inventory entry the branch
 doesn't handle, a removed-API warning silenced instead of fixed, or a change the upgrade
 didn't need.

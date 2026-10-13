@@ -1,5 +1,5 @@
 ---
-name: cms-upgrade
+name: major-upgrade
 description: >-
   Moves an Umbraco package or extension to a new Umbraco CMS major version (for example 17 to
   18): finds every breaking change that actually hits the project, writes an ordered upgrade
@@ -13,7 +13,7 @@ user-invocable: true
 argument-hint: <target CMS major, e.g. 18>
 ---
 
-# cms-upgrade
+# major-upgrade
 
 A CMS major upgrade is the same features on a new base, so the `umb-explore` → `umb-design` →
 `umb-plan` pipeline doesn't fit it, and it's far too big for `quick-fix`. This skill is its
