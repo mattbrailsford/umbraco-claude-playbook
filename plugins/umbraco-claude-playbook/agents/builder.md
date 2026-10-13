@@ -28,6 +28,8 @@ section, and the files/extension points you own. Build that task and nothing mor
   `gof-patterns` only if a pattern genuinely fits.
 - Persistence work → `ef-core-data`. Check whether the project targets SQL Server only or
   SQL Server *and* SQLite before writing a migration — most Umbraco packages need both.
+- Code that runs per request, per save, per indexed item or at startup, a property value
+  converter, a cache, or a backoffice list or search → `umbraco-performance`.
 - Frontend work (Lit components, UUI, backoffice manifests) → `umbraco-backoffice-ux` for how
   the screen should look and behave, the installed Umbraco Backoffice Skills for the specific
   extension point, and `umbraco-backoffice-conventions` for package structure (barrel exports,

@@ -3,7 +3,7 @@ name: ef-core-data
 description: >-
   EF Core conventions for a persistence layer inside an Umbraco package — one entity model
   targeting both SQL Server and SQLite, product-prefixed migrations, repositories internal to
-  their owning service, and testing against a real (if in-memory) database. EF Core is the
+  their owning service, query shape that holds up on large tables, and testing against a real (if in-memory) database. EF Core is the
   recommended data-access approach for a new Umbraco package. Use when designing or reviewing
   a package's entities, migrations, or repositories.
 ---
@@ -82,6 +82,38 @@ Repository methods use short forms with the entity implicit — `GetByIdAsync`,
 already names the entity. A `DbContext` reference (or repository interface) leaking into
 `Web`/`Api` project code is a design smell: schema changes can no longer stay local to the
 persistence layer.
+
+## Query shape: read only what you need
+
+A package's tables grow on the sites that install it, not on the demo site. Write repository
+queries for the big table:
+
+- **`AsNoTracking()` for reads.** Change tracking costs memory and time per row, and a
+  read-only query never uses it.
+- **Project to what the caller needs.** `.Select(x => new ItemSummary(x.Id, x.Name))` reads
+  two columns; returning the entity reads all of them, including large text columns.
+- **One query, not one per row.** A query inside a `foreach`, or a navigation property read
+  per item, is one round trip per row. Load related data in the same query (`.Include()`,
+  or a projection that reaches into it), or batch the keys into one `Where(x =>
+  keys.Contains(x.Id))`.
+- **Page in the database.** `OrderBy` then `Skip`/`Take` on the `IQueryable`, before
+  `ToListAsync`. Paging after materializing loads the whole table first.
+- **Index what you filter and sort on.** A column used in a list screen's `Where` or
+  `OrderBy` gets an index in the entity configuration, in both providers' migrations.
+
+```csharp
+var page = await _dbSet
+    .AsNoTracking()
+    .Where(x => x.OwnerKey == ownerKey)
+    .OrderByDescending(x => x.CreatedUtc)
+    .Skip(skip)
+    .Take(take)
+    .Select(x => new ItemSummary(x.Id, x.Name, x.CreatedUtc))
+    .ToListAsync(cancellationToken);
+```
+
+For when LINQ actually runs, see `dotnet-best-practices`; for caching and Umbraco-side
+performance, see `umbraco-performance`.
 
 ## Testing repositories against a real database, not a fake
 

@@ -263,6 +263,8 @@ this phase.
 - Async naming, visibility (internal by default), public-API compatibility → `umbraco-package-conventions`.
 - General C# type/error-handling shape for a new service or model → `dotnet-best-practices`.
 - Persistence needed → `ef-core-data`.
+- Reading content on front-end requests, caching, or large lists → `umbraco-performance`,
+  so where data is read from and what clears each cache is decided now.
 - Backoffice UI needed → `umbraco-backoffice-ux` for how screens should look and behave, the official
   Umbraco Backoffice Skills plugin for the specific extension point (dashboard, property
   editor, tree, etc.), plus `umbraco-backoffice-conventions` for package-level frontend
