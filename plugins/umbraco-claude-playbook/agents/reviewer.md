@@ -36,6 +36,9 @@ design. A reviewer that fixes its own findings isn't a gate.
 - `umbraco-performance` — for any diff on a per-request, per-save, per-indexed-item or
   startup path, a property value converter, a new cache, or a backoffice list or search;
   use its "Reviewing a diff for performance" list.
+- `umbraco-load-balancing` — for any diff that writes files, holds state between requests,
+  adds a background job or a handler with side effects, writes shared rows, or builds
+  absolute URLs, or clears a package cache; use its "Reviewing a diff for load balancing" list.
 - `umbraco-backoffice-ux` — for any diff that adds or changes backoffice UI; use its
   "Reviewing a UI diff" list.
 - `umbraco-backoffice-conventions` — the public-API-surface rule (only barrel-exported symbols

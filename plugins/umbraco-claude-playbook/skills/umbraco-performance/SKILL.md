@@ -3,14 +3,15 @@ name: umbraco-performance
 description: >-
   Keeping an Umbraco package or backoffice extension fast on the sites that install it —
   reading published content from the cache instead of the services layer, tree traversal
-  that doesn't walk the whole site, navigation extensions called with injected services, caching your own lookups and clearing them on every
-  server, data type configuration and property value converter cache levels, evicting output
+  that doesn't walk the whole site, navigation extensions called with injected services, caching your own lookups and deciding
+  what clears them, data type configuration and property value converter cache levels, evicting output
   caches when package data changes, keeping hot paths (notification handlers, indexing,
   bulk operations, startup) light, and backoffice extensions that don't over-fetch. Use when
   writing or reviewing package code that runs per request, per save, per indexed item, or at
   startup, a Management API list endpoint, or a backoffice screen that lists or searches
   data. Not for tuning a site's own templates or configuration. For EF Core query shape, see
-  `ef-core-data`; for when LINQ actually runs, see `dotnet-best-practices`.
+  `ef-core-data`; for when LINQ actually runs, see `dotnet-best-practices`; for clearing a
+  cache on every server, see `umbraco-load-balancing`.
 ---
 
 # Performance for Umbraco packages
@@ -151,9 +152,8 @@ var relations = _appCaches.RuntimeCache.GetCacheItem(
   and every other package.
 - **Decide what clears it, at design time.** An expiry alone means stale data for that
   long. If the data changes when your entity is saved, clear the key there.
-- **Load-balanced sites need a cache refresher.** Clearing a key clears it on one server
-  only. Route the clear through your package's `ICacheRefresher` so every server drops it
-  (see `umbraco-extensibility`'s catalogue, row 4).
+- **Clear it on every server.** On a load-balanced site the clear goes through a cache
+  refresher: see `umbraco-load-balancing`.
 - **Refresh many items in one call.** `DistributedCache.Refresh(refresherId, ids)` or
   `RefreshByPayload(refresherId, payloads)` with the whole set, not one call per item in a
   loop. Outside a web request (a background job, an import), each call is written to the
@@ -282,8 +282,7 @@ Source: Block Preview issue [#149](https://github.com/rickbutterfield/BlockPrevi
   navigation and published-status services, or the obsolete `.Children` property.
 - A converter with no `GetPropertyCacheLevel` override, or any cache level (including the
   Delivery API ones) set to `None` or `Snapshot` without a stated reason.
-- A cache added with no rule for what clears it, or cleared without a cache refresher on a
-  package that supports load balancing.
+- A cache added with no rule for what clears it.
 - A cache key without the package prefix.
 - A request-scoped object stored in a singleton or static field.
 - Package data shown on pages or in Delivery API responses, changed with no output cache

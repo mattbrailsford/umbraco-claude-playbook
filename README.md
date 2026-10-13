@@ -75,6 +75,7 @@ that...") and the right skill picks it up.
 | [`umbraco-backoffice-conventions`](plugins/umbraco-claude-playbook/skills/umbraco-backoffice-conventions/SKILL.md) | Package-level frontend setup, OpenAPI clients, build order |
 | [`umbraco-backoffice-ux`](plugins/umbraco-claude-playbook/skills/umbraco-backoffice-ux/SKILL.md) | How a backoffice screen should look and behave |
 | [`umbraco-performance`](plugins/umbraco-claude-playbook/skills/umbraco-performance/SKILL.md) | Caching, tree traversal, and keeping hot paths fast |
+| [`umbraco-load-balancing`](plugins/umbraco-claude-playbook/skills/umbraco-load-balancing/SKILL.md) | Staying correct when the site runs on more than one server |
 | [`ef-core-data`](plugins/umbraco-claude-playbook/skills/ef-core-data/SKILL.md) | SQL Server + SQLite, migrations, repositories |
 | [`umbraco-cms-source`](plugins/umbraco-claude-playbook/skills/umbraco-cms-source/SKILL.md) | Read the CMS source at the version you target |
 | [`umbraco-docs`](plugins/umbraco-claude-playbook/skills/umbraco-docs/SKILL.md) | Read the official docs for the version you target |

@@ -65,7 +65,7 @@ public class MyCacheRefresher : JsonCacheRefresherBase<MyCacheRefresher, MyCache
 Auto-discovered; broadcasts a cache-invalidation message across load-balanced servers. One
 per entity type your package owns is the normal shape once there's more than one — reach for
 this the moment your package maintains its own in-memory cache that needs to stay consistent
-across servers.
+across servers. How to clear through it: `umbraco-load-balancing`.
 
 ## 8. Custom file system
 
@@ -162,7 +162,9 @@ public class CleanUpYourRoomComposer : IComposer
 `Period` (passed to the base constructor above) is how often it runs. `Delay` (default 3
 minutes) is the wait after startup before the first run. `ServerRoles` (default `Single,
 SchedulingPublisher`) restricts which server role in a load-balanced setup actually executes
-it — leave the default unless the job must run on every server or a specific role. Implement
+it. With a load-balanced backoffice (v17+) every server is `SchedulingPublisher`, so the
+default doesn't mean "one server": work that must run once uses `IDistributedBackgroundJob`
+instead (see `umbraco-load-balancing`). Implement
 `IRecurringBackgroundJob` directly only if the class already has to inherit from something
 else and can't take `RecurringBackgroundJobBase`. From v19 the interface has no default
 members: a direct implementation declares `Delay`, `IgnoredDelay`, `ServerRoles`, both change
