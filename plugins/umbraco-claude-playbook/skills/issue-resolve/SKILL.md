@@ -51,6 +51,10 @@ draft, never a live action.
 Use the triage's own read of size (`recommended action`, `likely area`) as the starting call,
 but the real judgment stays where it already lives:
 
+- **Cause unknown** — a bug where neither the triage nor the user's notes say what's causing
+  it → invoke `investigate-bug` (Skill tool) with the issue first. Its report names the
+  cause and the lane below that fits, and becomes the starting material for that lane.
+
 - **Looks small** — a single concern, the kind `quick-fix`'s own scope section describes →
   invoke `quick-fix` (Skill tool) with a description built from the issue's title/body, the
   triage's likely-area finding, and the user's notes. `quick-fix` still makes its own
