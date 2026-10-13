@@ -15,7 +15,8 @@ plugins/umbraco-claude-playbook/
   skills/<name>/SKILL.md                          # one folder per skill (+ references/, templates/)
   agents/{builder,reviewer,issue-triager}.md      # subagents
 settings.example.json   # copy-by-hand example for consumers; NOT installed by the plugin
-scripts/                # check-skill-refs.sh + its allowlist; repo-only, not shipped
+scripts/                # check-*.sh + the refs allowlist; repo-only, not shipped
+.claude/skills/review-skill-links/  # repo-only skill: cross-reference review; not shipped
 docs/HOW-IT-WORKS.md    # human explainer: plan folder, gate, memory, branches
 docs/pr-examples/       # images used in PR descriptions; not shipped
 README.md, QUICKSTART.md  # human-facing; see "Human docs" below
@@ -30,6 +31,8 @@ Don't run `dotnet build` or apply C# conventions to this repo. Checks that do ex
 jq . .claude-plugin/marketplace.json
 jq . plugins/umbraco-claude-playbook/.claude-plugin/plugin.json
 scripts/check-skill-refs.sh   # stale backtick skill references; exit 1 = needs a look
+scripts/check-skill-wiring.sh # every skill in the README and referenced from elsewhere
+scripts/check-version.sh      # version fields agree, and bumped if shipped files changed
 ```
 
 ## This repo is not an Umbraco project
@@ -132,3 +135,7 @@ Before adding a section to an existing skill:
 Before renaming, splitting, or removing a skill, run `scripts/check-skill-refs.sh`. It only
 catches stale references, not wrong boundaries. A false positive goes in
 `scripts/skill-ref-allowlist.txt`; don't weaken the check.
+
+After adding, renaming, splitting, or substantially changing a skill, run the repo-only
+`review-skill-links` skill. It runs all three scripts, then reads for routing gaps,
+conflicting advice, and duplicated rules the scripts can't see.
