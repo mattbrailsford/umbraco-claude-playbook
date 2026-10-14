@@ -110,7 +110,7 @@ a SQLite test site that references the package locally, `Directory.Packages.prop
    (a test site, `Directory.Packages.props`; `.editorconfig` is step 4) — don't silently
    force a CMS version the project didn't ask for.
 2. **Confirm before running** — this creates a whole solution structure, so show the exact
-   commands and get a yes first, the same discipline `git-remote` uses before creating a
+   commands and get a yes first, the same discipline `github-init` uses before creating a
    remote:
    ```bash
    dotnet new install Umbraco.Community.Templates.PackageStarter

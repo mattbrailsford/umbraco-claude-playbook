@@ -65,7 +65,7 @@ the tables below.
 | I want to... | Run |
 |---|---|
 | Set up a project for this devkit: `CLAUDE.md`, ports, lint, tests, CMS source and docs | [`/project-init`](plugins/umbraco-devkit/skills/project-init/SKILL.md) |
-| Push a new package to GitHub for the first time: README, LICENSE, CONTRIBUTING | [`/git-remote`](plugins/umbraco-devkit/skills/git-remote/SKILL.md) |
+| Push a new package to GitHub for the first time: README, LICENSE, CONTRIBUTING | [`/github-init`](plugins/umbraco-devkit/skills/github-init/SKILL.md) |
 
 ### Build a feature
 
