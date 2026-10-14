@@ -42,10 +42,9 @@ both.
 6. **Recommend one action**: ready, needs investigation, needs info from the reporter,
    needs a maintainer's decision, blocked (name what on), likely duplicate (name the ID), or
    close (say why). Pick between the states using the "Which state" rules you were given.
-   An issue sent to you because its needs-info timeout ran out gets a close. Needs info is only for what the reporter alone can
-   give; a gap you could close by reading code or trying a repro is needs investigation.
-   Don't invent a priority scheme the tracker doesn't have — describe severity/urgency in
-   plain terms if the tracker has no priority field.
+   An issue sent to you because its needs-info timeout ran out gets a close. Don't invent a
+   priority scheme the tracker doesn't have — describe severity/urgency in plain terms if
+   the tracker has no priority field.
 7. **Draft the comment** for that action, following the Tracker comments section you were
    given: a plain part for the reporter, then the notes that section lists for your
    recommended outcome. Skip this for a security flag.

@@ -191,5 +191,6 @@ If the cause is a mistake a future `builder` would likely repeat, offer to save 
 
 ## Hand off
 
-The report from step 6. Called from `issue-resolve`: stop there. Otherwise: the route you'd
-take and a one-line question asking whether to start it.
+The report from step 6. Called from `issue-resolve`: stop there. Called from
+`issue-backlog`: the report and the drafted update, as Running unattended says. Otherwise:
+the route you'd take and a one-line question asking whether to start it.
