@@ -9,7 +9,7 @@ description: >-
   writes the fix itself. Given an issue ID, also drafts the issue's next state label and a
   comment for the reporter. Use for "why is this broken", "this stopped working", "find out
   what's causing X", a failing test nobody understands, or an issue triaged as needing
-  investigation.
+  investigation. Also runs unattended in its own worktree when `issue-backlog` dispatches it.
 user-invocable: true
 argument-hint: <what's going wrong, or an issue ID>
 ---
@@ -31,7 +31,25 @@ known cause and a repro, not a theory.
 ## Argument
 
 `$ARGUMENTS` is the symptom in the user's words, or an issue ID. For an issue ID, read the
-issue, and use this session's `issue-triage` report for it if there is one.
+issue, and use this session's `issue-triage` report for it if there is one, or else the
+issue's latest triage notes.
+
+## Running unattended
+
+When `issue-backlog` dispatches this skill in a subagent, in its own worktree, nobody is
+there to answer questions, and nothing it does can disturb the user's checkout. The steps
+below still apply, with these changes:
+
+- **No questions.** Work from the issue and its notes. If step 1 or step 2 needs something
+  only the reporter can give, stop there and suggest `state/needs-info`.
+- **No asking before `git bisect`.** The worktree is yours alone. Still end with `git bisect
+  reset`.
+- **The demo site** runs on this worktree's own port (`git wdp-port`), never a fixed one.
+- **No tracker writes.** Draft step 6's label and comment, and return them with the report.
+  `issue-backlog` shows them to the user.
+- **No routing.** Skip step 6's routing list and the hand-off question.
+- **Leave the worktree clean**, as Scope says, so it's removed when you finish.
+- **A security match** still stops everything: return only the flag and the issue ID.
 
 ## 1. Pin down the symptom
 

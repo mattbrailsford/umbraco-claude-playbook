@@ -74,7 +74,7 @@ Just describe what you want. The right skill picks it up. Or pick one yourself:
 - `/quick-fix` for a small, obvious fix.
 - `/investigate-bug` for a bug nobody understands yet.
 - `/major-upgrade` to move to a new Umbraco major.
-- `/issue-triage`, then `/issue-resolve`, to work through tracker issues.
+- `/issue-backlog` to get tracker issues ready to fix, then `/issue-resolve` for each one.
 
 ## More
 

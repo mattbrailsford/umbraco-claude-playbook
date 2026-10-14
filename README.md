@@ -33,7 +33,8 @@ Which flow fits:
 | Make a small, obvious fix | `/quick-fix` |
 | Find out why something is broken | `/investigate-bug` |
 | Move to a new Umbraco major version | `/major-upgrade` |
-| Sort through the issue backlog | `/issue-triage` |
+| Get the issue backlog ready to fix | `/issue-backlog` |
+| Sort through new issues | `/issue-triage` |
 | Fix one triaged tracker issue | `/issue-resolve` |
 
 You don't have to type the commands. Describe what you want ("I want to add a dashboard
@@ -60,6 +61,7 @@ that...") and the right skill picks it up.
 | [`investigate-bug`](plugins/umbraco-claude-playbook/skills/investigate-bug/SKILL.md) | Find and prove a bug's cause, then route the fix (issue updates only on your yes) |
 | [`major-upgrade`](plugins/umbraco-claude-playbook/skills/major-upgrade/SKILL.md) | Move the package to a new Umbraco major, task by task, still reviewed |
 | [`issue-triage`](plugins/umbraco-claude-playbook/skills/issue-triage/SKILL.md) | Classify and duplicate-check tracker issues (report only), with the [`issue-triager`](plugins/umbraco-claude-playbook/agents/issue-triager.md) agent |
+| [`issue-backlog`](plugins/umbraco-claude-playbook/skills/issue-backlog/SKILL.md) | Work open issues through triage, decisions, and investigation to ready |
 | [`issue-resolve`](plugins/umbraco-claude-playbook/skills/issue-resolve/SKILL.md) | Route a triaged issue into `quick-fix` or the pipeline |
 | [`describe-pr`](plugins/umbraco-claude-playbook/skills/describe-pr/SKILL.md) | Write the PR description, with diagrams and screenshots |
 | [`decision-review`](plugins/umbraco-claude-playbook/skills/decision-review/SKILL.md) | Pull out the assumptions and workarounds worth a human look |
