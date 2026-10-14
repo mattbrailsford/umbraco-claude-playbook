@@ -23,6 +23,8 @@ Every other skill you run works around those flows and never changes code itself
 - **Reviews and explains it.** `pr-review` runs the same reviewer over a PR from outside the
   team. `decision-review` pulls out what a human should look at after a build.
   `pr-describe` writes the PR description.
+- **Tidies up after.** `feature-close` moves a closed plan out of the plans folder once
+  its PR is merged or the plan is dropped.
 - **Sets up and ships.** `project-init` prepares a project, `github-init` its first public
   repo, and `umbraco-marketplace` its Marketplace listing.
 
@@ -37,7 +39,7 @@ monorepo package), say so once in your project's `CLAUDE.md` and every step foll
 
 | File | Owned by |
 |---|---|
-| `README.md` | `feature-explore` creates it; every step updates its own line |
+| `README.md` | `feature-explore` creates it; every step updates its own line; `feature-close` adds a status line |
 | `BRIEF.md` | `feature-explore` |
 | `ARCHITECTURE.md`, `SPEC.md`, `mockups/` | `feature-design` |
 | `STORIES.md`, `PLAN.md` | `feature-plan` (`feature-build` only ticks `PLAN.md`'s task checkboxes) |
@@ -56,6 +58,18 @@ Outside the feature folders, `feature-design` also owns `docs/mockups/starters/`
 starters for a product's own screens (a Copilot sidebar, a flow editor) that the general
 starters can't draw. One is saved only when a screen is both distinct and something features
 keep landing on.
+
+### When a plan closes
+
+Once a feature's PR is merged, or the plan is dropped or replaced, `feature-close` moves the
+folder to `docs/archive/plans/<feature-slug>/`. `major-upgrade` does the same for its upgrade
+file, into `docs/archive/upgrades/`. This keeps the plans folder to live work, so an active
+plan is easy to find, and Claude doesn't mistake an old design for the current one.
+
+Before the move, it adds one status line to the folder's `README.md` (shipped, abandoned, or
+superseded), and copies any decision that outlives the feature into project memory or a
+nested `CLAUDE.md`. Code and other lasting files link to those, never into a plan or the
+archive, so nothing breaks when a plan moves. The reviewer flags a new link that does.
 
 ## The builder/reviewer gate
 

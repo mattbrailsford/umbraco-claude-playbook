@@ -136,7 +136,8 @@ Almost none. Ask at most:
    (read-order index), `BRIEF.md`, `ARCHITECTURE.md`, `SPEC.md`, `STORIES.md`, `PLAN.md`,
    `DECISION-LOG.md`, `BUILD-LOG.md` — one file per pipeline phase; offer a
    monorepo/worktree-scoped alternative if the repo already uses worktrees or has more than one
-   deployable product in it).
+   deployable product in it). Settle the archive path with it (default `docs/archive/`, where
+   `feature-close` moves closed plans); don't create the folder, the first archive run does.
 4. Only if trunk-branch detection above was ambiguous: which branch new features should start
    from and be cut against (see `git-workflow`'s "Branch/worktree per feature" section — this
    is where `feature-build` commits the plan folder and cuts the feature branch/worktree).

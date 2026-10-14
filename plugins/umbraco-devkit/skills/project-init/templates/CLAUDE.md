@@ -27,11 +27,20 @@ The `builder` runs the lint/format check before reporting a task done.
 
 This project uses the Umbraco Devkit. Feature plan folders live at:
 `[the path convention settled on in the interview]`
+Closed plans are archived under: `[archive path, default docs/archive/]`
 
-Pipeline: `/feature-explore` → `/feature-design` → `/feature-plan` → `/feature-build`.
-Each phase owns its own file in the feature's plan folder (`BRIEF.md`, `ARCHITECTURE.md` +
-`SPEC.md`, `STORIES.md` + `PLAN.md`, `BUILD-LOG.md`) — see the devkit's README for the
-file-ownership table.
+Pipeline: `/feature-explore` → `/feature-design` → `/feature-plan` → `/feature-build`, then
+`/feature-close` once the feature's PR is merged or the plan is dropped. Each phase owns its
+own file in the feature's plan folder (`BRIEF.md`, `ARCHITECTURE.md` + `SPEC.md`,
+`STORIES.md` + `PLAN.md`, `BUILD-LOG.md`) — see the devkit's README for the file-ownership
+table.
+
+**Plans and the archive:** the plans folder holds only live work. The archive is history: it
+records what was planned at the time, not how the code works now. Read it only to answer why
+something was done, never as current design. Lasting files (code, any `CLAUDE.md`,
+`.claude/memory/`, reference docs) never link into the plans or archive folders. A decision
+that outlives its feature goes in `.claude/memory/` or a nested `CLAUDE.md`, and lasting files
+link there.
 
 **Branch/worktree per feature:** new features start from `[trunk branch — the repo's default
 branch, or a long-lived vN/dev line for a branch-per-major project]`. Plan-folder files stay

@@ -127,19 +127,26 @@ consumer project. Rules to preserve when editing these skills:
   - `feature-plan`: `STORIES.md`, `PLAN.md`.
   - `feature-build`: `BUILD-LOG.md`, `screenshots/`.
   - `pr-describe`: `PR-DESCRIPTION.md`, only when a plan folder exists.
+  - `feature-close`: moving a closed folder to `docs/archive/plans/<feature-slug>/`, after
+    the PR is merged or the plan is dropped.
 
   Outside the plan folders, `major-upgrade` owns `docs/upgrades/v<major>.md`, one file per
-  CMS major upgrade, ticking its own checklist.
-- **The only three cross-owner writes:**
+  CMS major upgrade, ticking its own checklist and archiving it to `docs/archive/upgrades/`
+  once shipped.
+- **The only four cross-owner writes:**
   1. Every phase may append to `DECISION-LOG.md`.
   2. Every phase updates its own single line in `README.md` when it finishes, never
      another phase's line.
   3. `feature-build` ticks `PLAN.md` checkboxes (`- [ ]` → `- [x]`), never editing task text.
+  4. `feature-close` adds one `> **Status:**` line to the top of `README.md`.
+- **Lasting files never link into plans or the archive.** Code, `CLAUDE.md` files, and
+  memory link to memory or a nested `CLAUDE.md`, so archiving a plan breaks nothing.
 - **Stop, don't guess.** A phase missing its input hands off to the owning phase instead of
   inventing the content.
 - **Git boundary.** `feature-explore`/`feature-design`/`feature-plan` never touch git.
   `feature-build` asks, then commits the plan folder to trunk and cuts the feature
-  branch/worktree.
+  branch/worktree. `feature-close` moves closed plans on a short-lived branch and opens a
+  PR for the move.
 
 ## Architecture: the builder/reviewer gate
 
