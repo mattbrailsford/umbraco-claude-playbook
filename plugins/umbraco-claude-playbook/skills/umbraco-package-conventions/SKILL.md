@@ -99,8 +99,10 @@ overload, rather than duplicating the implementation, only when a static default
 isn't available — a compile-time default parameter is always simpler when one exists.
 
 Give consumers a real deprecation window — state the target version in the `[Obsolete]`
-message. "Current major + 2" is a solid default; check the project's `CLAUDE.md` first and
-follow whatever it actually states if it already commits to a different number.
+message. The default target is the highest CMS major the package supports + 2. A package
+supporting v17 and v18 that obsoletes a member in both targets v20, on both branches. Check
+the project's `CLAUDE.md` first and follow whatever it actually states if it already commits
+to a different number.
 
 ## Extension methods
 

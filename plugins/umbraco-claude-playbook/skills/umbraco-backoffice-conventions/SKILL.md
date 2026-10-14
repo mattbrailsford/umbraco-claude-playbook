@@ -105,7 +105,8 @@ reshaping something that *is* exported (dropped export, changed constructor sign
 removed `@property()` field) is breaking for every importer. Apply the `[Obsolete]`-proxy
 discipline `umbraco-package-conventions` describes for the backend, adapted to TypeScript:
 keep the old export working or ship a major version bump, and add a JSDoc `@deprecated` tag
-and a runtime warning. **Manifests are never exported from `index.ts`**; they register
+and a runtime warning. Both name the removal version, picked the same way as the backend
+`[Obsolete]` target. **Manifests are never exported from `index.ts`**; they register
 through the package's bundle mechanism, so a manifest array changing shape isn't a
 public-API concern.
 

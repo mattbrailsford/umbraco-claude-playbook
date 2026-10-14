@@ -90,4 +90,5 @@ Load only the skills the task needs.
   when unsure.
 - **Preserve public API compatibility.** To change a public method's signature, keep the old
   one, mark it `[Obsolete]`, and have it proxy to the new one. Follow the project's
-  deprecation-window convention if it has one.
+  deprecation-window convention if it has one, otherwise the default in
+  `umbraco-package-conventions`.
