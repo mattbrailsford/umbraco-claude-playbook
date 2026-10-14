@@ -46,10 +46,10 @@ refer to the consumer project, not this repo.
 
 ## Manifests and versioning
 
-- The two manifests duplicate `description`, `version`, and `keywords` for the one plugin.
-  Changing one means checking the other.
-- Bump `version` in all three places, kept in sync: `marketplace.json` `metadata.version`,
-  `marketplace.json` `plugins[0].version`, `plugin.json` `version`.
+- The two manifests duplicate `description` and `keywords` for the one plugin. Changing one
+  means checking the other.
+- `version` lives only in `plugin.json`. Don't add it to `marketplace.json`: Claude Code
+  reads `plugin.json` first, so a second copy silently drifts.
 - Bump for any change to a skill, agent, or template a consumer would load. Installed
   consumers only see changes after their plugin update picks up a new version.
   - Patch: edits to an existing skill/agent/template.
