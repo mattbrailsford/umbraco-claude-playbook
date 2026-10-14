@@ -1,5 +1,5 @@
 ---
-name: git-remote
+name: github-init
 description: >-
   Bootstraps the GitHub remote for a new Umbraco package or add-on — README, LICENSE, one
   CONTRIBUTING.md. Use when a project has no `origin` remote yet and it's time to push it
@@ -8,7 +8,7 @@ user-invocable: true
 argument-hint: [optional repo name]
 ---
 
-# git-remote
+# github-init
 
 Stand up the GitHub remote for a new Umbraco package and make its first impression a good
 one. Deliberately lighter than a generic open-source bootstrap checklist — see "What this

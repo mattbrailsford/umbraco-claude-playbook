@@ -36,7 +36,8 @@ lives, and to name a new skill. `README.md` lists every skill; this table lists 
 | Feature pipeline | `feature-<step>` | One plan folder, from explore to build | `feature-explore`, `feature-build` |
 | Issues | `issue-<action>` | Tracker issues, from new to fixed | `issue-triage`, `issue-resolve` |
 | Pull requests | `pr-<action>` | Describing and reviewing PRs | `pr-describe`, `pr-review` |
-| Standalone jobs | `<verb>-<object>` | A job no family above fits | `quick-fix`, `investigate-bug`, `major-upgrade` |
+| GitHub | `github-<action>` | The package's GitHub repo | `github-init` |
+| Older jobs | kept as they are | Jobs named before the subject-first rule | `quick-fix`, `investigate-bug`, `major-upgrade` |
 | Umbraco knowledge | `umbraco-<topic>` | How Umbraco does something | `umbraco-performance`, `umbraco-docs` |
 | Stack knowledge | `<tech>-<topic>` | One technology, as Umbraco packages use it | `ef-core-data`, `security-lit` |
 | General craft | `<lang>-best-practices`, `<topic>-principles` | Not Umbraco-specific | `dotnet-best-practices`, `solid-principles` |
@@ -46,8 +47,9 @@ Naming a new skill or agent:
 
 1. **Join a family** when the skill acts on that family's subject. Subject first, action
    second: `issue-close`, not `close-issue`.
-2. **Start a family** only when a second skill would join it. Until then, use
-   `<verb>-<object>`.
+2. **A new subject starts a new family**, even with one skill: `github-init`. A second
+   skill on that subject then joins without renaming the first. The older jobs predate this
+   rule; don't rename them just to fit.
 3. **Name what it does for the user**, not how it works inside: `feature-build`, not
    `build-loop`.
 4. **No plugin prefix** (`umb-`, `devkit-`). Claude Code already shows skills as

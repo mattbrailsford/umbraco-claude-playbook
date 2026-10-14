@@ -38,7 +38,7 @@ no human review step and no stated code-quality, security, or "actively maintain
    listing: `PackageId` (community convention: `Umbraco.Community.<PackageName>` for an
    unofficial package), `Authors`, `Description`, `PackageIcon`, `PackageReadmeFile`,
    `PackageProjectUrl`, `PackageLicenseExpression` (a real SPDX id — MIT is the common default,
-   same as `git-remote`'s recommendation), `Tags`.
+   same as `github-init`'s recommendation), `Tags`.
 
 ## The version-compatibility gotcha
 
@@ -68,7 +68,7 @@ the docs (`umbraco-docs`) before hand-writing this file rather than copying an e
 1. Confirm the package's `.csproj`/`.nuspec` has the tag, the Umbraco dependency, and the
    standard metadata fields above. Don't invent values — pull description/icon/license from
    what the project already declares (`README.md`, `LICENSE`, `CLAUDE.md`'s stated CMS
-   version(s)), the same discipline `git-remote` uses for its README gate.
+   version(s)), the same discipline `github-init` uses for its README gate.
 2. If the package supports Umbraco 14+ but its dependency reference doesn't make that obvious,
    add or update `umbraco-marketplace.json` with the `VersionDependencyMode` override.
 3. If richer listing metadata is wanted (screenshots, category, docs links), draft

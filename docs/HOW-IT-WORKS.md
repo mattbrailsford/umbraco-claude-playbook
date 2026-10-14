@@ -23,7 +23,7 @@ Every other skill you run works around those flows and never changes code itself
 - **Reviews and explains it.** `pr-review` runs the same reviewer over a PR from outside the
   team. `decision-review` pulls out what a human should look at after a build.
   `pr-describe` writes the PR description.
-- **Sets up and ships.** `project-init` prepares a project, `git-remote` its first public
+- **Sets up and ships.** `project-init` prepares a project, `github-init` its first public
   repo, and `umbraco-marketplace` its Marketplace listing.
 
 You don't have to pick. Describe what you want and Claude picks the skill from its
