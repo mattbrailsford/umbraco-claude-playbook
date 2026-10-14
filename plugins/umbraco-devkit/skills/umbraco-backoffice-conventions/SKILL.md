@@ -138,15 +138,19 @@ Every `localization` manifest for a culture merges into one flat dictionary, key
 `section_key`. A key that another package, or the backoffice itself, also defines collides,
 and only one of them shows.
 
-- **Name every section after your package**: `myPackageGeneral`, `myPackageOrders`, never
-  `general` or `orders`. That keeps your keys out of Umbraco's sections and other packages'.
-- **Give the package its own general section.** A phrase used on more than one screen
-  ("Order number", "Sync now") goes once in a section such as `myPackageGeneral`, not
-  repeated under each screen's section. Name the key after what the text says, not where it
-  appears: `myPackageGeneral_orderNumber`, not `myPackageOrdersTable_orderNumberColumn`.
+- **Name every section after your package**: `myPackageActions`, `myPackageOrders`, never
+  `actions` or `orders`. That keeps your keys out of Umbraco's sections and other packages'.
+- **Group shared phrases by topic, like Umbraco does.** A phrase used on more than one screen
+  goes once in a shared section named for what kind of text it is: `myPackageActions` ("Sync
+  now"), `myPackageLabels` ("Order number"), `myPackagePlaceholders`,
+  `myPackageNotifications`. Don't repeat it under each screen's section, and don't put it in
+  one `myPackageGeneral` that every shared phrase lands in: a catch-all section grows until
+  nobody can find what's already there, and duplicates come back. Name the key after what the
+  text says, not where it appears: `myPackageLabels_orderNumber`, not
+  `myPackageOrdersTable_orderNumberColumn`.
 - **Before adding a key, check what exists, in this order:**
-  1. **Your package's general section.** It holds the package's own terms, in the package's
-     own sense, so it wins over a similar Umbraco key.
+  1. **Your package's shared sections.** They hold the package's own terms, in the
+     package's own sense, so they win over a similar Umbraco key.
   2. **Umbraco's keys.** The backoffice already has keys for most common text, not just
      single words: buttons and actions, placeholders, empty states, confirmations,
      notification messages. They're all in the CMS repo's
@@ -157,19 +161,20 @@ and only one of them shows.
      `myPackageOrders_save` gives every translator one more "Save" to do.
 
   Only add a new key when neither has one. If more than one screen will use it, add it to
-  your general section.
+  the shared section for its topic.
 - **Use arguments for values that change.** One `'{0} orders'` key, or a function key for
   plurals, instead of one key per count or name.
 - **Reuse whole phrases, never fragments.** Don't build a sentence from several keys
-  (`term('myPackageGeneral_delete') + ' ' + term('myPackageGeneral_order')`): word order and grammar change
-  between languages, so the joined text reads wrong once translated. One key per full sentence
-  or label.
+  (`term('myPackageActions_delete') + ' ' + term('myPackageLabels_order')`): word order and
+  grammar change between languages, so the joined text reads wrong once translated. One key
+  per full sentence or label.
 - **Keep two keys when the meaning differs**, even if the English is the same. "Order" the
   noun and "Order" the verb, or "Open" the state and "Open" the action, translate differently
   in many languages.
 
 In review, look for a new key whose English text matches an existing key in the package's
-general section or Umbraco's. Reuse that key unless the meaning differs.
+shared sections or Umbraco's, and for shared phrases piling up in one catch-all section.
+Reuse a matching key unless the meaning differs.
 
 ## Components are lazy-loaded per manifest, by default
 
