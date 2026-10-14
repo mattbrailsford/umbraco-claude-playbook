@@ -142,6 +142,8 @@ State labels and Tracker comments sections:
 - Can't reproduce, and only the reporter can close the gap → `state/needs-info`, asking for
   what step 2 found missing.
 - Not a bug (works as designed, or a usage mistake) → a close, saying why.
+- Cause is in the CMS and no package workaround is planned → `state/blocked`, linking the
+  upstream issue once the user has posted it.
 
 Show the label and comment to the user and apply them only on their yes.
 

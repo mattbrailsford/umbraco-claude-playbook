@@ -16,6 +16,8 @@ both.
 - The security "What counts" list.
 - The "Which state" rules and the Tracker comments section from `issue-triage`.
 - Optionally, a "possibly a duplicate of #N" hint from the orchestrator's pre-pass.
+- For an issue that already has a state label, why it's back: a reply, the needs-info
+  timeout, or a closed blocker.
 
 ## Workflow
 
@@ -38,8 +40,9 @@ both.
    it named. Confirm or rule out each candidate based on the actual content, not just the
    match that surfaced it.
 6. **Recommend one action**: ready, needs investigation, needs info from the reporter,
-   likely duplicate (name the ID), or close (say why). Pick between the first three using
-   the "Which state" rules you were given. Needs info is only for what the reporter alone can
+   needs a maintainer's decision, blocked (name what on), likely duplicate (name the ID), or
+   close (say why). Pick between the states using the "Which state" rules you were given.
+   An issue sent to you because its needs-info timeout ran out gets a close. Needs info is only for what the reporter alone can
    give; a gap you could close by reading code or trying a repro is needs investigation.
    Don't invent a priority scheme the tracker doesn't have — describe severity/urgency in
    plain terms if the tracker has no priority field.

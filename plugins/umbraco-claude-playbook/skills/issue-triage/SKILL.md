@@ -44,12 +44,15 @@ and nothing is written to it until the user says so.
    this detection step.
 4. Resolve the state label names: the defaults in State labels below, or the mapping
    `CLAUDE.md` records under `## Issue tracker`. If that section exists but has no `State
-   labels` line, ask just the interview's state-labels question and add the line.
+   labels` line, ask just the interview's state-labels question and add the line. If the
+   mapping has no entry for one of the states, ask about just that state.
 5. Resolve which issues this run covers, from the argument:
    - One ID → that issue, whatever its labels. Naming an issue means re-triage it.
    - A range (e.g. `120-135`) → every ID in that range that still exists and is open.
-   - No argument → every open issue with no state label, plus every `state/needs-info` issue
-     the reporter has replied to since the label went on.
+   - No argument → every open issue with no state label, plus:
+     - every `state/needs-info` issue the reporter has replied to since the label went on,
+       or that has gone quiet for longer than the needs-info timeout;
+     - every `state/blocked` issue whose blocker has since closed.
 
 ### Interview (only if `## Issue tracker` is missing from `CLAUDE.md`)
 
@@ -70,6 +73,7 @@ Append the answers to `CLAUDE.md`:
 - Location: <repo/project/org — note explicitly if separate from the source repo>
 - Access: <MCP server name | CLI command | REST endpoint>
 - State labels: default   <!-- or a mapping, e.g. ready → status/accepted -->
+- Needs-info timeout: 30 days
 ```
 
 ## The dedup pre-pass (only when more than one issue is in scope)
@@ -96,7 +100,8 @@ user the issue count and the batch plan before starting — a few hundred open i
 few hundred subagent calls, and that's worth flagging before it runs.
 
 Every dispatch gets: the issue ID, the tracker's type/location/access method, the repo path,
-any dedup-pre-pass hint for that issue, the "What counts" list from Security reports
+any dedup-pre-pass hint for that issue, why it's back if it already had a state label (a
+reply, the needs-info timeout, or a closed blocker), the "What counts" list from Security reports
 below, the "Which state" rules from State labels, and the Tracker comments section. The triager searches the tracker itself, open and closed, for earlier duplicates.
 
 ## Aggregating and reporting
@@ -122,6 +127,8 @@ issue with no state label is untriaged.
 |---|---|---|
 | `state/needs-investigation` | Looks real, but nobody has proven it yet | `issue-triage` |
 | `state/needs-info` | Waiting on the reporter for detail only they can give | `issue-triage`, `investigate-bug` |
+| `state/needs-decision` | Clear, but waiting on a maintainer to agree to it | `issue-triage` |
+| `state/blocked` | Can't be fixed here until something outside the project changes | `issue-triage`, `investigate-bug` |
 | `state/ready` | Verified and ready to fix | `issue-triage`, `investigate-bug` |
 | `state/in-progress` | A fix lane has started | `issue-resolve` |
 
@@ -131,11 +138,18 @@ issue with no state label is untriaged.
    their steps, versions, setup, data, or what they expected. Don't use it for anything that
    reading the code or trying a repro could answer. That's investigation work, not the
    reporter's.
-2. `state/ready` only when there's nothing left to prove. A bug is ready once
+2. `state/blocked` when the fix can't happen in this project until something outside it
+   changes: a CMS bug with no package workaround planned, or a dependency's release. Link
+   what it's waiting on. If a workaround in the package is planned, it isn't blocked.
+3. `state/needs-decision` for a feature request, or a change to how something is meant to
+   work, that's clear enough to plan but that nobody has agreed to do. Triage doesn't make
+   that call. The user can make it while approving the report: yes means `state/ready`, no
+   means a close as not planned. The label is for when they don't decide yet.
+4. `state/ready` only when there's nothing left to prove or decide. A bug is ready once
    `investigate-bug` has proven its cause, or when the report and the code together leave no
    doubt (a wrong label, a broken link, an error message pointing at the exact line). A
-   feature request is ready when it has enough detail to plan.
-3. `state/needs-investigation` for any other real-looking bug. When in doubt between this and
+   feature request is ready once it's been agreed and has enough detail to plan.
+5. `state/needs-investigation` for any other real-looking bug. When in doubt between this and
    `state/ready`, pick this. `investigate-bug` moves it on: to `state/ready` once the cause
    is proven, to `state/needs-info` if only the reporter can fill a gap, or to a close if it
    isn't a bug.
@@ -144,6 +158,9 @@ issue with no state label is untriaged.
 - Duplicates and issues to close don't get a label. Close them with the tracker's own reason
   (duplicate, not planned) where it has one, plus a comment naming the duplicate or the why.
 - Every label change and close gets a drafted comment, as Tracker comments below says.
+- A `state/needs-info` issue with no reply from the reporter for longer than the
+  `Needs-info timeout` in `## Issue tracker` (30 days if it isn't set) gets a drafted close
+  as not planned.
 - A fixed issue leaves the label set through closing. The close is the record.
 - Use the label names recorded in `## Issue tracker` when the project maps these onto its own.
   Never invent a label the tracker doesn't have; create one only with the user's yes.
@@ -176,9 +193,14 @@ What the reporter part says, by outcome:
   it).
 - `state/needs-investigation`: it's been read and will be looked into, but isn't confirmed as a
   bug yet.
+- `state/needs-decision`: the request is understood and waiting on a maintainer's decision.
+  Don't hint at the answer.
+- `state/blocked`: what it's waiting on, with a link, and that it moves once that's fixed.
 - `state/ready`: it's confirmed, what was found in plain terms, and that it's queued for a fix.
 - Duplicate: a link to the earlier issue to follow instead.
 - Close: why, kindly. For a support question, answer it or point to the docs or forum.
+- Needs-info timeout close: there was no reply, so it's closed for now, and replying with
+  the detail will reopen it.
 - `state/in-progress` and the fix landing: drafted by `issue-resolve`, in the same two parts.
 
 A security report never gets a comment (Security reports below).

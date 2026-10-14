@@ -44,7 +44,8 @@ draft, never a live action.
 4. **A security flag stops everything here.** If the triage read says `security: true`,
    stop and follow `issue-triage`'s Security reports section.
 5. A `state/needs-info` issue isn't ready. Say what's missing and stop, unless the user's
-   notes supply it.
+   notes supply it. Likewise a `state/needs-decision` issue, unless the notes give the
+   maintainer's yes, and a `state/blocked` issue, unless the notes ask for a workaround.
 6. Capture any notes given in the argument — how the user wants it fixed, constraints,
    anything the triage didn't know. These get folded into whichever lane runs next; they don't
    replace it.
