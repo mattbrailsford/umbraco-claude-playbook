@@ -59,7 +59,10 @@ than going fully freeform.
    argument names a brand-new idea, use that instead; ask only if it's still ambiguous. If
    the argument is a tracker issue (title, body, triage findings, repro, notes), treat it as
    a brand-new feature and use it to answer interview questions up front. A bug's repro goes
-   in `BRIEF.md`'s `Repro` section.
+   in `BRIEF.md`'s `Repro` section. If the argument is an idea file (see `CLAUDE.md`'s
+   "Ideas"), treat it the same way: it's a brand-new feature, and the idea answers questions
+   up front. An idea can cover more than one feature, so ask which part this one builds.
+   Refer to the idea by its name alone, never its path (see "Ideas").
    If
    `BRIEF.md` already exists in the resolved folder, read it. Summarize current state in 1–2
    lines ("problem defined, no success metric yet"). Re-entrant: refine, don't restart. **Skip
@@ -158,6 +161,9 @@ Write/update `BRIEF.md`:
 
 ```md
 # Brief
+
+Source idea: `<idea-name>`, <which part of it this feature builds>
+<only when the feature started from an idea. Leave the line out otherwise.>
 
 ## Problem
 <what, who, why-now, success criteria, constraints, riskiest unknowns. A guess you're showing

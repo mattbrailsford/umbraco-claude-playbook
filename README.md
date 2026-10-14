@@ -70,7 +70,8 @@ the tables below.
 ### Build a feature
 
 Four steps, each writing its own files in the feature's folder, `docs/plans/<feature-slug>/`.
-Re-run any step to refine its files.
+Re-run any step to refine its files. Not ready to plan yet? Ask Claude to write the idea up in
+`docs/ideas/` and commit it; `/feature-explore` can start from it later.
 
 | Step | Run |
 |---|---|

@@ -59,6 +59,15 @@ starters for a product's own screens (a Copilot sidebar, a flow editor) that the
 starters can't draw. One is saved only when a screen is both distinct and something features
 keep landing on.
 
+### Before a plan: ideas
+
+Something worth doing later, but not being planned yet, goes in `docs/ideas/` as a loose note
+and gets committed so the team can see it. No template and no status: ideas stay quick.
+`feature-explore` can start from one, and the brief records which part of the idea it builds.
+An idea can feed more than one feature. Everything refers to an idea by its file name alone,
+never its path, so it can move to the archive without breaking anything. Plans work the same
+way: a plan's folder name is its name, and other plans refer to it by that.
+
 ### When a plan closes
 
 Once a feature's PR is merged, or the plan is dropped or replaced, `feature-close` moves the
@@ -68,7 +77,8 @@ plan is easy to find, and Claude doesn't mistake an old design for the current o
 
 Before the move, it adds one status line to the folder's `README.md` (shipped, abandoned, or
 superseded), and copies any decision that outlives the feature into project memory or a
-nested `CLAUDE.md`. Code never links to repo files or memory: a comment gives its reason
+nested `CLAUDE.md`. If the plan started from an idea and nothing in it is left to do, the idea
+moves to `docs/archive/ideas/` too. Code never links to repo files or memory: a comment gives its reason
 itself. `CLAUDE.md` files and memory link to each other, never into a plan or the archive. So
 nothing breaks when a plan moves, and the reviewer flags a new link that would.
 
