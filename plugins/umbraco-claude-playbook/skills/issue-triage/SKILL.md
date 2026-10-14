@@ -137,7 +137,10 @@ issue with no state label is untriaged.
 1. `state/needs-info` only when the missing piece is something only the reporter can give:
    their steps, versions, setup, data, or what they expected. Don't use it for anything that
    reading the code or trying a repro could answer. That's investigation work, not the
-   reporter's.
+   reporter's. Before asking them to go check something (a log message, a setting, a response
+   body), confirm in the code that it's actually there to find. A question built on an
+   unchecked assumption ("there's probably something in the log, can you check?") wastes the
+   reporter's time if the code never logs it.
 2. `state/blocked` when the fix can't happen in this project until something outside it
    changes: a CMS bug with no package workaround planned, or a dependency's release. Link
    what it's waiting on. If a workaround in the package is planned, it isn't blocked.
@@ -197,7 +200,8 @@ Rules for the notes:
 
 **`state/needs-info`**
 - Reporter: exactly what's missing and why it's needed, asked as questions they can answer
-  without the code (steps, versions, a screenshot, a log message and where to find it).
+  without the code (steps, versions, a screenshot, a log message and where to find it). If the
+  question points at a log or setting, check the code first that it's really there to find.
 - Notes, `Notes for the next look`:
   - **Known so far:** the symptom and setup as reported.
   - **Checked:** what triage or investigation already looked at, and what it ruled out.
