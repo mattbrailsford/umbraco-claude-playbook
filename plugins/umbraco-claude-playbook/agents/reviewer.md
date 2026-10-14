@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Read-only code + security gate for a single built task (C#/.NET/Umbraco and/or Lit + UUI), or for a whole feature branch once every task is built. Returns PASS or FAIL with findings. Dispatched by umb-build-loop, quick-fix, and major-upgrade.
+description: Read-only code + security gate for a single built task (C#/.NET/Umbraco and/or Lit + UUI), or for a whole feature branch once every task is built. Returns PASS or FAIL with findings. Dispatched by umb-build-loop, quick-fix, major-upgrade, and review-contribution.
 tools: Read, Glob, Grep, Bash, Skill
 model: opus
 ---

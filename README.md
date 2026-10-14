@@ -64,6 +64,7 @@ that...") and the right skill picks it up.
 | [`issue-backlog`](plugins/umbraco-claude-playbook/skills/issue-backlog/SKILL.md) | Work open issues through triage, decisions, investigation, and fixes |
 | [`issue-resolve`](plugins/umbraco-claude-playbook/skills/issue-resolve/SKILL.md) | Route a triaged issue into `quick-fix` or the pipeline |
 | [`describe-pr`](plugins/umbraco-claude-playbook/skills/describe-pr/SKILL.md) | Write the PR description, with diagrams and screenshots |
+| [`review-contribution`](plugins/umbraco-claude-playbook/skills/review-contribution/SKILL.md) | Review a PR from outside the core team on a package repo |
 | [`decision-review`](plugins/umbraco-claude-playbook/skills/decision-review/SKILL.md) | Pull out the assumptions and workarounds worth a human look |
 | [`git-remote`](plugins/umbraco-claude-playbook/skills/git-remote/SKILL.md) | Set up a new GitHub repo: README, LICENSE, CONTRIBUTING |
 | [`umbraco-marketplace`](plugins/umbraco-claude-playbook/skills/umbraco-marketplace/SKILL.md) | Get a finished package listed on the Umbraco Marketplace |
