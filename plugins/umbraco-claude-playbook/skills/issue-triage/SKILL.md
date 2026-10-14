@@ -4,11 +4,13 @@ description: >-
   Triages one issue, a range, or everything untriaged on the tracker — classifies type and
   likely code area, checks for duplicates, flags anything that looks like a security report,
   and writes a report for human review. Tracks triage state with `state/*` labels on the
-  tracker itself, applied only once the user approves; keeps no log of its own.
+  tracker itself and keeps the reporter in the loop with a plain-language comment, both
+  applied only once the user approves; keeps no log of its own.
   More than one issue spawns one issue-triager subagent per issue, orchestrated from the main
   thread. Use when there's a backlog to work through, or a specific issue to classify before
   deciding whether to act on it. Proving a bug's cause is `investigate-bug`'s job, not this one.
-  Owns the playbook's state labels and its rule for handling security reports.
+  Owns the playbook's state labels, its tracker comment format, and its rule for handling
+  security reports.
 user-invocable: true
 argument-hint: [issue ID | ID range | leave blank for whole tracker]
 ---
@@ -23,7 +25,8 @@ and nothing is written to it until the user says so.
 ## Scope
 
 - IN: fetch, classify, find the likely code area, duplicate-check, security-flag, report,
-  and apply the state labels, comments, or closes the user approves.
+  draft a comment for the reporter, and apply the state labels, comments, or closes the user
+  approves.
 - OUT: any tracker write the user hasn't approved, proving a bug's cause, writing fixes,
   planning a feature. Once a triaged issue turns into real work, hand off to `issue-resolve`.
 
@@ -41,12 +44,15 @@ and nothing is written to it until the user says so.
    this detection step.
 4. Resolve the state label names: the defaults in State labels below, or the mapping
    `CLAUDE.md` records under `## Issue tracker`. If that section exists but has no `State
-   labels` line, ask just the interview's state-labels question and add the line.
+   labels` line, ask just the interview's state-labels question and add the line. If the
+   mapping has no entry for one of the states, ask about just that state.
 5. Resolve which issues this run covers, from the argument:
    - One ID → that issue, whatever its labels. Naming an issue means re-triage it.
    - A range (e.g. `120-135`) → every ID in that range that still exists and is open.
-   - No argument → every open issue with no state label, plus every `state/needs-info` issue
-     the reporter has replied to since the label went on.
+   - No argument → every open issue with no state label, plus:
+     - every `state/needs-info` issue the reporter has replied to since the label went on,
+       or that has gone quiet for longer than the needs-info timeout;
+     - every `state/blocked` issue whose blocker has since closed.
 
 ### Interview (only if `## Issue tracker` is missing from `CLAUDE.md`)
 
@@ -67,6 +73,7 @@ Append the answers to `CLAUDE.md`:
 - Location: <repo/project/org — note explicitly if separate from the source repo>
 - Access: <MCP server name | CLI command | REST endpoint>
 - State labels: default   <!-- or a mapping, e.g. ready → status/accepted -->
+- Needs-info timeout: 30 days
 ```
 
 ## The dedup pre-pass (only when more than one issue is in scope)
@@ -93,8 +100,9 @@ user the issue count and the batch plan before starting — a few hundred open i
 few hundred subagent calls, and that's worth flagging before it runs.
 
 Every dispatch gets: the issue ID, the tracker's type/location/access method, the repo path,
-any dedup-pre-pass hint for that issue, and the "What counts" list from Security reports
-below. The triager searches the tracker itself, open and closed, for earlier duplicates.
+any dedup-pre-pass hint for that issue, why it's back if it already had a state label (a
+reply, the needs-info timeout, or a closed blocker), the "What counts" list from Security reports
+below, the "Which state" rules from State labels, and the Tracker comments section. The triager searches the tracker itself, open and closed, for earlier duplicates.
 
 ## Aggregating and reporting
 
@@ -105,7 +113,7 @@ below. The triager searches the tracker itself, open and closed, for earlier dup
    duplicate-of (if any), recommended action, one-line why (written following
    `plain-writing`).
 4. Next to each recommended action, show the tracker write it maps to (State labels below):
-   the label, any drafted comment, or a close.
+   the label or close, and the comment the triager drafted.
 5. Present the table and the security list (if non-empty) to the user. Nothing gets written
    back to the tracker until the user says which recommendations to apply. Then apply exactly
    those, and report what was written.
@@ -117,17 +125,165 @@ issue with no state label is untriaged.
 
 | Label | Means | Set by |
 |---|---|---|
-| `state/ready` | Triaged and worth fixing, with enough detail to start | `issue-triage` |
-| `state/needs-info` | Waiting on the reporter for a repro or detail | `issue-triage` |
+| `state/needs-investigation` | Looks real, but nobody has proven it yet | `issue-triage` |
+| `state/needs-info` | Waiting on the reporter for detail only they can give | `issue-triage`, `investigate-bug` |
+| `state/needs-decision` | Clear, but waiting on a maintainer to agree to it | `issue-triage` |
+| `state/blocked` | Can't be fixed here until something outside the project changes | `issue-triage`, `investigate-bug` |
+| `state/ready` | Verified and ready to fix | `issue-triage`, `investigate-bug` |
 | `state/in-progress` | A fix lane has started | `issue-resolve` |
+
+**Which state.** Pick the first that fits:
+
+1. `state/needs-info` only when the missing piece is something only the reporter can give:
+   their steps, versions, setup, data, or what they expected. Don't use it for anything that
+   reading the code or trying a repro could answer. That's investigation work, not the
+   reporter's.
+2. `state/blocked` when the fix can't happen in this project until something outside it
+   changes: a CMS bug with no package workaround planned, or a dependency's release. Link
+   what it's waiting on. If a workaround in the package is planned, it isn't blocked.
+3. `state/needs-decision` for a feature request, or a change to how something is meant to
+   work, that's clear enough to plan but that nobody has agreed to do. Triage doesn't make
+   that call. The user can make it while approving the report: yes means `state/ready`, no
+   means a close as not planned. The label is for when they don't decide yet.
+4. `state/ready` only when there's nothing left to prove or decide. A bug is ready once
+   `investigate-bug` has proven its cause, or when the report and the code together leave no
+   doubt (a wrong label, a broken link, an error message pointing at the exact line). A
+   feature request is ready once it's been agreed and has enough detail to plan.
+5. `state/needs-investigation` for any other real-looking bug. When in doubt between this and
+   `state/ready`, pick this. `investigate-bug` moves it on: to `state/ready` once the cause
+   is proven, to `state/needs-info` if only the reporter can fill a gap, or to a close if it
+   isn't a bug.
 
 - An issue carries one state label at a time. Setting one removes the others.
 - Duplicates and issues to close don't get a label. Close them with the tracker's own reason
   (duplicate, not planned) where it has one, plus a comment naming the duplicate or the why.
-- A `state/needs-info` issue also gets a drafted comment asking for exactly what's missing.
+- Every label change and close gets a drafted comment, as Tracker comments below says.
+- A `state/needs-info` issue with no reply from the reporter for longer than the
+  `Needs-info timeout` in `## Issue tracker` (30 days if it isn't set) gets a drafted close
+  as not planned.
 - A fixed issue leaves the label set through closing. The close is the record.
 - Use the label names recorded in `## Issue tracker` when the project maps these onto its own.
   Never invent a label the tracker doesn't have; create one only with the user's yes.
+
+## Tracker comments
+
+This section is the playbook's one statement of how to write to an issue. `issue-triager`,
+`investigate-bug`, and `issue-resolve` all point here.
+
+Triage is also how the reporter hears back. Every label change or close gets one comment,
+drafted for the user to approve, with up to two parts, in this order:
+
+1. **For the reporter.** Always present. Written following `plain-writing`, for someone who
+   uses the package but has never seen its source. No file paths, class names, or stack
+   frames unless the reporter used them first. Say what was understood, what happens next,
+   and what's needed from them, if anything. Thank them where it fits. Never promise a fix
+   date or a release.
+2. **Notes.** The technical record for whoever picks the issue up next; without it, the
+   findings are lost when the chat ends. Each outcome below gives the notes' title and
+   fields. Fold the notes away where the tracker can, so the reporter sees one line they can
+   skip: on GitHub, a `<details>` block with `<summary><title></summary>` and a blank line
+   after it, so the Markdown inside still renders. Where the tracker has no collapsible
+   block, use the title as a heading.
+
+Rules for the notes:
+
+- Every field comes from something actually checked. Write "none found" or "not checked"
+  rather than leave a field out or guess at it.
+- Add only what's new since the issue's last notes. Link back to them rather than repeat
+  them.
+- They're public even when folded, so leave out roadmap, commercial, or customer detail.
+
+### By outcome
+
+**`state/needs-info`**
+- Reporter: exactly what's missing and why it's needed, asked as questions they can answer
+  without the code (steps, versions, a screenshot, a log message and where to find it).
+- Notes, `Notes for the next look`:
+  - **Known so far:** the symptom and setup as reported.
+  - **Checked:** what triage or investigation already looked at, and what it ruled out.
+  - **Missing:** each question asked, and what its answer would rule in or out.
+  - **Likely area:** from a search of the code, or "none found".
+
+**`state/needs-investigation`**
+- Reporter: it's been read and will be looked into, but isn't confirmed as a bug yet.
+- Notes, `Notes for the investigation`:
+  - **Symptom:** expected versus actual, quoting any error word for word.
+  - **Where it runs:** CMS version, package version, database, browser, as reported.
+  - **Likely area:** from a search of the code, or "none found".
+  - **Related:** similar issues, open or closed, and how they differ.
+  - **Start with:** the first thing to check, and why.
+
+**`state/needs-decision`**
+- Reporter: the request is understood and waiting on a maintainer's decision. Don't hint at
+  the answer; the suggestion goes in the notes.
+- Notes, `Notes for the decision`:
+  - **Need:** what the reporter is trying to do, which may differ from the feature they
+    asked for.
+  - **Demand:** linked duplicates and related issues, and their reaction counts.
+  - **Today:** any workaround, setting, or extension point that already gets close.
+  - **Already covered:** whether the CMS or another package does this.
+  - **Size:** small, medium, or large, with the code area it would touch.
+  - **Risks:** a breaking change, new public API to maintain, work on each supported CMS
+    major, a performance cost.
+  - **Other ways:** a smaller or different way to meet the need, such as an extension point.
+  - **Questions first:** anything to settle before it could be planned.
+  - **Suggestion:** do it, do another way, or don't, with the one or two reasons that weigh
+    most. Label it as a suggestion; the maintainer decides. Word a "don't" kindly, since the
+    reporter can read it.
+
+**`state/blocked`**
+- Reporter: what it's waiting on, with a link, and that it moves once that's fixed.
+- Notes, `Notes on the blocker`:
+  - **Waiting on:** the upstream issue or release, linked.
+  - **Why here can't fix it:** the cause, and why it sits outside the project.
+  - **Workarounds weighed:** each one, and why it wasn't planned.
+  - **Unblocked when:** the version or change to watch for, and how to check it landed.
+  - **Then:** what's left to do here once it has.
+
+**`state/ready`**
+- Reporter: it's confirmed, what was found in plain terms, and that it's queued for a fix.
+- Notes, `Notes for the fix`. For a bug:
+  - **Repro:** exact steps, or the test that shows it.
+  - **Cause:** the cause, at file and line, and the check that proved it.
+  - **Same cause elsewhere:** each place, or "none found".
+  - **Suggested fix:** one or two lines, and the test that should guard it.
+  - **Size:** a quick fix or the full pipeline, and why.
+- For an agreed feature request:
+  - **Agreed:** what the maintainer said yes to, and anything they ruled out.
+  - **Scope:** what's in and out, and the code area it touches.
+  - **Questions left:** anything still to settle while planning.
+
+**`state/in-progress`** (drafted by `issue-resolve`)
+- Reporter: work on a fix has started.
+- Notes, `Notes on the work`:
+  - **Route:** a quick fix or the pipeline, and why.
+  - **Where:** the branch, and the plan folder if there is one.
+  - **New findings:** anything learned since the ready notes, such as `investigate-bug`'s
+    report if it ran just now.
+
+**Fix landed** (drafted by `issue-resolve`)
+- Reporter: what changed, in their terms.
+- Notes, `Notes on the fix`:
+  - **Change:** the commit or PR, linked, and the area it touched.
+  - **Guarded by:** the test that now covers it.
+  - **Left out:** anything deliberately not fixed, and any follow-up issues.
+
+**Duplicate**
+- Reporter: a link to the earlier issue to follow instead.
+- No notes. Add anything new this report showed to the earlier issue instead.
+
+**Close**
+- Reporter: why, kindly. For a support question, answer it or point to the docs or forum.
+- Notes, `Notes on the close`, only when it was looked into:
+  - **Checked:** what was tried, such as the setup it failed to reproduce on.
+  - **Reopen if:** what new detail would make it worth another look.
+
+**Needs-info timeout close**
+- Reporter: there was no reply, so it's closed for now, and replying with the detail will
+  reopen it.
+- No notes. The needs-info notes already say what's missing.
+
+A security report never gets a comment (Security reports below).
 
 ## Security reports
 
@@ -165,5 +321,7 @@ reference, or similar.
 ## Hand off
 
 A triaged issue that turns into real work goes to `issue-resolve` next, with its ID. That
-picks `quick-fix` or the pipeline, and drafts the tracker reply once the fix lands. This skill
-stops at "here's what I'd do," it doesn't start building.
+picks `quick-fix` or the pipeline, and drafts the tracker reply once the fix lands. A
+`state/needs-investigation` issue can go to `investigate-bug` first instead, to prove it
+before anyone commits to a fix. This skill stops at "here's what I'd do," it doesn't start
+building.
