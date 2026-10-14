@@ -79,6 +79,7 @@ Re-run any step to refine its files.
 | Stories and an ordered task list | [`/feature-plan`](plugins/umbraco-devkit/skills/feature-plan/SKILL.md) |
 | Build, review, and commit, task by task | [`/feature-build`](plugins/umbraco-devkit/skills/feature-build/SKILL.md) |
 | See the assumptions and workarounds worth a human look | [`/decision-review`](plugins/umbraco-devkit/skills/decision-review/SKILL.md) |
+| Archive a plan once its PR is merged, or the plan is dropped | [`/feature-close`](plugins/umbraco-devkit/skills/feature-close/SKILL.md) |
 
 ### Fix something
 

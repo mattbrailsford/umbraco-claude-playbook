@@ -176,7 +176,8 @@ reach a human in the PR. (`decision-review` is also user-invocable on its own, r
 an earlier look.)
 
 If this feature built inside a worktree, don't remove it here. That's post-merge cleanup (the
-project's `WorktreeRemove` hook, or `git worktree remove`).
+project's `WorktreeRemove` hook, or `git worktree remove`). Archiving the plan folder is
+post-merge too: `feature-close`, once the PR is merged.
 
 ## Rules
 

@@ -4,8 +4,9 @@ description: >-
   Moves an Umbraco package or extension to a new Umbraco CMS major version (for example 17 to
   18): finds every breaking change that actually hits the project, writes an ordered upgrade
   checklist, then works through it task by task with the builder and reviewer agents, keeping
-  the build green at every commit. Owns `docs/upgrades/v<major>.md`. Use when asked to
-  "upgrade to Umbraco N", "support v18", "port the package to the new major", when a new
+  the build green at every commit. Owns `docs/upgrades/v<major>.md`, and archives it once the
+  upgrade ships. Use when asked to "upgrade to Umbraco N", "support v18", "port the package
+  to the new major", when a new
   CMS major's first beta or RC ships, or to refresh an upgrade from one RC to the next or to
   the final release. Not for minor or patch bumps of a released major; those are a normal
   dependency update.
@@ -38,7 +39,8 @@ the same builder → reviewer → smoke → commit gate as `feature-build`.
 upgraded to a CMS release of this major, usually a beta or RC. This run is a **refresh**: move
 to the newest CMS release of the major (the next RC, or the final release) and handle only
 what changed since the release the file records. Skip to "Refresh" below. If the file doesn't
-exist and the project already targets that major, say so and stop.
+exist and the project already targets that major, say so and stop. If the file targets the
+major's final release and its PR is merged, the upgrade is done: skip to "Archive" instead.
 
 ## Preflight
 
@@ -278,6 +280,18 @@ When every task is ticked:
    uses its plain style, since there's no plan folder. Point it at the upgrade file, so the PR
    lists the breaking changes handled, any breaking changes for consumers, and the
    follow-ups.
+
+## Archive
+
+Once the upgrade is done (its PR merged, targeting the final release), move the upgrade file
+out of `docs/upgrades/` so that folder holds only live upgrades. From a clean tree on the
+line's trunk, follow `feature-close`'s
+"Close each plan" steps, with the upgrade file in place of a plan folder:
+
+- The status line goes at the top of the upgrade file itself, under its title.
+- Step 2 reads the file's "Decisions" section. Open "Follow-ups" have no lasting home here:
+  list them for the user to turn into tracker issues before the move.
+- The file moves to `<archive-path>/upgrades/v<major>.md`.
 
 ## Rules
 

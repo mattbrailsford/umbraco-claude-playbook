@@ -69,7 +69,10 @@ than going fully freeform.
    default branch). If it isn't, stop and tell the user — starting a new plan folder from an
    unrelated branch is how plan folders end up scattered across branches they don't belong to.
    Let them override if they confirm it's intentional (e.g. planning a sub-feature inside a
-   monorepo product's own long-lived line).
+   monorepo product's own long-lived line). Also check the archive (see `CLAUDE.md`'s
+   "Feature workflow" section) for a closed plan with the same slug. If one exists, pick a
+   different slug: the slug is also the branch name, and an archived plan's links and PR
+   still use it.
 3. Read the project's `CLAUDE.md` and any existing architecture docs for prior context —
    don't re-litigate a decision already on record.
 4. If this is a package/add-on (not a feature inside an existing product), check whether it's
