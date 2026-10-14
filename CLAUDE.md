@@ -3,14 +3,14 @@
 Guidance for Claude Code when working in this repository.
 
 This repo is a Claude Code plugin marketplace plus the one plugin it lists: a feature
-pipeline, a builder/reviewer build-loop gate, and stack-knowledge skills for Umbraco package
+pipeline, a builder/reviewer gate, and stack-knowledge skills for Umbraco package
 and backoffice extension development (C#/.NET, EF Core, Lit + UUI).
 
 ## Layout
 
 ```
 .claude-plugin/marketplace.json                   # marketplace manifest (lists the plugin)
-plugins/umbraco-claude-playbook/
+plugins/umbraco-devkit/
   .claude-plugin/plugin.json                      # plugin manifest
   skills/<name>/SKILL.md                          # one folder per skill (+ references/, templates/)
   agents/{builder,reviewer,issue-triager}.md      # subagents
@@ -29,7 +29,7 @@ Don't run `dotnet build` or apply C# conventions to this repo. Checks that do ex
 
 ```bash
 jq . .claude-plugin/marketplace.json
-jq . plugins/umbraco-claude-playbook/.claude-plugin/plugin.json
+jq . plugins/umbraco-devkit/.claude-plugin/plugin.json
 scripts/check-skill-refs.sh   # stale backtick skill references; exit 1 = needs a look
 scripts/check-skill-wiring.sh # every skill in the README and referenced from elsewhere
 scripts/check-version.sh      # version fields agree, and bumped if shipped files changed
@@ -39,7 +39,7 @@ scripts/check-skill-callers.sh # no skill changes behavior based on which skill 
 
 ## This repo is not an Umbraco project
 
-Skills like `umbraco-extensibility`, `ef-core-data`, and `umb-init` describe conventions for
+Skills like `umbraco-extensibility`, `ef-core-data`, and `project-init` describe conventions for
 *consumer* projects that install the plugin. They don't apply to this repo's own content.
 Paths such as `docs/plans/`, `.claude/memory/`, or a `CLAUDE.md` mentioned inside a skill
 refer to the consumer project, not this repo.
@@ -62,30 +62,30 @@ refer to the consumer project, not this repo.
 - `README.md` is a short shop window. It lists every skill once, grouped, with a one-line
   description and a link to its `SKILL.md`. Detail belongs in `docs/HOW-IT-WORKS.md` or the
   skill itself, not the README.
-- `QUICKSTART.md` is install + `umb-init` + the five pipeline commands + `quick-fix`.
+- `QUICKSTART.md` is install + `project-init` + the five pipeline commands + `quick-fix`.
 - `docs/HOW-IT-WORKS.md` explains the plan folder, the gate, project memory, branches and
   worktrees, and what to build on top.
 - When adding, renaming, or removing a skill or agent: update the README tables and
   `docs/HOW-IT-WORKS.md`'s layout block if affected.
-- When changing pipeline behavior (file ownership, when git is touched, what `umb-init`
+- When changing pipeline behavior (file ownership, when git is touched, what `project-init`
   asks): check QUICKSTART and HOW-IT-WORKS still describe it correctly.
 - Don't hard-code counts (number of skills, number of official Backoffice Skills). They drift.
 
 ## Architecture: one plan folder per feature, one file per owner
 
-`umb-init` → `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop` each own files in
+`project-init` → `feature-explore` → `feature-design` → `feature-plan` → `feature-build` each own files in
 a per-feature folder (default `docs/plans/<feature-slug>/`) in the consumer project. Rules
 to preserve when editing these skills:
 
 - **Re-entrant.** Re-running a phase refines its file; it never restarts it.
 - **One owner per file:**
-  - `umb-explore`: `BRIEF.md`; creates the folder's `README.md` (read-order index) once and
+  - `feature-explore`: `BRIEF.md`; creates the folder's `README.md` (read-order index) once and
     never recreates it.
-  - `umb-design`: `ARCHITECTURE.md`, `SPEC.md`, `mockups/`, and project-wide
+  - `feature-design`: `ARCHITECTURE.md`, `SPEC.md`, `mockups/`, and project-wide
     `docs/mockups/starters/`.
-  - `umb-plan`: `STORIES.md`, `PLAN.md`.
-  - `umb-build-loop`: `BUILD-LOG.md`, `screenshots/`.
-  - `describe-pr`: `PR-DESCRIPTION.md`, only when a plan folder exists.
+  - `feature-plan`: `STORIES.md`, `PLAN.md`.
+  - `feature-build`: `BUILD-LOG.md`, `screenshots/`.
+  - `pr-describe`: `PR-DESCRIPTION.md`, only when a plan folder exists.
 
   Outside the plan folders, `major-upgrade` owns `docs/upgrades/v<major>.md`, one file per
   CMS major upgrade, ticking its own checklist.
@@ -93,15 +93,15 @@ to preserve when editing these skills:
   1. Every phase may append to `DECISION-LOG.md`.
   2. Every phase updates its own single line in `README.md` when it finishes, never
      another phase's line.
-  3. `umb-build-loop` ticks `PLAN.md` checkboxes (`- [ ]` → `- [x]`), never editing task text.
+  3. `feature-build` ticks `PLAN.md` checkboxes (`- [ ]` → `- [x]`), never editing task text.
 - **Stop, don't guess.** A phase missing its input hands off to the owning phase instead of
   inventing the content.
-- **Git boundary.** `umb-explore`/`umb-design`/`umb-plan` never touch git. `umb-build-loop`
+- **Git boundary.** `feature-explore`/`feature-design`/`feature-plan` never touch git. `feature-build`
   asks, then commits the plan folder to trunk and cuts the feature branch/worktree.
 
 ## Architecture: the builder/reviewer gate
 
-`umb-build-loop` dispatches `agents/builder.md` per task, then `agents/reviewer.md` against
+`feature-build` dispatches `agents/builder.md` per task, then `agents/reviewer.md` against
 the diff, then one whole-branch review after the last task. `quick-fix` also dispatches
 `reviewer`. `major-upgrade` runs the same builder/reviewer loop over its upgrade
 checklist.

@@ -1,13 +1,13 @@
 # How it works
 
-The ideas behind the playbook, for when you want more than the
+The ideas behind the devkit, for when you want more than the
 [README](../README.md) and [QUICKSTART](../QUICKSTART.md) give you.
 
 ## Three flows
 
 Work gets built in one of three flows:
 
-- **The pipeline**, `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop`, for a
+- **The pipeline**, `feature-explore` → `feature-design` → `feature-plan` → `feature-build`, for a
   feature or any fix too big to do in one go.
 - **`quick-fix`**, for a small fix of one concern. It hands over to the pipeline if the fix
   turns out bigger.
@@ -32,13 +32,13 @@ monorepo package), say so once in your project's `CLAUDE.md` and every step foll
 
 | File | Owned by |
 |---|---|
-| `README.md` | `umb-explore` creates it; every step updates its own line |
-| `BRIEF.md` | `umb-explore` |
-| `ARCHITECTURE.md`, `SPEC.md`, `mockups/` | `umb-design` |
-| `STORIES.md`, `PLAN.md` | `umb-plan` (`umb-build-loop` only ticks `PLAN.md`'s task checkboxes) |
+| `README.md` | `feature-explore` creates it; every step updates its own line |
+| `BRIEF.md` | `feature-explore` |
+| `ARCHITECTURE.md`, `SPEC.md`, `mockups/` | `feature-design` |
+| `STORIES.md`, `PLAN.md` | `feature-plan` (`feature-build` only ticks `PLAN.md`'s task checkboxes) |
 | `DECISION-LOG.md` | every step appends |
-| `BUILD-LOG.md`, `screenshots/` | `umb-build-loop` |
-| `PR-DESCRIPTION.md` | `describe-pr` |
+| `BUILD-LOG.md`, `screenshots/` | `feature-build` |
+| `PR-DESCRIPTION.md` | `pr-describe` |
 
 Three rules make this work:
 
@@ -47,14 +47,14 @@ Three rules make this work:
   nothing to merge-conflict over.
 - **Stop, don't guess.** A step missing its input sends you back to the step that owns it.
 
-Outside the feature folders, `umb-design` also owns `docs/mockups/starters/`: mockup
+Outside the feature folders, `feature-design` also owns `docs/mockups/starters/`: mockup
 starters for a product's own screens (a Copilot sidebar, a flow editor) that the general
 starters can't draw. One is saved only when a screen is both distinct and something features
 keep landing on.
 
 ## The builder/reviewer gate
 
-`umb-build-loop` hands each task in `PLAN.md` to a `builder` agent, then a `reviewer` agent
+`feature-build` hands each task in `PLAN.md` to a `builder` agent, then a `reviewer` agent
 checks the change. The reviewer has no edit tools on purpose: it can only read, run the build
 and tests, and return `PASS` or `FAIL`. A reviewer that could patch its own findings would
 stop being a gate. Once every task is built, one more review covers the whole branch, to
@@ -66,7 +66,7 @@ a move to a new Umbraco major: it lists the breaking changes that hit the projec
 
 ## Project memory
 
-Some facts don't belong in a feature's plan folder or in `CLAUDE.md` forever. `umb-init`
+Some facts don't belong in a feature's plan folder or in `CLAUDE.md` forever. `project-init`
 sets up `.claude/memory/` for those:
 
 - **`decision`**: a standing project-wide decision.
@@ -74,7 +74,7 @@ sets up `.claude/memory/` for those:
 - **`reference`**: a pointer to an outside system.
 
 A convention for one folder still goes in a `CLAUDE.md` in that folder. The reviewer reads
-the nearest one on every task. `.claude/memory/README.md`, created by `umb-init`, explains the
+the nearest one on every task. `.claude/memory/README.md`, created by `project-init`, explains the
 format.
 
 ## Plan folders, branches, and worktrees
@@ -83,8 +83,8 @@ These solve different problems. A worktree keeps two features' *files* apart. A 
 keeps a feature's *decisions* together. Because each plan folder has its own path, they never
 collide, with or without worktrees.
 
-`umb-explore`, `umb-design`, and `umb-plan` never touch git. A feature you explore and then
-drop costs nothing. `umb-build-loop` is where git comes in: on the first build, it asks
+`feature-explore`, `feature-design`, and `feature-plan` never touch git. A feature you explore and then
+drop costs nothing. `feature-build` is where git comes in: on the first build, it asks
 before committing the plan folder to your trunk branch, then cuts a branch or worktree named
 after the feature. The plan ends up in the feature branch's history because it was committed
 just before the branch was cut. `git-workflow`'s "Branch/worktree per feature" section has
@@ -92,12 +92,12 @@ the full reasoning.
 
 ## Building on top
 
-The playbook stops where most projects start to differ. As a project grows, it usually
+The devkit stops where most projects start to differ. As a project grows, it usually
 needs:
 
 - **A release pipeline.** Release branches, changelogs, multi-product manifests. Each
   project's release steps live in that project, not here.
-- **Branch cleanup automation.** `umb-build-loop` already cuts a branch per feature. A project
+- **Branch cleanup automation.** `feature-build` already cuts a branch per feature. A project
   can add its own `WorktreeCreate`/`WorktreeRemove` hooks for naming, copying local files,
   and cleaning up after merge.
 - **Project-specific scaffolding.** Every non-trivial project ends up with a few of these.
@@ -109,9 +109,9 @@ Add them when the need shows up, not on day one.
 The repo is both a Claude Code marketplace and the one plugin it lists:
 
 ```
-umbraco-claude-playbook/
+umbraco-devkit/
 ├── .claude-plugin/marketplace.json       # lists the plugin below
-├── plugins/umbraco-claude-playbook/
+├── plugins/umbraco-devkit/
 │   ├── .claude-plugin/plugin.json        # the plugin's own manifest
 │   ├── skills/                           # one folder per skill
 │   └── agents/                           # builder, reviewer, issue-triager
