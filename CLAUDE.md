@@ -6,6 +6,9 @@ This repo is a Claude Code plugin marketplace plus the one plugin it lists: a fe
 pipeline, a builder/reviewer gate, and stack-knowledge skills for Umbraco package
 and backoffice extension development (C#/.NET, EF Core, Lit + UUI).
 
+New here? `README.md` says what each skill does, `docs/HOW-IT-WORKS.md` says how the pipeline
+fits together, and "Skill families and naming" below says where a capability lives.
+
 ## Layout
 
 ```
@@ -22,6 +25,39 @@ docs/pr-examples/       # images used in PR descriptions; not shipped
 README.md, QUICKSTART.md  # human-facing; see "Human docs" below
 ```
 
+## Skill families and naming
+
+A skill's name says which family it belongs to. Use the family to find where a capability
+lives, and to name a new skill. `README.md` lists every skill; this table lists the families.
+
+| Family | Name | What it covers | Examples |
+|---|---|---|---|
+| Project | `project-<action>` | Setting up a consumer project | `project-init` |
+| Feature pipeline | `feature-<step>` | One plan folder, from explore to build | `feature-explore`, `feature-build` |
+| Issues | `issue-<action>` | Tracker issues, from new to fixed | `issue-triage`, `issue-resolve` |
+| Pull requests | `pr-<action>` | Describing and reviewing PRs | `pr-describe`, `pr-review` |
+| Standalone jobs | `<verb>-<object>` | A job no family above fits | `quick-fix`, `investigate-bug`, `major-upgrade` |
+| Umbraco knowledge | `umbraco-<topic>` | How Umbraco does something | `umbraco-performance`, `umbraco-docs` |
+| Stack knowledge | `<tech>-<topic>` | One technology, as Umbraco packages use it | `ef-core-data`, `security-lit` |
+| General craft | `<lang>-best-practices`, `<topic>-principles` | Not Umbraco-specific | `dotnet-best-practices`, `solid-principles` |
+| Agents | a role noun | Dispatched by skills, never run directly | `builder`, `reviewer`, `issue-triager` |
+
+Naming a new skill or agent:
+
+1. **Join a family** when the skill acts on that family's subject. Subject first, action
+   second: `issue-close`, not `close-issue`.
+2. **Start a family** only when a second skill would join it. Until then, use
+   `<verb>-<object>`.
+3. **Name what it does for the user**, not how it works inside: `feature-build`, not
+   `build-loop`.
+4. **No plugin prefix** (`umb-`, `devkit-`). Claude Code already shows skills as
+   `umbraco-devkit:<name>`.
+5. **Don't reuse a taken name**: an Umbraco product (Workflow, Forms, Deploy, Commerce) or a
+   skill in the official Backoffice Skills plugin.
+6. **Folder name matches `name:`.** `scripts/check-frontmatter.sh` enforces it.
+7. **Renaming a shipped skill breaks what people type.** Major version bump, and all renames
+   in one PR. Follow the "Before renaming" steps under "Skill boundary discipline".
+
 ## No build, lint, or test step
 
 Everything is Markdown plus two hand-written JSON manifests. There is no .NET code here.
@@ -32,15 +68,15 @@ jq . .claude-plugin/marketplace.json
 jq . plugins/umbraco-devkit/.claude-plugin/plugin.json
 scripts/check-skill-refs.sh   # stale backtick skill references; exit 1 = needs a look
 scripts/check-skill-wiring.sh # every skill in the README and referenced from elsewhere
-scripts/check-version.sh      # version fields agree, and bumped if shipped files changed
+scripts/check-version.sh      # version only in plugin.json, and bumped if shipped files changed
 scripts/check-frontmatter.sh  # skill/agent headers parse, names match, descriptions fit
 scripts/check-skill-callers.sh # no skill changes behavior based on which skill started it
 ```
 
 ## This repo is not an Umbraco project
 
-Skills like `umbraco-extensibility`, `ef-core-data`, and `project-init` describe conventions for
-*consumer* projects that install the plugin. They don't apply to this repo's own content.
+Skills like `umbraco-extensibility`, `ef-core-data`, and `project-init` describe conventions
+for *consumer* projects that install the plugin. They don't apply to this repo's own content.
 Paths such as `docs/plans/`, `.claude/memory/`, or a `CLAUDE.md` mentioned inside a skill
 refer to the consumer project, not this repo.
 
@@ -54,6 +90,7 @@ refer to the consumer project, not this repo.
   consumers only see changes after their plugin update picks up a new version.
   - Patch: edits to an existing skill/agent/template.
   - Minor: a new skill or agent.
+  - Major: renaming or removing a skill, or any other change to what a user types.
 - Skip the bump only for files that never ship: this file, `README.md`, `QUICKSTART.md`,
   `docs/`, `scripts/`, `settings.example.json`, CI config.
 
@@ -73,14 +110,14 @@ refer to the consumer project, not this repo.
 
 ## Architecture: one plan folder per feature, one file per owner
 
-`project-init` → `feature-explore` → `feature-design` → `feature-plan` → `feature-build` each own files in
-a per-feature folder (default `docs/plans/<feature-slug>/`) in the consumer project. Rules
-to preserve when editing these skills:
+`project-init` → `feature-explore` → `feature-design` → `feature-plan` → `feature-build`
+each own files in a per-feature folder (default `docs/plans/<feature-slug>/`) in the
+consumer project. Rules to preserve when editing these skills:
 
 - **Re-entrant.** Re-running a phase refines its file; it never restarts it.
 - **One owner per file:**
-  - `feature-explore`: `BRIEF.md`; creates the folder's `README.md` (read-order index) once and
-    never recreates it.
+  - `feature-explore`: `BRIEF.md`; creates the folder's `README.md` (read-order index) once
+    and never recreates it.
   - `feature-design`: `ARCHITECTURE.md`, `SPEC.md`, `mockups/`, and project-wide
     `docs/mockups/starters/`.
   - `feature-plan`: `STORIES.md`, `PLAN.md`.
@@ -96,8 +133,9 @@ to preserve when editing these skills:
   3. `feature-build` ticks `PLAN.md` checkboxes (`- [ ]` → `- [x]`), never editing task text.
 - **Stop, don't guess.** A phase missing its input hands off to the owning phase instead of
   inventing the content.
-- **Git boundary.** `feature-explore`/`feature-design`/`feature-plan` never touch git. `feature-build`
-  asks, then commits the plan folder to trunk and cuts the feature branch/worktree.
+- **Git boundary.** `feature-explore`/`feature-design`/`feature-plan` never touch git.
+  `feature-build` asks, then commits the plan folder to trunk and cuts the feature
+  branch/worktree.
 
 ## Architecture: the builder/reviewer gate
 
