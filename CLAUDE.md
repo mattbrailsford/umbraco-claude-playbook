@@ -15,7 +15,7 @@ plugins/umbraco-claude-playbook/
   skills/<name>/SKILL.md                          # one folder per skill (+ references/, templates/)
   agents/{builder,reviewer,issue-triager}.md      # subagents
 settings.example.json   # copy-by-hand example for consumers; NOT installed by the plugin
-scripts/                # check-*.sh + the refs allowlist; repo-only, not shipped
+scripts/                # check-*.sh + their allowlists; repo-only, not shipped
 .claude/skills/review-skill-links/  # repo-only skill: cross-reference review; not shipped
 docs/HOW-IT-WORKS.md    # human explainer: plan folder, gate, memory, branches
 docs/pr-examples/       # images used in PR descriptions; not shipped
@@ -34,6 +34,7 @@ scripts/check-skill-refs.sh   # stale backtick skill references; exit 1 = needs 
 scripts/check-skill-wiring.sh # every skill in the README and referenced from elsewhere
 scripts/check-version.sh      # version fields agree, and bumped if shipped files changed
 scripts/check-frontmatter.sh  # skill/agent headers parse, names match, descriptions fit
+scripts/check-skill-callers.sh # no skill changes behavior based on which skill started it
 ```
 
 ## This repo is not an Umbraco project
@@ -111,6 +112,22 @@ checklist.
   sibling code second → impact on consumers (public API / manifest `alias` changes) → trace
   the real entry point → grep for ghost code → multi-version/provider parity → verdict.
 - `issue-triager` is likewise read-only and report-only.
+
+## Skills calling skills
+
+A skill's behavior depends on what it's given, never on which skill started it.
+
+- Different behavior comes from an input: an argument (`investigate-bug --unattended`), a
+  file section (`BRIEF.md`'s `Repro`), or a value passed in (a repro, a drafted update).
+- A skill that another skill may start drafts its tracker writes and hands them back; only
+  its Hand off applies them.
+- The one allowed difference is the end of the Hand off, worded the same everywhere: "If
+  another skill started this one, return <result> and stop. That skill decides what runs
+  next." Otherwise it offers the next step.
+- Don't tell a skill who called it ("saying it was called from X"). Pass the input instead.
+- Other mentions of a skill are fine: delegating to it, pointing at the section where it
+  owns a rule, or a routing hint ("for Y, use X"). `scripts/check-skill-callers.sh` catches
+  the caller wording; `review-skill-links` reads for the rest.
 
 ## Committing in this repo
 
