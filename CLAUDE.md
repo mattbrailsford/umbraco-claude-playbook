@@ -128,7 +128,11 @@ consumer project. Rules to preserve when editing these skills:
   - `feature-build`: `BUILD-LOG.md`, `screenshots/`.
   - `pr-describe`: `PR-DESCRIPTION.md`, only when a plan folder exists.
   - `feature-close`: moving a closed folder to `docs/archive/plans/<feature-slug>/`, after
-    the PR is merged or the plan is dropped.
+    the PR is merged or the plan is dropped, and its source idea to `docs/archive/ideas/`
+    once nothing in it is left.
+
+  Ideas (`docs/ideas/`, consumer-defined) have no owner skill and no shape. `feature-explore`
+  reads one as input; no skill ever edits an idea file.
 
   Outside the plan folders, `major-upgrade` owns `docs/upgrades/v<major>.md`, one file per
   CMS major upgrade, ticking its own checklist and archiving it to `docs/archive/upgrades/`

@@ -26,7 +26,8 @@ plan folder moves from `docs/plans/<feature-slug>/` to `docs/archive/plans/<feat
 - **Owns:** the move, and one `> **Status:**` line at the top of the plan folder's
   `README.md`. That line is the only edit this skill makes inside the plan folder.
 - **Writes outside it:** `.claude/memory/` entries and nested `CLAUDE.md` files for what the
-  plan decided, and link fixes in lasting files (step 3).
+  plan decided, link fixes in lasting files (step 3), and moving a used-up source idea to
+  `docs/archive/ideas/` (step 5). It never edits an idea file.
 - **Never** edits any other file in the plan folder. They record what happened at the time;
   rewriting them after the fact loses that.
 
@@ -103,7 +104,12 @@ Show the user what each step will change and wait for a yes before step 4.
 4. **Move the folder.** `git mv <plans-path>/<feature-slug> <archive-path>/plans/<feature-slug>`.
    Links inside the folder are relative, so they still work.
 
-5. **Commit and open a PR.** On a short-lived branch off this line's trunk, named per
+5. **Check the source idea.** If `BRIEF.md` has a `Source idea:` line, ask the user whether
+   anything in that idea is still left to do. Other live plans may be building other parts
+   of it. If nothing is left, `git mv` it to `<archive-path>/ideas/` and fix links to it as in
+   step 3. If something is left, leave it where it is.
+
+6. **Commit and open a PR.** On a short-lived branch off this line's trunk, named per
    `git-workflow` (for example `docs/archive-plans` or `v18/docs/archive-plans`). One commit
    for the whole run: `docs: archive <feature-slug> plan`, or `docs: archive shipped plans`
    when there are several. Then invoke `pr-describe` to open the PR.
@@ -117,5 +123,5 @@ Show the user what each step will change and wait for a yes before step 4.
 
 ## Hand off
 
-List each plan archived, how it ended, what was saved where, and the links repointed. Then
-the PR link.
+List each plan archived, how it ended, what was saved where, the links repointed, and any
+idea archived. Then the PR link.

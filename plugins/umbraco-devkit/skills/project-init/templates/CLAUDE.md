@@ -28,12 +28,18 @@ The `builder` runs the lint/format check before reporting a task done.
 This project uses the Umbraco Devkit. Feature plan folders live at:
 `[the path convention settled on in the interview]`
 Closed plans are archived under: `[archive path, default docs/archive/]`
+Ideas for later live in: `[ideas path, default docs/ideas/]`
 
 Pipeline: `/feature-explore` → `/feature-design` → `/feature-plan` → `/feature-build`, then
 `/feature-close` once the feature's PR is merged or the plan is dropped. Each phase owns its
 own file in the feature's plan folder (`BRIEF.md`, `ARCHITECTURE.md` + `SPEC.md`,
 `STORIES.md` + `PLAN.md`, `BUILD-LOG.md`) — see the devkit's README for the file-ownership
 table.
+
+**Ideas:** a note about something worth doing later, not yet being planned. Any shape, any
+length, no template or status: an idea only turns formal when `/feature-explore` starts from
+it. Always commit an idea once written (asking first, as for any commit), so the team can see
+it. `/feature-close` archives an idea once every part of it has been built or dropped.
 
 **Plans and the archive:** the plans folder holds only live work. The archive is history: it
 records what was planned at the time, not how the code works now. Read it only to answer why
