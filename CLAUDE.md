@@ -139,8 +139,9 @@ consumer project. Rules to preserve when editing these skills:
      another phase's line.
   3. `feature-build` ticks `PLAN.md` checkboxes (`- [ ]` → `- [x]`), never editing task text.
   4. `feature-close` adds one `> **Status:**` line to the top of `README.md`.
-- **Lasting files never link into plans or the archive.** Code, `CLAUDE.md` files, and
-  memory link to memory or a nested `CLAUDE.md`, so archiving a plan breaks nothing.
+- **Links that survive a move.** Code never links to repo files or memory; a comment says
+  its reason itself. `CLAUDE.md` files and memory never link into plans or the archive; they
+  link to each other. So archiving a plan breaks nothing.
 - **Stop, don't guess.** A phase missing its input hands off to the owning phase instead of
   inventing the content.
 - **Git boundary.** `feature-explore`/`feature-design`/`feature-plan` never touch git.

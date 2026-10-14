@@ -37,10 +37,12 @@ table.
 
 **Plans and the archive:** the plans folder holds only live work. The archive is history: it
 records what was planned at the time, not how the code works now. Read it only to answer why
-something was done, never as current design. Lasting files (code, any `CLAUDE.md`,
-`.claude/memory/`, reference docs) never link into the plans or archive folders. A decision
-that outlives its feature goes in `.claude/memory/` or a nested `CLAUDE.md`, and lasting files
-link there.
+something was done, never as current design. A decision that outlives its feature goes in
+`.claude/memory/` or a nested `CLAUDE.md`. Two link rules keep this safe:
+- **Code never links to repo files or memory.** A comment that needs a "why" says it in a line
+  or two. A longer reason goes in the nearest `CLAUDE.md`, which Claude reads anyway.
+- **Docs that last never link into the plans or archive folders.** Any `CLAUDE.md`,
+  `.claude/memory/`, and reference docs link to each other instead.
 
 **Branch/worktree per feature:** new features start from `[trunk branch — the repo's default
 branch, or a long-lived vN/dev line for a branch-per-major project]`. Plan-folder files stay

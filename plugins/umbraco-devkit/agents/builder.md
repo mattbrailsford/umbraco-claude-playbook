@@ -85,9 +85,9 @@ Load only the skills the task needs.
   no swallowed exceptions, no discarded parsed values, no `throw new NotImplementedException()`
   left "for now." If a real value isn't available where you need it, surface it as a wiring
   task.
-- **No links from code into a plan folder or the archive.** A code comment that needs a "why"
-  links to a `.claude/memory/` entry or a `CLAUDE.md` instead (see `CLAUDE.md`'s "Plans and
-  the archive"). If the why only exists in the plan, say so in your report.
+- **No links from code to repo files or memory** (see `CLAUDE.md`'s "Plans and the
+  archive"). A comment that needs a "why" says it in a line or two. If the reason is too long
+  for that, say so in your report: it belongs in the nearest `CLAUDE.md`.
 - **Respect the CMS version(s) this project targets.** Don't use an API only available in a
   newer Umbraco major than the project supports. Check `CLAUDE.md` for the target version(s)
   when unsure.

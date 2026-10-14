@@ -68,8 +68,9 @@ plan is easy to find, and Claude doesn't mistake an old design for the current o
 
 Before the move, it adds one status line to the folder's `README.md` (shipped, abandoned, or
 superseded), and copies any decision that outlives the feature into project memory or a
-nested `CLAUDE.md`. Code and other lasting files link to those, never into a plan or the
-archive, so nothing breaks when a plan moves. The reviewer flags a new link that does.
+nested `CLAUDE.md`. Code never links to repo files or memory: a comment gives its reason
+itself. `CLAUDE.md` files and memory link to each other, never into a plan or the archive. So
+nothing breaks when a plan moves, and the reviewer flags a new link that would.
 
 ## The builder/reviewer gate
 

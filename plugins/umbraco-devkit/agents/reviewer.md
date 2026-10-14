@@ -113,9 +113,9 @@ design. A reviewer that fixes its own findings isn't a gate.
    ships` is a deliberate, tracked Umbraco pattern (e.g. marking a default interface
    implementation for removal once a deprecated overload is gone). A vague, undated
    `// TODO: fix this later` is the finding; a dated one tied to a real removal condition is not.
-   Also flag a new link from code, a `CLAUDE.md`, or `.claude/memory/` into a plan folder or
-   the archive (`Important`): it breaks when the plan is archived. See `CLAUDE.md`'s "Plans
-   and the archive".
+   Also flag (`Important`) a code comment that links to a repo file or memory entry, and a
+   new link from a `CLAUDE.md` or `.claude/memory/` into a plan folder or the archive. Both
+   break when files move. See `CLAUDE.md`'s "Plans and the archive".
 7. **Multi-version / multi-provider parity check.** If the project supports more than one
    Umbraco major version, or more than one database provider (typically SQL Server *and*
    SQLite), grep the diff for anything that works on only one — an API only in a newer CMS

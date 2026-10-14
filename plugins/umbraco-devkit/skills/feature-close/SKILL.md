@@ -3,7 +3,7 @@ name: feature-close
 description: >-
   Closes a feature's plan folder once the work is over: records how it ended (shipped,
   abandoned, or superseded), moves decisions that outlive the feature into project memory,
-  points lasting links at those new homes, then moves the folder to the archive. Owns the
+  fixes links into the plan, then moves the folder to the archive. Owns the
   plan's status line and its move. Use after a feature's PR is merged, on each
   version line it shipped to, or when a plan is dropped or replaced by another.
 user-invocable: true
@@ -87,13 +87,16 @@ Show the user what each step will change and wait for a yes before step 4.
    that stays in the archive. An abandoned plan usually has one thing worth saving: why it
    was dropped, so it isn't tried again blind.
 
-3. **Point lasting links at the new homes.** Search the repo, outside the plans and archive
-   folders, for links into this plan folder:
+3. **Fix links into the plan.** Search the repo, outside the plans and archive folders, for
+   links into this plan folder:
    ```bash
    git grep -n "<plans-path>/<feature-slug>" -- ':!<plans-path>' ':!<archive-path>'
    ```
-   Each hit is in a lasting file (code, a `CLAUDE.md`, memory, reference docs) and breaks the
-   rule in `CLAUDE.md`'s "Plans and the archive" section. Point it at the home from step 2.
+   Each hit breaks a rule in `CLAUDE.md`'s "Plans and the archive" section:
+   - **In code:** replace the link with the reason itself, in a line or two. A longer reason
+     belongs in the nested `CLAUDE.md` from step 2.
+   - **In a `CLAUDE.md`, memory, or reference docs:** point it at the home from step 2.
+
    If nothing in step 2 fits, step 2 missed something: go back. Links from other live plan
    folders just change to the archive path.
 
