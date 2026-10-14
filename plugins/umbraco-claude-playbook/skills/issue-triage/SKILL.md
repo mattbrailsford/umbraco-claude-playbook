@@ -162,9 +162,12 @@ drafted for the user to approve, with up to two parts, in this order:
    and what's needed from them, if anything. Thank them where it fits. Never promise a fix
    date or a release.
 2. **Notes for the fix.** Only when there's something technical worth keeping: the likely
-   code area, the repro, the proven cause, related issues. Put it under a `Notes for the fix`
-   heading so the reporter can see it isn't aimed at them. This is what whoever picks the
-   issue up reads first; without it, the findings are lost when the chat ends.
+   code area, the repro, the proven cause, related issues. Fold it away where the tracker
+   can, so the reporter sees one line they can skip: on GitHub, a `<details>` block with
+   `<summary>Notes for the fix</summary>` and a blank line after it, so the Markdown inside
+   still renders. Where the tracker has no collapsible block, use a `Notes for the fix`
+   heading. This is what whoever picks the issue up reads first; without it, the findings
+   are lost when the chat ends.
 
 What the reporter part says, by outcome:
 
