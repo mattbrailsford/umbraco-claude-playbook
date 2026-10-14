@@ -194,7 +194,7 @@ What the reporter part says, by outcome:
 - `state/needs-investigation`: it's been read and will be looked into, but isn't confirmed as a
   bug yet.
 - `state/needs-decision`: the request is understood and waiting on a maintainer's decision.
-  Don't hint at the answer.
+  Don't hint at the answer here; the suggestion goes in the notes.
 - `state/blocked`: what it's waiting on, with a link, and that it moves once that's fixed.
 - `state/ready`: it's confirmed, what was found in plain terms, and that it's queued for a fix.
 - Duplicate: a link to the earlier issue to follow instead.
@@ -202,6 +202,26 @@ What the reporter part says, by outcome:
 - Needs-info timeout close: there was no reply, so it's closed for now, and replying with
   the detail will reopen it.
 - `state/in-progress` and the fix landing: drafted by `issue-resolve`, in the same two parts.
+
+For `state/needs-decision`, the second part is titled `Notes for the decision` instead, and
+holds what a maintainer needs to say yes or no:
+
+- **Need:** what the reporter is trying to do, which may differ from the feature they asked
+  for.
+- **Demand:** linked duplicates and related issues, and their reaction counts.
+- **Today:** any workaround, setting, or extension point that already gets close.
+- **Already covered:** whether the CMS or another package does this.
+- **Size:** small, medium, or large, with the code area it would touch, backed by a search
+  of the code.
+- **Risks:** a breaking change, new public API to maintain, work on each supported CMS
+  major, a performance cost.
+- **Other ways:** a smaller or different way to meet the need, such as an extension point.
+- **Questions first:** anything to settle before it could be planned.
+- **Suggestion:** do it, do another way, or don't, with the one or two reasons that weigh
+  most. Label it as a suggestion; the maintainer decides. Word a "don't" kindly, since the
+  reporter can read it.
+
+The notes are public even when folded, so leave out roadmap, commercial, or customer detail.
 
 A security report never gets a comment (Security reports below).
 
