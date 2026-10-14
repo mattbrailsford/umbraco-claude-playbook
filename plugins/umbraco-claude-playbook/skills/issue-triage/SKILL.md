@@ -8,11 +8,12 @@ description: >-
   applied only once the user approves; keeps no log of its own.
   More than one issue spawns one issue-triager subagent per issue, orchestrated from the main
   thread. Use when there's a backlog to work through, or a specific issue to classify before
-  deciding whether to act on it. Proving a bug's cause is `investigate-bug`'s job, not this one.
+  deciding whether to act on it. A `decisions` run walks the user through every issue waiting
+  on a maintainer's yes or no. Proving a bug's cause is `investigate-bug`'s job, not this one.
   Owns the playbook's state labels, its tracker comment format, and its rule for handling
   security reports.
 user-invocable: true
-argument-hint: [issue ID | ID range | leave blank for whole tracker]
+argument-hint: [issue ID | ID range | decisions | leave blank for whole tracker]
 ---
 
 # issue-triage
@@ -49,6 +50,8 @@ and nothing is written to it until the user says so.
 5. Resolve which issues this run covers, from the argument:
    - One ID → that issue, whatever its labels. Naming an issue means re-triage it.
    - A range (e.g. `120-135`) → every ID in that range that still exists and is open.
+   - `decisions` → every open `state/needs-decision` issue, handled by the Decision run
+     below instead of the normal dispatch.
    - No argument → every open issue with no state label, plus:
      - every `state/needs-info` issue the reporter has replied to since the label went on,
        or that has gone quiet for longer than the needs-info timeout;
@@ -117,6 +120,24 @@ below, the "Which state" rules from State labels, and the Tracker comments secti
 5. Present the table and the security list (if non-empty) to the user. Nothing gets written
    back to the tracker until the user says which recommendations to apply. Then apply exactly
    those, and report what was written.
+
+## Decision run
+
+For issues triage has already sorted, where the only thing missing is the maintainer's call.
+No subagents: the notes already hold the facts, so the main thread reads each issue itself.
+
+1. For each issue in scope, read its latest `Notes for the decision` and everything posted
+   since: new comments, reaction counts, newly linked duplicates.
+2. Show one table: issue, need, size, risks, suggestion, and what's new since the notes. Put
+   anything new that changes the picture (a lot more demand, a workaround someone found) in
+   the suggestion, and say so.
+3. Ask the user for an answer per issue:
+   - **Yes** → `state/ready`.
+   - **Yes, another way** → `state/ready`, with the other way as what was agreed.
+   - **No** → close as not planned.
+   - **Not yet** → no change, no comment. It comes back on the next decision run.
+4. Draft each answer's label and comment, following Tracker comments below. Apply exactly
+   the ones the user approves, as in Aggregating and reporting.
 
 ## State labels
 
@@ -246,6 +267,8 @@ Rules for the notes:
 
 **`state/ready`**
 - Reporter: it's confirmed, what was found in plain terms, and that it's queued for a fix.
+  For a feature request, that it's agreed. If it was agreed another way, say plainly what
+  will be built instead and why.
 - Notes, `Notes for the fix`. For a bug:
   - **Repro:** exact steps, or the test that shows it.
   - **Cause:** the cause, at file and line, and the check that proved it.
@@ -278,6 +301,7 @@ Rules for the notes:
 
 **Close**
 - Reporter: why, kindly. For a support question, answer it or point to the docs or forum.
+  For a feature request turned down, give the reason and any workaround that exists today.
 - Notes, `Notes on the close`, only when it was looked into:
   - **Checked:** what was tried, such as the setup it failed to reproduce on.
   - **Reopen if:** what new detail would make it worth another look.
@@ -327,5 +351,6 @@ reference, or similar.
 A triaged issue that turns into real work goes to `issue-resolve` next, with its ID. That
 picks `quick-fix` or the pipeline, and drafts the tracker reply once the fix lands. A
 `state/needs-investigation` issue can go to `investigate-bug` first instead, to prove it
-before anyone commits to a fix. This skill stops at "here's what I'd do," it doesn't start
-building.
+before anyone commits to a fix. To work the whole tracker through to ready, `issue-backlog`
+runs triage, decisions, and investigations in order. This skill stops at "here's what I'd
+do," it doesn't start building.
