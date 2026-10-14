@@ -22,6 +22,7 @@ umbraco-dashboard       # a skill in the official Backoffice Skills plugin, not 
 umbraco-sections        # a skill in the official Backoffice Skills plugin, not ours
 umbraco-tree            # a skill in the official Backoffice Skills plugin, not ours
 umbraco-notifications   # a skill in the official Backoffice Skills plugin, not ours
+umbraco-localization    # a skill in the official Backoffice Skills plugin, not ours
 umbraco-health-check    # a skill in the official Backoffice Skills plugin, not ours
 issue-triager           # the subagent issue-triage dispatches, not a skill itself
 worktree-dev-port       # the Umbraco.Community.WorktreeDevPort npm package, cited in feature-build

@@ -2,16 +2,17 @@
 name: umbraco-backoffice-conventions
 description: >-
   Umbraco-backoffice-specific frontend conventions built with Lit and UUI — required compiler
-  setup, local vs. global components, what actually gates your public API surface, generating
-  a typed client from a Management API's OpenAPI spec, the lifecycle of observable
-  subscriptions and of extension APIs you create, build output (what stays external, cache
-  busting), and building a multi-package frontend workspace in the right order. Use when setting up or
-  structuring a Lit + UUI backoffice frontend package, deciding whether a component should be
-  exported, wiring up an OpenAPI-generated client, subscribing to a state/context observable,
-  or setting up frontend builds in a monorepo — not when implementing a specific extension
-  point (dashboard, tree, property editor, modal) or using the state-management system itself,
-  which the official Backoffice Skills plugin already covers in depth. Complements
-  `typescript-best-practices` (general TS language discipline, not Umbraco-specific).
+  setup, local vs. global components, what gates your public API surface, generating a typed
+  client from a Management API's OpenAPI spec, the lifecycle of observable subscriptions and
+  of extension APIs you create, localization key naming, build output (what stays external,
+  cache busting), and building a multi-package frontend workspace in order. Use when setting up
+  or structuring a Lit + UUI backoffice frontend package, deciding whether a component should
+  be exported, wiring up an OpenAPI-generated client, subscribing to a state/context
+  observable, adding localization keys, or setting up frontend builds in a monorepo — not when
+  implementing a specific extension point (dashboard, tree, property editor, modal) or using
+  the state-management system itself, which the official Backoffice Skills plugin already
+  covers in depth. Complements `typescript-best-practices` (general TS language discipline,
+  not Umbraco-specific).
 ---
 
 # Umbraco backoffice frontend conventions
@@ -126,6 +127,43 @@ instead of a silent runtime mismatch:
 ```ts
 export const MY_WIDGET_WORKSPACE_ALIAS = "MyCompany.Workspace.Widget";
 ```
+
+## Localization keys: your own sections, each phrase once
+
+How backoffice localization works (`localization` manifests, `this.localize.term()`,
+`<umb-localize>`, `#` keys in manifests) is in the official Backoffice Skills plugin's
+`umbraco-localization` skill. This section covers how a package organizes its keys.
+
+Every `localization` manifest for a culture merges into one flat dictionary, keyed
+`section_key`. A key that another package, or the backoffice itself, also defines collides,
+and only one of them shows.
+
+- **Name every section after your package**: `myPackage`, `myPackageOrders`, never
+  `general` or `orders`. That keeps your keys out of Umbraco's sections and other packages'.
+- **Check Umbraco's keys first.** The backoffice already has keys for most common text, not
+  just single words: buttons and actions, placeholders, empty states, confirmations,
+  notification messages. They're all in the CMS repo's
+  `src/Umbraco.Web.UI.Client/src/assets/lang/en.ts`, grouped into sections like `general`,
+  `actions`, `buttons`, `placeholders` and `speechBubbles`. If one says what you need, in the
+  same sense, use it: it's already translated into every language the backoffice ships, and
+  it matches the wording the editor sees everywhere else. Adding `myPackageOrders_save`
+  gives every translator one more "Save" to do.
+- **Shared phrases live in one shared section.** A package phrase used on more than one
+  screen ("Order number", "Sync now") goes in one section, such as `myPackage`, not repeated
+  under each screen's section. Name the key after what the text says, not where it appears:
+  `myPackage_orderNumber`, not `myPackageOrdersTable_orderNumberColumn`.
+- **Use arguments for values that change.** One `'{0} orders'` key, or a function key for
+  plurals, instead of one key per count or name.
+- **Reuse whole phrases, never fragments.** Don't build a sentence from several keys
+  (`term('myPackage_delete') + ' ' + term('myPackage_order')`): word order and grammar change
+  between languages, so the joined text reads wrong once translated. One key per full sentence
+  or label.
+- **Keep two keys when the meaning differs**, even if the English is the same. "Order" the
+  noun and "Order" the verb, or "Open" the state and "Open" the action, translate differently
+  in many languages.
+
+In review, look for a new key whose English text matches an existing key, Umbraco's or the
+package's own. Reuse that key unless the meaning differs.
 
 ## Components are lazy-loaded per manifest, by default
 
