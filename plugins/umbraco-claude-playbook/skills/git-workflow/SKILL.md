@@ -153,6 +153,11 @@ the commits on the branch, not just the latest. If the branch isn't pushed yet, 
 `git push -u origin HEAD`. Use `--draft` for a draft PR, `--base <branch>` for a non-default
 target.
 
+**Reviewing someone else's PR against this repo** (most packages here are open source, so
+this is routine, not an edge case): if the author is outside the core maintainer team, use
+`review-contribution` instead of reviewing it by hand — it wraps `reviewer` and adds the
+checks that only matter because the diff came from outside.
+
 ## Sanity rules
 
 - Don't push to the default branch with `--force`. Ever.
