@@ -24,8 +24,8 @@ naming — it's an escape hatch *around* the pipeline, not a phase in it.
 - OUT: anything that needs a design call, touches a public method's signature (that's the
   `[Obsolete]`-proxy discipline in `umbraco-package-conventions`/`umbraco-backoffice-
   conventions`, not a quick-fix), renames a backoffice manifest `alias` (a silent breaking
-  change per `umbraco-backoffice-conventions`), changes behavior across modules, or needs test
-  coverage beyond what already exists. If it smells like any of that, **stop and escalate** —
+  change per `umbraco-backoffice-conventions`), changes behavior across modules, or needs
+  more than one new test. A bug fix may add one regression test for the bug. If it smells like any of that, **stop and escalate** —
   suggest `umb-plan` (if a plan folder already covers this area) or `umb-explore` (if it
   doesn't).
 
@@ -34,6 +34,9 @@ naming — it's an escape hatch *around* the pipeline, not a phase in it.
 `$ARGUMENTS` describes the fix in the user's words (e.g. "remove the unneeded try/catch in
 GetItemAsync", "fix the typo in the login button label"). If empty, ask one short clarifying
 question.
+
+For a bug fix, it may also include a repro: the steps or test that show the bug. A bug fix
+is one that changes behavior someone saw go wrong. Typos, comments, and dead code aren't.
 
 ## Loop
 
@@ -58,34 +61,46 @@ question.
      Management API, secrets, or `unsafeHTML`/`unsafeSVG`.** "Quick" doesn't exempt a fix from
      these — they're non-negotiable in this playbook regardless of diff size.
    - No `builder` dispatch. You make the edit yourself; the fix is too small to hand off.
-4. **Apply the edit.** Use `Edit`, not `Write`. Match surrounding style.
-5. **Look for the same bug elsewhere.** Name the cause, not just the line (a missing
+4. **Reproduce it, for a bug fix.** Use the repro you were given, or write one from the
+   description. Run it through the real entry point, in the order `umb-build-loop`'s "Smoke
+   the real entry point" step gives, and see it fail. The real entry point applies whether or
+   not the code is on a screen: a value converter or a handler is reached through the
+   backoffice or an API request too. If no e2e test covers the path and the project has an
+   e2e suite, write the repro as the one regression test this fix may add; otherwise use the
+   demo site.
+5. **Apply the edit.** Use `Edit`, not `Write`. Match surrounding style.
+6. **Look for the same bug elsewhere.** Name the cause, not just the line (a missing
    permission check, an unscoped query, an unlocalized label). Then grep for sibling code with
    the same cause: other endpoints on the same controller or base type, other components using
    the same pattern. Also check whether an earlier fix for the same cause already added a
    helper this fix should reuse. List what you find in the hand-off; don't silently widen the
    fix. If the right answer is one shared fix across several places, that's no longer a quick
    fix, so escalate as in step 2.
-6. **Verify.** Run the project's build/test if fast. If slow or absent, run the narrowest
+7. **Verify.** Run the project's build/test if fast. If slow or absent, run the narrowest
    check that proves the fix (the single related test, or a targeted build of just the
-   changed project). Run the lint/format check from `CLAUDE.md` on the changed files. If the fix changes something a person can see or call (a screen, a
-   Management API endpoint, a property editor), also smoke it through the real entry point,
-   using the same order as `umb-build-loop`'s "Smoke the real entry point" step. One
-   difference: writing a new e2e test is beyond a quick fix, so if none covers the path, say
-   so in the hand-off and use the demo site instead.
-7. **Review.** Unless the change is text only (a typo, a comment, a log string, a label),
+   changed project). Run the lint/format check from `CLAUDE.md` on the changed files. Then:
+   - **A bug fix:** run step 4's repro again, the same way, and see it pass. A slow suite is
+     no reason to skip this; it's one path, not the suite.
+   - **Anything else a person can see or call** (a screen, a Management API endpoint, a
+     property editor): smoke it through the real entry point the same way.
+
+   If the real entry point can't be run at all (no e2e suite, no demo site, or the site won't
+   start), say so in the hand-off as "not verified end to end", with why. Never leave it out
+   silently.
+8. **Review.** Unless the change is text only (a typo, a comment, a log string, a label),
    dispatch one `reviewer` subagent (Agent tool, `subagent_type: reviewer`) against the
    uncommitted diff, with the fix description as its task. Small diffs still break things a
    person doesn't see from the changed lines: a public signature, a caller in another file, a
    manifest `alias`. Fix any Critical or Important finding yourself and review again until
    `PASS`. If a finding shows the fix isn't small after all, stop and escalate as in step 2.
-8. **Report and ask before committing.** Show the diff summary and propose a one-line commit
+9. **Report and ask before committing.** Show the diff summary and propose a one-line commit
    message, following `git-workflow`'s Conventional Commits format. Do **not** commit unless
    the user says go — committing straight to the default branch is a shared-state action, per
    `git-workflow`'s always-ask-before-touching-main rule for AI agents.
 
 ## Hand off
 
-One sentence: what changed, what you verified (tests, demo site, review verdict), awaiting commit confirmation (or confirming
-the commit if the user pre-authorized it). Then list any places with the same bug from step 5,
-one line each.
+One sentence: what changed, what you verified (tests, the repro failing before and passing
+after, or "not verified end to end" and why, review verdict), awaiting commit confirmation
+(or confirming the commit if the user pre-authorized it). Then list any places with the same
+bug from step 6, one line each.

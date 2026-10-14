@@ -293,6 +293,8 @@ Rules for the notes:
 - Reporter: what changed, in their terms.
 - Notes, `Notes on the fix`:
   - **Change:** the commit or PR, linked, and the area it touched.
+  - **Verified by:** the repro run through the real entry point, and its result, or "not
+    verified end to end" and why.
   - **Guarded by:** the test that now covers it.
   - **Left out:** anything deliberately not fixed, and any follow-up issues.
 

@@ -144,8 +144,10 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
 
 ## Finish
 
-When every box is checked: run the full test suite once more, then run the whole-feature
-review below, then report a summary (tasks completed, commits, anything still red).
+When every box is checked: run the full test suite once more. If `BRIEF.md` has a `Repro`
+section, run it through the real entry point, as step 4 does, and see it pass; a failure goes
+to a fresh `builder` like a review finding. Then run the whole-feature review below, then
+report a summary (tasks completed, commits, anything still red).
 
 **Whole-feature review.** The per-task `reviewer` sees one task's diff, so it misses what
 builds up across tasks: duplicated logic, a class that took on a second job, a component that
