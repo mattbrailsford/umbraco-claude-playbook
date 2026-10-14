@@ -116,7 +116,8 @@ refer to the consumer project, not this repo.
 
 `project-init` → `feature-explore` → `feature-design` → `feature-plan` → `feature-build`
 each own files in a per-feature folder (default `docs/plans/<feature-slug>/`) in the
-consumer project. Rules to preserve when editing these skills:
+consumer project. `feature-close` archives the folder once the work is over. Rules to
+preserve when editing these skills:
 
 - **Re-entrant.** Re-running a phase refines its file; it never restarts it.
 - **One owner per file:**
@@ -145,7 +146,8 @@ consumer project. Rules to preserve when editing these skills:
   4. `feature-close` adds one `> **Status:**` line to the top of `README.md`.
 - **Links that survive a move.** Code never links to repo files or memory; a comment says
   its reason itself. `CLAUDE.md` files and memory never link into plans or the archive; they
-  link to each other. So archiving a plan breaks nothing.
+  link to each other. Plans and ideas refer to each other by name (the folder or file name),
+  never by path. So archiving a plan or idea breaks nothing.
 - **Stop, don't guess.** A phase missing its input hands off to the owning phase instead of
   inventing the content.
 - **Git boundary.** `feature-explore`/`feature-design`/`feature-plan` never touch git.
