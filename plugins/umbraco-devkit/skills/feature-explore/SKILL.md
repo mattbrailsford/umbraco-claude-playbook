@@ -62,6 +62,7 @@ than going fully freeform.
    in `BRIEF.md`'s `Repro` section. If the argument is an idea file (see `CLAUDE.md`'s
    "Ideas"), treat it the same way: it's a brand-new feature, and the idea answers questions
    up front. An idea can cover more than one feature, so ask which part this one builds.
+   Refer to the idea by its name alone, never its path (see "Ideas").
    If
    `BRIEF.md` already exists in the resolved folder, read it. Summarize current state in 1–2
    lines ("problem defined, no success metric yet"). Re-entrant: refine, don't restart. **Skip
@@ -161,7 +162,7 @@ Write/update `BRIEF.md`:
 ```md
 # Brief
 
-Source idea: `<ideas-path>/<file>`, <which part of it this feature builds>
+Source idea: `<idea-name>`, <which part of it this feature builds>
 <only when the feature started from an idea. Leave the line out otherwise.>
 
 ## Problem

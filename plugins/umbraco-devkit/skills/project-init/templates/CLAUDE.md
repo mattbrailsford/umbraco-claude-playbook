@@ -40,6 +40,9 @@ table.
 length, no template or status: an idea only turns formal when `/feature-explore` starts from
 it. Always commit an idea once written (asking first, as for any commit), so the team can see
 it. `/feature-close` archives an idea once every part of it has been built or dropped.
+An idea's file name (without `.md`) is its name. Refer to it by that name alone, never by path,
+so moving it to the archive breaks nothing; to find it, look in the ideas folder, then the
+archive. A new idea's name must not already be used there.
 
 **Plans and the archive:** the plans folder holds only live work. The archive is history: it
 records what was planned at the time, not how the code works now. Read it only to answer why

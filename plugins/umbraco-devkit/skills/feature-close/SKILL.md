@@ -104,10 +104,11 @@ Show the user what each step will change and wait for a yes before step 4.
 4. **Move the folder.** `git mv <plans-path>/<feature-slug> <archive-path>/plans/<feature-slug>`.
    Links inside the folder are relative, so they still work.
 
-5. **Check the source idea.** If `BRIEF.md` has a `Source idea:` line, ask the user whether
-   anything in that idea is still left to do. Other live plans may be building other parts
-   of it. If nothing is left, `git mv` it to `<archive-path>/ideas/` and fix links to it as in
-   step 3. If something is left, leave it where it is.
+5. **Check the source idea.** If `BRIEF.md` has a `Source idea:` line, it names the idea
+   (see `CLAUDE.md`'s "Ideas"). Ask the user whether anything in it is still left to do.
+   Other live plans may be building other parts of it. If nothing is left, `git mv
+   <ideas-path>/<idea-name>.md <archive-path>/ideas/`. References use the name, so nothing
+   needs fixing. If something is left, leave it where it is.
 
 6. **Commit and open a PR.** On a short-lived branch off this line's trunk, named per
    `git-workflow` (for example `docs/archive-plans` or `v18/docs/archive-plans`). One commit
