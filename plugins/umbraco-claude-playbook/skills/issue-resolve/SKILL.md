@@ -66,19 +66,23 @@ but the real judgment stays where it already lives:
 
 - **Looks small** — a single concern, the kind `quick-fix`'s own scope section describes →
   invoke `quick-fix` (Skill tool) with a description built from the issue's title/body, the
-  triage's likely-area finding, and the user's notes. `quick-fix` still makes its own
+  triage's likely-area finding, the repro, and the user's notes. `quick-fix` still makes its own
   escalation call if the fix turns out bigger once someone's actually in the code; this skill
   doesn't override that.
 - **Looks bigger, or `quick-fix` escalates** → invoke `umb-explore` (Skill tool) with the
-  issue as its starting material: the issue's title and body, the triage's findings, and the
-  user's notes as constraints or success criteria. `umb-explore` owns `BRIEF.md`, so it writes
+  issue as its starting material: the issue's title and body, the triage's findings, the
+  repro, and the user's notes as constraints or success criteria. `umb-explore` owns `BRIEF.md`, so it writes
   the brief from that and only asks about what's still missing. From there the normal pipeline
   runs: `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop`.
 
 Either way, this skill hands off and waits — it does not write the fix itself. When a lane
 starts, propose moving the issue to `state/in-progress` with a comment, following
-`issue-triage`'s Tracker comments section. Apply both only on the
-user's yes.
+`issue-triage`'s Tracker comments section. Apply both only on the user's yes.
+
+Either way, give the lane the bug's repro, as the check the fix must pass: from
+`investigate-bug`'s report if it ran, or else from the issue's latest `Notes for the fix`.
+If the issue is a bug and neither has one, say so, and let the lane write one before it
+changes code (`quick-fix` does this in its own loop).
 
 Either way, ask the lane to fix the cause, not just the reported spot. A reported bug often has
 siblings with the same cause (other endpoints missing the same check, other components with
@@ -92,16 +96,21 @@ list them as follow-ups.
 Once the fix is committed — right after commit for `quick-fix`, or once `umb-build-loop`
 finishes and the PR is open for the pipeline route:
 
-1. If the tracker is GitHub Issues in the same repo as the code, `git-workflow`'s `Closes
+1. Check the lane reported the repro passing through the real entry point. If it didn't, run
+   it now, as `umb-build-loop`'s "Smoke the real entry point" step describes. Don't draft the
+   resolution until it passes, unless the user accepts it as not verified end to end; then
+   say that in the comment's notes.
+
+2. If the tracker is GitHub Issues in the same repo as the code, `git-workflow`'s `Closes
    #123` convention (in the commit/PR body) already closes it on merge. Confirm the reference
    made it in, and still draft the "Fix landed" comment from `issue-triage`'s Tracker
    comments section, so the reporter hears what changed, not just a close.
-2. Otherwise — a separate tracker, or a different repo than the source — draft a resolution
+3. Otherwise — a separate tracker, or a different repo than the source — draft a resolution
    comment following `issue-triage`'s Tracker comments section: what changed for the
    reporter, in their terms, and a link to the commit or PR. Propose a status (resolved/fixed,
    pending release, needs the reporter to confirm) using whatever states that tracker actually
    has; don't invent one it doesn't support.
-3. Show the draft to the user. Only post the comment or change the status if they say to —
+4. Show the draft to the user. Only post the comment or change the status if they say to —
    same rule as `issue-triage`: a draft is the default output, posting is a separate, explicit
    step.
 
