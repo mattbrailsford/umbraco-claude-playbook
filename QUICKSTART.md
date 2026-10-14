@@ -7,9 +7,9 @@ Two plugin installs, one setup wizard, then five steps per feature.
 From inside the Umbraco project you want to use this in:
 
 ```bash
-# This playbook.
-claude plugin marketplace add https://github.com/mattbrailsford/umbraco-claude-playbook --scope project
-claude plugin install umbraco-claude-playbook@umbraco-claude-playbook --scope project
+# This devkit.
+claude plugin marketplace add https://github.com/mattbrailsford/umbraco-devkit --scope project
+claude plugin install umbraco-devkit@umbraco-devkit --scope project
 
 # The official Umbraco backoffice extension-point skills.
 claude plugin marketplace add https://github.com/umbraco/Umbraco-CMS-Backoffice-Skills.git#main --scope project
@@ -32,7 +32,7 @@ with the plugin, because what to allow is your call.
 Inside Claude Code, run:
 
 ```
-/umb-init
+/project-init
 ```
 
 It's a wizard. It asks before each step: the solution (if new), `CLAUDE.md`, `.gitignore`,
@@ -46,10 +46,10 @@ filled in, with no `TODO` left. Many skills and the reviewer's checks depend on 
 ## 3. Build a feature
 
 ```
-/umb-explore       # what are we building, and for whom?
-/umb-design        # extension points, data model, API, mockups of new screens
-/umb-plan          # stories and an ordered task list
-/umb-build-loop    # build, review, commit, task by task
+/feature-explore  # what are we building, and for whom?
+/feature-design   # extension points, data model, API, mockups of new screens
+/feature-plan     # stories and an ordered task list
+/feature-build    # build, review, commit, task by task
 ```
 
 You don't have to type the commands. Describe what you want ("I want to add a dashboard
@@ -58,14 +58,14 @@ that...") and the right skill picks it up.
 Everything for a feature lands in one folder: `docs/plans/<feature-slug>/`. Re-run any step
 to refine its file. Nothing gets overwritten.
 
-`/umb-build-loop` is the first step that touches git. It asks before committing the plan to
+`/feature-build` is the first step that touches git. It asks before committing the plan to
 your trunk branch (usually `main`) and cutting a feature branch.
 
 ## Small fixes
 
 For a typo, a reversed condition, or a dead `try/catch`, use `/quick-fix`. It skips the
 pipeline but still gets a review, unless the change is text only. If the fix turns out
-bigger than it looked, it sends you to `/umb-plan` or `/umb-explore`.
+bigger than it looked, it sends you to `/feature-plan` or `/feature-explore`.
 
 ## Not sure which to use?
 

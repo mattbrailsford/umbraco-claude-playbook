@@ -5,12 +5,12 @@
 # Add a new entry here (with a one-line reason) whenever the checker flags a real false
 # positive — a doc reference to a template, an official Backoffice Skills plugin skill name,
 # or anything else kebab-case that isn't meant to resolve to a folder under
-# plugins/umbraco-claude-playbook/skills/.
+# plugins/umbraco-devkit/skills/.
 
 claude-playbook         # Rob Conery's original template, credited in the README, not a skill
 dotnet-conventions      # old, renamed name — cited deliberately as a drift example in CLAUDE.md
-opinionated-package-starter  # Lotte Pitcher's dotnet new template, referenced in umb-init
-umbraco-document        # a hypothetical future skill umb-init's README stub gestures at
+opinionated-package-starter  # Lotte Pitcher's dotnet new template, referenced in project-init
+umbraco-document        # a hypothetical future skill project-init's README stub gestures at
 umbraco-extension       # the official `dotnet new umbraco-extension` core template
 umbraco-state-management  # a skill in the official Backoffice Skills plugin, not ours
 umbraco-property-editor-ui      # a skill in the official Backoffice Skills plugin, not ours
@@ -21,15 +21,15 @@ umbraco-tree            # a skill in the official Backoffice Skills plugin, not 
 umbraco-notifications   # a skill in the official Backoffice Skills plugin, not ours
 umbraco-health-check    # a skill in the official Backoffice Skills plugin, not ours
 issue-triager           # the subagent issue-triage dispatches, not a skill itself
-worktree-dev-port       # the Umbraco.Community.WorktreeDevPort npm package, cited in umb-build-loop
-on-target               # a CSS class in the umb-design mockup starters, not a skill
+worktree-dev-port       # the Umbraco.Community.WorktreeDevPort npm package, cited in feature-build
+on-target               # a CSS class in the feature-design mockup starters, not a skill
 aria-label              # an HTML attribute, cited in umbraco-backoffice-ux
 uui-button              # a UUI element, not a skill
 uui-combobox            # a UUI element, not a skill
 uui-ref-list            # a UUI element, not a skill
 uui-ref-node            # a UUI element, not a skill
 uui-select              # a UUI element, not a skill
-eslint-config-prettier  # an npm package, cited in umb-init's lint reference
-eslint-plugin-lit       # an npm package, cited in umb-init's lint reference
-typescript-eslint       # an npm package, cited in umb-init's lint reference
+eslint-config-prettier  # an npm package, cited in project-init's lint reference
+eslint-plugin-lit       # an npm package, cited in project-init's lint reference
+typescript-eslint       # an npm package, cited in project-init's lint reference
 review-skill-links      # repo-only skill in .claude/skills/, not shipped with the plugin

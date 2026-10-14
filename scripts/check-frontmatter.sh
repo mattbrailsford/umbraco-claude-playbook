@@ -14,7 +14,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
-plugin_dir="plugins/umbraco-claude-playbook"
+plugin_dir="plugins/umbraco-devkit"
 
 ruby -ryaml - "$plugin_dir"/skills/*/SKILL.md "$plugin_dir"/agents/*.md <<'RUBY'
 max_description = 1024

@@ -12,7 +12,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
-plugin_dir="plugins/umbraco-claude-playbook"
+plugin_dir="plugins/umbraco-devkit"
 skills_dir="$plugin_dir/skills"
 
 problems=0
@@ -30,7 +30,7 @@ for skill_file in "$skills_dir"/*/SKILL.md; do
   if [[ -z "$inbound" ]]; then
     problems=1
     echo "Orphan: \`$name\` (no agent or other skill references it; route to it from" \
-      "builder, reviewer, umb-design, or a related skill)"
+      "builder, reviewer, feature-design, or a related skill)"
   fi
 done
 

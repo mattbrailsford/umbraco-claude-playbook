@@ -1,17 +1,17 @@
 {
-  "name": "umbraco-claude-playbook",
+  "name": "umbraco-devkit",
   "owner": {
     "name": "Matt Brailsford",
     "url": "https://github.com/mattbrailsford"
   },
   "metadata": {
-    "description": "A Claude Code playbook for Umbraco package and backoffice extension development"
+    "description": "Claude Code devkit for Umbraco package and backoffice extension development"
   },
   "plugins": [
     {
-      "name": "umbraco-claude-playbook",
-      "source": "./plugins/umbraco-claude-playbook",
-      "description": "Explore/design/plan/build pipeline skills, a builder/reviewer build-loop gate, and C#/.NET, EF Core, Lit + UUI, security, and testing convention skills for Umbraco package and backoffice extension development",
+      "name": "umbraco-devkit",
+      "source": "./plugins/umbraco-devkit",
+      "description": "Explore/design/plan/build feature pipeline skills, a builder/reviewer gate, and C#/.NET, EF Core, Lit + UUI, security, and testing convention skills for Umbraco package and backoffice extension development",
       "category": "development",
       "author": {
         "name": "Matt Brailsford",
@@ -23,7 +23,7 @@
         "csharp",
         "lit",
         "backoffice",
-        "playbook",
+        "devkit",
         "package-development",
         "ef-core"
       ],

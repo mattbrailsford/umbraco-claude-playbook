@@ -1,7 +1,7 @@
 ---
 name: review-skill-links
 description: >-
-  Repo-only review of how this playbook's skills and agents fit together after a skill is
+  Repo-only review of how this devkit's skills and agents fit together after a skill is
   added, renamed, split, or substantially changed: runs the mechanical checks, then reads
   for routing gaps, conflicting advice, duplicated rules, and missing two-way pointers
   between related skills. Use when the user asks to review cross-references, check skill
@@ -47,8 +47,8 @@ counterpart, `umbraco-performance` next to `umbraco-load-balancing`, and so on).
 For each skill in scope and each neighbor:
 
 - **Routing gaps.** Every list that routes work to skills should name the skill when its
-  territory comes up: `agents/builder.md`, `agents/reviewer.md`, `umb-design`'s skill
-  list, `quick-fix` step 3, `umb-build-loop`'s builder brief, `investigate-bug`'s suspects,
+  territory comes up: `agents/builder.md`, `agents/reviewer.md`, `feature-design`'s skill
+  list, `quick-fix` step 3, `feature-build`'s builder brief, `investigate-bug`'s suspects,
   and the README tables. Check each list against the skill's description, not just whether
   the name appears somewhere.
 - **Conflicting advice.** Two skills telling the reader to do opposite things in the same

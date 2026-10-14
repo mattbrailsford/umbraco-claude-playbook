@@ -14,7 +14,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
-plugin_dir="plugins/umbraco-claude-playbook"
+plugin_dir="plugins/umbraco-devkit"
 allowlist_file="scripts/skill-caller-allowlist.txt"
 
 skill='`[a-z][a-z0-9]*(-[a-z0-9]+)*`'

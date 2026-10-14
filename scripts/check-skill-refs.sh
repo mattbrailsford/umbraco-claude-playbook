@@ -13,7 +13,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
-skills_dir="plugins/umbraco-claude-playbook/skills"
+skills_dir="plugins/umbraco-devkit/skills"
 allowlist_file="scripts/skill-ref-allowlist.txt"
 
 # Valid names: every skill's own `name:` frontmatter value (the source of truth — not the
