@@ -58,11 +58,13 @@ but the real judgment stays where it already lives:
 
 - **Cause unknown** — a `state/needs-investigation` issue, whatever the user's notes say, or
   any bug where neither the triage nor the user's notes say what's causing it → invoke
-  `investigate-bug` (Skill tool) with the issue first, saying it was called from
-  `issue-resolve`. It reports back without starting a lane. Its report names the cause and a
-  suggested lane; take that as the starting call below, and pass the report on as the lane's
-  starting material. If it couldn't prove a cause, stop: no lane starts, and
-  `investigate-bug` has already drafted the issue's update.
+  `investigate-bug` (Skill tool) with the issue first. It hands back its report, a drafted
+  issue update, and a suggested route.
+  - **Cause proven:** take its route as the starting call below, and pass the report on as
+    the lane's starting material. Its drafted notes go into the `state/in-progress` comment
+    below, so the reporter gets one comment, not two.
+  - **No proven cause:** no lane starts. Show its drafted update, apply it only on the
+    user's yes, and stop.
 
 - **Looks small** — a single concern, the kind `quick-fix`'s own scope section describes →
   invoke `quick-fix` (Skill tool) with a description built from the issue's title/body, the
@@ -126,5 +128,7 @@ finishes and the PR is open for the pipeline route:
 
 Report which lane it took (`quick-fix` or the pipeline) and why, then whatever that lane's own
 hand-off says. Once code is committed, report the draft tracker resolution and wait for
-confirmation before posting it. If `issue-backlog` called this skill, hand back to it once
-the resolution is posted or declined, so it can offer the next issue.
+confirmation before posting it.
+
+- **If another skill started this one**, return once the resolution is posted or declined,
+  and stop. That skill decides what runs next.

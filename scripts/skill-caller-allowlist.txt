@@ -1,0 +1,3 @@
+# Text fragments that check-skill-callers.sh would otherwise flag, but that don't change a
+# skill's behavior based on its caller. One fragment per line, matched against the
+# "path:line:text" hit; '#' comments and blank lines are ignored. Add a one-line reason.

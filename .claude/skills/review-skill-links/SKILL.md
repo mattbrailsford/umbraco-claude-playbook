@@ -23,6 +23,7 @@ scripts/check-skill-refs.sh
 scripts/check-skill-wiring.sh
 scripts/check-version.sh
 scripts/check-frontmatter.sh
+scripts/check-skill-callers.sh
 ```
 
 Fix or report every failure before reading further. A failure here is a finding, not
@@ -60,6 +61,10 @@ For each skill in scope and each neighbor:
   would otherwise miss A.
 - **Stale facts after a move.** A rule that moved to a new skill but is still described
   in its old place, or a catalogue entry that now contradicts the new skill.
+- **Caller checks.** A skill that describes its caller or acts differently depending on
+  which skill started it, in wording the script didn't catch. Per `CLAUDE.md`'s "Skills
+  calling skills", the fix is an input (an argument, a file section, a value passed in);
+  the standard Hand off line is the one exception.
 - **Scope drift.** A section that no longer fits its skill's `description`.
 
 ## 4. Fix and report
