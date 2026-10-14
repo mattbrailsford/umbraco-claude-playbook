@@ -178,50 +178,110 @@ drafted for the user to approve, with up to two parts, in this order:
    frames unless the reporter used them first. Say what was understood, what happens next,
    and what's needed from them, if anything. Thank them where it fits. Never promise a fix
    date or a release.
-2. **Notes for the fix.** Only when there's something technical worth keeping: the likely
-   code area, the repro, the proven cause, related issues. Fold it away where the tracker
-   can, so the reporter sees one line they can skip: on GitHub, a `<details>` block with
-   `<summary>Notes for the fix</summary>` and a blank line after it, so the Markdown inside
-   still renders. Where the tracker has no collapsible block, use a `Notes for the fix`
-   heading. This is what whoever picks the issue up reads first; without it, the findings
-   are lost when the chat ends.
+2. **Notes.** The technical record for whoever picks the issue up next; without it, the
+   findings are lost when the chat ends. Each outcome below gives the notes' title and
+   fields. Fold the notes away where the tracker can, so the reporter sees one line they can
+   skip: on GitHub, a `<details>` block with `<summary><title></summary>` and a blank line
+   after it, so the Markdown inside still renders. Where the tracker has no collapsible
+   block, use the title as a heading.
 
-What the reporter part says, by outcome:
+Rules for the notes:
 
-- `state/needs-info`: exactly what's missing and why it's needed, asked as questions they can
-  answer without the code (steps, versions, a screenshot, a log message and where to find
-  it).
-- `state/needs-investigation`: it's been read and will be looked into, but isn't confirmed as a
-  bug yet.
-- `state/needs-decision`: the request is understood and waiting on a maintainer's decision.
-  Don't hint at the answer here; the suggestion goes in the notes.
-- `state/blocked`: what it's waiting on, with a link, and that it moves once that's fixed.
-- `state/ready`: it's confirmed, what was found in plain terms, and that it's queued for a fix.
-- Duplicate: a link to the earlier issue to follow instead.
-- Close: why, kindly. For a support question, answer it or point to the docs or forum.
-- Needs-info timeout close: there was no reply, so it's closed for now, and replying with
-  the detail will reopen it.
-- `state/in-progress` and the fix landing: drafted by `issue-resolve`, in the same two parts.
+- Every field comes from something actually checked. Write "none found" or "not checked"
+  rather than leave a field out or guess at it.
+- Add only what's new since the issue's last notes. Link back to them rather than repeat
+  them.
+- They're public even when folded, so leave out roadmap, commercial, or customer detail.
 
-For `state/needs-decision`, the second part is titled `Notes for the decision` instead, and
-holds what a maintainer needs to say yes or no:
+### By outcome
 
-- **Need:** what the reporter is trying to do, which may differ from the feature they asked
-  for.
-- **Demand:** linked duplicates and related issues, and their reaction counts.
-- **Today:** any workaround, setting, or extension point that already gets close.
-- **Already covered:** whether the CMS or another package does this.
-- **Size:** small, medium, or large, with the code area it would touch, backed by a search
-  of the code.
-- **Risks:** a breaking change, new public API to maintain, work on each supported CMS
-  major, a performance cost.
-- **Other ways:** a smaller or different way to meet the need, such as an extension point.
-- **Questions first:** anything to settle before it could be planned.
-- **Suggestion:** do it, do another way, or don't, with the one or two reasons that weigh
-  most. Label it as a suggestion; the maintainer decides. Word a "don't" kindly, since the
-  reporter can read it.
+**`state/needs-info`**
+- Reporter: exactly what's missing and why it's needed, asked as questions they can answer
+  without the code (steps, versions, a screenshot, a log message and where to find it).
+- Notes, `Notes for the next look`:
+  - **Known so far:** the symptom and setup as reported.
+  - **Checked:** what triage or investigation already looked at, and what it ruled out.
+  - **Missing:** each question asked, and what its answer would rule in or out.
+  - **Likely area:** from a search of the code, or "none found".
 
-The notes are public even when folded, so leave out roadmap, commercial, or customer detail.
+**`state/needs-investigation`**
+- Reporter: it's been read and will be looked into, but isn't confirmed as a bug yet.
+- Notes, `Notes for the investigation`:
+  - **Symptom:** expected versus actual, quoting any error word for word.
+  - **Where it runs:** CMS version, package version, database, browser, as reported.
+  - **Likely area:** from a search of the code, or "none found".
+  - **Related:** similar issues, open or closed, and how they differ.
+  - **Start with:** the first thing to check, and why.
+
+**`state/needs-decision`**
+- Reporter: the request is understood and waiting on a maintainer's decision. Don't hint at
+  the answer; the suggestion goes in the notes.
+- Notes, `Notes for the decision`:
+  - **Need:** what the reporter is trying to do, which may differ from the feature they
+    asked for.
+  - **Demand:** linked duplicates and related issues, and their reaction counts.
+  - **Today:** any workaround, setting, or extension point that already gets close.
+  - **Already covered:** whether the CMS or another package does this.
+  - **Size:** small, medium, or large, with the code area it would touch.
+  - **Risks:** a breaking change, new public API to maintain, work on each supported CMS
+    major, a performance cost.
+  - **Other ways:** a smaller or different way to meet the need, such as an extension point.
+  - **Questions first:** anything to settle before it could be planned.
+  - **Suggestion:** do it, do another way, or don't, with the one or two reasons that weigh
+    most. Label it as a suggestion; the maintainer decides. Word a "don't" kindly, since the
+    reporter can read it.
+
+**`state/blocked`**
+- Reporter: what it's waiting on, with a link, and that it moves once that's fixed.
+- Notes, `Notes on the blocker`:
+  - **Waiting on:** the upstream issue or release, linked.
+  - **Why here can't fix it:** the cause, and why it sits outside the project.
+  - **Workarounds weighed:** each one, and why it wasn't planned.
+  - **Unblocked when:** the version or change to watch for, and how to check it landed.
+  - **Then:** what's left to do here once it has.
+
+**`state/ready`**
+- Reporter: it's confirmed, what was found in plain terms, and that it's queued for a fix.
+- Notes, `Notes for the fix`. For a bug:
+  - **Repro:** exact steps, or the test that shows it.
+  - **Cause:** the cause, at file and line, and the check that proved it.
+  - **Same cause elsewhere:** each place, or "none found".
+  - **Suggested fix:** one or two lines, and the test that should guard it.
+  - **Size:** a quick fix or the full pipeline, and why.
+- For an agreed feature request:
+  - **Agreed:** what the maintainer said yes to, and anything they ruled out.
+  - **Scope:** what's in and out, and the code area it touches.
+  - **Questions left:** anything still to settle while planning.
+
+**`state/in-progress`** (drafted by `issue-resolve`)
+- Reporter: work on a fix has started.
+- Notes, `Notes on the work`:
+  - **Route:** a quick fix or the pipeline, and why.
+  - **Where:** the branch, and the plan folder if there is one.
+  - **New findings:** anything learned since the ready notes, such as `investigate-bug`'s
+    report if it ran just now.
+
+**Fix landed** (drafted by `issue-resolve`)
+- Reporter: what changed, in their terms.
+- Notes, `Notes on the fix`:
+  - **Change:** the commit or PR, linked, and the area it touched.
+  - **Guarded by:** the test that now covers it.
+  - **Left out:** anything deliberately not fixed, and any follow-up issues.
+
+**Duplicate**
+- Reporter: a link to the earlier issue to follow instead.
+- No notes. Add anything new this report showed to the earlier issue instead.
+
+**Close**
+- Reporter: why, kindly. For a support question, answer it or point to the docs or forum.
+- Notes, `Notes on the close`, only when it was looked into:
+  - **Checked:** what was tried, such as the setup it failed to reproduce on.
+  - **Reopen if:** what new detail would make it worth another look.
+
+**Needs-info timeout close**
+- Reporter: there was no reply, so it's closed for now, and replying with the detail will
+  reopen it.
+- No notes. The needs-info notes already say what's missing.
 
 A security report never gets a comment (Security reports below).
 

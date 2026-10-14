@@ -137,8 +137,7 @@ Write the report in chat:
 **If the argument was an issue ID**, draft the issue's update, following `issue-triage`'s
 State labels and Tracker comments sections:
 
-- Cause proven → `state/ready`. The reporter part says it's confirmed and queued; `Notes for
-  the fix` carries the repro, cause, and same-cause places from the report.
+- Cause proven → `state/ready`, its notes filled from the report.
 - Can't reproduce, and only the reporter can close the gap → `state/needs-info`, asking for
   what step 2 found missing.
 - Not a bug (works as designed, or a usage mistake) → a close, saying why.

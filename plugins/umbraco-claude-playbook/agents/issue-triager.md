@@ -47,8 +47,8 @@ both.
    Don't invent a priority scheme the tracker doesn't have — describe severity/urgency in
    plain terms if the tracker has no priority field.
 7. **Draft the comment** for that action, following the Tracker comments section you were
-   given: a plain part for the reporter, then `Notes for the fix` with what you found in the
-   code, if anything. Skip this for a security flag.
+   given: a plain part for the reporter, then the notes that section lists for your
+   recommended outcome. Skip this for a security flag.
 
 ## Report back
 

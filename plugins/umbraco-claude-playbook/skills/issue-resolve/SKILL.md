@@ -76,8 +76,7 @@ but the real judgment stays where it already lives:
 
 Either way, this skill hands off and waits — it does not write the fix itself. When a lane
 starts, propose moving the issue to `state/in-progress` with a comment, following
-`issue-triage`'s Tracker comments section: the reporter part says a fix has started, and
-`Notes for the fix` carries `investigate-bug`'s findings if it ran. Apply both only on the
+`issue-triage`'s Tracker comments section. Apply both only on the
 user's yes.
 
 Either way, ask the lane to fix the cause, not just the reported spot. A reported bug often has
@@ -93,8 +92,9 @@ Once the fix is committed — right after commit for `quick-fix`, or once `umb-b
 finishes and the PR is open for the pipeline route:
 
 1. If the tracker is GitHub Issues in the same repo as the code, `git-workflow`'s `Closes
-   #123` convention (in the commit/PR body) already closes it on merge — nothing further to
-   draft, just confirm the reference actually made it in.
+   #123` convention (in the commit/PR body) already closes it on merge. Confirm the reference
+   made it in, and still draft the "Fix landed" comment from `issue-triage`'s Tracker
+   comments section, so the reporter hears what changed, not just a close.
 2. Otherwise — a separate tracker, or a different repo than the source — draft a resolution
    comment following `issue-triage`'s Tracker comments section: what changed for the
    reporter, in their terms, and a link to the commit or PR. Propose a status (resolved/fixed,
