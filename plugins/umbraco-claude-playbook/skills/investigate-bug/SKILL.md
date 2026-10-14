@@ -9,9 +9,9 @@ description: >-
   writes the fix itself. Given an issue ID, also drafts the issue's next state label and a
   comment for the reporter. Use for "why is this broken", "this stopped working", "find out
   what's causing X", a failing test nobody understands, or an issue triaged as needing
-  investigation. Also runs unattended in its own worktree when `issue-backlog` dispatches it.
+  investigation. With `--unattended`, runs without asking questions, in its own worktree.
 user-invocable: true
-argument-hint: <what's going wrong, or an issue ID>
+argument-hint: <what's going wrong, or an issue ID> [--unattended]
 ---
 
 # investigate-bug
@@ -23,7 +23,7 @@ known cause and a repro, not a theory.
 ## Scope
 
 - IN: reproduce, gather evidence, narrow, prove the cause, find other places with the same
-  cause, write the report, update the issue on the user's yes, route the fix.
+  cause, write the report, draft the issue's update, suggest the route for the fix.
 - OUT: the fix itself, and any lasting change to the project's code. Scratch work (a
   throwaway test, a script, temporary logging) is allowed, but it's removed before the
   hand-off. Investigation leaves `git status` as it found it.
@@ -36,18 +36,15 @@ issue's latest triage notes.
 
 ## Running unattended
 
-When `issue-backlog` dispatches this skill in a subagent, in its own worktree, nobody is
-there to answer questions, and nothing it does can disturb the user's checkout. The steps
-below still apply, with these changes:
+`--unattended` means nobody is there to answer questions. Only pass it to a run in its own
+worktree, where nothing it does can disturb the user's checkout. The steps below still
+apply, with these changes:
 
 - **No questions.** Work from the issue and its notes. If step 1 or step 2 needs something
   only the reporter can give, stop there and suggest `state/needs-info`.
 - **No asking before `git bisect`.** The worktree is yours alone. Still end with `git bisect
   reset`.
 - **The demo site** runs on this worktree's own port (`git wdp-port`), never a fixed one.
-- **No tracker writes.** Draft step 6's label and comment, and return them with the report.
-  `issue-backlog` shows them to the user.
-- **No routing.** Skip step 6's routing list and the hand-off question.
 - **Leave the worktree clean**, as Scope says, so it's removed when you finish.
 - **A security match** still stops everything: return only the flag and the issue ID.
 
@@ -138,7 +135,7 @@ completed, an alias two extensions share), and grep for other places with the sa
 
 Remove every scratch change, end any bisect, and check `git status` matches the start.
 
-## 6. Report and route
+## 6. Report
 
 Write the report in chat:
 
@@ -152,8 +149,8 @@ Write the report in chat:
 **Route:** <quick-fix | umb-explore | upstream CMS issue>, because <one line>
 ```
 
-**If the argument was an issue ID**, draft the issue's update, following `issue-triage`'s
-State labels and Tracker comments sections:
+**If the argument was an issue ID**, also draft the issue's update, following
+`issue-triage`'s State labels and Tracker comments sections:
 
 - Cause proven → `state/ready`, its notes filled from the report.
 - Can't reproduce, and only the reporter can close the gap → `state/needs-info`, asking for
@@ -162,21 +159,16 @@ State labels and Tracker comments sections:
 - Cause is in the CMS and no package workaround is planned → `state/blocked`, linking the
   upstream issue once the user has posted it.
 
-Show the label and comment to the user and apply them only on their yes.
+Then pick the route for the fix, for the report's **Route** line:
 
-Then route it. **If `issue-resolve` called this skill and the cause is proven**, skip the
-update above and this list: hand the report back and let `issue-resolve` pick and start the
-lane. It posts one comment covering both the findings and the start of the fix. With no
-proven cause, draft the update above as normal and hand the report back.
-**If the argument was an issue ID** and nothing called this skill, offer `issue-resolve` with
-that ID and the report, so the fix gets tracked on the issue. Otherwise:
-
-- **Small fix** (one concern, the size `quick-fix` describes): offer `quick-fix`, passing it
-  the cause, the repro, and the places with the same cause.
-- **Bigger fix**, or a shared fix across several places: offer `umb-explore`, with the
-  report as its starting material.
+- **An issue ID with a proven cause:** `issue-resolve` with that ID and the report, so the
+  fix gets tracked on the issue.
+- **Small fix** (one concern, the size `quick-fix` describes): `quick-fix`, passing it the
+  cause, the repro, and the places with the same cause.
+- **Bigger fix**, or a shared fix across several places: `umb-explore`, with the report as
+  its starting material.
 - **CMS bug:** draft an issue for `umbraco/Umbraco-CMS` with the minimal repro on a plain
-  site. Show it to the user; never post it yourself. Route any package workaround as above.
+  site, never posting it yourself. Route any package workaround as above.
 
 If the cause is a mistake a future `builder` would likely repeat, offer to save it to
 `.claude/memory/` as a `gotcha` (see `.claude/memory/README.md` for the format).
@@ -186,11 +178,14 @@ If the cause is a mistake a future `builder` would likely repeat, offer to save 
 - No fix before a proven cause. A guessed fix gets reported as a guess, not shipped.
 - One bug per run.
 - Evidence beats memory. Quote the log line, response, or source line behind every claim.
-- Never commit from this skill. The only tracker write is the label and comment from step
-  6, and only on the user's yes.
+- Never commit from this skill. Never write to the tracker either: the update is a draft,
+  applied only as the Hand off says.
 
 ## Hand off
 
-The report from step 6. Called from `issue-resolve`: stop there. Called from
-`issue-backlog`: the report and the drafted update, as Running unattended says. Otherwise:
-the route you'd take and a one-line question asking whether to start it.
+The report, the drafted update if there is one, and the route.
+
+- **If another skill started this one**, return those and stop. That skill decides what to
+  apply and what runs next.
+- **Otherwise**, show the drafted update and apply it only on the user's yes. Then offer the
+  route as a one-line question.

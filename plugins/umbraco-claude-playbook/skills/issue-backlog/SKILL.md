@@ -79,8 +79,7 @@ show the board again and pick again, until the user stops or nothing is left to 
    for each issue, in order.
 3. **Dispatch.** Up to three at a time, unless the user asks for a different number. Each
    one is an Agent tool call with `isolation: "worktree"`, told to invoke `investigate-bug`
-   (Skill tool) with the issue ID, saying it was called from `issue-backlog`, so it follows
-   that skill's Running unattended section. Send a batch as parallel calls in one message.
+   (Skill tool) with the issue ID and `--unattended`. Send a batch as parallel calls in one message.
 4. **Gather.** Pull any security flag into its own list, handled as `issue-triage`'s
    Security reports section says. Show one table for the rest: issue, outcome
    (`state/ready`, `state/needs-info`, `state/blocked`, or a close), the cause in one line,
@@ -92,8 +91,7 @@ show the board again and pick again, until the user stops or nothing is left to 
 
 1. Sort the `state/ready` issues the same way as the investigation queue, and show the order.
    The user can pick a different one.
-2. Invoke `issue-resolve` (Skill tool) for the first one, saying it was called from
-   `issue-backlog`. One at a time: a fix leaves real changes for the user to review, so it
+2. Invoke `issue-resolve` (Skill tool) for the first one. One at a time: a fix leaves real changes for the user to review, so it
    never runs in parallel.
 3. When `issue-resolve` hands back, show the board again and offer the next ready issue.
 

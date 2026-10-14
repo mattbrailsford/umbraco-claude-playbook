@@ -112,6 +112,19 @@ checklist.
   the real entry point → grep for ghost code → multi-version/provider parity → verdict.
 - `issue-triager` is likewise read-only and report-only.
 
+## Skills calling skills
+
+A skill's behavior depends on what it's given, never on which skill started it.
+
+- Different behavior comes from an input: an argument (`investigate-bug --unattended`), a
+  file section (`BRIEF.md`'s `Repro`), or a value passed in (a repro, a drafted update).
+- A skill that another skill may start drafts its tracker writes and hands them back; only
+  its Hand off applies them.
+- The one allowed difference is the end of the Hand off, worded the same everywhere: "If
+  another skill started this one, return <result> and stop. That skill decides what runs
+  next." Otherwise it offers the next step.
+- Don't tell a skill who called it ("saying it was called from X"). Pass the input instead.
+
 ## Committing in this repo
 
 Follow the `git-workflow` skill this repo ships: Conventional Commits, branch by change
