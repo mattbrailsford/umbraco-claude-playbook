@@ -98,8 +98,9 @@ Show the user what each step will change and wait for a yes before step 4.
      belongs in the nested `CLAUDE.md` from step 2.
    - **In a `CLAUDE.md`, memory, or reference docs:** point it at the home from step 2.
 
-   If nothing in step 2 fits, step 2 missed something: go back. Links from other live plan
-   folders just change to the archive path.
+   If nothing in step 2 fits, step 2 missed something: go back. Plans and ideas refer to
+   each other by name, so they need no fixing. An old path link in another plan is history:
+   leave it.
 
 4. **Move the folder.** `git mv <plans-path>/<feature-slug> <archive-path>/plans/<feature-slug>`.
    Links inside the folder are relative, so they still work.

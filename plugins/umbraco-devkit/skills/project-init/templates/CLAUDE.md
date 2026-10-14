@@ -53,6 +53,10 @@ something was done, never as current design. A decision that outlives its featur
 - **Docs that last never link into the plans or archive folders.** Any `CLAUDE.md`,
   `.claude/memory/`, and reference docs link to each other instead.
 
+A plan's folder name is its name (and its branch name). One plan or idea refers to another by
+name alone, never by path, so archiving either breaks nothing; to find a plan, look in the
+plans folder, then the archive.
+
 **Branch/worktree per feature:** new features start from `[trunk branch — the repo's default
 branch, or a long-lived vN/dev line for a branch-per-major project]`. Plan-folder files stay
 uncommitted through `feature-explore`/`feature-design`/`feature-plan`. `feature-build` commits the plan

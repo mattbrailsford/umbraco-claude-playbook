@@ -65,7 +65,8 @@ Something worth doing later, but not being planned yet, goes in `docs/ideas/` as
 and gets committed so the team can see it. No template and no status: ideas stay quick.
 `feature-explore` can start from one, and the brief records which part of the idea it builds.
 An idea can feed more than one feature. Everything refers to an idea by its file name alone,
-never its path, so it can move to the archive without breaking anything.
+never its path, so it can move to the archive without breaking anything. Plans work the same
+way: a plan's folder name is its name, and other plans refer to it by that.
 
 ### When a plan closes
 
