@@ -118,7 +118,8 @@ build it once as a shared component.
 - **Labels and names** say what the thing is or does, in the same casing as the labels around
   them. Replace placeholder names ("Dashboard", "Settings") with real ones ("Usage").
 - **Every user-facing string is localized**, including `aria-label`, `title` and placeholder
-  text, and is checked to render the text, not the raw key.
+  text, and is checked to render the text, not the raw key. How to localize: the official
+  `umbraco-localization` skill. How to organize the keys: `umbraco-backoffice-conventions`.
 - **Table columns earn their width.** Drop a column whose value can sit in a tooltip, a tag on
   another column, or a detail view.
 - **New settings go in the group they belong to** on an existing editor, not in a new group of
