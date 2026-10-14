@@ -104,8 +104,9 @@ few hundred subagent calls, and that's worth flagging before it runs.
 
 Every dispatch gets: the issue ID, the tracker's type/location/access method, the repo path,
 any dedup-pre-pass hint for that issue, why it's back if it already had a state label (a
-reply, the needs-info timeout, or a closed blocker), the "What counts" list from Security reports
-below, the "Which state" rules from State labels, and the Tracker comments section. The triager searches the tracker itself, open and closed, for earlier duplicates.
+reply, the needs-info timeout, or a closed blocker), the "What counts" list from Security
+reports below, the "Which state" rules from State labels, and the Tracker comments section.
+The triager searches the tracker itself, open and closed, for earlier duplicates.
 
 ## Aggregating and reporting
 
@@ -221,8 +222,8 @@ Rules for the notes:
 
 **`state/needs-info`**
 - Reporter: exactly what's missing and why it's needed, asked as questions they can answer
-  without the code (steps, versions, a screenshot, a log message and where to find it). If the
-  question points at a log or setting, check the code first that it's really there to find.
+  without the code (steps, versions, a screenshot, a log message and where to find it),
+  checked as "Which state" says.
 - Notes, `Notes for the next look`:
   - **Known so far:** the symptom and setup as reported.
   - **Checked:** what triage or investigation already looked at, and what it ruled out.
