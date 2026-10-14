@@ -1,29 +1,31 @@
 ---
 name: issue-backlog
 description: >-
-  Works a tracker's open issues through to `state/ready`, one stage at a time: triage the new
-  ones, get the maintainer's call on the ones waiting for a decision, then investigate the
-  unproven bugs in parallel subagents, each in its own worktree. Shows how many issues sit in
-  each state, suggests the next stage, and runs it through the skill that owns it. Use for
-  "work through the backlog", "get the issues ready", "what's next on the tracker". For one
-  issue, use `issue-triage` or `investigate-bug` directly.
+  The entry point for working a tracker's open issues from new to fixed, one stage at a time:
+  triage the new ones, get the maintainer's call on the ones waiting for a decision,
+  investigate the unproven bugs in parallel subagents, each in its own worktree, then start
+  fixes one issue at a time. Shows how many issues sit in each state, suggests the next stage,
+  and runs it through the skill that owns it. Use for "work through the backlog", "get the
+  issues ready", "what's next on the tracker". For one known issue, use `issue-triage`,
+  `investigate-bug`, or `issue-resolve` directly.
 user-invocable: true
-argument-hint: [stage to start at: triage | decisions | investigate, optional]
+argument-hint: [stage to start at: triage | decisions | investigate | fix, optional]
 ---
 
 # issue-backlog
 
-The front door for getting a tracker from "a pile of issues" to "a list of things ready to
-fix." It doesn't triage, decide, or investigate anything itself. It shows where every open
-issue stands, picks the next stage, and hands that stage to the skill that owns it.
+The front door for getting a tracker from "a pile of issues" to "fixed." It doesn't triage,
+decide, investigate, or fix anything itself. It shows where every open issue stands, picks
+the next stage, and hands that stage to the skill that owns it.
 
 ## Scope
 
 - IN: count issues by state, suggest the next stage, run it through its owning skill, run
   investigations in parallel and gather their results, apply the tracker updates the user
-  approves.
-- OUT: triage judgments (`issue-triage`), proving a cause (`investigate-bug`), fixing
-  (`issue-resolve`), and any tracker write the user hasn't approved.
+  approves, start fixes one at a time.
+- OUT: triage judgments (`issue-triage`), proving a cause (`investigate-bug`), the fix itself
+  and its tracker updates (`issue-resolve`), and any tracker write the user hasn't
+  approved.
 
 ## Preflight
 
@@ -52,13 +54,13 @@ The first row with anything in it, in this order, unless the argument names a st
    because it's quick and it feeds every other row.
 2. **Needs decision** → invoke `issue-triage` with `decisions`. It's quick, and it needs the
    user, who is here now.
-3. **Needs investigation** → the investigation stage below. It's the slow one, so it goes
-   last.
-4. **Nothing left** → everything is ready, in progress, or waiting on someone else. Say so,
-   and list the ready issues for `issue-resolve`.
+3. **Needs investigation** → the investigation stage below. It's slower, so it comes after
+   the quick stages.
+4. **Ready** → the fix stage below. Fixing comes last because every stage above feeds it.
+5. **Nothing left** → everything is in progress or waiting on someone else. Say so.
 
 Say which stage is next and why in one line, and run it on the user's yes. When it finishes,
-show the board again and pick again, until the user stops or only Ready and Waiting are left.
+show the board again and pick again, until the user stops or nothing is left to act on.
 
 ## The investigation stage
 
@@ -80,19 +82,29 @@ show the board again and pick again, until the user stops or only Ready and Wait
    (Skill tool) with the issue ID, saying it was called from `issue-backlog`, so it follows
    that skill's Running unattended section. Send a batch as parallel calls in one message.
 4. **Gather.** Pull any security flag into its own list, handled as `issue-triage`'s
-   Security reports section says. Show one table for the rest: issue, outcome (`ready`,
-   `needs-info`, `blocked`, close), the cause in one line, and the drafted comment.
+   Security reports section says. Show one table for the rest: issue, outcome
+   (`state/ready`, `state/needs-info`, `state/blocked`, or a close), the cause in one line,
+   and the drafted comment.
 5. **Apply** exactly the updates the user approves, as `issue-triage`'s Aggregating and
    reporting section does.
+
+## The fix stage
+
+1. Sort the `state/ready` issues the same way as the investigation queue, and show the order.
+   The user can pick a different one.
+2. Invoke `issue-resolve` (Skill tool) for the first one, saying it was called from
+   `issue-backlog`. One at a time: a fix leaves real changes for the user to review, so it
+   never runs in parallel.
+3. When `issue-resolve` hands back, show the board again and offer the next ready issue.
 
 ## Rules
 
 - Never write to the tracker without the user's yes, as `issue-triage`'s Rules say.
-- Never fix anything. Ready issues go to `issue-resolve`, one at a time.
+- Never fix anything itself. Ready issues go to `issue-resolve`, one at a time.
 - Never run the next stage without saying what it is and getting a yes. A stage can mean
   dozens of subagents.
 
 ## Hand off
 
-The board, and the ready issues for `issue-resolve`, most important first, sorted the same
-way as the investigation queue.
+The board, and what's still open: issues in progress, and issues waiting on a reporter or
+an upstream fix.

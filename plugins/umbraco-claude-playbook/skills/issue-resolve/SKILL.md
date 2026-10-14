@@ -5,7 +5,8 @@ description: >-
   mechanism its size warrants — `quick-fix` for something small, the full `umb-explore` →
   `umb-design` → `umb-plan` → `umb-build-loop` pipeline for anything bigger. Triages the issue
   first if `issue-triage` hasn't already. Drafts, never posts, the tracker resolution once the
-  fix lands. Use once you've seen an `issue-triage` report and decided to act on one issue.
+  fix lands. Use once you've seen an `issue-triage` report and decided to act on one issue,
+  or when `issue-backlog` starts the next ready one.
 user-invocable: true
 argument-hint: <issue ID> [notes on how you want it fixed, optional]
 ---
@@ -116,4 +117,5 @@ finishes and the PR is open for the pipeline route:
 
 Report which lane it took (`quick-fix` or the pipeline) and why, then whatever that lane's own
 hand-off says. Once code is committed, report the draft tracker resolution and wait for
-confirmation before posting it.
+confirmation before posting it. If `issue-backlog` called this skill, hand back to it once
+the resolution is posted or declined, so it can offer the next issue.

@@ -17,8 +17,8 @@ These helpers come before a flow, never instead of one. None of them writes code
 
 - `investigate-bug` proves a bug's cause, then says which flow should fix it.
 - `issue-triage` reads tracker issues and recommends what to act on.
-- `issue-backlog` works the open issues through triage, decisions, and investigation until
-  they're ready to fix.
+- `issue-backlog` works the open issues through triage, decisions, and investigation, then
+  starts fixes one issue at a time through `issue-resolve`.
 - `issue-resolve` sends one triaged issue to `quick-fix` or the pipeline.
 
 You don't have to pick. Describe what you want and Claude picks the skill from its
