@@ -70,8 +70,11 @@ the tables below.
 ### Build a feature
 
 Four steps, each writing its own files in the feature's folder, `docs/plans/<feature-slug>/`.
-Re-run any step to refine its files. Not ready to plan yet? Ask Claude to write the idea up in
-`docs/ideas/` and commit it; `/feature-explore` can start from it later.
+Re-run any step to refine its files. Once the PR is merged, `/feature-close` moves the folder
+to `docs/archive/plans/`, so `docs/plans/` only holds live work.
+
+Not ready to plan yet? Ask Claude to write the idea up in `docs/ideas/` and commit it;
+`/feature-explore` can start from it later.
 
 | Step | Run |
 |---|---|
@@ -150,8 +153,8 @@ You don't run these. The skills above and the agents load them when the work nee
 
 ## How it works
 
-[docs/HOW-IT-WORKS.md](./docs/HOW-IT-WORKS.md) covers the plan folder, the review gate,
-project memory, branches and worktrees, and what to build on top.
+[docs/HOW-IT-WORKS.md](./docs/HOW-IT-WORKS.md) covers the plan folder, ideas and the archive,
+the review gate, project memory, branches and worktrees, and what to build on top.
 
 ## Contributing
 
