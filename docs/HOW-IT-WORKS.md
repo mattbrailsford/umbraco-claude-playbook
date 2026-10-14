@@ -1,25 +1,30 @@
 # How it works
 
-The ideas behind the devkit, for when you want more than the
-[README](../README.md) and [QUICKSTART](../QUICKSTART.md) give you.
+The ideas behind the devkit, for when you want more than the [README](../README.md) gives
+you.
 
-## Three flows
+## How the skills connect
 
-Work gets built in one of three flows:
+Code only changes through one of three flows, and all three go through the
+[builder/reviewer gate](#the-builderreviewer-gate) (`quick-fix` skips it for a text-only
+change):
 
-- **The pipeline**, `feature-explore` → `feature-design` → `feature-plan` → `feature-build`, for a
-  feature or any fix too big to do in one go.
+- **The pipeline**, `feature-explore` → `feature-design` → `feature-plan` →
+  `feature-build`, for a feature or any fix too big to do in one go.
 - **`quick-fix`**, for a small fix of one concern. It hands over to the pipeline if the fix
   turns out bigger.
 - **`major-upgrade`**, for moving to a new Umbraco major.
 
-These helpers come before a flow, never instead of one. None of them writes code:
+Every other skill you run works around those flows and never changes code itself:
 
-- `investigate-bug` proves a bug's cause, then says which flow should fix it.
-- `issue-triage` reads tracker issues and recommends what to act on.
-- `issue-backlog` works the open issues through triage, decisions, and investigation, then
-  starts fixes one issue at a time through `issue-resolve`.
-- `issue-resolve` sends one triaged issue to `quick-fix` or the pipeline.
+- **Finds the work and routes it.** `investigate-bug` proves a bug's cause, then says which
+  flow should fix it. `issue-triage`, `issue-backlog`, and `issue-resolve` take tracker
+  issues from new to a started fix.
+- **Reviews and explains it.** `pr-review` runs the same reviewer over a PR from outside the
+  team. `decision-review` pulls out what a human should look at after a build.
+  `pr-describe` writes the PR description.
+- **Sets up and ships.** `project-init` prepares a project, `git-remote` its first public
+  repo, and `umbraco-marketplace` its Marketplace listing.
 
 You don't have to pick. Describe what you want and Claude picks the skill from its
 description.
@@ -103,19 +108,3 @@ needs:
 - **Project-specific scaffolding.** Every non-trivial project ends up with a few of these.
 
 Add them when the need shows up, not on day one.
-
-## This repo's layout
-
-The repo is both a Claude Code marketplace and the one plugin it lists:
-
-```
-umbraco-devkit/
-├── .claude-plugin/marketplace.json       # lists the plugin below
-├── plugins/umbraco-devkit/
-│   ├── .claude-plugin/plugin.json        # the plugin's own manifest
-│   ├── skills/                           # one folder per skill
-│   └── agents/                           # builder, reviewer, issue-triager
-├── settings.example.json                 # optional, copy by hand, not installed
-├── scripts/                              # repo checks, not shipped
-└── docs/                                 # this file, PR example images
-```
