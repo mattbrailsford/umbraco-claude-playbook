@@ -9,6 +9,9 @@
 
 claude-playbook         # Rob Conery's original template, credited in the README, not a skill
 dotnet-conventions      # old, renamed name — cited deliberately as a drift example in CLAUDE.md
+issue-close             # hypothetical name, an example in CLAUDE.md's naming rules
+close-issue             # deliberately wrong name, an example in CLAUDE.md's naming rules
+build-loop              # deliberately wrong name, an example in CLAUDE.md's naming rules
 opinionated-package-starter  # Lotte Pitcher's dotnet new template, referenced in project-init
 umbraco-document        # a hypothetical future skill project-init's README stub gestures at
 umbraco-extension       # the official `dotnet new umbraco-extension` core template
