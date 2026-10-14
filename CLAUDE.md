@@ -6,8 +6,8 @@ This repo is a Claude Code plugin marketplace plus the one plugin it lists: a fe
 pipeline, a builder/reviewer gate, and stack-knowledge skills for Umbraco package
 and backoffice extension development (C#/.NET, EF Core, Lit + UUI).
 
-New here? `README.md` says what each skill does, `docs/HOW-IT-WORKS.md` says how the pipeline
-fits together, and "Skill families and naming" below says where a capability lives.
+New here? `README.md` says what each skill does, `docs/HOW-IT-WORKS.md` says how the skills
+fit together, and "Skill families and naming" below says where a capability lives.
 
 ## Layout
 
@@ -20,9 +20,9 @@ plugins/umbraco-devkit/
 settings.example.json   # copy-by-hand example for consumers; NOT installed by the plugin
 scripts/                # check-*.sh + their allowlists; repo-only, not shipped
 .claude/skills/review-skill-links/  # repo-only skill: cross-reference review; not shipped
-docs/HOW-IT-WORKS.md    # human explainer: plan folder, gate, memory, branches
+docs/HOW-IT-WORKS.md    # human explainer: how skills connect, plan folder, gate, memory, branches
 docs/pr-examples/       # images used in PR descriptions; not shipped
-README.md, QUICKSTART.md  # human-facing; see "Human docs" below
+README.md               # human-facing; see "Human docs" below
 ```
 
 ## Skill families and naming
@@ -91,21 +91,23 @@ refer to the consumer project, not this repo.
   - Patch: edits to an existing skill/agent/template.
   - Minor: a new skill or agent.
   - Major: renaming or removing a skill, or any other change to what a user types.
-- Skip the bump only for files that never ship: this file, `README.md`, `QUICKSTART.md`,
-  `docs/`, `scripts/`, `settings.example.json`, CI config.
+- Skip the bump only for files that never ship: this file, `README.md`, `docs/`, `scripts/`,
+  `settings.example.json`, CI config.
 
 ## Human docs: keep them in sync
 
-- `README.md` is a short shop window. It lists every skill once, grouped, with a one-line
-  description and a link to its `SKILL.md`. Detail belongs in `docs/HOW-IT-WORKS.md` or the
-  skill itself, not the README.
-- `QUICKSTART.md` is install + `project-init` + the five pipeline commands + `quick-fix`.
-- `docs/HOW-IT-WORKS.md` explains the plan folder, the gate, project memory, branches and
-  worktrees, and what to build on top.
-- When adding, renaming, or removing a skill or agent: update the README tables and
-  `docs/HOW-IT-WORKS.md`'s layout block if affected.
+- `README.md` is the one entry point: what the plugin covers, install and setup, then every
+  skill and agent once, with a one-line description and a link. Skills a user runs
+  (`user-invocable: true`) go under "What you can do", grouped by job; the rest go under
+  "What works in the background". Detail belongs in `docs/HOW-IT-WORKS.md` or the skill
+  itself, not the README.
+- `docs/HOW-IT-WORKS.md` explains how the skills connect (the three flows that change code,
+  and what every other skill does around them), the plan folder, the gate, project memory,
+  branches and worktrees, and what to build on top.
+- When adding, renaming, or removing a skill or agent: update the README tables, and
+  HOW-IT-WORKS's "How the skills connect" if it's a skill a user runs.
 - When changing pipeline behavior (file ownership, when git is touched, what `project-init`
-  asks): check QUICKSTART and HOW-IT-WORKS still describe it correctly.
+  asks): check the README and HOW-IT-WORKS still describe it correctly.
 - Don't hard-code counts (number of skills, number of official Backoffice Skills). They drift.
 
 ## Architecture: one plan folder per feature, one file per owner

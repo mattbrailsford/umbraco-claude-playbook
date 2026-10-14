@@ -1,73 +1,125 @@
 # Umbraco Devkit
 
-A Claude Code plugin for building Umbraco packages and backoffice extensions: C# / .NET
-backend, EF Core persistence, Lit + UUI backoffice frontend.
+A Claude Code plugin for the whole life of an Umbraco package or backoffice extension:
+setting it up, building features, fixing bugs, running the issue tracker, reviewing pull
+requests, upgrading to a new CMS major, and publishing. C# / .NET backend, EF Core
+persistence, Lit + UUI backoffice frontend.
 
-- **A five-step feature pipeline.** Explore, design, plan, then build, one file per step in a
-  per-feature folder.
-- **A builder/reviewer gate.** Every task is built by one agent and checked by a read-only
-  reviewer that runs the build and tests before anything is committed.
-- **Stack knowledge.** Skills for the C#, EF Core, and Lit + UUI idioms Umbraco itself uses,
-  read against the real CMS source and docs for the version you target.
+Three things run through all of it:
+
+- **Every code change is reviewed.** One agent builds, a read-only reviewer checks the diff,
+  build, and tests before anything is committed. Features, fixes, and upgrades all go
+  through it.
+- **Umbraco knowledge, loaded when it's needed.** Skills for the C#, EF Core, and Lit + UUI
+  idioms Umbraco itself uses, read against the real CMS source and docs for the version you
+  target.
+- **It asks before it touches git or your tracker.** Plans and drafts stay on disk until you
+  say yes.
 
 **This is a foundation, not a finished house.** Drop it into a new package or add-on and
 build on it as the project grows.
 
 ## Get started
 
-Install it from inside your Umbraco project, then run:
+**1. Install.** From inside your Umbraco project:
 
-```
-/project-init     # one-time setup wizard
-/feature-explore  # what are we building, and for whom?
-/feature-design   # extension points, data model, API, mockups
-/feature-plan     # stories and an ordered task list
-/feature-build    # build, review, commit, task by task
+```bash
+# This devkit.
+claude plugin marketplace add https://github.com/mattbrailsford/umbraco-devkit --scope project
+claude plugin install umbraco-devkit@umbraco-devkit --scope project
+
+# The official Umbraco backoffice extension-point skills.
+claude plugin marketplace add https://github.com/umbraco/Umbraco-CMS-Backoffice-Skills.git#main --scope project
+claude plugin install umbraco-cms-backoffice-skills@umbraco-backoffice-marketplace --scope project
 ```
 
-Which flow fits:
+The second plugin, the official
+[Umbraco Backoffice Skills](https://github.com/umbraco/Umbraco-CMS-Backoffice-Skills), covers
+the individual backoffice extension points; this devkit works alongside it.
+
+The backoffice skills follow the CMS major. `#main` is the latest major. If your project
+targets an older one, swap `#main` for `#v<major>/main` (for example `#v17/main`). The
+backoffice API changes between majors, so the wrong line gives confidently wrong code.
+
+You can also run the same commands inside Claude Code as `/plugin marketplace add ...` and
+`/plugin install ...`.
+
+**Optional:** copy [`settings.example.json`](./settings.example.json) to your project's
+`.claude/settings.json` and uncomment the permissions and hooks you want. It isn't installed
+with the plugin, because what to allow is your call.
+
+**2. Set up the project.** Inside Claude Code, run `/project-init`. It's a wizard that asks
+before each step. Run it again any time to fill gaps. When it's done, open `CLAUDE.md` and
+check the **Stack** section: the CMS version(s) you target and the database(s) you support
+should be filled in, with no `TODO` left. Many skills and the reviewer's checks depend on
+them.
+
+**3. Ask for what you want.** Describe it ("add a dashboard that...", "why does saving fail
+when...", "triage the new issues") and the right skill picks it up. Or run one yourself from
+the tables below.
+
+## What you can do
+
+### Set up
 
 | I want to... | Run |
 |---|---|
-| Build a new feature | `/feature-explore`, then the steps above |
-| Make a small, obvious fix | `/quick-fix` |
-| Find out why something is broken | `/investigate-bug` |
-| Move to a new Umbraco major version | `/major-upgrade` |
-| Work the issue backlog, from new to fixed | `/issue-backlog` |
-| Sort through new issues | `/issue-triage` |
-| Fix one triaged tracker issue | `/issue-resolve` |
+| Set up a project for this devkit: `CLAUDE.md`, ports, lint, tests, CMS source and docs | [`/project-init`](plugins/umbraco-devkit/skills/project-init/SKILL.md) |
+| Push a new package to GitHub for the first time: README, LICENSE, CONTRIBUTING | [`/git-remote`](plugins/umbraco-devkit/skills/git-remote/SKILL.md) |
 
-You don't have to type the commands. Describe what you want ("I want to add a dashboard
-that...") and the right skill picks it up.
+### Build a feature
 
-**[QUICKSTART.md](./QUICKSTART.md)** has the install commands and a short walkthrough.
+Four steps, each writing its own files in the feature's folder, `docs/plans/<feature-slug>/`.
+Re-run any step to refine its files.
 
-## What's included
-
-**Pipeline:**
-[`project-init`](plugins/umbraco-devkit/skills/project-init/SKILL.md),
-[`feature-explore`](plugins/umbraco-devkit/skills/feature-explore/SKILL.md),
-[`feature-design`](plugins/umbraco-devkit/skills/feature-design/SKILL.md),
-[`feature-plan`](plugins/umbraco-devkit/skills/feature-plan/SKILL.md),
-[`feature-build`](plugins/umbraco-devkit/skills/feature-build/SKILL.md), with the
-[`builder`](plugins/umbraco-devkit/agents/builder.md) and
-[`reviewer`](plugins/umbraco-devkit/agents/reviewer.md) agents.
-
-**Smaller jobs:**
-
-| Skill | What it's for |
+| Step | Run |
 |---|---|
-| [`quick-fix`](plugins/umbraco-devkit/skills/quick-fix/SKILL.md) | A fix too small for the pipeline, still reviewed |
-| [`investigate-bug`](plugins/umbraco-devkit/skills/investigate-bug/SKILL.md) | Find and prove a bug's cause, then route the fix (issue updates only on your yes) |
-| [`major-upgrade`](plugins/umbraco-devkit/skills/major-upgrade/SKILL.md) | Move the package to a new Umbraco major, task by task, still reviewed |
-| [`issue-triage`](plugins/umbraco-devkit/skills/issue-triage/SKILL.md) | Classify and duplicate-check tracker issues (report only), with the [`issue-triager`](plugins/umbraco-devkit/agents/issue-triager.md) agent |
-| [`issue-backlog`](plugins/umbraco-devkit/skills/issue-backlog/SKILL.md) | Work open issues through triage, decisions, investigation, and fixes |
-| [`issue-resolve`](plugins/umbraco-devkit/skills/issue-resolve/SKILL.md) | Route a triaged issue into `quick-fix` or the pipeline |
-| [`pr-describe`](plugins/umbraco-devkit/skills/pr-describe/SKILL.md) | Write the PR description, with diagrams and screenshots |
-| [`pr-review`](plugins/umbraco-devkit/skills/pr-review/SKILL.md) | Review a PR from outside the core team on a package repo |
-| [`decision-review`](plugins/umbraco-devkit/skills/decision-review/SKILL.md) | Pull out the assumptions and workarounds worth a human look |
-| [`git-remote`](plugins/umbraco-devkit/skills/git-remote/SKILL.md) | Set up a new GitHub repo: README, LICENSE, CONTRIBUTING |
-| [`umbraco-marketplace`](plugins/umbraco-devkit/skills/umbraco-marketplace/SKILL.md) | Get a finished package listed on the Umbraco Marketplace |
+| What are we building, and for whom? | [`/feature-explore`](plugins/umbraco-devkit/skills/feature-explore/SKILL.md) |
+| Extension points, data model, API, mockups of new screens | [`/feature-design`](plugins/umbraco-devkit/skills/feature-design/SKILL.md) |
+| Stories and an ordered task list | [`/feature-plan`](plugins/umbraco-devkit/skills/feature-plan/SKILL.md) |
+| Build, review, and commit, task by task | [`/feature-build`](plugins/umbraco-devkit/skills/feature-build/SKILL.md) |
+| See the assumptions and workarounds worth a human look | [`/decision-review`](plugins/umbraco-devkit/skills/decision-review/SKILL.md) |
+
+### Fix something
+
+| I want to... | Run |
+|---|---|
+| Make a small, obvious fix, still reviewed | [`/quick-fix`](plugins/umbraco-devkit/skills/quick-fix/SKILL.md) |
+| Find and prove why something is broken, then route the fix | [`/investigate-bug`](plugins/umbraco-devkit/skills/investigate-bug/SKILL.md) |
+
+### Work the issue tracker
+
+| I want to... | Run |
+|---|---|
+| Work open issues from new to fixed, one stage at a time | [`/issue-backlog`](plugins/umbraco-devkit/skills/issue-backlog/SKILL.md) |
+| Classify and duplicate-check new issues (report only) | [`/issue-triage`](plugins/umbraco-devkit/skills/issue-triage/SKILL.md) |
+| Send one triaged issue to the right fix | [`/issue-resolve`](plugins/umbraco-devkit/skills/issue-resolve/SKILL.md) |
+
+### Pull requests
+
+| I want to... | Run |
+|---|---|
+| Write the PR description, with diagrams and screenshots | [`/pr-describe`](plugins/umbraco-devkit/skills/pr-describe/SKILL.md) |
+| Review a PR from outside the core team | [`/pr-review`](plugins/umbraco-devkit/skills/pr-review/SKILL.md) |
+
+### Upgrade and publish
+
+| I want to... | Run |
+|---|---|
+| Move to a new Umbraco major, task by task, still reviewed | [`/major-upgrade`](plugins/umbraco-devkit/skills/major-upgrade/SKILL.md) |
+| Get a finished package listed on the Umbraco Marketplace | [`/umbraco-marketplace`](plugins/umbraco-devkit/skills/umbraco-marketplace/SKILL.md) |
+
+## What works in the background
+
+You don't run these. The skills above and the agents load them when the work needs them.
+
+**Agents:**
+
+| Agent | What it does |
+|---|---|
+| [`builder`](plugins/umbraco-devkit/agents/builder.md) | Builds one task at a time |
+| [`reviewer`](plugins/umbraco-devkit/agents/reviewer.md) | Checks every diff, read-only, before it's committed |
+| [`issue-triager`](plugins/umbraco-devkit/agents/issue-triager.md) | Reads and classifies tracker issues, read-only |
 
 **Umbraco knowledge:**
 
@@ -94,21 +146,17 @@ that...") and the right skill picks it up.
 | [`git-workflow`](plugins/umbraco-devkit/skills/git-workflow/SKILL.md) | Commits, branches, and asking before touching `main` |
 | [`plain-writing`](plugins/umbraco-devkit/skills/plain-writing/SKILL.md) | How every document a person reads gets written |
 
-It works alongside the official
-[Umbraco Backoffice Skills](https://github.com/umbraco/Umbraco-CMS-Backoffice-Skills)
-plugin, which covers the individual backoffice extension points.
-
 ## How it works
 
-Each feature gets one folder, `docs/plans/<feature-slug>/`. Each step owns its own file in
-it, so re-running a step refines its file and never clobbers another's.
-[docs/HOW-IT-WORKS.md](./docs/HOW-IT-WORKS.md) covers the folder, project memory, branches
-and worktrees, and what to build on top.
+[docs/HOW-IT-WORKS.md](./docs/HOW-IT-WORKS.md) covers the plan folder, the review gate,
+project memory, branches and worktrees, and what to build on top.
 
 ## Contributing
 
 Issues and PRs welcome. This repo follows its own
 [`git-workflow`](plugins/umbraco-devkit/skills/git-workflow/SKILL.md) skill.
+[CLAUDE.md](./CLAUDE.md) has the repo layout, the checks to run, and the rules for naming and
+editing skills.
 
 ## License
 
