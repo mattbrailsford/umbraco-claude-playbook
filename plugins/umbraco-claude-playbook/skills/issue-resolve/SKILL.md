@@ -54,11 +54,13 @@ draft, never a live action.
 Use the triage's own read of size (`recommended action`, `likely area`) as the starting call,
 but the real judgment stays where it already lives:
 
-- **Cause unknown** — a bug where neither the triage nor the user's notes say what's causing
-  it → invoke `investigate-bug` (Skill tool) with the issue first, saying it was called from
+- **Cause unknown** — a `state/needs-investigation` issue, whatever the user's notes say, or
+  any bug where neither the triage nor the user's notes say what's causing it → invoke
+  `investigate-bug` (Skill tool) with the issue first, saying it was called from
   `issue-resolve`. It reports back without starting a lane. Its report names the cause and a
   suggested lane; take that as the starting call below, and pass the report on as the lane's
-  starting material.
+  starting material. If it couldn't prove a cause, stop: no lane starts, and
+  `investigate-bug` has already drafted the issue's update.
 
 - **Looks small** — a single concern, the kind `quick-fix`'s own scope section describes →
   invoke `quick-fix` (Skill tool) with a description built from the issue's title/body, the
@@ -72,7 +74,10 @@ but the real judgment stays where it already lives:
   runs: `umb-explore` → `umb-design` → `umb-plan` → `umb-build-loop`.
 
 Either way, this skill hands off and waits — it does not write the fix itself. When a lane
-starts, propose moving the issue to `state/in-progress` and apply it only on the user's yes.
+starts, propose moving the issue to `state/in-progress` with a comment, following
+`issue-triage`'s Tracker comments section: the reporter part says a fix has started, and
+`Notes for the fix` carries `investigate-bug`'s findings if it ran. Apply both only on the
+user's yes.
 
 Either way, ask the lane to fix the cause, not just the reported spot. A reported bug often has
 siblings with the same cause (other endpoints missing the same check, other components with
@@ -90,7 +95,8 @@ finishes and the PR is open for the pipeline route:
    #123` convention (in the commit/PR body) already closes it on merge — nothing further to
    draft, just confirm the reference actually made it in.
 2. Otherwise — a separate tracker, or a different repo than the source — draft a resolution
-   comment: what changed, and a link to the commit or PR. Propose a status (resolved/fixed,
+   comment following `issue-triage`'s Tracker comments section: what changed for the
+   reporter, in their terms, and a link to the commit or PR. Propose a status (resolved/fixed,
    pending release, needs the reporter to confirm) using whatever states that tracker actually
    has; don't invent one it doesn't support.
 3. Show the draft to the user. Only post the comment or change the status if they say to —

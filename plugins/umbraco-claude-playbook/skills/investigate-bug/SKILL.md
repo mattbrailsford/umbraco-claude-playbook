@@ -6,9 +6,10 @@ description: >-
   point, gathers evidence from logs, the Management API, and the browser, narrows it by layer
   and by history, then tests one hypothesis at a time until the cause is proven. Reports the
   cause with its evidence and routes the fix to `quick-fix` or the `umb-*` pipeline; it never
-  writes the fix itself. Use for "why is this broken", "this stopped working", "find out
-  what's causing X", a failing test nobody understands, or an issue whose triage couldn't
-  name a likely cause.
+  writes the fix itself. Given an issue ID, also drafts the issue's next state label and a
+  comment for the reporter. Use for "why is this broken", "this stopped working", "find out
+  what's causing X", a failing test nobody understands, or an issue triaged as needing
+  investigation.
 user-invocable: true
 argument-hint: <what's going wrong, or an issue ID>
 ---
@@ -22,7 +23,7 @@ known cause and a repro, not a theory.
 ## Scope
 
 - IN: reproduce, gather evidence, narrow, prove the cause, find other places with the same
-  cause, write the report, route the fix.
+  cause, write the report, update the issue on the user's yes, route the fix.
 - OUT: the fix itself, and any lasting change to the project's code. Scratch work (a
   throwaway test, a script, temporary logging) is allowed, but it's removed before the
   hand-off. Investigation leaves `git status` as it found it.
@@ -133,10 +134,23 @@ Write the report in chat:
 **Route:** <quick-fix | umb-explore | upstream CMS issue>, because <one line>
 ```
 
-Then route it. **If `issue-resolve` called this skill**, skip this list: hand the report back
-and let `issue-resolve` pick and start the lane, so the tracker reply still gets drafted.
+**If the argument was an issue ID**, draft the issue's update, following `issue-triage`'s
+State labels and Tracker comments sections:
+
+- Cause proven → `state/ready`. The reporter part says it's confirmed and queued; `Notes for
+  the fix` carries the repro, cause, and same-cause places from the report.
+- Can't reproduce, and only the reporter can close the gap → `state/needs-info`, asking for
+  what step 2 found missing.
+- Not a bug (works as designed, or a usage mistake) → a close, saying why.
+
+Show the label and comment to the user and apply them only on their yes.
+
+Then route it. **If `issue-resolve` called this skill and the cause is proven**, skip the
+update above and this list: hand the report back and let `issue-resolve` pick and start the
+lane. It posts one comment covering both the findings and the start of the fix. With no
+proven cause, draft the update above as normal and hand the report back.
 **If the argument was an issue ID** and nothing called this skill, offer `issue-resolve` with
-that ID and the report, for the same reason. Otherwise:
+that ID and the report, so the fix gets tracked on the issue. Otherwise:
 
 - **Small fix** (one concern, the size `quick-fix` describes): offer `quick-fix`, passing it
   the cause, the repro, and the places with the same cause.
@@ -153,7 +167,8 @@ If the cause is a mistake a future `builder` would likely repeat, offer to save 
 - No fix before a proven cause. A guessed fix gets reported as a guess, not shipped.
 - One bug per run.
 - Evidence beats memory. Quote the log line, response, or source line behind every claim.
-- Never post to a tracker, and never commit, from this skill.
+- Never commit from this skill. The only tracker write is the label and comment from step
+  6, and only on the user's yes.
 
 ## Hand off
 
