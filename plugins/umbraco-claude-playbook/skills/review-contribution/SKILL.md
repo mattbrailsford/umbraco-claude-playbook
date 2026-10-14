@@ -84,10 +84,9 @@ of checks that only exist *because* the diff came from outside.
      one, tests included for new behavior.
    - **Docs flag, no assumed location.** If the diff adds or changes a public feature, flag
      that it probably needs a docs update — but don't assume where. Only Umbraco HQ-owned
-     packages keep docs in the UmbracoDocs repo (that's `umbraco-docs-pr`'s territory, and it
-     doesn't apply here unless this package is one). Everyone else keeps docs in their own
-     repo, a separate site, or nowhere formal — say "this looks like it needs a docs update,
-     check wherever this project keeps its docs" and leave it there.
+     packages keep docs in the UmbracoDocs repo; everyone else keeps docs in their own repo, a
+     separate site, or nowhere formal. Say "this looks like it needs a docs update, check
+     wherever this project keeps its docs" and leave it there.
    - **Intent match.** Compare the diff against the PR's own stated purpose (and linked issue,
      if any). Flag anything beyond it — an unrelated reformat, a drive-by refactor of a file
      the stated fix never needed to touch — as a `Suggestion` if small and harmless, `Important`

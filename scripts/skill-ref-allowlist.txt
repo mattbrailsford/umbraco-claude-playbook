@@ -33,4 +33,3 @@ eslint-config-prettier  # an npm package, cited in umb-init's lint reference
 eslint-plugin-lit       # an npm package, cited in umb-init's lint reference
 typescript-eslint       # an npm package, cited in umb-init's lint reference
 review-skill-links      # repo-only skill in .claude/skills/, not shipped with the plugin
-umbraco-docs-pr         # a personal skill for UmbracoDocs PRs, not part of this plugin
