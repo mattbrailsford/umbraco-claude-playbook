@@ -168,10 +168,10 @@ or incomplete. Never treat "not in the docs" as "not a breaking change".
    it: `ef-core-data`'s provider checks apply to the smoke.
 8. **Compatibility markers.** List every place the supported CMS version is written down: the
    package's own version (per the project's choice in `git-workflow`), NuGet dependency
-   ranges (including ranges on the repo's own sibling packages), package references in any
-   `dotnet new` template the repo ships, `umbraco-marketplace.json`, README compatibility
-   tables, any CI matrix, and the `target-branch` entries and ignore list in
-   `.github/dependabot.yml` (`umbraco-dependencies`' "Dependabot").
+   ranges (including ranges or exact pins on the repo's own sibling packages), package
+   references in any `dotnet new` template the repo ships, `umbraco-marketplace.json`,
+   README compatibility tables, any CI matrix, and the `target-branch` entries and ignore
+   list in `.github/dependabot.yml` (`umbraco-dependencies`' "Dependabot").
    Against a CMS pre-release, the package's own version is a pre-release too (for example
    `19.0.0-rc1`), and its dependency range must allow the CMS pre-release.
 9. **The package's own scheduled removals.** Work out the package version this upgrade will

@@ -133,7 +133,27 @@ curl -s "https://api.nuget.org/v3-flatcontainer/<id>/<version>/<id>.nuspec" |
 
 Packages the repo publishes itself (sibling products in one repo that depend on each other,
 NuGet or npm) aren't locked to the CMS, but they don't move on a bot's schedule either: the
-repo's own release sets their ranges. Treat them like locked ones for Dependabot.
+repo's own release sets their versions. Treat them like locked ones for Dependabot.
+
+### Sibling packages: exact pin or range
+
+How one of the repo's own packages references another depends on how they release:
+
+- **Released together** (one version, one commit, one release; a product split into
+  `Core`, `Web`, and a meta-package, say): pin exactly, `[X.Y.Z]` in NuGet, `X.Y.Z` with no
+  `^` or `~` in npm. They're one product, so there's never a reason for them to resolve to
+  different versions. With a floor instead, another dependency can pull one sibling up while
+  the rest stay put: new server code next to old backoffice files, and no restore warning,
+  because no single rule was broken.
+- **Released on their own schedule** (separate products that happen to share a repo): use a
+  range, like any other shipped dependency ("Exact versions and ranges").
+
+A `ProjectReference` between NuGet siblings packs as a floor (`X` means `X` or higher), and
+no MSBuild or NuGet setting makes it pack exactly. A `PackageReference` to the sibling
+doesn't work either when both pack in one `dotnet pack`: the sibling's `.nupkg` doesn't
+exist yet at restore. Keep the `ProjectReference`, and add a build step after `dotnet pack`
+that rewrites each sibling dependency in the packed `.nuspec` from `version="X"` to
+`version="[X]"`. The version itself is already right; only its form changes.
 
 ### npm
 
