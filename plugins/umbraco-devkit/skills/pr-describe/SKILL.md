@@ -26,7 +26,7 @@ as-is; don't restate them here.
 ## Workflow
 
 1. **Check for a plan folder.** Does `docs/plans/<feature-slug>/` exist for the current branch
-   (the feature-* pipeline ran for this feature)? This decides which style you write in step 3 — a
+   (the feature-* pipeline ran for this feature)? This decides which style you write in step 4 — a
    `quick-fix` or trunk-based commit won't have one, and that's expected, not an error.
 
 2. **Gather context.**
