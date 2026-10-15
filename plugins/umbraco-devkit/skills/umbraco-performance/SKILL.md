@@ -193,7 +193,10 @@ overriding `GetPropertyCacheLevel` runs its conversion on every read. Always ove
 A converter that also implements `IDeliveryApiPropertyValueConverter` sets two more:
 `GetDeliveryApiPropertyCacheLevel` and `GetDeliveryApiPropertyCacheLevelForExpansion`
 (which defaults to the first). The same table applies, and `Snapshot` means `None` here
-too, even where a docs example uses it. Never put per-request data (the current time, the
+too, even where a docs example uses it. Expanded output depends on each request's `expand`
+and `fields`, so a cached copy is served to requests that asked for a different shape.
+Override `GetDeliveryApiPropertyCacheLevelForExpansion` to return `None` rather than
+inheriting the default; the built-in converters do the same through `Snapshot`. Never put per-request data (the current time, the
 current user) in a converter's output: any cache level serves it stale, and it stops a site
 using Delivery API output caching.
 
@@ -232,7 +235,8 @@ Some code runs far more often than it looks like it does:
 - **Indexing code** runs once per item indexed, and a full rebuild runs it for every
   document and media item. With Umbraco Search, that's `IContentIndexer.GetIndexFieldsAsync`
   and `IPropertyValueHandler.GetIndexFields`. With Examine on v17/v18, it's
-  `TransformingIndexValues` and similar events. A service lookup in there is one database
+  `TransformingIndexValues` and similar events. For the Delivery API index, on any of them,
+  it's `IContentIndexHandler.GetFieldValues`. A service lookup in there is one database
   call per item. Build fields from the content item you're handed. If you need related
   data, read it from the published cache or a cached lookup, not a service.
 - **Startup** code runs on every app start, on every site that installs the package. Do
@@ -282,7 +286,8 @@ Source: Block Preview issue [#149](https://github.com/rickbutterfield/BlockPrevi
 - A navigation extension (`Children()`, `Ancestors()`, ...) called without the injected
   navigation and published-status services, or the obsolete `.Children` property.
 - A converter with no `GetPropertyCacheLevel` override, or any cache level (including the
-  Delivery API ones) set to `None` or `Snapshot` without a stated reason.
+  Delivery API one) set to `None` or `Snapshot` without a stated reason. The Delivery API
+  expansion level is the exception: flag it when it's anything but `None` or `Snapshot`.
 - A cache added with no rule for what clears it.
 - A cache key without the package prefix.
 - A request-scoped object stored in a singleton or static field.
