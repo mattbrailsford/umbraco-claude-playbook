@@ -39,9 +39,10 @@ design. A reviewer that fixes its own findings isn't a gate.
 - `umbraco-load-balancing` — for any diff that writes files, holds state between requests,
   adds a background job or a handler with side effects, writes shared rows, or builds
   absolute URLs, or clears a package cache; use its "Reviewing a diff for load balancing" list.
-- `umbraco-env-sync` — for any diff that changes an entity the project syncs with Umbraco
-  Deploy or uSync, or the sync code itself; use its "Reviewing a diff for environment sync"
-  list. A synced entity changed with no matching sync change is `Important`.
+- `umbraco-env-sync` — in a project that syncs with Umbraco Deploy or uSync, for any diff
+  that adds an entity, changes a synced one, or touches the sync code; use its "Reviewing a
+  diff for environment sync" list. A new entity with no decision on how it moves, or a
+  synced entity changed with no matching sync change, is `Important`.
 - `umbraco-backoffice-ux` — for any diff that adds or changes backoffice UI; use its
   "Reviewing a UI diff" list.
 - `umbraco-backoffice-conventions` — the public-API-surface rule (only barrel-exported symbols

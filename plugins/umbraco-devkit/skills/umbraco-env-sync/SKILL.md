@@ -37,8 +37,8 @@ Supporting a sync tool is the package's choice. Look before assuming:
 - **uSync:** a project references `uSync.BackOffice` or `uSync.Core`.
 
 If neither is there, this skill applies only when the work is to add support. If one is
-there, every change to an entity it syncs carries a sync change (see "Keep sync in step"
-below).
+there, every new entity needs a decision on how it moves, and every change to a synced
+entity carries a sync change (see "Keep sync in step" below).
 
 ## Ship it as its own package
 
@@ -189,6 +189,8 @@ them alongside the entity change; `reviewer` checks they're there.
 
 Apply when the project syncs (see "Does this project sync?").
 
+- A new entity with no decision on how it moves (files, over the wire, or not at all), or
+  one that should move with no sync code.
 - A synced entity's model gained, lost, or renamed a field, and the export and restore
   didn't change with it.
 - A new link stored as a raw GUID or integer, or not declared as a dependency.

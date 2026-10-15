@@ -57,8 +57,8 @@ is one that changes behavior someone saw go wrong. Typos, comments, and dead cod
    - `umbraco-performance` / `umbraco-load-balancing`: only if the fix touches a cache, a
      per-request or per-save path, a background job, files on disk, or a handler's side
      effects.
-   - `umbraco-env-sync`: only if the fix changes an entity the project syncs with Umbraco
-     Deploy or uSync, or the sync code itself.
+   - `umbraco-env-sync`: only if the project syncs with Umbraco Deploy or uSync and the fix
+     adds an entity, changes a synced one, or touches the sync code.
    - **`security-dotnet` / `security-lit`: always, if the fix touches auth, user input, the
      Management API, secrets, or `unsafeHTML`/`unsafeSVG`.** "Quick" doesn't exempt a fix from
      these — they're non-negotiable in this plugin regardless of diff size.
