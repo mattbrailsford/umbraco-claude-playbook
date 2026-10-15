@@ -108,33 +108,53 @@ public class MyPackageMigrationPlan : PackageMigrationPlan
     }
 }
 
-public class AddMyPackageDashboard : PackageMigrationBase
+public class AddMyPackageDashboard : AsyncPackageMigrationBase
 {
-    protected override void Migrate()
+    public AddMyPackageDashboard(
+        IPackagingService packagingService,
+        IMediaService mediaService,
+        MediaFileManager mediaFileManager,
+        MediaUrlGeneratorCollection mediaUrlGenerators,
+        IShortStringHelper shortStringHelper,
+        IContentTypeBaseServiceProvider contentTypeBaseServiceProvider,
+        IMigrationContext context,
+        IOptions<PackageMigrationSettings> packageMigrationsSettings)
+        : base(packagingService, mediaService, mediaFileManager, mediaUrlGenerators,
+            shortStringHelper, contentTypeBaseServiceProvider, context, packageMigrationsSettings)
+    {
+    }
+
+    protected override Task MigrateAsync()
     {
         ImportPackage.FromEmbeddedResource<AddMyPackageDashboard>().Do();
+        return Task.CompletedTask;
     }
 }
 ```
+
+Umbraco finds every `PackageMigrationPlan` in a loaded assembly by type scanning, so the plan
+needs no registration. To register it explicitly anyway, the builder is a weighted collection,
+so it takes `Add<T>()`, not `Append<T>()`:
 
 ```csharp
 public class MyPackageComposer : IComposer
 {
     public void Compose(IUmbracoBuilder builder)
-        => builder.PackageMigrationPlans().Append<MyPackageMigrationPlan>();
+        => builder.PackageMigrationPlans().Add<MyPackageMigrationPlan>();
 }
 ```
 
-Steps are chained and ordered by the GUID passed to `To<T>()`, the same collection-builder
-shape used everywhere else in this skill. Use `PackageMigrationBase` for sync steps,
-`AsyncPackageMigrationBase` for steps that need `await` (e.g. calling an async service).
-`MigrationBase` still exists for non-package migrations, but a package author almost always
-wants the `Package*` variants — they add helper methods for importing embedded
-`package.xml`-style content/schema.
+Steps run in the order the `To<T>()` calls chain them. The value passed to each `To<T>()` is
+that step's state ID, which Umbraco stores once the step has run, so never change or reuse one
+after release; evolve the package by appending a new step. Use `AsyncPackageMigrationBase` for
+steps: `PackageMigrationBase` (sync) is obsolete in v17 and removed in v18. `MigrationBase`
+still exists for non-package migrations, but a package author almost always wants the
+`Package*` variants — they add helper methods for importing embedded `package.xml`-style
+content/schema.
 
-By default `IgnoreCurrentState` is `true` on a custom package migration plan, meaning the
-plan's already-reached final state is ignored and it re-runs — set it to `false` once the
-plan should behave like a normal migration and only run new steps. Plans run unattended at
+`IgnoreCurrentState` is `false` by default on a `PackageMigrationPlan`, so only steps after
+the stored state run. `AutomaticPackageMigrationPlan` sets it to `true`, re-importing its
+embedded package on every run. Plans run unattended at
 startup by default (`PackageMigrationsUnattended` config can disable this) or from the
 Packages section in the backoffice.
 

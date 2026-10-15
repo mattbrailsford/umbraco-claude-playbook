@@ -5,7 +5,8 @@ description: >-
   Composer registration, collection-builder extensibility, notification handlers, and
   attribute-based discovery — plus a catalogue of the most common concrete, backend-side
   Umbraco CMS extension points (property value converters, Management API endpoints, content
-  finders, URL segment providers, health checks, search indexing, and more). Use when
+  finders, URL segment providers, health checks, search indexing, package migrations that
+  install or upgrade content and schema, recurring background jobs, and more). Use when
   deciding how to make a feature extensible by other packages, or when choosing which CMS
   extension point fits a given task. For general backend package conventions that aren't
   about extension mechanisms specifically (async naming, visibility (internal by default), public-API
@@ -141,7 +142,7 @@ attribute shape verbatim. The docs for that major (`umbraco-docs`) help find the
 | 6 | URL segment provider | `IUrlSegmentProvider` | `UrlSegmentProviders().Insert<T>()` | generating those same custom URL segments |
 | 7 | Search indexing | `IContentIndexer`, `IPropertyValueHandler` (Umbraco Search); `IValueSetBuilder` (Examine) | DI / auto-discovered; named options + composer | adding fields to indexed content, indexing a custom property editor's value, or indexing data that isn't content |¹
 | 8 | Custom file system | `IFileSystem` | `builder.SetMediaFileSystem()` (or similar) | media/files live somewhere other than local disk |
-| 9 | Package migration plan | `PackageMigrationPlan` + `PackageMigrationBase`/`AsyncPackageMigrationBase` | `builder.PackageMigrationPlans().Append<T>()` | your package needs to import content/schema, or evolve it, across installs and upgrades |
+| 9 | Package migration plan | `PackageMigrationPlan` + `AsyncPackageMigrationBase` | auto-discovered (or `builder.PackageMigrationPlans().Add<T>()`) | your package needs to import content/schema, or evolve it, across installs and upgrades |
 | 10 | Recurring background job | `RecurringBackgroundJobBase` (or `IRecurringBackgroundJob` directly) | `builder.Services.AddRecurringBackgroundJob<T>()` | your package needs scheduled/periodic work (cleanup, sync, digest) without a separate host; for work that must run on one server only, `IDistributedBackgroundJob` (v17+, `umbraco-load-balancing`) |
 | 11 | Custom Management API authorization policy | `IAuthorizationRequirement` + `MustSatisfyRequirementAuthorizationHandler<T>` | `AddAuthorization` + `[Authorize(policyName)]` | a Management API endpoint (row 2) needs finer-grained access control than the built-in section/content policies |
 | 12 | Delivery API query extension | `ISelectorHandler`, `IFilterHandler`, `ISortHandler`, `IContentIndexHandler` | auto-discovered | headless sites need to fetch, filter, or sort content by your package's data |
