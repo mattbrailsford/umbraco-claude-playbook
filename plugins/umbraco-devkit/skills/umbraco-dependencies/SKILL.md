@@ -33,11 +33,11 @@ dev-only, whatever its lockfile holds.
 A locked dependency matches the CMS release the package's support **starts at**: its floor.
 Not the newest CMS release.
 
-Read the floor from the lowest `Umbraco.Cms.*` lower bound across the projects that ship. Other packages under the `Umbraco.Cms.` prefix, like
-`Umbraco.Cms.Search.*`, are separate products with their own versions. If the reference is a
-range, the floor is its lower bound: `[18.0.0, 18.999.999)` means 18.0.0. With
-branch-per-major (`git-workflow`'s "Umbraco packages and version tracking"), each line has
-its own floor.
+Read the floor from the lowest `Umbraco.Cms.*` lower bound across the projects that ship.
+Other packages under the `Umbraco.Cms.` prefix, like `Umbraco.Cms.Search.*`, are separate
+products with their own versions. If the reference is a range, the floor is its lower
+bound: `[18.0.0, 18.999.999)` means 18.0.0. With branch-per-major (`git-workflow`'s
+"Umbraco packages and version tracking"), each line has its own floor.
 
 `@umbraco-cms/backoffice` should resolve to the same floor: check both the range in each
 client's `package.json` and the version the lockfile actually resolved, since a `^18.0.0`
@@ -344,8 +344,9 @@ Fill it in from the project:
    release, so a weekly PR for it is noise. Patches and minors still come through.
 3. **Group by name.** One PR a week for all dev-only bumps in an ecosystem keeps the noise
    down. List them under `patterns`, checking each against how it's used: a mocking library
-   is dev-only in tests but ships in a published testing package (`*.Testing`). Dependabot's `dependency-type` grouping doesn't work for
-   NuGet, and for npm it follows `package.json`, not the bundle. Leave other shipped
+   is dev-only in tests but ships in a published testing package (`*.Testing`).
+   Dependabot's `dependency-type` grouping doesn't work for NuGet, and for npm it follows
+   `package.json`, not the bundle. Leave other shipped
    dependencies ungrouped so each gets its own review, except a family from one vendor that
    releases often (`AWSSDK.*`): one group for the family is still one review. Groups only
    cover version updates unless they add `applies-to: security-updates`, and transitive

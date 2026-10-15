@@ -188,11 +188,10 @@ check out, install, or restore anything.
    ```bash
    withpre='[.[] | select(startswith($m))] | sort_by(split("-") as [$v, $p]
      | ($v | split(".") | map(tonumber? // 0)), ($p // "~")) | last'
-   ``` A package deprecated in favor of a new id (`xunit` to
-   `xunit.v3`) won't show its successor here; nuget.org and `npm view <name> deprecated`
-   name it. `npm view <name> version` is the `latest` tag, which can be a
-   pre-release, so don't use it for this. For a `0.x` package the "major" is the first
-   non-zero number: `0.97` to `0.99` is a major step, and so is `0.0.57` to `0.0.59`.
+   ```
+   `npm view <name> version` is the `latest` tag, which can be a pre-release, so don't use
+   it for this. A package deprecated in favor of a new id (`xunit` to `xunit.v3`) won't show
+   its successor here; nuget.org and `npm view <name> deprecated` name it.
 
    For a private feed in `NuGet.config`, find its flat container from the feed's service
    index (`curl -s <feed>/index.json | jq -r '.resources[] |
@@ -207,8 +206,9 @@ check out, install, or restore anything.
      above the floor's version, or moves the floor itself, gets a drafted close comment
      saying which CMS release pins it. If it's a security fix, don't just close it: say
      where the fix has to come from (`umbraco-dependencies`' "A security fix in a locked
-     dependency"), whether a CMS release has it yet, and offer hold or dismiss (step 3). A locked dependency already off the floor
-     is an item too (`umbraco-dependencies`' "When the package is already off the floor").
+     dependency"), whether a CMS release has it yet, and offer hold or dismiss (step 3). A
+     locked dependency already off the floor is an item too (`umbraco-dependencies`' "When
+     the package is already off the floor").
    - **Ships.** Read the dependency's release notes or changelog between the two versions.
      For a family that releases daily, or a long run of releases, skim for "breaking",
      "removed", and "obsolete" rather than reading each one; if the notes can't be read at
@@ -262,8 +262,9 @@ check out, install, or restore anything.
    existing file adds the locked ones it misses, at least every one this run closed or left.
    Add dev-only grouping, and a commit prefix if the bot's messages break the repo's rules.
    Judge that from the bot's recent commits, not its defaults: with no config, Dependabot
-   copies the style it sees in the repo's history, so its messages can drift. A full review that found many
-   updates with no PR on a repo without the file is the strongest case for adding it.
+   copies the style it sees in the repo's history, so its messages can drift. A full review
+   that found many updates with no PR on a repo without the file is the strongest case for
+   adding it.
 
 8. **Show the plan and wait.** Up to three tables, each with what it bumps (from and to),
    the kind, the action, and the reason in a few words:

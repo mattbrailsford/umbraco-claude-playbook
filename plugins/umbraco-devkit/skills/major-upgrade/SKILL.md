@@ -169,9 +169,9 @@ or incomplete. Never treat "not in the docs" as "not a breaking change".
 8. **Compatibility markers.** List every place the supported CMS version is written down: the
    package's own version (per the project's choice in `git-workflow`), NuGet dependency
    ranges (including ranges on the repo's own sibling packages), package references in any
-   `dotnet new` template the repo ships, `umbraco-marketplace.json`, README compatibility tables, any CI matrix, and the
-   `target-branch` entries and ignore list in `.github/dependabot.yml`
-   (`umbraco-dependencies`' "Dependabot").
+   `dotnet new` template the repo ships, `umbraco-marketplace.json`, README compatibility
+   tables, any CI matrix, and the `target-branch` entries and ignore list in
+   `.github/dependabot.yml` (`umbraco-dependencies`' "Dependabot").
    Against a CMS pre-release, the package's own version is a pre-release too (for example
    `19.0.0-rc1`), and its dependency range must allow the CMS pre-release.
 9. **The package's own scheduled removals.** Work out the package version this upgrade will
@@ -274,10 +274,11 @@ the last RC to the final release). Work on the same branch.
    untick earlier ones; they're done and committed. Update the file's target release line.
    Don't re-offer step 10's list, but re-check each unchecked step 10 task against the newer
    tag: its locked packages, and whether a forced bump changed.
-4. Always add a task, ahead of any unchecked step 10 or removal tasks, to move the CMS packages, `@umbraco-cms/backoffice`, every shared
-   dependency (step 1 at the newer tag), and the package's own pre-release version to the
-   newer release. On the final release, that drops the
-   package's pre-release suffix unless the user wants one more pre-release first.
+4. Always add a task, ahead of any unchecked step 10 or removal tasks, to move the CMS
+   packages, `@umbraco-cms/backoffice`, every shared dependency (step 1 at the newer tag),
+   and the package's own pre-release version to the newer release. On the final release,
+   that drops the package's pre-release suffix unless the user wants one more pre-release
+   first.
 5. Show the user the new entries and tasks, wait for a yes, then build them as below.
 
 ## Build
@@ -349,5 +350,6 @@ line's trunk, follow `feature-close`'s
 
 ## Hand off
 
-Report: current to target version (and the CMS release, if it's a pre-release), tasks done and commits, what the upgrade smoke showed,
-third-party dependencies moved, any breaking changes for consumers, and the follow-ups. Then the PR link.
+Report: current to target version (and the CMS release, if it's a pre-release), tasks done
+and commits, what the upgrade smoke showed, third-party dependencies moved, any breaking
+changes for consumers, and the follow-ups. Then the PR link.

@@ -2,8 +2,8 @@
 name: github-init
 description: >-
   Bootstraps the GitHub remote for a new Umbraco package or add-on — README, LICENSE, one
-  CONTRIBUTING.md, a bug report template, and a Dependabot config. Use when a project has no `origin` remote yet and it's time to push it
-  publicly for the first time.
+  CONTRIBUTING.md, a bug report template, and a Dependabot config. Use when a project has no
+  `origin` remote yet and it's time to push it publicly for the first time.
 user-invocable: true
 argument-hint: [optional repo name]
 ---
@@ -83,7 +83,8 @@ than either a second structured issue-request template or a standalone `SECURITY
 template. Without it, Dependabot's security updates still open PRs, including ones for
 dependencies the CMS decides, and nothing groups the dev-only noise. Fill the ignore list
 from what this project actually references, checked against the CMS at the package's floor.
-If the project carries more than one CMS major, add a `target-branch` copy of each entry per extra line.
+If the project carries more than one CMS major, add a `target-branch` copy of each entry per
+extra line.
 
 ## What this skips, and why
 
