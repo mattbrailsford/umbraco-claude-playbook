@@ -41,7 +41,8 @@ section, and the files/extension points you own. Build that task and nothing mor
   extension point, and `umbraco-backoffice-conventions` for package structure (barrel exports,
   OpenAPI client usage).
 - Adding or bumping a NuGet or npm package → `umbraco-dependencies`, for whether the CMS
-  decides its version and whether it ships to sites.
+  decides its version and whether it ships to sites. Same for a new reference between two
+  packages the repo publishes, for whether it needs an exact pin.
 - Auth, user input, the Management API, or secrets → `security-dotnet` while writing, so the
   reviewer has less to send back.
 - A Lit template rendering user-generated/AI-generated/external content via
