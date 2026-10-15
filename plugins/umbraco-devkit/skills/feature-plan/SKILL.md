@@ -99,6 +99,11 @@ next phase runs, so it should be quick to read without leaving anything out.
   request or resolution through the deployed artifact, not just "unit tests pass." A task
   whose only acceptance criterion is unit-test-green is not allowed for anything on that
   path — that's how stubs ship.
+- **Sync tasks travel with their entity.** If the project supports Umbraco Deploy or uSync
+  (`umbraco-env-sync`'s "Does this project sync?") and a task adds or changes a synced
+  entity, the matching sync change from its "Keep sync in step" table is in the plan: in
+  the same task, or a task that `depends-on:` it. If `ARCHITECTURE.md` doesn't say how a
+  new entity moves, stop and send the user back to `feature-design`.
 
 Update the `STORIES.md` and `PLAN.md` lines in `README.md`: check each box and replace
 `<pending>` with one plain-English line (e.g. "N stories" / "M tasks, first parallel group

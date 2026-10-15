@@ -121,6 +121,8 @@ The allow-list of permitted configuration sections is required. Without it, a re
 point at an unrelated key (connection strings, other packages' secrets) and leak it through the
 package's API.
 
+Keeping secrets out of Umbraco Deploy and uSync exports: `umbraco-env-sync`.
+
 A field masked in the backoffice editor must also be write-only in the **API response**. The
 server must never send the real value back, even to redraw the mask. Client-side masking (CSS,
 `type="password"`) does nothing if the payload carries plaintext. Check the DTO/response model,

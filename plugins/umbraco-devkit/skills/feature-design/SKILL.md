@@ -90,7 +90,8 @@ version history, and nobody notices until a user does.
 Before drafting `ARCHITECTURE.md`, decide if this feature is that kind of addition. If it is:
 
 1. **Check docs first.** If `CLAUDE.md` or another skill already states what a change of this
-   kind must touch, that's ground truth — skip straight to step 3.
+   kind must touch, that's ground truth — skip straight to step 3. For Deploy and uSync,
+   `umbraco-env-sync`'s "Keep sync in step" table is that statement.
 2. **Otherwise, sample sibling implementations.** Find two or three existing siblings of the
    same kind (properties on similar models, similar entity types, similar CRUD methods) and
    read what each one currently wires up. If they agree, that's the pattern. If they disagree,
@@ -267,6 +268,9 @@ this phase.
   so where data is read from and what clears each cache is decided now.
 - Files, background jobs, side effects, or state shared between requests →
   `umbraco-load-balancing`, so the design works on more than one server.
+- A new or changed entity in a project that supports Umbraco Deploy or uSync, or adding that
+  support → `umbraco-env-sync`, so how the entity moves between environments is decided
+  now, and its "Keep sync in step" changes reach `SPEC.md`'s scope.
 - Backoffice UI needed → `umbraco-backoffice-ux` for how screens should look and behave, the official
   Umbraco Backoffice Skills plugin for the specific extension point (dashboard, property
   editor, tree, etc.), plus `umbraco-backoffice-conventions` for package-level frontend

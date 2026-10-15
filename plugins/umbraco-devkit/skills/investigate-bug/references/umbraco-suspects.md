@@ -22,6 +22,9 @@ in the source at the project's tag (`umbraco-cms-source`), not from this list.
 - **More than one server.** Works on one server, fails or repeats on several: a cache
   cleared on one server only, a file on one server's disk, state in one server's memory, a
   job or handler that runs once per server (`umbraco-load-balancing`).
+- **Moving between environments.** Works on the site it was made on, wrong after a Deploy
+  or uSync run: a field the export leaves out, a link restored before the thing it points
+  at, a user group linked by key (`umbraco-env-sync`).
 - **Database provider.** Works on SQLite, fails on SQL Server, or the other way round: case
   sensitivity, date handling, or a migration that only ran on one (`ef-core-data`).
 - **Authorization.** A Management API endpoint that returns 401 or 403 for a user who should

@@ -133,6 +133,7 @@ You don't run these. The skills above and the agents load them when the work nee
 | [`umbraco-backoffice-ux`](plugins/umbraco-devkit/skills/umbraco-backoffice-ux/SKILL.md) | How a backoffice screen should look and behave |
 | [`umbraco-performance`](plugins/umbraco-devkit/skills/umbraco-performance/SKILL.md) | Caching, tree traversal, and keeping hot paths fast |
 | [`umbraco-load-balancing`](plugins/umbraco-devkit/skills/umbraco-load-balancing/SKILL.md) | Staying correct when the site runs on more than one server |
+| [`umbraco-env-sync`](plugins/umbraco-devkit/skills/umbraco-env-sync/SKILL.md) | Moving a package's own data between environments with Umbraco Deploy or uSync |
 | [`ef-core-data`](plugins/umbraco-devkit/skills/ef-core-data/SKILL.md) | SQL Server + SQLite, migrations, repositories |
 | [`umbraco-cms-source`](plugins/umbraco-devkit/skills/umbraco-cms-source/SKILL.md) | Read the CMS source at the version you target |
 | [`umbraco-docs`](plugins/umbraco-devkit/skills/umbraco-docs/SKILL.md) | Read the official docs for the version you target |
