@@ -133,10 +133,11 @@ evidence rather than inventing a fourth.
 Then name the cause, not just the line (a missing permission check, a scope that's never
 completed, an alias two extensions share), and grep for other places with the same cause.
 
-If the code and the package's docs disagree, the docs are what users were told to expect.
-Suggest fixing the code. Changing the docs to match the code instead is a change to how the
-package is meant to work, so name it in the report as the maintainer's choice, never as the
-suggested fix.
+If the package's own docs and its code disagree, don't pick a side. Docs drift, but they're
+also what users were told to expect, so which one is right is the maintainer's call. In the
+report, ask "which is right?" and give both fixes: change the code to match the docs, or
+change the docs to match the code, each with what it means for users. (This is about the
+package's docs. For how the CMS itself behaves, `umbraco-docs`' "Source wins" still holds.)
 
 Remove every scratch change, end any bisect, and check `git status` matches the start.
 
