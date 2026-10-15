@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Checks the plugin version: it's set only in plugin.json, and it was bumped if this branch
-# changes anything a consumer would load (anything under the plugin folder).
+# changes anything a consumer would load (anything under the plugin folder except evals/).
 # Compares against the merge base with the main branch, so run it on a feature branch.
 #
 # Usage: scripts/check-version.sh [base-ref]   (default base-ref: origin/main)
@@ -30,9 +30,10 @@ if ! base="$(git merge-base HEAD "$base_ref" 2>/dev/null)"; then
   exit 0
 fi
 
-# Committed and uncommitted changes since the merge base, excluding the manifest itself.
+# Committed and uncommitted changes since the merge base, excluding the manifest itself and
+# the eval suite, which ships but is never loaded by a consumer.
 changed="$(git diff --name-only "$base" -- plugins/umbraco-devkit \
-  | grep -vxF "$plugin" || true)"
+  | grep -vxF "$plugin" | grep -v '^plugins/umbraco-devkit/evals/' || true)"
 # Find the manifest by name at the base, so a renamed plugin folder still compares.
 base_plugin="$(git ls-tree -r --name-only "$base" -- plugins \
   | grep -m1 '/\.claude-plugin/plugin\.json$')"
