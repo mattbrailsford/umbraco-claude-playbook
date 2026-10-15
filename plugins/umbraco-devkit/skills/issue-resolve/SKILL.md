@@ -118,6 +118,15 @@ finishes and the PR is open for the pipeline route:
 4. Show the draft to the user. Only post the comment or change the status if they say to —
    same rule as `issue-triage`: a draft is the default output, posting is a separate, explicit
    step.
+5. **Find every follow-up.** Gather each follow-up mentioned anywhere: the lane's hand-off,
+   review findings left out of scope, the PR description, places with the same cause, and
+   the chat. List them and ask where each one goes: a new issue (drafted with
+   `git-workflow`'s issue template), its own PR, or dropped. Never leave one only in a PR
+   description or the chat; it's lost when the chat ends. Name each filed one in the "Fix
+   landed" notes' **Left out** field.
+6. **Other version lines.** If `CLAUDE.md` lists more than one supported version line and
+   the bug exists on another line still in an active phase, offer `change-backport` with
+   the fix's commit or PR.
 
 ## Rules
 
