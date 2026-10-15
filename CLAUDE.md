@@ -102,7 +102,8 @@ refer to the consumer project, not this repo.
   - Minor: a new skill or agent.
   - Major: renaming or removing a skill, or any other change to what a user types.
 - Skip the bump only for files that never ship: this file, `README.md`, `docs/`, `scripts/`,
-  `settings.example.json`, CI config.
+  `settings.example.json`, CI config. Also skip it for `plugins/umbraco-devkit/evals/`: it
+  ships inside the plugin folder, but consumers never load it.
 
 ## Human docs: keep them in sync
 
