@@ -218,6 +218,9 @@ import { html, css } from "lit";
 import { html, css } from "@umbraco-cms/backoffice/external/lit";
 ```
 
+The same goes for every library the backoffice ships under `external/*` (UUI, RxJS, and
+others). `umbraco-dependencies`' npm section has how to find bare imports that slip through.
+
 **Bump `version` in `umbraco-package.json` for every release that changes frontend assets.**
 From 17.6 and 18.1, Umbraco appends that version to the manifest's entry points and import map
 URLs, so it's the browser's cache key. An unchanged version means editors keep running the

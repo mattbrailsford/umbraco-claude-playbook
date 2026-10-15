@@ -39,3 +39,9 @@ typescript-eslint       # an npm package, cited in project-init's lint reference
 review-skill-links      # repo-only skill in .claude/skills/, not shipped with the plugin
 deploy-failed           # a Deploy marker file name, cited in umbraco-env-sync's real-transfer reference
 deploy-complete         # a Deploy marker file name, cited in umbraco-env-sync's real-transfer reference
+target-branch           # a dependabot.yml option, cited in github-init and major-upgrade
+react-dom               # an npm package, cited in major-upgrade step 10
+update-types            # a dependabot.yml option, cited in major-upgrade step 10
+dependency-type         # a dependabot.yml option, cited in umbraco-dependencies
+exclude-paths           # a dependabot.yml option, cited in umbraco-dependencies
+prefix-development      # a dependabot.yml option, cited in umbraco-dependencies

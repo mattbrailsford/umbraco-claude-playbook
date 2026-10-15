@@ -49,6 +49,8 @@ design. A reviewer that fixes its own findings isn't a gate.
   "Reviewing a UI diff" list.
 - `umbraco-backoffice-conventions` — the public-API-surface rule (only barrel-exported symbols
   are public API) and the manifest-alias-rename hazard, both used in step 4.
+- `umbraco-dependencies` — for any diff that adds or bumps a NuGet or npm package. A
+  dependency the CMS decides, asked for above the package's CMS floor, is `Important`.
 
 ## Workflow
 

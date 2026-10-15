@@ -1,0 +1,99 @@
+# Dependabot config for an Umbraco package.
+# Fill every <placeholder> from the project; delete entries the project doesn't need.
+# Docs: https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference
+
+version: 2
+
+updates:
+  # --- NuGet: one entry per supported version line -------------------------------------
+  # Default line: no target-branch, so this entry's ignore list also applies to security updates.
+  # Each other line: a copy of this entry with `target-branch: "<the line's branch>"`
+  # (e.g. "support/17.x" or "v17/dev"; version updates only).
+  - package-ecosystem: "nuget"
+    directory: "/"                       # where the solution or root Directory.Packages.props lives
+    exclude-paths:                       # scaffolding/templates with their own props, if any
+      - "<templates/**>"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "<chore(deps)>"            # whatever the repo's commit rules allow
+    ignore:
+      # Locked to the CMS: moves with the package's CMS floor, never on its own.
+      # Name each package; never "Microsoft.Extensions.*" or "Umbraco.*", which hide shipped
+      # packages and Umbraco's own build tools too.
+      - dependency-name: "Umbraco.Cms*"
+      - dependency-name: "Microsoft.EntityFrameworkCore*"
+      # <each Microsoft.Extensions.* / Microsoft.AspNetCore.* package the CMS lists and the project uses>
+      # <every other package in the CMS's runtime graph the project references>
+      # <each other Umbraco product the package builds on, and what that product pins>
+      # <packages this repo publishes itself, if it has sibling products>
+      # Shipped dependencies: majors wait for the package's next major release.
+      # - dependency-name: "<shipped package>"
+      #   update-types: ["version-update:semver-major"]
+    groups:
+      # NuGet has no dev/prod split in Dependabot, so name the dev-only packages.
+      dev-only:
+        patterns:
+          - "Microsoft.NET.Test.Sdk"
+          - "xunit*"
+          - "NUnit*"
+          - "coverlet*"
+          - "Moq"                        # unless a published *.Testing package ships it
+          - "NSubstitute*"
+          - "Microsoft.SourceLink.*"
+          - "Nerdbank.GitVersioning"
+          # <analyzers and other PrivateAssets="all" or GlobalPackageReference entries>
+      # <optional: one group per shipped vendor family that releases often, e.g.>
+      # aws-sdk:
+      #   patterns: ["AWSSDK.*"]
+
+  # --- npm: one entry per package-lock.json, per supported version line ----------------
+  # Same rule: no target-branch on the default line; a copy with target-branch per other line.
+  # A client that isn't a backoffice extension (a public-site script) has nothing locked:
+  # drop the ignore list and group whatever isn't bundled.
+  # A test project with its own lockfile gets its own entry: group everything as dev-only,
+  # but keep ignoring "@umbraco-cms/*" there if it drives a running CMS.
+  - package-ecosystem: "npm"
+    directory: "<folder holding package-lock.json; / for npm workspaces>"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "<chore(deps)>"
+      prefix-development: "<chore(deps)>"
+    ignore:
+      # Locked to the CMS: the backoffice and every runtime library in its peerDependencies,
+      # listed or not (jq -r '.packages["node_modules/@umbraco-cms/backoffice"].peerDependencies | keys[]').
+      - dependency-name: "@umbraco-cms/*"
+      - dependency-name: "@umbraco-ui/*"
+      - dependency-name: "lit"
+      - dependency-name: "rxjs"
+      # <the rest of the runtime peer list, by name>
+      # <this repo's own workspace packages, if it has sibling products>
+    groups:
+      # Name the dev-only packages. Dependabot's own dev/prod split reads package.json,
+      # and a backoffice bundle doesn't follow it.
+      dev-only:
+        patterns:
+          - "vite"
+          - "typescript"
+          - "eslint*"
+          - "@typescript-eslint/*"
+          - "@types/*"
+          - "vitest*"
+          - "@hey-api/*"
+          # <other build, lint, test, and codegen tools>
+
+  # --- GitHub Actions: CI only, default branch only. Skip if there are no workflows, or every
+  # workflow calls a shared one by branch.
+  - package-ecosystem: "github-actions"
+    directories:
+      - "/"
+      - "/.github/actions/*"             # composite actions, if any
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "<chore(ci)>"
+    groups:
+      actions:
+        patterns:
+          - "*"

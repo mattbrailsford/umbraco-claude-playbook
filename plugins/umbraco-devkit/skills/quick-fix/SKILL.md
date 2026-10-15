@@ -3,7 +3,8 @@ name: quick-fix
 description: >-
   Makes a small, obvious fix directly on the current branch — no feature-explore, no feature-design, no
   feature-plan, no feature-build. Use for a typo, a reversed condition, a dead try/catch, a
-  misnamed variable, a stray import, or a missing null check — single concern, usually under
+  misnamed variable, a stray import, a missing null check, or a patch or minor dependency
+  bump — single concern, usually under
   ~20 lines, in either C# or Lit/TypeScript. Not a sixth pipeline phase: this is the deliberate
   escape hatch around the pipeline for a fix too small to justify it. Escalates to feature-plan
   or feature-explore the moment a fix turns out not to be this small.
@@ -20,7 +21,8 @@ naming — it's an escape hatch *around* the pipeline, not a phase in it.
 ## Scope
 
 - IN: one-spot fixes a competent engineer would commit straight to the default branch without
-  ceremony. Single concern, usually under ~20 lines.
+  ceremony. Single concern, usually under ~20 lines. A dependency version bump counts: one
+  package, or one group of dev-only ones, with no code change beyond the version.
 - OUT: anything that needs a design call, touches a public method's signature (that's the
   `[Obsolete]`-proxy discipline in `umbraco-package-conventions`/`umbraco-backoffice-
   conventions`, not a quick-fix), renames a backoffice manifest `alias` (a silent breaking
@@ -59,6 +61,7 @@ is one that changes behavior someone saw go wrong. Typos, comments, and dead cod
      effects.
    - `umbraco-env-sync`: only if the project syncs with Umbraco Deploy or uSync and the fix
      adds an entity, changes a synced one, or touches the sync code.
+   - `umbraco-dependencies`: only if the fix adds or bumps a NuGet or npm package.
    - **`security-dotnet` / `security-lit`: always, if the fix touches auth, user input, the
      Management API, secrets, or `unsafeHTML`/`unsafeSVG`.** "Quick" doesn't exempt a fix from
      these — they're non-negotiable in this plugin regardless of diff size.
