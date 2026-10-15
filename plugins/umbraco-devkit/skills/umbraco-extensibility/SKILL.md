@@ -144,9 +144,12 @@ attribute shape verbatim. The docs for that major (`umbraco-docs`) help find the
 | 9 | Package migration plan | `PackageMigrationPlan` + `PackageMigrationBase`/`AsyncPackageMigrationBase` | `builder.PackageMigrationPlans().Append<T>()` | your package needs to import content/schema, or evolve it, across installs and upgrades |
 | 10 | Recurring background job | `RecurringBackgroundJobBase` (or `IRecurringBackgroundJob` directly) | `builder.Services.AddRecurringBackgroundJob<T>()` | your package needs scheduled/periodic work (cleanup, sync, digest) without a separate host; for work that must run on one server only, `IDistributedBackgroundJob` (v17+, `umbraco-load-balancing`) |
 | 11 | Custom Management API authorization policy | `IAuthorizationRequirement` + `MustSatisfyRequirementAuthorizationHandler<T>` | `AddAuthorization` + `[Authorize(policyName)]` | a Management API endpoint (row 2) needs finer-grained access control than the built-in section/content policies |
+| 12 | Delivery API query extension | `ISelectorHandler`, `IFilterHandler`, `ISortHandler`, `IContentIndexHandler` | auto-discovered | headless sites need to fetch, filter, or sort content by your package's data |
 
 - **`references/content-and-routing.md`** — rows 1, 5, 6, 7.
 - **`references/api-and-infrastructure.md`** — rows 2, 3, 4, 8, 9, 10, 11.
+- **`references/delivery-api.md`** — row 1's Delivery API side, and row 12: what a package
+  needs so a headless site can use it.
 
 ¹ v19 replaces the built-in Examine indexes and hooks with Umbraco Search, which is also an
 add-on for v17 and v18. Which API applies depends on the stack the site runs, not just the

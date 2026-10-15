@@ -36,7 +36,8 @@ public class RatingValueConverter : PropertyValueConverterBase
 If the property also needs to appear via the Content Delivery API, also implement
 `IDeliveryApiPropertyValueConverter` (`GetDeliveryApiPropertyValueType` /
 `ConvertIntermediateToDeliveryApiObject`) — it's a separate interface because the Delivery
-API shape and the in-process `IPublishedContent.Value<T>()` shape are allowed to differ.
+API shape and the in-process `IPublishedContent.Value<T>()` shape are allowed to differ. When
+a converter needs it, and how to write it, is in `delivery-api.md`.
 
 **Content variation (culture/segment), not backoffice localization:** if the property editor
 your converter targets can be set to vary by culture and/or segment, `propertyType.Variations`

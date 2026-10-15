@@ -17,7 +17,8 @@ section, and the files/extension points you own. Build that task and nothing mor
 - `dotnet-best-practices` — always, for any C# work.
 - `typescript-best-practices` — always, for any TypeScript work.
 - `umbraco-extensibility` — when the task touches Umbraco's extension surface: Composer/DI
-  registration, collection builders, notification handlers.
+  registration, collection builders, notification handlers, property value converters, and
+  Delivery API support.
 - `umbraco-docs` — before using an Umbraco extension point, setting, or API you haven't
   already seen used in this repo, to read the documented way for the project's major.
 - `umbraco-cms-source` — before copying or extending a CMS pattern (a base class, a built-in

@@ -23,7 +23,9 @@ design. A reviewer that fixes its own findings isn't a gate.
 - `dotnet-best-practices` — nullable-reference discipline, type modeling, async/LINQ/disposal
   correctness, exception vs. explicit result on error paths.
 - `typescript-best-practices` — the same checks for any TypeScript in the diff.
-- `umbraco-extensibility` — DI/Composer registration and collection-builder usage.
+- `umbraco-extensibility` — DI/Composer registration and collection-builder usage, and the
+  review checklist in its `references/delivery-api.md` when the diff adds or changes a
+  property value converter or a Delivery API query handler.
 - `umbraco-docs` — in step 3, when the diff uses an Umbraco extension point, setting, or API
   the repo's own docs don't cover.
 - `umbraco-cms-source` — when step 3's sibling is in the CMS itself, or the diff relies on
