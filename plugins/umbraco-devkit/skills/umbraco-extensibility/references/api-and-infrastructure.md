@@ -31,6 +31,14 @@ public class MyPackageController : ManagementApiControllerBase
 Known gotcha: don't suffix the controller class name with the version number (e.g.
 `MyPackageV1Controller`) — it breaks route generation.
 
+Known gotcha: returning a `[JsonPolymorphic]` model as the whole response with `Ok(model)`
+drops its `"$type"` discriminator. `Ok(object)` leaves the declared type empty, so the output
+formatter serializes the runtime subtype, which carries no polymorphism metadata. Declare the
+base type: return `ActionResult<TBase>`, or
+`new OkObjectResult(model) { DeclaredType = typeof(TBase) }`. A polymorphic model nested as a
+typed property isn't affected. A unit test calling `JsonSerializer.Serialize<TBase>` still
+passes, so test the response through a `TestServer` or a real request instead.
+
 ## 3. Health check
 
 ```csharp

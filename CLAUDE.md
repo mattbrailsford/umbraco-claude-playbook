@@ -103,7 +103,7 @@ refer to the consumer project, not this repo.
   (`user-invocable: true`) go under "What you can do", grouped by job; the rest go under
   "What works in the background". Detail belongs in `docs/HOW-IT-WORKS.md` or the skill
   itself, not the README.
-- `docs/HOW-IT-WORKS.md` explains how the skills connect (the three flows that change code,
+- `docs/HOW-IT-WORKS.md` explains how the skills connect (the four flows that change code,
   and what every other skill does around them), the plan folder, the gate, project memory,
   branches and worktrees, and what to build on top.
 - When adding, renaming, or removing a skill or agent: update the README tables, and
@@ -158,7 +158,7 @@ preserve when editing these skills:
 ## Architecture: the builder/reviewer gate
 
 `feature-build` dispatches `agents/builder.md` per task, then `agents/reviewer.md` against
-the diff, then one whole-branch review after the last task. `quick-fix` also dispatches
+the diff, then one whole-branch review after the last task. `quick-fix` and `change-backport` also dispatch
 `reviewer`. `major-upgrade` runs the same builder/reviewer loop over its upgrade
 checklist.
 

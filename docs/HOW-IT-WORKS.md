@@ -5,7 +5,7 @@ you.
 
 ## How the skills connect
 
-Code only changes through one of three flows, and all three go through the
+Code only changes through one of four flows, and all four go through the
 [builder/reviewer gate](#the-builderreviewer-gate) (`quick-fix` skips it for a text-only
 change):
 
@@ -14,6 +14,8 @@ change):
 - **`quick-fix`**, for a small fix of one concern. It hands over to the pipeline if the fix
   turns out bigger.
 - **`major-upgrade`**, for moving to a new Umbraco major.
+- **`change-backport`**, for landing a change that's already merged on one version line on
+  another.
 
 Every other skill you run works around those flows and never changes code itself:
 
