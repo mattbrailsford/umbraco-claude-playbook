@@ -117,7 +117,8 @@ The triager searches the tracker itself, open and closed, for earlier duplicates
    duplicate-of (if any), recommended action, one-line why (written following
    `plain-writing`).
 4. Next to each recommended action, show the tracker write it maps to (State labels below):
-   the label or close, and the comment the triager drafted.
+   the label or close, any type or area label fix the triager found, and the comment the
+   triager drafted. A label fix is a tracker write like any other, applied only on approval.
 5. Present the table and the security list (if non-empty) to the user. Nothing gets written
    back to the tracker until the user says which recommendations to apply. Then apply exactly
    those, and report what was written.
@@ -153,6 +154,15 @@ issue with no state label is untriaged.
 | `state/blocked` | Can't be fixed here until something outside the project changes | `issue-triage`, `investigate-bug` |
 | `state/ready` | Verified and ready to fix | `issue-triage`, `investigate-bug` |
 | `state/in-progress` | A fix lane has started | `issue-resolve` |
+
+**Already fixed?** Check this first. If a merged change already fixes the issue, it gets no
+state label:
+
+- The fix is in a release that has shipped → close it as fixed, with the "Already fixed"
+  comment below naming that version.
+- The fix is merged but no release has it yet → leave it open, and draft the "Already
+  fixed" comment without the close, naming the change. With no state label it comes back on
+  the next run, which is when to check whether the release has shipped.
 
 **Which state.** Pick the first that fits:
 
@@ -198,8 +208,10 @@ This section is the plugin's one statement of how to write to an issue. `issue-t
 Triage is also how the reporter hears back. Every label change or close gets one comment,
 drafted for the user to approve, with up to two parts, in this order:
 
-1. **For the reporter.** Always present. Written following `plain-writing`, for someone who
-   uses the package but has never seen its source. No file paths, class names, or stack
+1. **For the reporter.** Written following `plain-writing`, for someone who
+   uses the package but has never seen its source. Leave it out when someone on the team
+   opened the issue. Cut it down to what's new when a maintainer has already told the
+   reporter the same thing in a comment; never post a second version of their reply. No file paths, class names, or stack
    frames unless the reporter used them first. Say what was understood, what happens next,
    and what's needed from them, if anything. Thank them where it fits. Never promise a fix
    date or a release.
@@ -297,6 +309,13 @@ Rules for the notes:
     verified end to end" and why.
   - **Guarded by:** the test that now covers it.
   - **Left out:** anything deliberately not fixed, and any follow-up issues.
+
+**Already fixed**
+- Reporter: it's fixed, and the version to upgrade to. If no release has it yet, say it's
+  fixed and will be in an upcoming release, without promising a date.
+- Notes, `Notes on the fix`:
+  - **Change:** the commit or PR that fixed it, linked.
+  - **Released in:** the version, or "not released yet".
 
 **Duplicate**
 - Reporter: a link to the earlier issue to follow instead.

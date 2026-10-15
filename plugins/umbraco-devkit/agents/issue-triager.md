@@ -23,14 +23,18 @@ both.
 
 1. **Fetch the issue** using the access method you were given — the real ticket, not a search
    result summary. Read the full description, repro steps, and comments if the tracker shows
-   them.
+   them. Open every image and attachment on it, too: download each one to a temp folder and read it. A
+   screenshot often holds the version, the error, or the setting the text leaves out, and a
+   question about something it already shows wastes the reporter's time.
 2. **Security check, first.** Before anything else, check the issue against the security
    "What counts" list you were given. If it matches, stop classifying — report only
    `security: true`, the issue ID, and a one-line reason with no exploit detail. Don't search
    the codebase for it beyond confirming the report is plausible.
 3. **Classify.** Type: bug, feature request, question/support, or duplicate. If it's clearly a
    support question with no code implication, say so — a lot of "triage" on a package tracker
-   is separating real bugs from usage questions.
+   is separating real bugs from usage questions. Then compare your call with the issue's
+   current type and area labels. If one is wrong (a "bug" that's really a feature request, a
+   component label for the wrong area), name the fix, using only labels the tracker has.
 4. **Find the likely area.** Grep the repo for the error text, stack frame, symbol name, or
    feature name the issue describes. Report the file(s)/area, not a guess with no grep behind
    it — if nothing matches, say that plainly instead of naming a file that merely sounds
@@ -40,7 +44,8 @@ both.
    it named. Confirm or rule out each candidate based on the actual content, not just the
    match that surfaced it.
 6. **Recommend one action**: ready, needs investigation, needs info from the reporter,
-   needs a maintainer's decision, blocked (name what on), likely duplicate (name the ID), or
+   needs a maintainer's decision, blocked (name what on), likely duplicate (name the ID),
+   already fixed (name the change, and the release it shipped in or "not released yet"), or
    close (say why). Pick between the states using the "Which state" rules you were given.
    An issue sent to you because its needs-info timeout ran out gets a close. Don't invent a
    priority scheme the tracker doesn't have — describe severity/urgency in plain terms if
@@ -52,5 +57,5 @@ both.
 ## Report back
 
 A short structured block: issue ID, title, type, security flag (true/false), likely area,
-duplicate-of (or none), recommended action, one-paragraph rationale, and the drafted
-comment. Nothing more. The comment is a draft for the user; you never post it.
+duplicate-of (or none), label fixes (or none), recommended action, one-paragraph rationale,
+and the drafted comment. Nothing more. The comment is a draft for the user; you never post it.
