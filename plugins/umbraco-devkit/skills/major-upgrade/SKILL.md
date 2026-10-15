@@ -25,8 +25,9 @@ the same builder → reviewer → smoke → commit gate as `feature-build`.
 
 - IN: one hop to one target major. Dependency and target framework bumps, code changes forced
   by breaking changes or removed obsolete APIs, the frontend's `@umbraco-cms/backoffice`
-  bump, and the package's own compatibility markers (version, dependency range, marketplace
-  metadata, README).
+  bump, the package's own compatibility markers (version, dependency range, marketplace
+  metadata, README), and the third-party dependency bumps the user picks from inventory step
+  10.
 - OUT: new features, refactors the upgrade doesn't force, and dropping an older major the
   project still supports. Note those in the upgrade file's "Follow-ups" section instead.
   Releasing the upgraded package is also out of scope; it's the project's own release steps.
@@ -87,23 +88,13 @@ or incomplete. Never treat "not in the docs" as "not a breaking change".
    If it differs from the project's, the upgrade includes a .NET bump. Check `global.json`
    too, if the project has one.
 
-   Then match every dependency the project shares with the CMS to the CMS's version. A
-   package that asks for a lower version than the CMS fails restore with a downgrade error;
-   one that asks for a higher version forces every site that installs it onto a version the
-   CMS wasn't tested with.
-   - **NuGet.** The CMS pins its versions in `Directory.Packages.props` at the repo root.
-     For every package the project references that also appears there (EF Core and its
-     providers, `Microsoft.Extensions.*`, `Microsoft.AspNetCore.*`, Serilog, and so on), use
-     the CMS's exact version at the target tag. A shared package the CMS doesn't list is
-     brought in by one that it does; find its version with `dotnet list package
-     --include-transitive` once the bump restores.
-   - **npm.** The backoffice ships its own copies of shared libraries (Lit, UUI, RxJS, and
-     others) under `@umbraco-cms/backoffice/external/*`, each pinned in
-     `src/Umbraco.Web.UI.Client/src/external/<library>/package.json`. If the client also
-     lists one of these itself, match that version, and check `npm ls <library>` resolves
-     to a single copy. Two copies of Lit or UUI at runtime break custom elements in ways the
-     build never shows. Importing from the `external/*` path instead of a separate
-     dependency avoids the problem; suggest it as a follow-up if the client doesn't.
+   Then match every dependency the project shares with the CMS to the CMS's version at the
+   target tag. The upgrade moves the package's floor to the target release, so
+   `umbraco-dependencies`' "Locked to the CMS" says which dependencies these are, NuGet and
+   npm, and how to read their versions. A shared package the CMS doesn't list is brought in
+   by one that it does; find its version with `dotnet list package --include-transitive`
+   once the bump restores. If the client lists its own copy of a library the backoffice ships
+   under `external/*`, suggest importing from that path instead as a follow-up.
 
    List every shared dependency with its current and target version in the inventory.
 2. **Breaking-change PRs in the CMS repo.** Umbraco labels every breaking PR
@@ -177,7 +168,10 @@ or incomplete. Never treat "not in the docs" as "not a breaking change".
    it: `ef-core-data`'s provider checks apply to the smoke.
 8. **Compatibility markers.** List every place the supported CMS version is written down: the
    package's own version (per the project's choice in `git-workflow`), NuGet dependency
-   ranges, `umbraco-marketplace.json`, README compatibility tables, and any CI matrix.
+   ranges (including ranges on the repo's own sibling packages), package references in any
+   `dotnet new` template the repo ships, `umbraco-marketplace.json`, README compatibility tables, any CI matrix, and the
+   `target-branch` entries and ignore list in `.github/dependabot.yml`
+   (`umbraco-dependencies`' "Dependabot").
    Against a CMS pre-release, the package's own version is a pre-release too (for example
    `19.0.0-rc1`), and its dependency range must allow the CMS pre-release.
 9. **The package's own scheduled removals.** Work out the package version this upgrade will
@@ -194,6 +188,50 @@ or incomplete. Never treat "not in the docs" as "not a breaking change".
    doesn't name a version at all: list those as follow-ups for the user to decide. Every
    removal is a breaking change for the package's consumers, so record each one in the
    file's "Breaking changes for consumers" section.
+10. **Third-party dependencies.** A new package major is when consumers expect breaking
+    changes, so it's the time for the dependency updates a minor release can't take. Only
+    when step 9 says this release is a major for the package: always with version-aligned
+    versioning; with independent SemVer, only if the user chose a new major. Otherwise skip
+    to the forced bumps below.
+
+    Look only at **shipped** dependencies (`umbraco-dependencies`' kinds, sorted at the
+    target tag, since a CMS major can lock or unlock a package) where the update is:
+    - a new major version, or a new minor of a `0.x` package, which can break just the same;
+    - or something held back for this moment: a `.github/dependabot.yml` ignore entry with
+      `update-types`, a manifest comment ("bump to 3.0 when..."), a "leave" from an earlier
+      `dependency-review`, or a Follow-up in the previous upgrade file
+      (`<archive-path>/upgrades/`). Existing npm `overrides` count too: recheck whether each
+      is still needed.
+
+    Dev-only updates and shipped patches and minors can move any time; leave them to
+    `dependency-review`. Find versions the way its "Gather updates with no PR" step does,
+    starting from the version that actually ships (for bundled npm, the lockfile's resolved
+    version, not the range floor). Look past the stable filter where it misleads: a current
+    pre-release, a pre-release that's the real target, and a package deprecated in favor of
+    a new id (nuget.org and `npm view <name> deprecated` name the successor).
+
+    For each candidate:
+    - **Framework.** The new version must work on the target framework from step 1: a
+      matching target, a lower one, or `netstandard`. It needn't list it by name.
+    - **Locked packages, at any depth.** Walk the new version's dependency chain
+      (`umbraco-dependencies`' nuspec lookup) for any package the CMS ships at the target
+      tag, and compare versions. If the current version already overshoots, say so and show
+      the trade-off for the user to decide, as in "When the package is already off the
+      floor".
+    - **Breaking changes.** Read its release notes (the repository URL in its nuspec or
+      `package.json`, its GitHub releases, or its CHANGELOG).
+    - **Consumers.** Grep the package's public signatures for the dependency's types. If
+      they appear, or consumers are likely to reference the dependency themselves, the bump
+      is a breaking change for them.
+
+    **Forced bumps** are different: when the current version doesn't run on the target
+    framework, or needs a locked package above the target's version, the upgrade can't build
+    without moving it. Those go in task 2 with the CMS bump, with no picking.
+
+    Show the user the list (dependency, current, newest, what breaks) and let them pick.
+    Packages that release together (`react` with `react-dom`, an SDK family) are one row and
+    one task. Record each picked bump that's breaking for consumers in "Breaking changes for
+    consumers". What isn't picked goes in "Follow-ups".
 
 Write the file from `templates/UPGRADE.md`. Order the tasks so **every task ends in a green
 build**:
@@ -202,7 +240,8 @@ build**:
    version. Each replacement API already exists there, so this lands green and shrinks the
    bump.
 2. Bump the target framework and packages, with every shared dependency at the CMS's
-   version (step 1), and fix what no longer compiles. This is the one big task. Split it by
+   version (step 1) and any forced third-party bump (step 10), and fix what no longer
+   compiles. This is the one big task. Split it by
    project if the solution has several.
 3. Move off APIs the target release made obsolete or `@deprecated` (the second build and
    lint run in steps 5 and 6). Add these tasks once the bump compiles; you can't see them
@@ -211,9 +250,12 @@ build**:
    default, a renamed URL, a changed notification).
 5. The frontend bump and its fixes: import paths, manifests, elements and contexts, UUI.
    Runtime deprecation warnings found in the smoke get added as tasks here.
-6. Remove the package's own deprecated code scheduled for this version (step 9). This goes
-   after the CMS work, so a test failing here points at the removal, not the bump.
-7. Compatibility markers.
+6. Third-party dependency bumps the user picked (step 10), one task per dependency or family
+   that releases together. These go after the CMS work, so a failure points at the
+   dependency, not the CMS.
+7. Remove the package's own deprecated code scheduled for this version (step 9), after the
+   other code changes, so a test failing here points at the removal.
+8. Compatibility markers.
 
 Show the user the inventory and the ordered tasks, and wait for a yes before building. This
 is the plan; a missing item here becomes a broken site later.
@@ -230,7 +272,9 @@ the last RC to the final release). Work on the same branch.
    happen. Re-read the docs page too: it's often only finished for the final release.
 3. Append what you find to the file as new entries and new unchecked tasks. Don't rewrite or
    untick earlier ones; they're done and committed. Update the file's target release line.
-4. Always add a task to move the CMS packages, `@umbraco-cms/backoffice`, every shared
+   Don't re-offer step 10's list, but re-check each unchecked step 10 task against the newer
+   tag: its locked packages, and whether a forced bump changed.
+4. Always add a task, ahead of any unchecked step 10 or removal tasks, to move the CMS packages, `@umbraco-cms/backoffice`, every shared
    dependency (step 1 at the newer tag), and the package's own pre-release version to the
    newer release. On the final release, that drops the
    package's pre-release suffix unless the user wants one more pre-release first.
@@ -306,4 +350,4 @@ line's trunk, follow `feature-close`'s
 ## Hand off
 
 Report: current to target version (and the CMS release, if it's a pre-release), tasks done and commits, what the upgrade smoke showed,
-any breaking changes for consumers, and the follow-ups. Then the PR link.
+third-party dependencies moved, any breaking changes for consumers, and the follow-ups. Then the PR link.

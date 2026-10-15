@@ -65,7 +65,7 @@ the tables below.
 | I want to... | Run |
 |---|---|
 | Set up a project for this devkit: `CLAUDE.md`, ports, lint, tests, CMS source and docs | [`/project-init`](plugins/umbraco-devkit/skills/project-init/SKILL.md) |
-| Push a new package to GitHub for the first time: README, LICENSE, CONTRIBUTING | [`/github-init`](plugins/umbraco-devkit/skills/github-init/SKILL.md) |
+| Push a new package to GitHub for the first time: README, LICENSE, CONTRIBUTING, Dependabot | [`/github-init`](plugins/umbraco-devkit/skills/github-init/SKILL.md) |
 
 ### Build a feature
 
@@ -107,6 +107,7 @@ Not ready to plan yet? Ask Claude to write the idea up in `docs/ideas/` and comm
 |---|---|
 | Write the PR description, with diagrams and screenshots | [`/pr-describe`](plugins/umbraco-devkit/skills/pr-describe/SKILL.md) |
 | Review a PR from outside the core team | [`/pr-review`](plugins/umbraco-devkit/skills/pr-review/SKILL.md) |
+| Review dependencies: Dependabot PRs, security alerts, and what's out of date | [`/dependency-review`](plugins/umbraco-devkit/skills/dependency-review/SKILL.md) |
 
 ### Upgrade and publish
 
@@ -138,6 +139,7 @@ You don't run these. The skills above and the agents load them when the work nee
 | [`umbraco-performance`](plugins/umbraco-devkit/skills/umbraco-performance/SKILL.md) | Caching, tree traversal, and keeping hot paths fast |
 | [`umbraco-load-balancing`](plugins/umbraco-devkit/skills/umbraco-load-balancing/SKILL.md) | Staying correct when the site runs on more than one server |
 | [`umbraco-env-sync`](plugins/umbraco-devkit/skills/umbraco-env-sync/SKILL.md) | Moving a package's own data between environments with Umbraco Deploy or uSync |
+| [`umbraco-dependencies`](plugins/umbraco-devkit/skills/umbraco-dependencies/SKILL.md) | Which dependencies must match the CMS, which ship to sites, which are dev-only |
 | [`ef-core-data`](plugins/umbraco-devkit/skills/ef-core-data/SKILL.md) | SQL Server + SQLite, migrations, repositories |
 | [`umbraco-cms-source`](plugins/umbraco-devkit/skills/umbraco-cms-source/SKILL.md) | Read the CMS source at the version you target |
 | [`umbraco-docs`](plugins/umbraco-devkit/skills/umbraco-docs/SKILL.md) | Read the official docs for the version you target |

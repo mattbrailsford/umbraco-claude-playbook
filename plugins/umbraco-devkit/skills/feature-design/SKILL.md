@@ -264,6 +264,8 @@ this phase.
 - Async naming, visibility (internal by default), public-API compatibility → `umbraco-package-conventions`.
 - General C# type/error-handling shape for a new service or model → `dotnet-best-practices`.
 - Persistence needed → `ef-core-data`.
+- A new NuGet or npm dependency → `umbraco-dependencies`, so whether the CMS already
+  decides its version, and whether it ships to sites, is known before it's chosen.
 - Reading content on front-end requests, caching, or large lists → `umbraco-performance`,
   so where data is read from and what clears each cache is decided now.
 - Files, background jobs, side effects, or state shared between requests →

@@ -2,7 +2,7 @@
 name: github-init
 description: >-
   Bootstraps the GitHub remote for a new Umbraco package or add-on — README, LICENSE, one
-  CONTRIBUTING.md. Use when a project has no `origin` remote yet and it's time to push it
+  CONTRIBUTING.md, a bug report template, and a Dependabot config. Use when a project has no `origin` remote yet and it's time to push it
   publicly for the first time.
 user-invocable: true
 argument-hint: [optional repo name]
@@ -77,6 +77,14 @@ security reports to wherever that actually gets handled, is a better fit for a s
 than either a second structured issue-request template or a standalone `SECURITY.md` — see
 "What this skips" below.
 
+### Dependabot config — locked dependencies ignored from day one
+
+`.github/dependabot.yml`, built from `umbraco-dependencies`' "Dependabot" section and its
+template. Without it, Dependabot's security updates still open PRs, including ones for
+dependencies the CMS decides, and nothing groups the dev-only noise. Fill the ignore list
+from what this project actually references, checked against the CMS at the package's floor.
+If the project carries more than one CMS major, add a `target-branch` copy of each entry per extra line.
+
 ## What this skips, and why
 
 This is intentionally lighter than a generic "professional open-source repo" checklist,
@@ -121,4 +129,5 @@ because real Umbraco package repos don't carry the extra weight:
 ## Hand off
 
 Report: remote URL, license + visibility + owner, files created, anything skipped and why.
-Suggested next: `git-workflow` for the first commit/PR once there's something to ship.
+Suggested next: `git-workflow` for the first commit/PR once there's something to ship. When
+Dependabot PRs start arriving, `dependency-review` works through them.

@@ -24,7 +24,9 @@ Every other skill you run works around those flows and never changes code itself
   issues from new to a started fix.
 - **Reviews and explains it.** `pr-review` runs the same reviewer over a PR from outside the
   team. `decision-review` pulls out what a human should look at after a build.
-  `pr-describe` writes the PR description.
+  `pr-describe` writes the PR description. `dependency-review` sorts Dependabot PRs, security
+  alerts, and out-of-date packages by what each touches, and hands chosen bumps to
+  `quick-fix`.
 - **Tidies up after.** `feature-close` moves a closed plan out of the plans folder once
   its PR is merged or the plan is dropped.
 - **Sets up and ships.** `project-init` prepares a project, `github-init` its first public

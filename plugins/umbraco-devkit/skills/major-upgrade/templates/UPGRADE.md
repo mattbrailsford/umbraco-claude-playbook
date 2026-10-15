@@ -19,6 +19,15 @@ first appeared in, and where it hits the project.
 | [`UmbracoApiController` removed] | [umbraco/Umbraco-CMS#12345] | [rc1] | [`src/Api/ProductsController.cs`] |
 | [`IFooService.Get` obsolete, use `GetAsync`] | [CS0618 on `release-19.0.0-rc1`] | [rc1] | [`src/Services/Bar.cs:40`] |
 
+## Third-party dependencies
+
+Shipped dependencies offered in inventory step 10, and what was picked. Forced bumps are
+marked; they go in the main bump task.
+
+| Dependency | Current | New | What breaks | Picked |
+|---|---|---|---|---|
+| [JsonSchema.Net.Generation] | [5.1.1] | [7.4.0] | [`JsonSchema` in `IStepType`; consumers see it] | [yes] |
+
 ## Blockers
 
 [Dependencies with no release for the target major yet, or "None".]
@@ -32,6 +41,7 @@ Each task ends in a green build.
 - [ ] [Replace APIs the target release made obsolete]
 - [ ] [Handle behavior changes]
 - [ ] [Bump `@umbraco-cms/backoffice`; fix the client]
+- [ ] [Bump <shipped dependency or family> to <version>, one task each]
 - [ ] [Remove this package's own code scheduled for removal in this version]
 - [ ] [Update compatibility markers]
 
@@ -41,13 +51,15 @@ Each task ends in a green build.
 
 ## Breaking changes for consumers
 
-[Changes to this package's own public API or manifest aliases: ones the upgrade forced, and
-the package's own deprecated code removed in this version. Or "None".]
+[Changes to this package's own public API or manifest aliases: ones the upgrade forced, the
+package's own deprecated code removed in this version, and dependency bumps consumers will
+see. Or "None".]
 
 ## Follow-ups
 
 [Things found along the way that the upgrade didn't need: obsolete APIs whose replacement
-isn't in every CMS version the branch builds against, refactors, dropping an old major.]
+isn't in every CMS version the branch builds against, shipped dependency majors not picked,
+refactors, dropping an old major.]
 
 ## Log
 

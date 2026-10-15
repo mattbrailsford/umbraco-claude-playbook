@@ -192,7 +192,7 @@ set it up. Read only the one for the step you're on. The same rules apply to all
   keep it. The defaults are only for a project that has nothing yet.
 - **Match the CMS.** The defaults follow what Umbraco CMS itself uses, so Umbraco's own test
   helpers and examples work. Helper package versions match the CMS version the project
-  targets.
+  targets (`umbraco-dependencies`' "Which CMS version: the floor").
 - **Install, don't hand-write.** Use `dotnet new`, `dotnet add package` and `npm install` so
   versions come from the real feeds. Let them pick the current versions, then pin only where
   the CMS version requires it.
