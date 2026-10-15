@@ -32,6 +32,9 @@ section, and the files/extension points you own. Build that task and nothing mor
   converter, a cache, or a backoffice list or search → `umbraco-performance`.
 - Code that writes files, holds state between requests, runs on a timer, sends or calls out
   from a handler, writes shared rows, or clears its own cache → `umbraco-load-balancing`.
+- In a project that syncs with Umbraco Deploy or uSync: a new entity, a change to a synced
+  entity, or the sync code itself → `umbraco-env-sync`. Make the matching sync change in
+  the same task.
 - Frontend work (Lit components, UUI, backoffice manifests) → `umbraco-backoffice-ux` for how
   the screen should look and behave, the installed Umbraco Backoffice Skills for the specific
   extension point, and `umbraco-backoffice-conventions` for package structure (barrel exports,
