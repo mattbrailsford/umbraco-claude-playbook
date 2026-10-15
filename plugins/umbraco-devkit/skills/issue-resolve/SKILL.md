@@ -66,6 +66,9 @@ but the real judgment stays where it already lives:
   - **No proven cause:** no lane starts. Show its drafted update, apply it only on the
     user's yes, and stop.
 
+- **Already fixed on another version line** — the cause is proven and a merged commit or PR
+  on another line of the package already fixes it → invoke `change-backport` (Skill tool) with that
+  commit or PR and the issue's line as the target.
 - **Looks small** — a single concern, the kind `quick-fix`'s own scope section describes →
   invoke `quick-fix` (Skill tool) with a description built from the issue's title/body, the
   triage's likely-area finding, the repro, and the user's notes. `quick-fix` still makes its own

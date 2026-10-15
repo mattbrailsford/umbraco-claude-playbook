@@ -182,7 +182,8 @@ merge conflict — how the codebase carries that:
 
 - **Branch-per-major** (recommended default): each major gets its own long-lived line, and a
   fix that applies to more than one is ported deliberately. Avoids runtime version-check
-  complexity, at the cost of porting shared fixes across branches by hand. Naming:
+  complexity, at the cost of porting shared fixes across branches (`change-backport` does one
+  port). Naming:
   `support/N.x` alongside a single `main` is the older shape; `vN/dev` + `vN/main` per line
   (with `vN/feature/…`, `vN/release/…`, `vN/hotfix/…` underneath) is the newer one worth
   defaulting to — it makes which lines exist and their state visible from the branch list

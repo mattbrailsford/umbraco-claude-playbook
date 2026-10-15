@@ -66,6 +66,25 @@ follow-up.
 Pick your package's prefix once and use it for every migration, forever — changing it later
 breaks collision-avoidance for anything migrated under the old name.
 
+### Porting a migration to another version line
+
+When a package keeps one branch per CMS major and a schema change goes to more than one line,
+**copy the migration files as they are**. Never run `dotnet ef migrations add` again on the
+other line. Copy each provider's `<timestamp>_<Name>.cs`, its `.Designer.cs`, and the model
+snapshot change, and keep the same `[Migration("...")]` ID.
+
+EF records applied migrations by ID. If two lines use different IDs for the same change, a
+site upgrading from the older line doesn't find the newer line's ID in its history, runs the
+migration again, and fails on schema that already exists (SQL Server error 2705, "Column
+names in each table must be unique"; SQLite reports a duplicate column). Every later
+migration for the package then stops at startup.
+
+- Before merging a port, list the migration file names for each provider on both lines and
+  diff them. They must be identical.
+- If different IDs have already shipped, don't rename the shipped files. Map the older line's
+  ID to the newer line's in the migration history table before migrating, so the newer line
+  sees the change as already applied.
+
 ## Repository pattern: internal to the owning service
 
 `umbraco-package-conventions` states this rule generally; this is the EF Core half. The

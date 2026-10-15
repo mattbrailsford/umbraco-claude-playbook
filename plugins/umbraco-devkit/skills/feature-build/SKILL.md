@@ -60,7 +60,11 @@ doesn't replace the whole-feature review (see "Finish"); the two catch different
       location; else fall back to `git checkout -b <feature-slug>` off trunk. Never invent a
       separate worktree/branch mechanism.
 5. Before touching code, confirm `pwd` and the current branch match `<feature-slug>` (or
-   whatever the project's hook named it).
+   whatever the project's hook named it), and that the plan-folder commit is in the new
+   branch's history (`git log --oneline -5`). A `WorktreeCreate` hook that branches from
+   `origin/<trunk>` instead of local trunk silently leaves out a commit that was never pushed.
+   If it's missing, remove the worktree, ask the user before pushing trunk, then create it
+   again.
 6. **Check the demo/test site is worktree-safe, if one exists.** Check its `.csproj`
    references `Umbraco.Community.WorktreeDevPort`. Without it, the site runs on a fixed port
    (two worktrees smoke-testing at once collide, and it looks like a broken build) or on a
@@ -129,7 +133,8 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
 
 5. **Commit.** On `PASS` + smoke green, have the builder commit *only this task's changes*
    with a message naming the task, following the project's commit conventions (see
-   `git-workflow`). One commit per task.
+   `git-workflow`). One commit per task. If the task's code makes a pending spec pass for
+   the first time, that spec file goes in the same commit, never in a later cleanup commit.
 
 6. **Check the box.** Edit `PLAN.md`: `- [ ]` → `- [x]` for the completed task, and add a
    one-line entry to `BUILD-LOG.md` (commit SHA, what was verified). Commit that change, plus
@@ -184,5 +189,9 @@ post-merge too: `feature-close`, once the PR is merged.
 - Sequential, dependency-ordered. This is a pipeline, not a parallel team.
 - Builder owns code; reviewer owns the gate; this loop owns sequencing, `PLAN.md` checkbox
   state, `BUILD-LOG.md`, `screenshots/`, and its own line in `README.md`. Never collapse these roles.
+- The orchestrator may investigate directly: read docs, call an endpoint, read logs. The
+  moment a fix touches code, dispatch a builder, even for one line you already know. This is
+  easiest to break mid-debugging against a live system, where each small tweak feels too
+  small to hand off.
 - If a gate can't pass after repeated attempts and the builder is stuck, stop and report the
   task + findings rather than committing degraded code.

@@ -98,6 +98,25 @@ Resolve via `StaticServiceProvider.Instance.GetRequiredService<T>()` inside the 
 overload, rather than duplicating the implementation, only when a static default genuinely
 isn't available — a compile-time default parameter is always simpler when one exists.
 
+The same rule covers a public constructor, such as a Management API controller's or a
+service's that consumers may construct themselves. Keep the old constructor, mark it
+`[Obsolete]`, and chain it to the new one, resolving the new dependency through
+`StaticServiceProvider`. Then put `[ActivatorUtilitiesConstructor]` on the new constructor.
+With two public constructors and no marker, ASP.NET Core's `ActivatorUtilities` can't pick
+one, and the controller fails at runtime on its first request, not at build time. Only a real
+request through the demo site proves the right constructor is picked; a unit test calling
+`new` directly doesn't.
+
+```csharp
+[ActivatorUtilitiesConstructor]
+public ItemController(IItemService itemService, IItemPermissionChecker permissionChecker) { /* ... */ }
+
+[Obsolete("Use the constructor taking IItemPermissionChecker. Will be removed in v19.0.0.")]
+public ItemController(IItemService itemService)
+    : this(itemService, StaticServiceProvider.Instance.GetRequiredService<IItemPermissionChecker>())
+{ }
+```
+
 Give consumers a real deprecation window — state the target version in the `[Obsolete]`
 message. The default target is the highest CMS major the package supports + 2. A package
 supporting v17 and v18 that obsoletes a member in both targets v20, on both branches. Check
