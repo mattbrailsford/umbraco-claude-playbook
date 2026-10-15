@@ -60,8 +60,9 @@ public class ConnectionController : ManagementApiControllerBase
 and registers in a Composer (`builder.Services.AddAuthorization(options =>
 options.AddPolicy(...))`, full example in `umbraco-extensibility`'s
 `references/api-and-infrastructure.md`). Don't reference a built-in-sounding policy name
-without checking it exists. An unresolved policy fails closed in some setups and silently
-no-ops in others.
+without checking it exists. An unregistered policy name throws `InvalidOperationException`
+("The AuthorizationPolicy named: '...' was not found") on every request to that endpoint, so
+it fails closed with a 500 that only shows up when someone calls it, not at startup.
 
 Reviewer checklist: find every `[Http*]`-attributed method in the diff and confirm each
 resolves to an authorization requirement, inherited or explicit.
