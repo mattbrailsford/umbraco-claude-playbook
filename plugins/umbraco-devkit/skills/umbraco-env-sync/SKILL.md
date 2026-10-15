@@ -138,6 +138,10 @@ one has leaked.
   target's own value, not be wiped.
 - **Mark fields sensitive where they're defined.** The sync code reads the marker; it
   shouldn't keep its own list of field names to skip.
+- **Don't rely on spotting encrypted values.** A value encrypted at rest can reach the sync
+  code already decrypted, because the package's service decrypts on read. Filter on the
+  field's sensitive marker, and test with a real transfer that the secret isn't in the
+  export.
 
 ## Users, groups, and members
 
@@ -183,7 +187,10 @@ them alongside the entity change; `reviewer` checks they're there.
   onto an empty target, check the result. Cover a missing dependency and a secret field.
 - One scenario test across entities, restoring a full set in pass order, catches a broken
   pass table.
-- Before release, run a real sync between two local sites at least once.
+- Run a real transfer between two local sites when sync support is added, and when the
+  pass table or the secret handling changes. Both tools can do it on one machine without a
+  license: [references/real-transfer.md](references/real-transfer.md). Check the export
+  for a fake secret, and the target's database for the result.
 
 ## Reviewing a diff for environment sync
 

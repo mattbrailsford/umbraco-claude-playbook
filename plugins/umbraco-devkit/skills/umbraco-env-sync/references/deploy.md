@@ -141,8 +141,16 @@ setup that works:
 
 - `IgnoreSettings`: field names always left out.
 - `IgnoreSensitive`: leave out fields the package marks sensitive.
-- `IgnoreEncrypted` (default on): leave out encrypted values.
+- `IgnoreEncrypted` (default on): leave out encrypted values. Not enough on its own: if
+  the service decrypts on read, the connector never sees the encrypted form.
 - Config references (`$...`) always pass.
+
+## SQLite
+
+A package with its own EF Core `DbContext` needs its own SQLite file when the site runs on
+SQLite, or Deploy's restore fails with "database is locked". Umbraco.Commerce.Deploy does
+this in `ConfigureUmbracoCommerceDeployConnectionString`. See
+[real-transfer.md](real-transfer.md).
 
 ## Tests
 
