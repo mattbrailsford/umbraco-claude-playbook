@@ -83,6 +83,10 @@ money, so run them on purpose, not as a routine check:
 claude plugin eval plugins/umbraco-devkit --tag <skill-name> --no-publish
 ```
 
+Ask the model to write the code, not review it. Given a short snippet to review, plain
+Claude catches most mistakes, so a review prompt hides what a skill adds. Build cases from
+real, fixed bugs where possible, and tag them `real-bug`.
+
 ## This repo is not an Umbraco project
 
 Skills like `umbraco-extensibility`, `ef-core-data`, and `project-init` describe conventions
