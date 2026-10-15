@@ -17,6 +17,7 @@ plugins/umbraco-devkit/
   .claude-plugin/plugin.json                      # plugin manifest
   skills/<name>/SKILL.md                          # one folder per skill (+ references/, templates/)
   agents/{builder,reviewer,issue-triager}.md      # subagents
+  evals/<case>/{prompt.md,graders/}               # `claude plugin eval` cases; results/ is gitignored
 settings.example.json   # copy-by-hand example for consumers; NOT installed by the plugin
 scripts/                # check-*.sh + their allowlists; repo-only, not shipped
 .claude/skills/review-skill-links/  # repo-only skill: cross-reference review; not shipped
@@ -73,6 +74,13 @@ scripts/check-skill-wiring.sh # every skill in the README and referenced from el
 scripts/check-version.sh      # version only in plugin.json, and bumped if shipped files changed
 scripts/check-frontmatter.sh  # skill/agent headers parse, names match, descriptions fit
 scripts/check-skill-callers.sh # no skill changes behavior based on which skill started it
+```
+
+Evals compare answers with and without the plugin. They make real model calls and cost
+money, so run them on purpose, not as a routine check:
+
+```bash
+claude plugin eval plugins/umbraco-devkit --tag <skill-name> --no-publish
 ```
 
 ## This repo is not an Umbraco project
