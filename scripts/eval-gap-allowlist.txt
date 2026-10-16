@@ -4,8 +4,3 @@
 # This list only shrinks. Remove a skill when its first eval lands (check-evals.sh flags it
 # if you forget). Never add a new skill here: write its eval instead.
 
-change-backport
-dependency-review
-issue-backlog
-issue-resolve
-major-upgrade
