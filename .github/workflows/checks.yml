@@ -1,0 +1,45 @@
+name: Checks
+
+# The repo's model-free checks (see "No build, lint, or test step" in CLAUDE.md), run on
+# every PR so they don't depend on someone remembering to. Evals are not run here: they make
+# real model calls and cost money.
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      # Full history: check-version.sh diffs against the merge base with main.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Manifests parse
+        run: |
+          jq . .claude-plugin/marketplace.json > /dev/null
+          jq . plugins/umbraco-devkit/.claude-plugin/plugin.json > /dev/null
+
+      - name: Skill references
+        run: scripts/check-skill-refs.sh
+
+      - name: Skill wiring
+        run: scripts/check-skill-wiring.sh
+
+      - name: Version
+        run: scripts/check-version.sh origin/main
+
+      - name: Frontmatter
+        run: scripts/check-frontmatter.sh
+
+      - name: Skill callers
+        run: scripts/check-skill-callers.sh
+
+      - name: Evals
+        run: scripts/check-evals.sh
