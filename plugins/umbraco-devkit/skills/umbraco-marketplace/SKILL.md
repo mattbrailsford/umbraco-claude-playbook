@@ -41,11 +41,20 @@ no human review step and no stated code-quality, security, or "actively maintain
 
 ## The version-compatibility gotcha
 
-Umbraco 14 rewrote the backoffice. Because of that, Marketplace's default assumption is: **a
-package whose Umbraco dependency tops out at v13 or lower does *not* support v14+**, even if
-your code actually does. If it does, you must say so explicitly — set
-`VersionDependencyMode: SemVer` in the optional `umbraco-marketplace.json` file described
-below, or the listing will undersell (or actively misstate) what you support.
+Umbraco 14 rewrote the backoffice. Because of that, Marketplace doesn't trust an open-ended
+range across that line: **a dependency with a minimum of v13 or lower and no maximum (say
+`Umbraco.Cms.Core` `10.0.0`) is listed as not supporting v14+**, even if the code works there.
+That's right for anything with backoffice UI. For a package with no UI that really does work
+on v14+, there are two fixes:
+
+- Set `VersionDependencyMode: SemVer` in the optional `umbraco-marketplace.json` described
+  below. Marketplace then takes the NuGet range as written, open maximum included. This
+  fixes the listing without a new release.
+- Or release a version whose range doesn't cross the line that way: a minimum of v14, or an
+  explicit maximum (`[10.0.0, 18.0.0)`).
+
+A range that already stops below v14 (`[10.0.0, 14.0.0)`) means what it says; neither fix
+applies until the range itself changes.
 
 ## Optional: `umbraco-marketplace.json` — richer listing metadata
 
@@ -68,8 +77,8 @@ the docs (`umbraco-docs`) before hand-writing this file rather than copying an e
    standard metadata fields above. Don't invent values — pull description/icon/license from
    what the project already declares (`README.md`, `LICENSE`, `CLAUDE.md`'s stated CMS
    version(s)), the same discipline `github-init` uses for its README gate.
-2. If the package supports Umbraco 14+ but its dependency reference doesn't make that obvious,
-   add or update `umbraco-marketplace.json` with the `VersionDependencyMode` override.
+2. If the package works on Umbraco 14+ but its range is open-ended from v13 or lower, apply
+   one of the two fixes in "The version-compatibility gotcha".
 3. If richer listing metadata is wanted (screenshots, category, docs links), draft
    `umbraco-marketplace.json` — confirm the current field names/category list against the
    docs first.

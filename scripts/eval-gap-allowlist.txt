@@ -18,5 +18,4 @@ major-upgrade
 pr-describe
 pr-review
 project-init
-umbraco-marketplace
 user-stories
