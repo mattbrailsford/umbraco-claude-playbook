@@ -86,8 +86,13 @@ money, so run them on purpose, not as a routine check. The default judge (Haiku)
 long answers such as full reviews, so judge with Sonnet:
 
 ```bash
-claude plugin eval plugins/umbraco-devkit --tag <skill-name> --judge-model sonnet --no-publish
+claude plugin eval plugins/umbraco-devkit --tag <skill-name> --judge-model sonnet --no-publish \
+  --scaffold --allow-tools Write Edit
 ```
+
+`--scaffold` runs each case's `fixture.sh`, and `--allow-tools` grants the write tools a
+case lists in `allowed_tools`. Without them, a case starts in an empty folder or can't write
+its answer, and its scores mean nothing.
 
 Ask the model to make the change, not review it. Given a short snippet to review, plain
 Claude catches most mistakes, so a review prompt hides what a skill adds. Test review only

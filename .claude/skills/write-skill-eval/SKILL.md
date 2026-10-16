@@ -88,10 +88,11 @@ Run the case once with a single run per arm:
 
 ```bash
 claude plugin eval plugins/umbraco-devkit --case <case-name> --runs 1 \
-  --judge-model sonnet --no-publish --scaffold
+  --judge-model sonnet --no-publish --scaffold --allow-tools Write Edit
 ```
 
-Drop `--scaffold` for a case with no `fixture.sh`.
+Drop `--scaffold` for a case with no `fixture.sh`. Read the run's warnings first: one saying a
+grader "cannot pass with the granted tools" means the run measured nothing.
 
 - **A grader that passes without the plugin measures nothing.** Make the prompt or grader
   harder, or delete the grader.
@@ -105,7 +106,7 @@ Run it with the default three runs per arm, Sonnet judging:
 
 ```bash
 claude plugin eval plugins/umbraco-devkit --tag <skill-name> --judge-model sonnet \
-  --no-publish --scaffold
+  --no-publish --scaffold --allow-tools Write Edit
 ```
 
 Three runs are noisy. Don't judge a close or zero gain on one run: rerun with `--runs 6`
