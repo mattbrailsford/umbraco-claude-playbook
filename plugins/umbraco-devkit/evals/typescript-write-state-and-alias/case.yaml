@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: typescript-write-state-and-alias
+context:
+  scaffold_script: fixture.sh
