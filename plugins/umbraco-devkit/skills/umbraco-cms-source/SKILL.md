@@ -102,3 +102,8 @@ gh search code "class ContentService" --repo umbraco/Umbraco-CMS
 
 `gh search code` only searches the default branch, not a tag. Confirm anything it finds by
 reading the file at the project's tag before relying on it.
+
+Without a signed-in `gh`, read the same file over plain HTTPS at the tag:
+`https://raw.githubusercontent.com/umbraco/Umbraco-CMS/${tag}/src/Umbraco.Core/Services/ContentService.cs`.
+There's no search this way, so find the path first (the docs, a stack trace, or the
+namespace).
