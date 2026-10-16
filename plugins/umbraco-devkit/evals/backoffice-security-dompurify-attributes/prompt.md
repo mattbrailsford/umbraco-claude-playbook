@@ -1,6 +1,6 @@
 ---
 description: DOMPurify custom-element config that lets on* event handlers through. From Umbraco-CMS advisory GHSA-vrqc-59mw-qqg7.
-tags: [security-lit, should-trigger, real-bug]
+tags: [umbraco-backoffice-security, should-trigger, real-bug]
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

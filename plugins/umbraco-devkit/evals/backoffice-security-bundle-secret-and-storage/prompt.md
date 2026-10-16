@@ -1,6 +1,6 @@
 ---
 description: A build-time env var is public in the bundle, and a token in localStorage is unsafe.
-tags: [security-lit, should-trigger]
+tags: [umbraco-backoffice-security, should-trigger]
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

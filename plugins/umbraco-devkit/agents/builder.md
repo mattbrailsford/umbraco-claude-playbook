@@ -46,8 +46,9 @@ section, and the files/extension points you own. Build that task and nothing mor
 - Auth, user input, the Management API, or secrets → `security-dotnet` while writing, so the
   reviewer has less to send back.
 - A Lit template rendering user-generated/AI-generated/external content via
-  `unsafeHTML`/`unsafeSVG`, frontend code reading a build-time env var, or any
-  `localStorage`/`sessionStorage` use → `security-lit`, same reason.
+  `unsafeHTML`/`unsafeSVG`, a localized term rendered as HTML, a DOMPurify config, frontend
+  code reading a build-time env var or calling an API that needs credentials, or any
+  `localStorage`/`sessionStorage` use → `umbraco-backoffice-security`, same reason.
 
 Load only the skills the task needs.
 

@@ -1,6 +1,6 @@
 ---
 description: Content from the package's own backend (RTE or AI output) still needs sanitizing before unsafeHTML.
-tags: [security-lit, should-trigger]
+tags: [umbraco-backoffice-security, should-trigger]
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

@@ -4,14 +4,15 @@ description: >-
   Backend security checklist for an Umbraco package: Management API authorization, EF Core
   queries built from input, secrets and sensitive settings, endpoints outside the Management
   API, and NuGet supply chain. Use when writing or reviewing any of those. For frontend
-  security, see `security-lit`.
+  security, see `umbraco-backoffice-security`.
 
 ---
 
 # Backend security review for Umbraco packages
 
-Frontend security (XSS in Lit templates, secrets in a client bundle, browser storage, npm
-supply chain) belongs to `security-lit`. Use both for a task that touches both layers.
+Backoffice security (Umbraco's sanitizing helpers, `localize.htmlString`, credentials in the
+browser) belongs to `umbraco-backoffice-security`. Use both for a task that touches both
+layers.
 
 ## 🎯 Why: Design for Change
 

@@ -59,7 +59,7 @@ is one that changes behavior someone saw go wrong. Typos, comments, and dead cod
    - `umbraco-env-sync`: only if the project syncs with Umbraco Deploy or uSync and the fix
      adds an entity, changes a synced one, or touches the sync code.
    - `umbraco-dependencies`: only if the fix adds or bumps a NuGet or npm package.
-   - **`security-dotnet` / `security-lit`: always, if the fix touches auth, user input, the
+   - **`security-dotnet` / `umbraco-backoffice-security`: always, if the fix touches auth, user input, the
      Management API, secrets, or `unsafeHTML`/`unsafeSVG`.** "Quick" doesn't exempt a fix from
      these — they're non-negotiable in this plugin regardless of diff size.
    - No `builder` dispatch. You make the edit yourself; the fix is too small to hand off.

@@ -79,7 +79,7 @@ the docs (`umbraco-docs`) before hand-writing this file rather than copying an e
 ## What this skips, and why
 
 - **No code-quality, security, or "actively maintained" gate.** Umbraco doesn't enforce one at
-  listing time, so this skill doesn't invent one — that's `security-dotnet`/`security-lit` and
+  listing time, so this skill doesn't invent one — that's `security-dotnet`/`umbraco-backoffice-security` and
   the `reviewer` agent's job, already covered elsewhere in this plugin.
 - **No release pipeline.** Tagging a version and running `dotnet pack`/`dotnet nuget push` is a
   "build on top" concern, same as the README's own stated scope for `git-workflow` — this

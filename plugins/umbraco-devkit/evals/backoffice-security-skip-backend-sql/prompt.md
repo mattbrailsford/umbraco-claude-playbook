@@ -1,6 +1,6 @@
 ---
-description: A backend EF Core raw SQL question belongs to security-dotnet, not security-lit.
-tags: [security-lit, should-not-trigger]
+description: A backend EF Core raw SQL question belongs to security-dotnet, not umbraco-backoffice-security.
+tags: [umbraco-backoffice-security, should-not-trigger]
 max_turns: 6
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

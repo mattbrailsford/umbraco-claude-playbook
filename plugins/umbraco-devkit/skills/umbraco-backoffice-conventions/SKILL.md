@@ -240,7 +240,7 @@ Don't hardcode the demo site's port. With `Umbraco.Community.WorktreeDevPort` (s
 Node script can use `getPort()` from `worktree-dev-port`.
 
 Build the backend first so the spec is current, and regenerate the client whenever the API
-surface changes. Treat generated output as build output: if a generated type is wrong, fix
+surface changes. For how its requests authenticate, see `umbraco-backoffice-security`. Treat generated output as build output: if a generated type is wrong, fix
 the request/response model on the server, not the generated file.
 
 **Never call the generated client directly from a component or a context.** Only one layer (a
