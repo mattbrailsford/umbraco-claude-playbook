@@ -12,7 +12,7 @@ description: >-
 
 Specs are written before the `builder` subagent implements a task — see "Open question"
 below if your team wants to relax that. The spec is the design artifact: it encodes the
-intended behavior from the stories, fails (or is marked pending) first, and is
+intended behavior from the stories, is marked pending until the code exists, and is
 `feature-build`'s definition of done for the task.
 
 This skill states the discipline once and applies it to whichever layer(s) a feature actually
@@ -70,10 +70,16 @@ only the reference file(s) that layer needs:
    own; the entry point itself must be real.
 5. **Match the project's existing test conventions** before inventing new ones — reuse its
    builders, fakes/mocks, and fixtures rather than writing ad hoc setup per spec.
-6. **New specs are pending by default**, marked so cleanly (not failing loudly) until a
-   `builder` task makes them pass.
+6. **New specs are pending by default**, marked so the runner reports them as skipped, not
+   failed, until a `builder` task makes them pass: `[Ignore("Pending")]` in NUnit,
+   `[Fact(Skip = "Pending")]` in xUnit, `it.skip` in Mocha. A spec left active against code
+   that doesn't exist yet fails the whole suite, and the next task can't tell its own failures
+   from these.
 7. Never invent acceptance criteria. If a story is underspecified, stop and send the user
    back to `user-stories` to tighten it.
+
+Before reporting, reread every spec you wrote against rules 3 and 6: one assertion each, and
+each one marked pending. These two slip most often.
 
 ## Examples and per-stack mechanics
 

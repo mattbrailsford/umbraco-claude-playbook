@@ -76,7 +76,7 @@ scripts/check-skill-wiring.sh # every skill in the README and referenced from el
 scripts/check-version.sh      # version only in plugin.json, and bumped if shipped files changed
 scripts/check-frontmatter.sh  # skill/agent headers parse, names match, descriptions fit
 scripts/check-skill-callers.sh # no skill changes behavior based on which skill started it
-scripts/check-evals.sh        # every skill has an eval, or is on eval-gap-allowlist.txt
+scripts/check-evals.sh        # every skill has an eval
 ```
 
 CI runs all of these on every PR to `main`.
