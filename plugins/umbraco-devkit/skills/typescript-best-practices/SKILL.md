@@ -1,12 +1,10 @@
 ---
 name: typescript-best-practices
 description: >-
-  General TypeScript language discipline — type modeling, null hygiene, error handling, and
-  the toString()/toJSON() rule. Not framework- or project-specific. Use when writing or
-  reviewing any TypeScript. For an Umbraco backoffice frontend package specifically, also see
-  `umbraco-backoffice-conventions` (compiler setup, package/file structure) and the official
-  Backoffice Skills plugin (individual extension-point patterns) — this skill covers only the
-  language discipline that applies regardless of framework.
+  General TypeScript discipline, not framework-specific: type modeling, null hygiene, error
+  handling, and the toString()/toJSON() rule. Use when writing or reviewing any TypeScript.
+  For Umbraco backoffice setup and structure, see `umbraco-backoffice-conventions`.
+
 ---
 
 # TypeScript language discipline

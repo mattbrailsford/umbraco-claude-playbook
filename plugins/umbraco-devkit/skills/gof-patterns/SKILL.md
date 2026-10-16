@@ -1,15 +1,11 @@
 ---
 name: gof-patterns
 description: >-
-  All 23 Gang of Four design patterns (creational, structural, behavioral) as a fast reference
-  — a one-or-two-sentence "when to use" plus a short idiomatic snippet per pattern, in both C#
-  and (for the ones common in backoffice component work) Lit/TypeScript. The full examples live
-  in this skill's references/ files, read on demand — only pull in the category or layer
-  actually relevant to the question at hand, not all of them. Use when choosing or reviewing a
-  design pattern in an Umbraco package, or answering "which pattern fits here" — not as a
-  checklist to force into every class or component. For the principles that tell you a pattern
-  is warranted in the first place, see `design-principles` and `solid-principles` — reach for
-  this skill once a recurring shape needs a name, not before.
+  The 23 Gang of Four patterns as a quick reference, each with when to use it and a short C#
+  or Lit/TypeScript snippet. Use when choosing or reviewing a design pattern in an Umbraco
+  package, once a recurring shape needs a name. For whether a pattern is warranted at all,
+  see `design-principles` and `solid-principles`.
+
 ---
 
 # GoF patterns for Umbraco packages

@@ -1,15 +1,10 @@
 ---
 name: dependency-review
 description: >-
-  Reviews an Umbraco package repo's dependencies: open Dependabot (or other bot) update PRs,
-  open security alerts, and packages with newer versions but no PR. Sorts each dependency as
-  locked to the CMS, shipped to sites, or dev-only, checks what each kind needs, and drafts
-  one action per item: merge, close with a comment, or hold a PR; bump, hold, or leave an
-  update. New majors of shipped dependencies wait for the package's next major release.
-  Also drafts fixes to `.github/dependabot.yml` so locked dependencies stop getting PRs.
-  Never merges, closes, comments, or bumps without a yes. Use when asked to "go through the
-  Dependabot PRs", "can I merge this bump", "what's out of date", or to review or tidy up
-  dependencies.
+  Reviews an Umbraco package repo's dependencies: bot update PRs, security alerts and
+  outdated packages. Sorts each by kind and drafts one action per item (merge, close, hold
+  or bump), plus fixes to dependabot.yml. Acts only with a yes. Use for "go through the
+  Dependabot PRs", "can I merge this bump", "what's out of date", or tidying dependencies.
 user-invocable: true
 argument-hint: [PR number or URL, optional; reviews everything if empty]
 ---

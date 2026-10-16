@@ -1,13 +1,10 @@
 ---
 name: decision-review
 description: >-
-  Digests a finished build into the handful of things the human should actually look at —
-  assumptions the builder made, spec deviations, workarounds, judgment calls on ambiguous plan
-  wording. Read-only, never gates or fixes anything. pr-describe invokes this automatically
-  while writing every PR, so it doesn't normally need to be run by hand — but it's
-  user-invocable for an earlier look once feature-build finishes a feature, before a PR exists.
-  Use when asked to "review decisions", "what decisions were made", "what should I check" or
-  "what needs my attention" on a finished build.
+  Lists what a human should check after a build: the builder's assumptions, spec deviations,
+  workarounds and judgment calls. Read-only. pr-describe runs it for every PR; run it by
+  hand for an earlier look. Use when asked what decisions were made, what to check, or what
+  needs attention on a finished build.
 user-invocable: true
 argument-hint: [path to the feature's plan folder, optional]
 ---

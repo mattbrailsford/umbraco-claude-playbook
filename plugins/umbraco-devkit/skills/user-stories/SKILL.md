@@ -1,11 +1,10 @@
 ---
 name: user-stories
 description: >-
-  Writes, splits, and refines user stories with Given/When/Then acceptance criteria, feeding
-  directly into bdd-specs. Writes STORIES.md in the feature's plan folder. Normally
-  dispatched by feature-plan, but usable standalone when someone just wants help drafting or
-  tightening a story. Use whenever turning a feature request or a vague ask into a
-  structured, testable backlog entry.
+  Writes, splits and refines user stories with Given/When/Then acceptance criteria in
+  STORIES.md, feeding bdd-specs. Use when turning a feature request or a vague ask into a
+  testable backlog entry.
+
 ---
 
 # User stories

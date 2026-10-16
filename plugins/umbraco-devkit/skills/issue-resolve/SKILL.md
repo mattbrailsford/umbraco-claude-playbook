@@ -1,12 +1,9 @@
 ---
 name: issue-resolve
 description: >-
-  Routes a triaged tracker issue, plus any notes on how to fix it, into whichever existing fix
-  mechanism its size warrants — `quick-fix` for something small, the full `feature-explore` →
-  `feature-design` → `feature-plan` → `feature-build` pipeline for anything bigger. Triages the issue
-  first if `issue-triage` hasn't already. Drafts, never posts, the tracker resolution once the
-  fix lands. Use once you've seen an `issue-triage` report and decided to act on one issue,
-  or when `issue-backlog` starts the next ready one.
+  Takes one triaged tracker issue to a fix by the right route: `quick-fix` for something
+  small, the `feature-*` pipeline for anything bigger. Drafts the tracker resolution once
+  the fix lands. Use once you've decided to act on a triaged issue.
 user-invocable: true
 argument-hint: <issue ID> [notes on how you want it fixed, optional]
 ---

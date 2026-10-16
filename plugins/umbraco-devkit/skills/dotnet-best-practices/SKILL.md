@@ -1,11 +1,10 @@
 ---
 name: dotnet-best-practices
 description: >-
-  General modern C#/.NET language discipline — nullable reference types, type modeling,
-  async/LINQ/disposal correctness, error-handling shape, immutability. Not Umbraco-specific.
-  Use when writing or reviewing any C# code, alongside `umbraco-extensibility` (which covers
-  Umbraco's own extension mechanisms, not language discipline) and `ef-core-data` (persistence
-  specifics). Complements `typescript-best-practices` on the frontend side.
+  General C#/.NET language discipline, not Umbraco-specific: nullable reference types, type
+  modeling, async/LINQ/disposal correctness, error handling and immutability. Use when
+  writing or reviewing any C#.
+
 ---
 
 # C# language discipline

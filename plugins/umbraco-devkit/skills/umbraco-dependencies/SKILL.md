@@ -1,14 +1,12 @@
 ---
 name: umbraco-dependencies
 description: >-
-  Sorts an Umbraco package's NuGet and npm dependencies into three kinds: locked to the CMS
-  (must match the CMS version the package supports), shipped to sites (changes what every
-  install gets), and dev-only (tests, build tools, analyzers, CI). Says how to tell which is
-  which, what version a locked dependency must be, how one of the repo's own packages pins
-  another, and how to set up Dependabot so it doesn't open PRs for locked ones. Use when adding
-  or bumping a dependency, referencing one of the repo's own packages from another, judging a
-  dependency update PR, writing `.github/dependabot.yml`, or matching shared dependencies to a
-  new CMS version.
+  Sorts an Umbraco package's NuGet and npm dependencies into locked to the CMS, shipped to
+  sites, and dev-only, and says what each kind needs: which version, how sibling packages
+  pin each other, and Dependabot rules. Use when adding or bumping a dependency, referencing
+  a sibling package, judging an update PR, writing dependabot.yml, or matching dependencies
+  to a new CMS version.
+
 ---
 
 # Umbraco package dependencies

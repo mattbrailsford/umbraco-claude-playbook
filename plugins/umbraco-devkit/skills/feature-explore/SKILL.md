@@ -1,10 +1,9 @@
 ---
 name: feature-explore
 description: >-
-  Problem-space interview for a new Umbraco feature or package — what problem, for whom,
-  why, and what's explicitly out of scope. Owns BRIEF.md in the feature's plan folder. Use
-  when starting a new feature, package, or add-on and nothing has been written down yet, or
-  when a feature request is vague and needs shaping before any design or code happens.
+  Interviews for the problem behind a new Umbraco feature or package: what, for whom, why,
+  and what's out of scope, written to BRIEF.md. Use when starting a feature, package or
+  add-on, or when a request is too vague to design yet.
 user-invocable: true
 argument-hint: [one-line idea, optional]
 ---

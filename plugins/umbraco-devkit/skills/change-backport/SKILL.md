@@ -1,12 +1,10 @@
 ---
 name: change-backport
 description: >-
-  Ports a change that has already landed on one version line to another line of the same
-  package, for a package that keeps one branch per Umbraco CMS major (`vN/dev`, or
-  `support/N.x`). Checks the target line should get it, applies it in a fresh worktree on that
-  line, builds and tests there, gets it through the reviewer, and opens a draft PR linked to
-  the original. Use when asked to port, backport, or forward-port a fix or feature, or to
-  apply a change to "the other version" or "both lines". Never merges.
+  Ports a change already merged on one version line of a package to another (`vN/dev` or
+  `support/N.x`). Checks it belongs there, applies it in a worktree, builds, tests and
+  reviews it, and opens a draft PR. Use when asked to port, backport or forward-port a fix
+  or feature, or apply a change to the other version.
 user-invocable: true
 argument-hint: <commit SHA | PR number | branch> [target line, e.g. v17]
 ---

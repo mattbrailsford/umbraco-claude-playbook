@@ -1,16 +1,11 @@
 ---
 name: umbraco-load-balancing
 description: >-
-  Keeping an Umbraco package or backoffice extension correct when the site that installs it
-  runs on more than one server — files that must not live on one server's disk, state that
-  must not live in one server's memory, caches that must be cleared on every server,
-  background jobs and notification handlers that must
-  run once rather than once per server, concurrent writes from two servers, absolute URLs
-  behind a load balancer, and multi-step flows that can't assume the next request lands on
-  the same server. Use when writing or reviewing package code that writes files, holds state
-  between requests, runs on a timer, sends email or calls out from a handler, writes shared
-  rows, builds absolute URLs, or clears its own cache. Not for configuring a load-balanced
-  host. For what to cache and how to key it, see `umbraco-performance`.
+  Keeping a package correct when a site runs on more than one server: files on one server's
+  disk, state in one server's memory, caches cleared on every server, jobs and handlers that
+  must run once, concurrent writes, absolute URLs, and multi-step flows. Use when writing or
+  reviewing package code that does any of these. Not for setting up a load-balanced host.
+
 ---
 
 # Load balancing for Umbraco packages

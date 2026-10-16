@@ -1,13 +1,10 @@
 ---
 name: feature-design
 description: >-
-  Solution-space interview for an Umbraco feature — which extension points, data model,
-  Management API surface, and frontend components to use. Owns ARCHITECTURE.md, SPEC.md and
-  any screen mockups in the feature's plan folder. Use once feature-explore has defined the problem
-  and it's time to decide how to build it: which CMS extension point fits, whether it needs
-  persistence, what the package/project structure should look like. Also use on its own to
-  capture a project mockup starter for a product surface ("capture a mockup starter for the
-  Copilot sidebar"), with no feature in progress.
+  Decides how to build an Umbraco feature: extension points, data model, Management API
+  surface and frontend components, written to ARCHITECTURE.md, SPEC.md and mockups. Use once
+  feature-explore has defined the problem, or on its own to capture a mockup starter for a
+  product screen.
 user-invocable: true
 argument-hint: [area to focus, optional]
 ---

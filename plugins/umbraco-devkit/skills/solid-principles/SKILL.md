@@ -1,15 +1,11 @@
 ---
 name: solid-principles
 description: >-
-  The five SOLID principles (Single Responsibility, Open/Closed, Liskov Substitution,
-  Interface Segregation, Dependency Inversion), grounded in Umbraco package development. Use
-  when adding or reshaping a service, class, component, or interface in either layer of an
-  Umbraco package, or when reviewing whether a design will hold up as the package grows. The
-  principles are the same regardless of layer; this skill's references/ files carry the C# and
-  Lit/TypeScript illustrations — read whichever layer the task is actually in. For the broader,
-  non-SOLID-specific design lens (coupling/cohesion, DRY/YAGNI/KISS, Law of Demeter, CQS,
-  fail-fast), see `design-principles`; for a named structural solution once a recurring shape
-  shows up, see `gof-patterns`.
+  The five SOLID principles, grounded in Umbraco package development, with C# and
+  Lit/TypeScript examples. Use when adding or reshaping a service, class, component or
+  interface, or reviewing whether a design will hold up as the package grows. For the wider
+  design lens, see `design-principles`; for named patterns, `gof-patterns`.
+
 ---
 
 # SOLID principles for Umbraco packages

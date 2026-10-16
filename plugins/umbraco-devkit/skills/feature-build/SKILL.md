@@ -1,10 +1,9 @@
 ---
 name: feature-build
 description: >-
-  Drives a feature's PLAN.md checklist to completion, task by task — a builder subagent
-  implements, a reviewer subagent gates, commit only on pass. Owns BUILD-LOG.md in the
-  feature's plan folder. Use once feature-plan has produced an ordered task list and it's time to
-  actually write code.
+  Builds a feature's PLAN.md task by task: a builder subagent implements, a reviewer
+  subagent gates, and each task commits only on pass. Use once feature-plan has an ordered
+  task list and it's time to write code.
 user-invocable: true
 argument-hint: [path to the feature's plan folder, optional]
 ---

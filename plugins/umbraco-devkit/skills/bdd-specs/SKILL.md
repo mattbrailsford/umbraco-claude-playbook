@@ -1,14 +1,11 @@
 ---
 name: bdd-specs
 description: >-
-  Writes behavior-driven executable specs from a feature's STORIES.md and PLAN.md,
-  structured as Feature > Scenario > Specification with exactly one logical assertion per
-  test, using whichever test framework the project already has. Covers both layers a feature
-  might touch — C# and Lit/TypeScript, in this skill's references/ files — the discipline is
-  identical, only the syntax differs. Use when a feature's design and stories are finalized
-  and it's time to turn them into a test suite, or when asked to "spec out," "write the tests
-  first," or do BDD/TDD for an Umbraco feature. Dispatched by feature-plan; stops and asks if the
-  design or stories don't exist yet.
+  Writes behavior-driven executable specs (Feature > Scenario > Specification, one assertion
+  per test) from a feature's STORIES.md and PLAN.md, in C# or Lit/TypeScript, using the
+  project's existing test framework. Use when stories are final and it's time to write the
+  tests, or when asked to spec out, write tests first, or do BDD/TDD.
+
 ---
 
 # BDD specs

@@ -1,10 +1,8 @@
 ---
 name: feature-plan
 description: >-
-  Slices a finished design into stories and an ordered, dependency-aware task checklist. Owns
-  STORIES.md and PLAN.md in the feature's plan folder, and delegates to the user-stories and
-  bdd-specs skills. Use once feature-design has decided how to build the feature and it's time to
-  break it into reviewable, committable units of work for feature-build.
+  Slices a finished design into user stories and an ordered task checklist (STORIES.md and
+  PLAN.md) for feature-build. Use once feature-design has decided how to build the feature.
 user-invocable: true
 argument-hint: [scope to plan, optional]
 ---
