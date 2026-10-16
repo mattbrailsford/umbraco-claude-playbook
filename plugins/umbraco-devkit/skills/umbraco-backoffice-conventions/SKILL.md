@@ -28,8 +28,8 @@ package?" always has one obvious answer, instead of each contributor re-deriving
 
 ## Compiler setup this ecosystem requires
 
-On top of `typescript-best-practices`' strict baseline, a Lit + UUI backoffice package's
-`tsconfig.json` needs these settings. They are required, not style choices:
+With `strict: true` as the baseline, a Lit + UUI backoffice package's `tsconfig.json` needs
+these settings. They are required, not style choices:
 
 ```json
 {
@@ -248,6 +248,22 @@ data source) imports generated types or calls generated services, and maps them 
 package's own domain models. A generated type in a component or context means the mapping
 layer is missing, so generated-client changes (renamed field, new required parameter) leak
 into UI code instead of stopping at one boundary.
+
+**Data sources return `{ data, error }` and never throw.** That's the backoffice's own shape
+(`UmbDataSourceResponse`), so repositories and contexts built on yours handle failure the
+same way they do for core data. Wrap each generated call in `tryExecute(this, promise)` from
+`@umbraco-cms/backoffice/resources`. It returns `{ data, error }` instead of throwing, and
+shows the user an error notification unless you pass `disableNotifications: true`:
+
+```ts
+import { tryExecute } from '@umbraco-cms/backoffice/resources';
+
+async requestById(id: string) {
+	const { data, error } = await tryExecute(this.#host, getConnection({ path: { id } }));
+	if (error || !data) return { error };
+	return { data: mapConnection(data) };
+}
+```
 
 ## Workspace/monorepo frontend builds
 

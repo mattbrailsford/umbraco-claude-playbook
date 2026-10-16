@@ -83,9 +83,8 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
    sonnet). Give it: the exact task text, the relevant sections of `ARCHITECTURE.md` and
    `SPEC.md`, the path to any mockup for a screen the task touches, the files/extension points
    it owns, and an instruction to invoke the project's
-   stack skills (`dotnet-best-practices`, `umbraco-extensibility`, `umbraco-package-
-   conventions`, `ef-core-data`, `umbraco-backoffice-conventions`, etc. as relevant) and run
-   the existing specs before reporting back. If the project has e2e tests and none covers the
+   stack skills (`umbraco-extensibility`, `umbraco-package-conventions`, `ef-core-data`,
+   `umbraco-backoffice-conventions`, etc. as relevant) and run the existing specs before reporting back. If the project has e2e tests and none covers the
    task's path, tell the builder to add one (the smoke step runs it). The builder does not
    commit.
 

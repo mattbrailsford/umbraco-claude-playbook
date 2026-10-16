@@ -48,11 +48,6 @@ is one that changes behavior someone saw go wrong. Typos, comments, and dead cod
    `investigate-bug` instead: a quick fix needs a known cause.
 3. **Consult skills selectively.** Only load a skill if the fix genuinely touches its
    territory:
-   - `solid-principles` / `design-principles` / `gof-patterns`: only if the fix sits at a
-     class/component boundary or changes a control-flow pattern. Skip for typos, comments,
-     log strings, dead code removal.
-   - `dotnet-best-practices` / `typescript-best-practices`: only if the fix involves types,
-     nullability, async behavior, or error shape.
    - `umbraco-performance` / `umbraco-load-balancing`: only if the fix touches a cache, a
      per-request or per-save path, a background job, files on disk, or a handler's side
      effects.

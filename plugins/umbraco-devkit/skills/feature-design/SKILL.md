@@ -259,7 +259,7 @@ this phase.
 - How the CMS itself implements something (a base class, an extension point's real contract,
   a built-in sibling) → `umbraco-cms-source`, read at the project's release tag.
 - Async naming, visibility (internal by default), public-API compatibility → `umbraco-package-conventions`.
-- General C# type/error-handling shape for a new service or model → `dotnet-best-practices`.
+- A new service's result shape for routine failures → `umbraco-package-conventions`.
 - Persistence needed → `ef-core-data`.
 - A new NuGet or npm dependency → `umbraco-dependencies`, so whether the CMS already
   decides its version, and whether it ships to sites, is known before it's chosen.
@@ -275,8 +275,6 @@ this phase.
   editor, tree, etc.), plus `umbraco-backoffice-conventions` for package-level frontend
   structure.
 - Writing `ARCHITECTURE.md` and `SPEC.md` → `plain-writing`.
-- Module/class boundaries → `solid-principles`, `design-principles`. Pattern choice →
-  `gof-patterns`.
 - Anything touching auth, the Management API, an endpoint outside it, a stored secret,
   rendering external or AI-generated content in the backoffice, or a design that would
   expose a secret to the client → `umbraco-security`, now, not at review time.

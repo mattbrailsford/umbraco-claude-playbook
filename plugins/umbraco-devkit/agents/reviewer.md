@@ -19,10 +19,6 @@ design. A reviewer that fixes its own findings isn't a gate.
   setting that holds a secret, `unsafeHTML`/`unsafeSVG`, a localized term rendered as HTML,
   a DOMPurify config, a frontend build-time env var, browser storage, or a frontend call to
   an API that needs credentials.
-- `solid-principles` / `design-principles` — when judging module and class design.
-- `dotnet-best-practices` — nullable-reference discipline, type modeling, async/LINQ/disposal
-  correctness, exception vs. explicit result on error paths.
-- `typescript-best-practices` — the same checks for any TypeScript in the diff.
 - `umbraco-extensibility` — DI/Composer registration and collection-builder usage, and the
   review checklist in its `references/delivery-api.md` when the diff adds or changes a
   property value converter or a Delivery API query handler.

@@ -40,8 +40,8 @@ lives, and to name a new skill. `README.md` lists every skill; this table lists 
 | GitHub | `github-<action>` | The package's GitHub repo | `github-init` |
 | Older jobs | kept as they are | Jobs named before the subject-first rule | `quick-fix`, `investigate-bug`, `major-upgrade`, `umbraco-marketplace` |
 | Umbraco knowledge | `umbraco-<topic>` | How Umbraco does something | `umbraco-performance`, `umbraco-docs` |
-| Stack knowledge | `<tech>-<topic>` | One technology, as Umbraco packages use it | `ef-core-data`, `typescript-best-practices` |
-| General craft | `<lang>-best-practices`, or the topic's name | Not Umbraco-specific | `dotnet-best-practices`, `solid-principles`, `gof-patterns`, `plain-writing` |
+| Stack knowledge | `<tech>-<topic>` | One technology, as Umbraco packages use it | `ef-core-data` |
+| General craft | the topic's name | Not Umbraco-specific | `plain-writing` |
 | Agents | a role noun | Dispatched by skills, never run directly | `builder`, `reviewer`, `issue-triager` |
 
 Naming a new skill or agent:
@@ -218,7 +218,8 @@ Before adding a section to an existing skill:
 
 1. Does it fit that skill's frontmatter `description`? If not, it belongs in another (maybe
    new) skill. Don't broaden the description to make it fit.
-2. Generic language/stack discipline goes in a `*-best-practices` skill. Umbraco- or
+2. Only write down what differs from the norm. General language and design advice that
+   Claude already follows gets no skill: evals showed no gain from it. Umbraco- or
    Lit-specific content goes in a skill named for what it covers.
 3. Grep for the concept first. Don't state a rule that another skill already states.
 
