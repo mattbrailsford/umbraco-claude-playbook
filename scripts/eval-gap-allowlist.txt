@@ -8,7 +8,6 @@ bdd-specs
 change-backport
 decision-review
 dependency-review
-feature-build
 feature-close
 git-workflow
 github-init
