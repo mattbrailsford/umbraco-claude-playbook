@@ -2,10 +2,12 @@
 type: llm
 weight: 2
 ---
-PASS if the answer says this bundles a second copy of Lit into the extension, and fixes it by
-importing from the backoffice instead: `@umbraco-cms/backoffice/external/lit`, or
-UmbLitElement from `@umbraco-cms/backoffice/lit-element`. Removing `lit` from
-`dependencies` is a fine extra.
+Context: the backoffice already provides Lit. Importing from the bare `lit` package with
+`external: [/^@umbraco/]` bundles a second copy of Lit into the extension. The fix is to
+import from `@umbraco-cms/backoffice/external/lit` (and optionally extend `UmbLitElement`
+from `@umbraco-cms/backoffice/lit-element`).
 
-FAIL if it says the setup is fine, or only suggests a change that keeps importing from bare
-`lit`.
+PASS if the new `order-status-badge.element.ts` imports Lit from the backoffice, not from
+bare `lit` or `lit/decorators.js`.
+
+FAIL if the new element imports from bare `lit` or `lit/decorators.js`.

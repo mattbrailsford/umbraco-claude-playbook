@@ -2,9 +2,10 @@
 type: llm
 weight: 2
 ---
-PASS if the answer says the GET (and the PUT's response) send the real API key back to the
-browser, that the password-style masking in the UI does not stop that, and that the response
-must leave the key out or mask it on the server (for example a separate response model with
-no key, or a "key is set" flag).
+PASS if no response from the new controller contains the real API key: the GET and the
+save's response use a model with no key (or a "key is set" flag, or a fixed mask), and a
+save with an empty or masked key keeps the stored key instead of overwriting it.
 
-FAIL if it accepts the UI masking as enough, or does not flag the key in the response.
+FAIL if the GET or the save's response returns the stored `ProviderSettings` entity (or
+any model carrying `ApiKey`), so the key reaches the browser, or if saving with the
+masked value overwrites the real key.

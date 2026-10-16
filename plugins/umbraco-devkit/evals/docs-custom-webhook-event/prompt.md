@@ -8,5 +8,5 @@ allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, WebFetch]
 
 My Umbraco 17.6 package publishes OrderSavedNotification (src/MyPackage/Orders). Site owners
 want to pick "Order Saved" as an event when they set up a webhook in the backoffice. Add the
-webhook event the documented Umbraco way and register it in MyPackageComposer. dotnet can't
+webhook event and register it in MyPackageComposer. dotnet can't
 run here.

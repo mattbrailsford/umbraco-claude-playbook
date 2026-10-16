@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: dependencies-ef-core-floor
+context:
+  scaffold_script: fixture.sh

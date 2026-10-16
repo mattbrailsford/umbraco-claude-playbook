@@ -2,11 +2,18 @@
 type: llm
 weight: 2
 ---
-PASS if the answer says ContentCacheRefresherNotification (a cache refresher notification)
-fires on every server, so on a load-balanced site the webhook is sent once per server, and
-it moves the webhook to a notification that fires once, on the server where the publish
-happened (for example ContentPublishedNotification), or to another mechanism that sends it
-exactly once (such as recording the work and sending it from a distributed background job).
+Context: a site can run on several servers. Cache refresher notifications
+(`ContentCacheRefresherNotification` and similar) and `ICacheRefresher.Refresh` run on
+every server as each one processes the change. Action notifications
+(`ContentPublishedNotification`) run once, on the server where the publish happened.
 
-FAIL if the answer keeps sending the webhook from the cache refresher notification, or does
-not notice that it would be sent once per server.
+PASS if the final code sends the webhook once per publish, not once per server: from an
+action notification such as `ContentPublishedNotification` (optionally deferring the send,
+for example to after the scope completes), or by recording the work and sending it from
+something that runs once (such as an `IDistributedBackgroundJob`), or from a cache refresher
+notification guarded so only one server sends (for example only when the change originated
+on this server, or a claim on a shared row).
+
+FAIL if the webhook is sent from `ContentCacheRefresherNotification` (or another cache
+refresher notification or `ICacheRefresher`) with no guard, so a site on three servers
+sends it three times.

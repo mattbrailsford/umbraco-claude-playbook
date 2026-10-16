@@ -2,10 +2,15 @@
 type: llm
 weight: 2
 ---
-PASS if the answer explains that ClearByKey only clears the cache on the server that handled
-the save, and fixes it so every server drops its copy. Accept a custom cache refresher
-(ICacheRefresher, CacheRefresherBase, JsonCacheRefresherBase or similar) triggered through
-DistributedCache, or a shared out-of-process cache that all servers read from.
+Context: a site can run on several servers, each with its own in-memory cache. Clearing a
+key in `AppCaches.RuntimeCache` (or an `IMemoryCache`) on save only clears it on the
+server that handled the save; the others keep the old settings until the entry expires.
 
-FAIL if the fix only shortens the cache expiry, removes caching without explaining the
-cause, relies on sticky sessions, or still clears only the local server's cache.
+PASS if the final code makes a save clear (or refresh) the cached settings on every
+server: a cache refresher (`ICacheRefresher`, `CacheRefresherBase`,
+`JsonCacheRefresherBase`, `PayloadCacheRefresherBase` or similar) registered with Umbraco
+and triggered through `DistributedCache` (for example `RefreshAll` or `Refresh` with the
+refresher's id), or a shared out-of-process cache all servers read from.
+
+FAIL if the save clears only the local cache (`ClearByKey`, `ClearOfType`, `IMemoryCache.Remove`
+called directly), relies on a short expiry, or doesn't clear the cache on save at all.

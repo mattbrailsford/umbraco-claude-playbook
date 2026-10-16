@@ -2,11 +2,11 @@
 type: llm
 weight: 2
 ---
-PASS if both are true:
-- The element imports Lit (html, css, decorators) from the backoffice, for example
-  `@umbraco-cms/backoffice/external/lit`, optionally with `UmbLitElement` from
-  `@umbraco-cms/backoffice/lit-element`.
-- The Vite config keeps the backoffice out of the bundle, for example
+PASS if both are true in the written files:
+- `src/greeting-dashboard.element.ts` imports Lit (html, css, decorators) from the
+  backoffice, for example `@umbraco-cms/backoffice/external/lit`, optionally with
+  `UmbLitElement` from `@umbraco-cms/backoffice/lit-element`.
+- `vite.config.ts` keeps the backoffice out of the bundle, for example
   `external: [/^@umbraco/]` or an equivalent list covering `@umbraco-cms/backoffice`.
 
 FAIL if the element imports from the bare `lit` package (or `lit/decorators.js`), or if

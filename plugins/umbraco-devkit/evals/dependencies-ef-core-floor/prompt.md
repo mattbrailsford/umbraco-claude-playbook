@@ -1,13 +1,13 @@
 ---
-description: A locked dependency stays at the CMS floor's version, so a Dependabot bump above it should not merge.
+description: "Applying Dependabot's EF Core bump; a package's EF Core version is a floor and should match what its minimum Umbraco uses."
 tags: [umbraco-dependencies, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 20
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-My Umbraco package references `Umbraco.Cms.Core` with the range `[17.0.0, 18.0.0)`. It also
-keeps its own tables with EF Core, and references `Microsoft.EntityFrameworkCore.SqlServer`
-at `10.0.0`, the version Umbraco 17.0.0 uses.
+Dependabot's open PRs for my Umbraco package are listed in `DEPENDABOT-PRS.md`. Rather than
+merge them one by one, apply them all to `Directory.Packages.props` in one change so I can
+close the PRs.
 
-Dependabot opened a PR that bumps `Microsoft.EntityFrameworkCore.SqlServer` to `10.0.10`, the
-version the latest Umbraco 17 uses. CI is green. Should I merge it?
+Git and dotnet can't run here.

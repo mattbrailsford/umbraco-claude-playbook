@@ -1,10 +1,15 @@
 ---
-description: A backoffice package must import Lit from @umbraco-cms/backoffice/external/lit and keep @umbraco out of the bundle.
+description: "Building a first backoffice element; Lit must come from @umbraco-cms/backoffice/external/lit and @umbraco stays out of the bundle."
 tags: [umbraco-backoffice-conventions, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-I'm setting up the frontend for a new Umbraco 17 backoffice package, using Lit and UUI and
-built with Vite. Show me the vite.config.ts, and the imports at the top of one simple Lit
-element (html, css, customElement, property).
+I'm starting the backoffice client for my Umbraco 17 package in
+`src/Umbraco.Community.Greeting/Client`. The manifest is already there. Write the dashboard
+element it points at (`src/greeting-dashboard.element.ts`): a Lit element that greets the
+editor by a `name` property, defaulting to "editor", in a UUI box. Then add the
+`vite.config.ts` that builds it to `../wwwroot/App_Plugins/Greeting/greeting.js`.
+
+npm can't run here; just write the files.

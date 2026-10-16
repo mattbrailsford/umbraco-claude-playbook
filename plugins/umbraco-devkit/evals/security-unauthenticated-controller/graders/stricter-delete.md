@@ -1,9 +1,9 @@
 ---
 type: llm
 ---
-PASS if the answer says the delete action needs a stricter, specific permission or policy
-beyond plain backoffice access (for example a package-defined authorization policy, or a
-section or user-group permission check).
+PASS if the delete action needs more than plain backoffice access: its own
+`[Authorize(Policy = ...)]` naming a policy Umbraco registers (such as a section policy) or
+one the package registers in a composer, or a section or user-group permission check.
 
-FAIL if it treats backoffice login alone as enough for the delete, or does not discuss the
-delete action's authorization.
+FAIL if delete relies only on backoffice login (or on nothing), or names a policy nothing
+registers.

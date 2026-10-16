@@ -2,11 +2,13 @@
 type: llm
 weight: 2
 ---
-PASS if the answer flags that every page view loads and deserializes all form steps from
-the database, and recommends computing "needs consent" once and caching it (for example in
-Umbraco's runtime cache or IMemoryCache, or stored on the form when it's saved), cleared or
-updated when the form's steps are saved (a save notification, a cache refresher, or the
-save path itself).
+Context: the view component runs on every front-end page view that shows the form.
+`GetStepsForFormAsync` queries the database and deserializes every step's settings.
 
-FAIL if the answer does not flag the per-render database work, or adds a cache with only a
-time-based expiry and no clearing when the steps change.
+PASS if the final code does not load the form's steps from the database on every render:
+"needs consent" is cached per form (Umbraco's runtime cache, `IMemoryCache`, or a value
+stored on the form when steps are saved), and the cached value is cleared or updated when
+steps are saved (in `SaveAsync`, a notification, or a cache refresher).
+
+FAIL if the view component calls `GetStepsForFormAsync` on every render, or caches with
+only a time-based expiry and nothing that clears it when steps change.

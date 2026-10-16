@@ -46,13 +46,19 @@ allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
   `reviewer-feature-diff`.
 - **Set up the scenario, never ask for the fix.** Ask for something a developer would
   really ask for (a feature, a change, a job to add) in a project where the obvious answer
-  brings the problem in. Never describe the bug or its symptom, ask for it to be fixed, or
-  hint at the fix (the right API, the risk, what to watch for). A prompt that points at the
-  problem tests debugging, which plain Claude already does well, not whether the skill
-  stops the problem happening. For a `real-bug` case, ask for the change that first
-  introduced the bug, not the fix.
-  - Workflow cases are the one exception: a bug-fixing workflow (`investigate-bug`,
-    `quick-fix`, `issue-resolve`) is handed a bug, because its own rules are what's tested.
+  brings the problem in. A prompt that points at the problem tests debugging, which plain
+  Claude already does well, not whether the skill stops the problem happening. For a
+  `real-bug` case, ask for the change that first introduced the bug, not the fix.
+  - **State the setup facts the trap needs**, as a developer would: "sites are load
+    balanced", the target versions, "other packages call this". Without them the trap
+    isn't real, and a careful answer could fail for not guarding against something the
+    setup never showed.
+  - **Never** describe the symptom, ask for a fix, name the risk or the right API, or bait
+    the answer ("I think it's fine", "make sure it's secure").
+  - **Diagnosis cases** (symptom in, cause out) get the `diagnose` tag. Keep them rare;
+    they don't show a skill prevents anything.
+  - **Workflow cases** for bug-fixing skills (`investigate-bug`, `quick-fix`,
+    `issue-resolve`) are handed a bug, because the workflow's own rules are what's tested.
 - **Say what the sandbox lacks.** Git, dotnet and the network don't run in an eval. Say so
   in the prompt ("Git can't run here") so the answer doesn't stall trying.
 - **Tags:** the skill's name, then `should-trigger`, `should-not-trigger`, or `workflow`.

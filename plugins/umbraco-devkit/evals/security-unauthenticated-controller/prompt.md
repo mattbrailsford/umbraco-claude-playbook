@@ -1,31 +1,15 @@
 ---
-description: A controller on the /umbraco/management/api/ path that skips ManagementApiControllerBase has no backoffice auth.
+description: Adding a controller next to an existing one on the Management API route that inherits plain ControllerBase; the route alone gives no backoffice auth.
 tags: [umbraco-security, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-Security review this Umbraco 17 package controller before I merge it. List the problems,
-most severe first.
+Add a connections controller to my Umbraco 17 package, next to the existing
+`ProvidersController` and in the same style: list all connections and delete one, using
+`IConnectionService`. The backoffice connections screen will call it. The package's forms
+and workflows refer to a connection by its ID.
 
-```csharp
-[ApiController]
-[Route("/umbraco/management/api/v1/my-package/connections")]
-public class ConnectionController : ControllerBase
-{
-    private readonly IConnectionService _connections;
-
-    public ConnectionController(IConnectionService connections) => _connections = connections;
-
-    [HttpGet]
-    public async Task<IActionResult> GetAllAsync()
-        => Ok(await _connections.GetAllAsync());
-
-    [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteAsync(Guid id)
-    {
-        await _connections.DeleteAsync(id);
-        return NoContent();
-    }
-}
-```
+There's no dotnet or network here, so you can't build or run tests; just make the code
+change.

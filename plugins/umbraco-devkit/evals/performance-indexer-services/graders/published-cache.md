@@ -2,12 +2,16 @@
 type: llm
 weight: 2
 ---
-PASS if the answer identifies the per-record IContentService.GetById call and the
-per-property IDataTypeService lookup as database work repeated for every page, and
-recommends reading published content from Umbraco's published content cache (for example
-IPublishedContent via IPublishedContentCache, IUmbracoContextFactory or a published
-content query) and resolving data type information once, outside the loop, or from the
-published property type.
+Context: a full rebuild touches every published page, which on a large site is tens of
+thousands. `IContentService` and `IDataTypeService` go to the database on each call.
 
-FAIL if the answer does not call out the services-layer calls in the loop as the main
-cost, or only suggests parallelising or batching the existing ContentService calls.
+PASS if the rebuild reads published content from Umbraco's published content cache
+(`IPublishedContentCache`, `IPublishedContentQuery`, `IDocumentNavigationQueryService` plus
+the cache, or the UmbracoContext's content cache) rather than loading each page through
+`IContentService`, and does not look up a data type from `IDataTypeService` for each
+property of each page (it uses the published property type, or resolves data types once
+and reuses them).
+
+FAIL if the rebuild loads pages one by one or in pages through `IContentService`
+(`GetById`, `GetPagedDescendants` or similar) and reuses the per-property
+`IDataTypeService` lookup, or only adds parallelism or batching around those calls.

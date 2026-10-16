@@ -101,10 +101,18 @@ snippet. Build cases from real, fixed bugs where possible, and tag them `real-bu
 
 Set up the scenario that causes the problem; never ask for the fix. The prompt asks for
 something a developer would really ask for, in a project where the obvious answer brings
-the problem in. It never describes the bug or its symptom, asks for a fix, or hints at the
-fix. A prompt that points at the problem tests debugging, not whether the skill prevents
-it. Only workflow cases for bug-fixing skills (`investigate-bug`, `quick-fix`,
-`issue-resolve`) may be handed a bug, since they test the workflow's own rules.
+the problem in. A prompt that points at the problem tests debugging, not whether the skill
+prevents it.
+
+- Allowed: facts a developer would state about their setup ("sites are load balanced",
+  target versions, "other packages call this"). Without them the trap isn't real; a grader
+  fails an answer only when the setup makes the problem real.
+- Banned: the bug's symptom, a request to fix it, naming the risk or the right API, and
+  bait ("I think it's fine").
+- Diagnosis cases (symptom in, cause out) are tagged `diagnose`, kept rare, and don't
+  count as proof that a skill prevents the problem.
+- Workflow cases for bug-fixing skills (`investigate-bug`, `quick-fix`, `issue-resolve`)
+  may be handed a bug, since they test the workflow's own rules.
 
 A new skill, or a change that adds behavior to one, ships with at least one eval for that
 behavior, tagged with the skill's name. Run it with and without the plugin before merging,

@@ -2,10 +2,16 @@
 type: llm
 weight: 2
 ---
-PASS if the answer flags that attributeNameCheck: /.+/ accepts every attribute on the
-allowed custom elements, including on* event handlers such as onclick or onmouseover, so
-editor-written help text can run script (stored XSS), and fixes it by excluding on*
-attributes (for example /^(?!on)/) or by allowing only a named list of attributes.
+Context: the help text is written by editors and shown to other backoffice users, so it
+must be sanitized. DOMPurify's default config strips unknown custom elements; allowing them
+needs `CUSTOM_ELEMENT_HANDLING`, and an `attributeNameCheck` like `/.+/` also lets `on*`
+event handlers (onclick, onmouseover) through on those elements.
 
-FAIL if the answer says the configuration is safe, or does not identify event handler
-attributes on the custom elements as the problem.
+PASS if the final code sanitizes the markup before rendering it as HTML, keeps the two
+`my-pkg-*` elements, and does not let `on*` attributes through on them: for example an
+`attributeNameCheck` of `/^(?!on)/`, a named list of allowed attributes, or `ADD_TAGS` /
+`ADD_ATTR` with only the elements' own attributes.
+
+FAIL if the markup is rendered without sanitizing, or the sanitizer config accepts every
+attribute on the custom elements (`/.+/`, `/.*/`, or a function returning true), or
+otherwise allows `on*` attributes.

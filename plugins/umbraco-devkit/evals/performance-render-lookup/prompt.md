@@ -1,27 +1,15 @@
 ---
-description: A DB lookup on every front-end render instead of a cached value cleared on save. From umbraco/Umbraco.Forms.Issues#1283.
+description: Adding a render-time check to a front-end view component; the obvious version reads the database on every page view. From umbraco/Umbraco.Forms.Issues#1283.
 tags: [umbraco-performance, should-trigger, real-bug]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-My Umbraco 17 package renders a signup form on front-end pages through this view
-component. Before rendering, it checks whether the form has any consent step, because then
-it shows a checkbox. Review it.
+My Umbraco 17 package (`src/MyPackage`) renders a signup form on front-end pages through
+`SignupFormViewComponent`; most sites put it in the footer of every page. Form steps can now be marked `RequiresConsent`. If any step of
+the form requires consent, the form should show a "I agree to the terms" checkbox that must
+be ticked. Add that to the view component and its view.
 
-```csharp
-public class SignupFormViewComponent : ViewComponent
-{
-    private readonly IFormStepService _stepService; // reads FormSteps from the database
-
-    public SignupFormViewComponent(IFormStepService stepService) => _stepService = stepService;
-
-    public async Task<IViewComponentResult> InvokeAsync(Guid formKey)
-    {
-        // Loads every step for the form and deserializes its JSON settings.
-        var steps = await _stepService.GetStepsForFormAsync(formKey);
-        var needsConsent = steps.Any(s => s.Settings.RequiresConsent);
-        return View(new SignupFormModel(formKey, needsConsent));
-    }
-}
-```
+There's no dotnet or network here, so you can't build or run tests; just make the code
+change.

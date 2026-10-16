@@ -1,10 +1,15 @@
 ---
-description: A job that must run once on a load-balanced v17 site needs IDistributedBackgroundJob, not ServerRoles.
+description: Adding a nightly digest email job on a load-balanced v17 site; it needs IDistributedBackgroundJob, not ServerRoles.
 tags: [umbraco-extensibility, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-I'm writing an Umbraco 17 package. It needs a nightly job that emails a digest to editors.
-Customer sites run a load-balanced backoffice on three servers. The email must go out once
-a night, not once per server. How should I build and register this job? Show the code.
+My Umbraco 17 package (`src/Umbraco.Community.EditorDigest`) builds a digest of the last
+24 hours of content changes with `DigestBuilder`. Add a nightly job that emails it to
+`EditorDigestOptions.Recipient` through Umbraco's `IEmailSender`, and register it. Customer
+sites run a load-balanced backoffice on three servers.
+
+There's no dotnet or network here, so you can't build or run tests; just make the code
+change.

@@ -1,23 +1,16 @@
 ---
-description: A webhook sent from a cache refresher notification fires once per server; it belongs in an action notification.
+description: Sending a webhook after publish once the content is served; the cache refresher notification that fits fires once per server.
 tags: [umbraco-load-balancing, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-My Umbraco 17 package POSTs to a customer's webhook whenever content is published. I handle
-`ContentCacheRefresherNotification`, so the webhook only goes out once the cache has the new
-content. Some customer sites are load balanced across several servers. Is this handler OK?
-If not, what should I change?
+My Umbraco 17 package (`src/Umbraco.Community.PublishHooks`) should POST to the customer's
+`PublishHooks:WebhookUrl` whenever a document is published, with the document's key and
+culture(s). The customer's system fetches the page from the Delivery API as soon as the
+webhook arrives, so the new version must already be in Umbraco's published cache when the
+webhook goes out. Some customer sites run on several load-balanced servers. Add it.
 
-```csharp
-public class PublishWebhookHandler(IHttpClientFactory httpClientFactory)
-    : INotificationAsyncHandler<ContentCacheRefresherNotification>
-{
-    public async Task HandleAsync(ContentCacheRefresherNotification notification, CancellationToken cancellationToken)
-    {
-        var client = httpClientFactory.CreateClient("MyPackage");
-        await client.PostAsJsonAsync("https://example.com/hook", notification.MessageObject, cancellationToken);
-    }
-}
-```
+There's no dotnet or network here, so you can't build or run tests; just make the code
+change.
