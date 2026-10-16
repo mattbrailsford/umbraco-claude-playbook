@@ -1,10 +1,12 @@
 ---
 name: plain-writing
 description: >-
-  How to write documents people read: plan files, PR descriptions, decision reviews and
-  triage notes. Plain words, concise without losing detail, and no restating what a table or
-  screenshot shows. Use when writing or revising prose for a human reader. Not for code
-  comments, commit messages or executable specs.
+  How to write anything a person reads: README sections and docs pages, upgrade and release
+  notes, changelogs, issue and PR comments, PR descriptions, plan files, reviews and triage
+  notes. Lead with the point, plain words, concise without losing detail, and no restating
+  what a table or screenshot shows. Use whenever you write or revise prose for a human
+  reader, in a file or in a reply. Not for code comments, commit messages or executable
+  specs.
 
 ---
 
