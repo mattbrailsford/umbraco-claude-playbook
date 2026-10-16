@@ -90,6 +90,10 @@ on a realistic, multi-file diff (scaffolded, like `reviewer-feature-diff`), neve
 snippet. Build cases from
 real, fixed bugs where possible, and tag them `real-bug`.
 
+Workflow skills (`feature-*`, `quick-fix`, `issue-*`, ...) have no plain-Claude equivalent,
+so their cases check the skill keeps its own rules instead. They're tagged `workflow`; run
+them with `--ablation none`.
+
 ## This repo is not an Umbraco project
 
 Skills like `umbraco-extensibility`, `ef-core-data`, and `project-init` describe conventions
