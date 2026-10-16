@@ -15,11 +15,10 @@ design. A reviewer that fixes its own findings isn't a gate.
 
 ## Skills to invoke (via the Skill tool)
 
-- `security-dotnet` — always for auth, user input, the Management API, EF Core queries built
-  from input, or secrets/configuration.
-- `umbraco-backoffice-security` — always for `unsafeHTML`/`unsafeSVG`, a localized term
-  rendered as HTML, a DOMPurify config, a frontend build-time env var, browser storage, or a
-  frontend call to an API that needs credentials.
+- `umbraco-security` — always for a Management API controller, an endpoint outside it, a
+  setting that holds a secret, `unsafeHTML`/`unsafeSVG`, a localized term rendered as HTML,
+  a DOMPurify config, a frontend build-time env var, browser storage, or a frontend call to
+  an API that needs credentials.
 - `solid-principles` / `design-principles` — when judging module and class design.
 - `dotnet-best-practices` — nullable-reference discipline, type modeling, async/LINQ/disposal
   correctness, exception vs. explicit result on error paths.

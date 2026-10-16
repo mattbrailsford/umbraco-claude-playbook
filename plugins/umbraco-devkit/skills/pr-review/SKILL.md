@@ -68,9 +68,9 @@ of checks that only exist *because* the diff came from outside.
    code, multi-version/provider parity, verdict.
 
 6. **Add the checks `reviewer` doesn't know to make for outside code:**
-   - **Security skills run unconditionally.** `reviewer` only reaches for `security-dotnet` /
-     `umbraco-backoffice-security` when the diff visibly touches auth, user input, the Management API, or
-     secrets. For a PR from outside the team, invoke both regardless of what the diff looks
+   - **The security skill runs unconditionally.** `reviewer` only reaches for
+     `umbraco-security` when the diff visibly touches auth, user input, the Management API,
+     or secrets. For a PR from outside the team, invoke it regardless of what the diff looks
      like it touches — an external diff is a new trust boundary, and "doesn't look security-
      relevant" is exactly the blind spot a deliberately disguised change would aim for.
    - **Contribution hygiene.** If the repo has a `CONTRIBUTING.md`, check the PR follows it:

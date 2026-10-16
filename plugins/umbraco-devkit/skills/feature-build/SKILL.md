@@ -90,8 +90,8 @@ For each task still unchecked (`- [ ]`) in `PLAN.md`, in order, top to bottom:
    commit.
 
 2. **Review.** Dispatch a `reviewer` subagent (Agent tool, `subagent_type: reviewer`, model
-   opus, must be ≥ builder). It invokes `security-dotnet`/`umbraco-backoffice-security` (whichever the diff
-   touches) and the relevant stack skills, reads the builder's diff, and returns `PASS` or
+   opus, must be ≥ builder). It invokes `umbraco-security` (when the diff
+   touches security) and the relevant stack skills, reads the builder's diff, and returns `PASS` or
    `FAIL` with specific findings.
 
 3. **Recurse.** If `FAIL`: send the findings to a fresh `builder` for the same task. Repeat

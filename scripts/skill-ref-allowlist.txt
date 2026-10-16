@@ -47,3 +47,4 @@ exclude-paths           # a dependabot.yml option, cited in umbraco-dependencies
 prefix-development      # a dependabot.yml option, cited in umbraco-dependencies
 real-bug                # an eval tag, cited in CLAUDE.md
 reviewer-feature-diff   # an eval case, cited in CLAUDE.md
+security-dotnet         # a removed skill, cited as history in CLAUDE.md

@@ -43,12 +43,12 @@ section, and the files/extension points you own. Build that task and nothing mor
 - Adding or bumping a NuGet or npm package → `umbraco-dependencies`, for whether the CMS
   decides its version and whether it ships to sites. Same for a new reference between two
   packages the repo publishes, for whether it needs an exact pin.
-- Auth, user input, the Management API, or secrets → `security-dotnet` while writing, so the
-  reviewer has less to send back.
+- Auth, the Management API, an endpoint outside it, or secrets → `umbraco-security` while
+  writing, so the reviewer has less to send back.
 - A Lit template rendering user-generated/AI-generated/external content via
   `unsafeHTML`/`unsafeSVG`, a localized term rendered as HTML, a DOMPurify config, frontend
   code reading a build-time env var or calling an API that needs credentials, or any
-  `localStorage`/`sessionStorage` use → `umbraco-backoffice-security`, same reason.
+  `localStorage`/`sessionStorage` use → `umbraco-security`, same reason.
 
 Load only the skills the task needs.
 

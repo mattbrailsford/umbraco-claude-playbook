@@ -277,10 +277,9 @@ this phase.
 - Writing `ARCHITECTURE.md` and `SPEC.md` → `plain-writing`.
 - Module/class boundaries → `solid-principles`, `design-principles`. Pattern choice →
   `gof-patterns`.
-- Anything touching auth, user input, or the Management API → `security-dotnet`, now, not
-  at review time.
-- Rendering externally-sourced/AI-generated content in the frontend, or a design that would
-  expose a secret to the client → `umbraco-backoffice-security`, now, not at review time.
+- Anything touching auth, the Management API, an endpoint outside it, a stored secret,
+  rendering external or AI-generated content in the backoffice, or a design that would
+  expose a secret to the client → `umbraco-security`, now, not at review time.
 
 ## Assume, then show
 

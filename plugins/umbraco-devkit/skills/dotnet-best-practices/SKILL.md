@@ -160,4 +160,4 @@ disposal, immutability. Not covered here:
 - Async *naming*, visibility (internal by default), public-API compatibility:
   `umbraco-package-conventions`.
 - EF Core/persistence specifics: `ef-core-data`.
-- Security-sensitive patterns: `security-dotnet`.
+- What Umbraco provides for security: `umbraco-security`.
