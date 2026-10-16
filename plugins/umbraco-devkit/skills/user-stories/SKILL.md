@@ -84,6 +84,12 @@ One outcome per `Then` — "and also" is a second criterion, since it becomes a 
 Specification downstream. Happy path exhaustively first, then error/edge criteria under a
 clearly separated heading.
 
+Error criteria are where two outcomes most often slip into one `Then`: "the request is refused
+and no file is returned", "no email is sent and a warning is logged". Each is two criteria.
+Before writing the file, reread every `Then` and split any that joins two results with "and".
+One result described by several values ("the file has the rows `news,4` and `old,0`") is
+still one outcome.
+
 ### 3. Quality-gate with INVEST
 
 The two failures that matter most in practice:
