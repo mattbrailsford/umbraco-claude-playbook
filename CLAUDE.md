@@ -99,6 +99,13 @@ Claude catches most mistakes, so a review prompt hides what a skill adds. Test r
 on a realistic, multi-file diff (scaffolded, like `reviewer-feature-diff`), never a
 snippet. Build cases from real, fixed bugs where possible, and tag them `real-bug`.
 
+Set up the scenario that causes the problem; never ask for the fix. The prompt asks for
+something a developer would really ask for, in a project where the obvious answer brings
+the problem in. It never describes the bug or its symptom, asks for a fix, or hints at the
+fix. A prompt that points at the problem tests debugging, not whether the skill prevents
+it. Only workflow cases for bug-fixing skills (`investigate-bug`, `quick-fix`,
+`issue-resolve`) may be handed a bug, since they test the workflow's own rules.
+
 A new skill, or a change that adds behavior to one, ships with at least one eval for that
 behavior, tagged with the skill's name. Run it with and without the plugin before merging,
 and put both scores in the PR. A knowledge skill that shows no gain over plain Claude doesn't

@@ -44,8 +44,15 @@ allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 - **Ask for the change, not a review.** Given a short snippet to review, plain Claude
   catches most mistakes. Review only a realistic multi-file diff, as in
   `reviewer-feature-diff`.
-- **Hide the trap.** The prompt states the task, never the rule being tested. If the prompt
-  names the trap, both arms pass.
+- **Set up the scenario, never ask for the fix.** Ask for something a developer would
+  really ask for (a feature, a change, a job to add) in a project where the obvious answer
+  brings the problem in. Never describe the bug or its symptom, ask for it to be fixed, or
+  hint at the fix (the right API, the risk, what to watch for). A prompt that points at the
+  problem tests debugging, which plain Claude already does well, not whether the skill
+  stops the problem happening. For a `real-bug` case, ask for the change that first
+  introduced the bug, not the fix.
+  - Workflow cases are the one exception: a bug-fixing workflow (`investigate-bug`,
+    `quick-fix`, `issue-resolve`) is handed a bug, because its own rules are what's tested.
 - **Say what the sandbox lacks.** Git, dotnet and the network don't run in an eval. Say so
   in the prompt ("Git can't run here") so the answer doesn't stall trying.
 - **Tags:** the skill's name, then `should-trigger`, `should-not-trigger`, or `workflow`.

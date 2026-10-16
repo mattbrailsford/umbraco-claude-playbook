@@ -4,8 +4,9 @@ description: >-
   Conventions for a Lit + UUI Umbraco backoffice package: compiler setup, local vs. exported
   components and the public API surface, OpenAPI-generated clients, observable and extension
   lifecycles, localization keys, build output and cache busting, and multi-package builds.
-  Use when setting up or structuring a backoffice frontend. Not for individual extension
-  points or state management, which the official Backoffice Skills plugin covers.
+  Use when setting up or structuring a backoffice frontend, changing what imports what
+  across its entry points, or adding a call to the package's own API. Not for individual
+  extension points or state management, which the official Backoffice Skills plugin covers.
 
 ---
 
@@ -72,12 +73,32 @@ export { UmbFeatureCardElement } from "./global-components/feature-card/feature-
 ```
 
 Default to this for a new package. A larger package may instead chain per-feature barrels
-into a single top-level entry point (e.g. `internal-components.ts`) to confirm everything
+into a single top-level entry point that registers every element, to confirm everything
 registers exactly once. That is a variant, not a different rule. Pick one scheme per package;
 don't mix both.
 
-**Duplicate registration:** ES modules dedupe by path, so a redundant import of the same file
-is rarely the risk. The real failure is two *different* modules registering the *same tag
+**Duplicate registration.** The browser loads a module once per full URL, query string
+included. From 17.6 and 18.1 Umbraco adds `?umb__rnd=<version>` to every `/App_Plugins` URL
+it loads by address: import map targets and the `js`, `element` and `api` files named in
+`umbraco-package.json`. A relative import inside your bundle (`./entry.js`, `../index.js`)
+resolves to the same file without that query string, so the browser loads a second copy.
+Its `customElements.define` calls throw, and any state in it (a promise, a configured
+client) is split between the two copies.
+
+- **Nothing imports a manifest or import map file by relative path.** Entry files import
+  from ordinary modules; no module imports an entry file back. A value that both an entry
+  file and another module need (a "ready" promise, a configured client) goes in its own
+  module that both import.
+- **Watch for cycles.** An entry file that re-exports a module which imports the entry file
+  back is the same mistake one step removed. The bundler then emits a relative import of the
+  entry file from a shared chunk.
+- **Check the build output:** grep it for relative imports of any file named in
+  `umbraco-package.json`.
+
+Don't fix it with `allowCacheBusting: false` or your own `?v=` on the URLs: both turn
+Umbraco's cache busting off for the package.
+
+The other way to register a tag twice is two *different* modules defining the *same tag
 name*, usually from workspace-linking/dependency duplication (see the build-order gotcha
 below). Add a duplicate-class-name build check once a package grows past a handful of
 components; don't rely on catching it by eye.
@@ -219,7 +240,8 @@ others). `umbraco-dependencies`' npm section has how to find bare imports that s
 From 17.6 and 18.1, Umbraco appends that version to the manifest's entry points and import map
 URLs, so it's the browser's cache key. An unchanged version means editors keep running the
 old files. Code-split chunks don't get the version, so keep Vite's default content-hashed
-file names for them.
+file names for them. The appended version is also why a manifest file must never be imported
+by relative path; see "Duplicate registration" above.
 
 Source: [Vite package setup](https://docs.umbraco.com/umbraco-cms/extend-your-project/backoffice-extensions/development-flow/vite-package-setup),
 [umbraco-package.json](https://docs.umbraco.com/umbraco-cms/extend-your-project/backoffice-extensions/umbraco-package),
@@ -253,7 +275,15 @@ into UI code instead of stopping at one boundary.
 (`UmbDataSourceResponse`), so repositories and contexts built on yours handle failure the
 same way they do for core data. Wrap each generated call in `tryExecute(this, promise)` from
 `@umbraco-cms/backoffice/resources`. It returns `{ data, error }` instead of throwing, and
-shows the user an error notification unless you pass `disableNotifications: true`:
+shows the user an error notification unless you pass `disableNotifications: true`.
+
+**`tryExecute` only notifies when the call throws.** A hey-api client resolves a failed
+request to `{ error }` unless it's configured with `throwOnError: true`, so `tryExecute`
+returns the error without showing anything. Umbraco's own client sets it; the
+`umbraco-extension` template doesn't. Set it on the `@hey-api/client-fetch` plugin in the
+generation config, so it survives regeneration, or with
+`client.setConfig({ throwOnError: true })` after `authContext.configureClient(client)`
+(`setConfig` merges, so the auth settings stay):
 
 ```ts
 import { tryExecute } from '@umbraco-cms/backoffice/resources';

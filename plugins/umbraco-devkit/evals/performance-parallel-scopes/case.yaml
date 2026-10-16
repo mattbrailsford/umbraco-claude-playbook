@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: performance-parallel-scopes
+context:
+  scaffold_script: fixture.sh
