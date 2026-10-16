@@ -87,8 +87,12 @@ claude plugin eval plugins/umbraco-devkit --tag <skill-name> --judge-model sonne
 Ask the model to make the change, not review it. Given a short snippet to review, plain
 Claude catches most mistakes, so a review prompt hides what a skill adds. Test review only
 on a realistic, multi-file diff (scaffolded, like `reviewer-feature-diff`), never a
-snippet. Build cases from
-real, fixed bugs where possible, and tag them `real-bug`.
+snippet. Build cases from real, fixed bugs where possible, and tag them `real-bug`.
+
+A new skill, or a change that adds behavior to one, ships with at least one eval for that
+behavior, tagged with the skill's name. Run it with and without the plugin before merging,
+and put both scores in the PR. A knowledge skill that shows no gain over plain Claude doesn't
+ship.
 
 Workflow skills (`feature-*`, `quick-fix`, `issue-*`, ...) have no plain-Claude equivalent,
 so their cases check the skill keeps its own rules instead. They're tagged `workflow`; run
