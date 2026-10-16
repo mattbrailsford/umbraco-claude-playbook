@@ -1,11 +1,16 @@
 ---
-description: Installing and evolving package content/schema should use a PackageMigrationPlan.
+description: Creating a package's document types and starter content on install should use a PackageMigrationPlan.
 tags: [umbraco-extensibility, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-My Umbraco 17 package needs to create a document type and some starter content when it is
-installed. In version 2 of the package I'll need to add a new property to that document type
-on sites that already have version 1. How should I do this? Show the code and how it's
-registered.
+My Umbraco 17 package (`src/Umbraco.Community.Reviews`) needs two document types on the
+site: a "Review List" page that allows "Review" children, and "Review" with a title
+(textstring), a rating (numeric) and a body (textarea). When the package is installed, create
+both, plus one "Reviews" list page at the content root. Later releases will add properties
+to Review on sites that already have it.
+
+There's no dotnet or network here, so you can't build or run tests; just make the code
+change.

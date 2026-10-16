@@ -1,11 +1,17 @@
 ---
 type: llm
 weight: 2
+focus: trace
 ---
-PASS if the answer says to copy (or cherry-pick) the existing migration files to the other
-branch so the migration keeps the same ID (the same `[Migration("...")]` / timestamped name)
-on both branches, for each provider, and explains or implies that a different ID would make
-an upgrading site run the change again.
+Context: sites upgrade from the v16 line to the v17 line. EF Core records each applied
+migration by its ID. If the v16 branch's migration has a different ID from v17's
+`20260912103000_AcmeReviews_AddVerifiedAt`, an upgraded site runs the v17 migration again
+and fails on the duplicate column.
 
-FAIL if the answer tells the user to run `dotnet ef migrations add` again on `v16/main` to
-produce a new migration for the same change, without warning that the IDs must match.
+PASS if the new migration files on this branch (outside `.worktrees/`), for both SQL Server
+and SQLite, keep the same migration ID as v17: the `[Migration("20260912103000_AcmeReviews_AddVerifiedAt")]`
+attribute and the matching class/file name. Adjusting the Designer's EF version for v16 is
+fine.
+
+FAIL if either provider's migration on this branch gets a different ID or timestamp, only
+one provider gets a migration, or the column is added to the entity with no migration.

@@ -3,15 +3,14 @@ type: llm
 weight: 2
 ---
 Context: a full rebuild touches every published page, which on a large site is tens of
-thousands. `IContentService` and `IDataTypeService` go to the database on each call.
+thousands. Umbraco's own index populators page through `IContentService.GetPagedDescendants`
+with a published filter, so paged service reads are an accepted way to rebuild. What costs
+is one database call per page or per property.
 
-PASS if the rebuild reads published content from Umbraco's published content cache
-(`IPublishedContentCache`, `IPublishedContentQuery`, `IDocumentNavigationQueryService` plus
-the cache, or the UmbracoContext's content cache) rather than loading each page through
-`IContentService`, and does not look up a data type from `IDataTypeService` for each
-property of each page (it uses the published property type, or resolves data types once
-and reuses them).
+PASS if the rebuild reads pages in bulk (pages of `IContentService.GetPagedDescendants`, or
+the published content cache) rather than one `GetById` per page, and does not call
+`IDataTypeService` per property per page (it uses the published property type, or resolves
+data types once and reuses them).
 
-FAIL if the rebuild loads pages one by one or in pages through `IContentService`
-(`GetById`, `GetPagedDescendants` or similar) and reuses the per-property
-`IDataTypeService` lookup, or only adds parallelism or batching around those calls.
+FAIL if it loads each page with its own service call, or keeps a per-property
+`IDataTypeService` lookup inside the loop, or only adds parallelism around those calls.

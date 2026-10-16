@@ -8,5 +8,6 @@ allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 
 Stores in my Umbraco 17 package need two new settings: a `TaxRegion` (a short code like
 "EU" or "US-CA") and the shipping zones the store ships to (zones are their own entity,
-see `src/MyPackage/Shipping`). Add both to the Store entity and everywhere stores are
-handled in this repo. Git, dotnet and the network aren't available here.
+see `src/MyPackage/Shipping`). Add them.
+
+Git, dotnet and the network aren't available here, so just make the code change.

@@ -1,19 +1,15 @@
 ---
 description: A new parameter on a shipped public method needs an obsolete proxy overload with a removal version.
 tags: [umbraco-package-conventions, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-My Umbraco package supports Umbraco 17 and 18, on one branch per major. It ships this public
-class, and other packages call it:
+In my Umbraco package (`src/Umbraco.Community.Items`), let callers of
+`ItemService.GetItemAsync` pass the new `ItemOptions`, so they can include archived items
+or skip loading tags. `ItemOptions.Default` should behave like today. Other packages call
+`GetItemAsync`. Make the change on this branch; I'll port it to the v18 branch after.
 
-```csharp
-public class ItemService
-{
-    public Task<Item?> GetItemAsync(Guid id) { /* ... */ }
-}
-```
-
-I want callers to be able to pass an `ItemOptions` (it has a sensible `ItemOptions.Default`).
-How should I add it? Show the code.
+There's no dotnet or network here, so you can't build or run tests; just make the code
+change.

@@ -1,12 +1,14 @@
 ---
-description: Porting an EF Core migration to another branch must copy the files and keep the migration ID, not regenerate.
+description: Porting an EF Core migration to another major's branch must copy the files and keep the migration ID, not create a new one.
 tags: [ef-core-data, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-My Umbraco package keeps one branch per CMS major: `v16/main` and `v17/main`. It stores its
-own data with EF Core, with separate SQL Server and SQLite migration projects. I've added a
-new nullable column to one entity on `v17/main` and generated the migrations there. The same
-change now needs to go to `v16/main` too, and sites will later upgrade from v16 to v17. What
-are the steps to get the migration onto `v16/main`?
+This checkout of my Umbraco package is the `v16/main` branch. On `v17/main` we added a
+nullable `VerifiedAtUtc` column to `Review`, with migrations for both providers. The
+`v17/main` worktree is at `.worktrees/v17-main`. Add the same column on this branch.
+
+There's no git, dotnet or network here, so you can't cherry-pick, generate migrations or
+build; make the change by editing files.

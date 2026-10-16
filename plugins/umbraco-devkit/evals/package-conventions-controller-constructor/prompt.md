@@ -1,22 +1,15 @@
 ---
 description: Adding a dependency to a shipped public controller keeps the old constructor and marks the new one for ActivatorUtilities.
 tags: [umbraco-package-conventions, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-My Umbraco 17 package ships a public Management API controller. Some sites subclass it, so
-they call its constructor themselves:
+My Umbraco 17 package (`src/Umbraco.Community.Items`) is on NuGet at 3.1.0. For 3.2.0,
+`ItemController.Delete` should ask the new `IItemPermissionChecker` whether the current
+backoffice user may delete the item, and return 403 if not. Some customer sites subclass
+`ItemController`.
 
-```csharp
-public class ItemController : ManagementApiControllerBase
-{
-    private readonly IItemService _itemService;
-
-    public ItemController(IItemService itemService)
-        => _itemService = itemService;
-}
-```
-
-The next minor release needs an `IItemPermissionChecker` in this controller too. How should I
-change the constructor without breaking anyone? Show the code.
+There's no dotnet or network here, so you can't build or run tests; just make the code
+change.
