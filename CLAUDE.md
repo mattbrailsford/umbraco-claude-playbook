@@ -21,6 +21,8 @@ plugins/umbraco-devkit/
 settings.example.json   # copy-by-hand example for consumers; NOT installed by the plugin
 scripts/                # check-*.sh + their allowlists; repo-only, not shipped
 .claude/skills/review-skill-links/  # repo-only skill: cross-reference review; not shipped
+.claude/skills/write-skill-eval/    # repo-only skill: write and prove an eval case; not shipped
+.github/workflows/checks.yml        # runs the check scripts below on every PR
 docs/HOW-IT-WORKS.md    # human explainer: how skills connect, plan folder, gate, memory, branches
 docs/pr-examples/       # images used in PR descriptions; not shipped
 README.md               # human-facing; see "Human docs" below
@@ -74,7 +76,10 @@ scripts/check-skill-wiring.sh # every skill in the README and referenced from el
 scripts/check-version.sh      # version only in plugin.json, and bumped if shipped files changed
 scripts/check-frontmatter.sh  # skill/agent headers parse, names match, descriptions fit
 scripts/check-skill-callers.sh # no skill changes behavior based on which skill started it
+scripts/check-evals.sh        # every skill has an eval, or is on eval-gap-allowlist.txt
 ```
+
+CI runs all of these on every PR to `main`.
 
 Evals compare answers with and without the plugin. They make real model calls and cost
 money, so run them on purpose, not as a routine check. The default judge (Haiku) misgrades
@@ -92,7 +97,8 @@ snippet. Build cases from real, fixed bugs where possible, and tag them `real-bu
 A new skill, or a change that adds behavior to one, ships with at least one eval for that
 behavior, tagged with the skill's name. Run it with and without the plugin before merging,
 and put both scores in the PR. A knowledge skill that shows no gain over plain Claude doesn't
-ship.
+ship. Before trusting a new case, run it once without the plugin: a grader that passes there
+measures nothing. The repo-only `write-skill-eval` skill walks through all of this.
 
 Workflow skills (`feature-*`, `quick-fix`, `issue-*`, ...) have no plain-Claude equivalent,
 so their cases check the skill keeps its own rules instead. They're tagged `workflow`; run

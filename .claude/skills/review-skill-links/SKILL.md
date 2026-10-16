@@ -24,6 +24,7 @@ scripts/check-skill-wiring.sh
 scripts/check-version.sh
 scripts/check-frontmatter.sh
 scripts/check-skill-callers.sh
+scripts/check-evals.sh
 ```
 
 Fix or report every failure before reading further. A failure here is a finding, not
