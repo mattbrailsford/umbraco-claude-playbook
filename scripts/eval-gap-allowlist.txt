@@ -5,11 +5,7 @@
 # if you forget). Never add a new skill here: write its eval instead.
 
 change-backport
-decision-review
 dependency-review
-feature-close
-github-init
 issue-backlog
 issue-resolve
 major-upgrade
-pr-describe
