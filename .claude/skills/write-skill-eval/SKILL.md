@@ -114,7 +114,6 @@ first.
 
 ## 7. Finish
 
-- If the skill was on `scripts/eval-gap-allowlist.txt`, remove it.
 - Run `scripts/check-evals.sh`.
 - Put the with and without scores in the PR. A knowledge skill that shows no gain doesn't
   ship.
