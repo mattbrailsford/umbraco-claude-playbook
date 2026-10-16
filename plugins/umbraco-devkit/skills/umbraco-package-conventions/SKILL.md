@@ -1,9 +1,10 @@
 ---
 name: umbraco-package-conventions
 description: >-
-  Backend conventions for an Umbraco package: async naming, internal by default, public-API
-  backwards compatibility, and where extension methods live. Use when naming a method,
-  choosing visibility, changing a public signature, or organizing extension methods. For
+  Backend conventions for an Umbraco package: async naming, internal by default,
+  Attempt-based results for routine failures, public-API backwards compatibility, and where
+  extension methods live. Use when naming a method, choosing visibility, shaping a service's
+  result, changing a public signature, or organizing extension methods. For
   extension mechanisms, see `umbraco-extensibility`.
 
 ---
@@ -66,6 +67,16 @@ future refactor of the repository from becoming a breaking change for anyone but
 service. Not a strict law — a repository can be `public` if something outside the normal
 service layer (diagnostics, a health check) genuinely needs to reach it directly. Default to
 `internal`; make a repository `public` only for a specific, nameable reason, not by omission.
+
+## Routine failures: `Attempt<TResult, TStatus>`, like Umbraco's services
+
+Umbraco's services report expected failures through the return type, not exceptions:
+`IContentEditingService.CreateAsync` returns `Attempt<ContentCreateResult,
+ContentEditingOperationStatus>`, and the Management API controller maps the status enum to a
+response. A package service that can fail routinely (not found, invalid input, a duplicate)
+should use the same shape: `Attempt<T, TStatus>` with the package's own operation-status
+enum. Callers built on Umbraco already know how to branch on it, and a controller maps each
+status to a `ProblemDetails` response in one place. Keep exceptions for programmer errors.
 
 ## Public API backwards compatibility
 

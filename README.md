@@ -149,8 +149,6 @@ You don't run these. The skills above and the agents load them when the work nee
 
 | Skill | What it covers |
 |---|---|
-| [`dotnet-best-practices`](plugins/umbraco-devkit/skills/dotnet-best-practices/SKILL.md), [`typescript-best-practices`](plugins/umbraco-devkit/skills/typescript-best-practices/SKILL.md) | Everyday C# and TypeScript discipline |
-| [`solid-principles`](plugins/umbraco-devkit/skills/solid-principles/SKILL.md), [`design-principles`](plugins/umbraco-devkit/skills/design-principles/SKILL.md), [`gof-patterns`](plugins/umbraco-devkit/skills/gof-patterns/SKILL.md) | Design principles and patterns, in C# and Lit |
 | [`bdd-specs`](plugins/umbraco-devkit/skills/bdd-specs/SKILL.md), [`user-stories`](plugins/umbraco-devkit/skills/user-stories/SKILL.md) | Stories with acceptance criteria, turned into tests |
 | [`git-workflow`](plugins/umbraco-devkit/skills/git-workflow/SKILL.md) | Commits, branches, and asking before touching `main` |
 | [`plain-writing`](plugins/umbraco-devkit/skills/plain-writing/SKILL.md) | How every document a person reads gets written |

@@ -14,8 +14,6 @@ section, and the files/extension points you own. Build that task and nothing mor
 
 ## Skills to invoke (via the Skill tool, as relevant to the task)
 
-- `dotnet-best-practices` — always, for any C# work.
-- `typescript-best-practices` — always, for any TypeScript work.
 - `umbraco-extensibility` — when the task touches Umbraco's extension surface: Composer/DI
   registration, collection builders, notification handlers, property value converters, and
   Delivery API support.
@@ -24,9 +22,8 @@ section, and the files/extension points you own. Build that task and nothing mor
 - `umbraco-cms-source` — before copying or extending a CMS pattern (a base class, a built-in
   extension of the same type), to read how the CMS does it at the project's release tag.
 - `umbraco-package-conventions` — always, for any C# work in an Umbraco package: async naming,
-  visibility (internal by default), `[Obsolete]` proxying for a public API change.
-- `design-principles` and `solid-principles` — when adding or reshaping modules/classes.
-  `gof-patterns` only if a pattern genuinely fits.
+  visibility (internal by default), `Attempt` results for routine failures, `[Obsolete]`
+  proxying for a public API change.
 - Persistence work → `ef-core-data`. Check whether the project targets SQL Server only or
   SQL Server *and* SQLite before writing a migration — most Umbraco packages need both.
 - Code that runs per request, per save, per indexed item or at startup, a property value

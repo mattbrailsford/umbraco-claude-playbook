@@ -130,8 +130,7 @@ var page = await _dbSet
     .ToListAsync(cancellationToken);
 ```
 
-For when LINQ actually runs, see `dotnet-best-practices`; for caching and Umbraco-side
-performance, see `umbraco-performance`.
+For caching and Umbraco-side performance, see `umbraco-performance`.
 
 ## Testing repositories against a real database, not a fake
 
