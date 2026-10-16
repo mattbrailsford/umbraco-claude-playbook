@@ -84,8 +84,10 @@ long answers such as full reviews, so judge with Sonnet:
 claude plugin eval plugins/umbraco-devkit --tag <skill-name> --judge-model sonnet --no-publish
 ```
 
-Ask the model to write the code, not review it. Given a short snippet to review, plain
-Claude catches most mistakes, so a review prompt hides what a skill adds. Build cases from
+Ask the model to make the change, not review it. Given a short snippet to review, plain
+Claude catches most mistakes, so a review prompt hides what a skill adds. Test review only
+on a realistic, multi-file diff (scaffolded, like `reviewer-feature-diff`), never a
+snippet. Build cases from
 real, fixed bugs where possible, and tag them `real-bug`.
 
 ## This repo is not an Umbraco project
