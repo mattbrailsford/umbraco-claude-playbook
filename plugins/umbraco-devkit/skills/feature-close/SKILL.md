@@ -1,11 +1,9 @@
 ---
 name: feature-close
 description: >-
-  Closes a feature's plan folder once the work is over: records how it ended (shipped,
-  abandoned, or superseded), moves decisions that outlive the feature into project memory,
-  fixes links into the plan, then moves the folder to the archive. Owns the
-  plan's status line and its move. Use after a feature's PR is merged, on each
-  version line it shipped to, or when a plan is dropped or replaced by another.
+  Closes a feature's plan folder once the work is over: records how it ended, moves lasting
+  decisions into project memory, and archives the folder. Use after the feature's PR merges
+  on each version line it shipped to, or when a plan is dropped or replaced.
 user-invocable: true
 argument-hint: [feature slug or plan folder path, one or more, optional]
 ---

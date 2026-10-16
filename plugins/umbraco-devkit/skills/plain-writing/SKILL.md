@@ -1,11 +1,11 @@
 ---
 name: plain-writing
 description: >-
-  How to write documents a person has to read — plan files (BRIEF, ARCHITECTURE, SPEC, STORIES,
-  PLAN), pull request descriptions, decision reviews, issue triage notes. Concise without
-  dropping detail, plain words over jargon, and no restating what a screenshot, table or
-  diagram already shows. Use whenever writing or revising prose meant for a human reader. Not
-  for code comments, commit messages or specs that run as tests.
+  How to write documents people read: plan files, PR descriptions, decision reviews and
+  triage notes. Plain words, concise without losing detail, and no restating what a table or
+  screenshot shows. Use when writing or revising prose for a human reader. Not for code
+  comments, commit messages or executable specs.
+
 ---
 
 # Plain writing

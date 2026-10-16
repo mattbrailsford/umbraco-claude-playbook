@@ -1,18 +1,13 @@
 ---
 name: umbraco-extensibility
 description: >-
-  Umbraco's own extension mechanisms, and how to build on them instead of inventing your own —
-  Composer registration, collection-builder extensibility, notification handlers, and
-  attribute-based discovery — plus a catalogue of the most common concrete, backend-side
-  Umbraco CMS extension points (property value converters, Management API endpoints, content
-  finders, URL segment providers, health checks, search indexing, package migrations that
-  install or upgrade content and schema, recurring background jobs, and more). Use when
-  deciding how to make a feature extensible by other packages, or when choosing which CMS
-  extension point fits a given task. For general backend package conventions that aren't
-  about extension mechanisms specifically (async naming, visibility (internal by default), public-API
-  compatibility), see `umbraco-package-conventions` instead. Leaves out what the official
-  Backoffice Extension Skills plugin already covers: property editor UI and schema,
-  dashboards, sections, trees.
+  Umbraco's extension mechanisms (Composers, collection builders, notification handlers,
+  attribute discovery) and a catalogue of backend CMS extension points: property value
+  converters, Management API endpoints, content finders, health checks, search indexing,
+  package migrations, background jobs, and more. Use when making a feature extensible or
+  choosing which extension point fits. Not for property editor UI, dashboards, sections or
+  trees, which the official Backoffice Skills plugin covers.
+
 ---
 
 # Extending Umbraco, not just building on top of it

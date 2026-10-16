@@ -1,15 +1,11 @@
 ---
 name: major-upgrade
 description: >-
-  Moves an Umbraco package or extension to a new Umbraco CMS major version (for example 17 to
-  18): finds every breaking change that actually hits the project, writes an ordered upgrade
-  checklist, then works through it task by task with the builder and reviewer agents, keeping
-  the build green at every commit. Owns `docs/upgrades/v<major>.md`, and archives it once the
-  upgrade ships. Use when asked to "upgrade to Umbraco N", "support v18", "port the package
-  to the new major", when a new
-  CMS major's first beta or RC ships, or to refresh an upgrade from one RC to the next or to
-  the final release. Not for minor or patch bumps of a released major; those are a normal
-  dependency update.
+  Moves an Umbraco package to a new CMS major (for example 17 to 18): finds the breaking
+  changes that hit it, writes an ordered checklist in `docs/upgrades/v<major>.md`, and works
+  through it with the builder and reviewer agents. Use for "upgrade to Umbraco N", "support
+  v18", a new major's beta or RC, or moving from one RC to the next. Not for minor or patch
+  bumps.
 user-invocable: true
 argument-hint: <target CMS major, e.g. 18>
 ---

@@ -1,16 +1,11 @@
 ---
 name: issue-triage
 description: >-
-  Triages one issue, a range, or everything untriaged on the tracker — classifies type and
-  likely code area, checks for duplicates, flags anything that looks like a security report,
-  and writes a report for human review. Tracks triage state with `state/*` labels on the
-  tracker itself and keeps the reporter in the loop with a plain-language comment, both
-  applied only once the user approves; keeps no log of its own.
-  More than one issue spawns one issue-triager subagent per issue, orchestrated from the main
-  thread. Use when there's a backlog to work through, or a specific issue to classify before
-  deciding whether to act on it. A `decisions` run walks the user through every issue waiting
-  on a maintainer's yes or no. Proving a bug's cause is `investigate-bug`'s job, not this one.
-  Owns the plugin's state labels, its tracker comment format, and its rule for handling
+  Triages one, several or all untriaged tracker issues: type, code area, duplicates and
+  possible security reports, as a report for human review. Once approved, applies `state/*`
+  labels and a plain-language comment for the reporter. A `decisions` run walks through
+  issues waiting on a maintainer. Use to classify a backlog, or one issue before acting on
+  it. Owns the plugin's state labels, its tracker comment format, and its rule for handling
   security reports.
 user-invocable: true
 argument-hint: [issue ID | ID range | decisions | leave blank for whole tracker]

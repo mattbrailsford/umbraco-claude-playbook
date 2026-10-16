@@ -2,13 +2,10 @@
 name: design-principles
 description: >-
   Coupling and cohesion, DRY/YAGNI/KISS, the Law of Demeter, Tell-Don't-Ask, Command-Query
-  Separation, and fail-fast. Horizontal principles that apply to almost any code — C# or
-  Lit/TypeScript — written in an Umbraco package. Use whenever writing or reviewing
-  service/class/component design, not just when a specific pattern question comes up. This
-  skill's references/ files carry the C# and Lit/TypeScript illustrations — read whichever
-  layer the task is actually in. For the five SOLID principles specifically, see
-  `solid-principles`; for a named structural solution once a recurring shape shows up (Adapter,
-  Strategy, Observer, etc.), see `gof-patterns`.
+  Separation and fail-fast, with C# and Lit/TypeScript examples. Use when writing or
+  reviewing the design of a service, class or component. For SOLID, see `solid-principles`;
+  for named patterns, `gof-patterns`.
+
 ---
 
 # Design principles for Umbraco packages

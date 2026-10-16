@@ -1,13 +1,11 @@
 ---
 name: umbraco-docs
 description: >-
-  How to look up the official Umbraco documentation (docs.umbraco.com) for the major version
-  the project targets — from a local clone of umbraco/UmbracoDocs, where the clone's path is
-  recorded, which version folder to read, and the read-only git commands for reading and
-  searching it. Falls back to the live site's Markdown pages and its llms.txt index when
-  there's no clone. Use whenever you need Umbraco's documented way of doing something: an
-  extension point's registration, a configuration setting, a package or marketplace
-  requirement, or a tutorial's recommended shape.
+  How to look up the official Umbraco docs for the major the project targets, from a local
+  clone of umbraco/UmbracoDocs or the live site's Markdown pages. Use when you need
+  Umbraco's documented way to do something: registering an extension point, a setting, a
+  package or Marketplace requirement, or a tutorial.
+
 ---
 
 # umbraco-docs

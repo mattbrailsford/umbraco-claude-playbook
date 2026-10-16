@@ -1,13 +1,9 @@
 ---
 name: pr-describe
 description: >-
-  Writes the pull request description — the one skill git-workflow always delegates to for
-  this, never done by hand. Produces a diagram-based outline (file trees, before/after code
-  diffs, call chains, EF Core/SQL table changes, Lit component trees, manifest registration
-  changes, backoffice registrations, settings, API endpoints) plus, for UI changes, where to
-  find each screen, who can see it, and built or before/after screenshots, when the feature has a
-  plan folder under `docs/plans/`, or a plain summary/why/verify/risk write-up when
-  it doesn't. Use whenever a PR is being opened or updated.
+  Writes or updates a pull request description: a diagram-based outline with screenshots
+  when the feature has a plan folder, otherwise a summary, why, how to verify, and risks.
+  Use whenever a PR is opened or updated.
 user-invocable: true
 argument-hint: [PR number | leave blank for the current branch]
 ---

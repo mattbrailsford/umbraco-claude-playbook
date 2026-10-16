@@ -1,13 +1,10 @@
 ---
 name: quick-fix
 description: >-
-  Makes a small, obvious fix directly on the current branch — no feature-explore, no feature-design, no
-  feature-plan, no feature-build. Use for a typo, a reversed condition, a dead try/catch, a
-  misnamed variable, a stray import, a missing null check, or a patch or minor dependency
-  bump — single concern, usually under
-  ~20 lines, in either C# or Lit/TypeScript. Not a sixth pipeline phase: this is the deliberate
-  escape hatch around the pipeline for a fix too small to justify it. Escalates to feature-plan
-  or feature-explore the moment a fix turns out not to be this small.
+  Makes a small, obvious fix directly, without the feature pipeline: a typo, a reversed
+  condition, a missing null check, a stray import, or a patch or minor dependency bump. One
+  concern, usually under 20 lines, in C# or Lit/TypeScript. Escalates to the feature
+  pipeline if the fix turns out bigger.
 user-invocable: true
 argument-hint: <describe the fix>
 ---

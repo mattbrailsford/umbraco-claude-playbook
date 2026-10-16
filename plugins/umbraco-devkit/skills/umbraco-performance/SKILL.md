@@ -1,17 +1,12 @@
 ---
 name: umbraco-performance
 description: >-
-  Keeping an Umbraco package or backoffice extension fast on the sites that install it —
-  reading published content from the cache instead of the services layer, tree traversal
-  that doesn't walk the whole site, navigation extensions called with injected services, caching your own lookups and deciding
-  what clears them, data type configuration and property value converter cache levels, evicting output
-  caches when package data changes, keeping hot paths (notification handlers, indexing,
-  bulk operations, startup) light, and backoffice extensions that don't over-fetch. Use when
-  writing or reviewing package code that runs per request, per save, per indexed item, or at
-  startup, a Management API list endpoint, or a backoffice screen that lists or searches
-  data. Not for tuning a site's own templates or configuration. For EF Core query shape, see
-  `ef-core-data`; for when LINQ actually runs, see `dotnet-best-practices`; for clearing a
-  cache on every server, see `umbraco-load-balancing`.
+  Keeping a package fast on the sites that install it: the published cache over the services
+  layer, tree traversal, caching lookups and clearing them, data type config and converter
+  cache levels, output cache eviction, light hot paths, and backoffice screens that don't
+  over-fetch. Use when writing or reviewing code that runs per request, per save, per
+  indexed item or at startup, or a list or search screen. Not for a site's own templates.
+
 ---
 
 # Performance for Umbraco packages

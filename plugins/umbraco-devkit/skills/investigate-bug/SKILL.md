@@ -1,15 +1,11 @@
 ---
 name: investigate-bug
 description: >-
-  Finds the cause of a bug whose cause isn't known yet, in an Umbraco package or backoffice
-  extension (C# and/or Lit). Pins down the symptom, reproduces it through the real entry
-  point, gathers evidence from logs, the Management API, and the browser, narrows it by layer
-  and by history, then tests one hypothesis at a time until the cause is proven. Reports the
-  cause with its evidence and routes the fix to `quick-fix` or the `feature-*` pipeline; it never
-  writes the fix itself. Given an issue ID, also drafts the issue's next state label and a
-  comment for the reporter. Use for "why is this broken", "this stopped working", "find out
-  what's causing X", a failing test nobody understands, or an issue triaged as needing
-  investigation. With `--unattended`, runs without asking questions, in its own worktree.
+  Finds the cause of a bug in an Umbraco package or backoffice extension: reproduces it,
+  gathers evidence, and tests one hypothesis at a time until the cause is proven. Never
+  writes the fix; routes it to `quick-fix` or the feature pipeline. Use for "why is this
+  broken", "this stopped working", an unexplained failing test, or an issue triaged as
+  needing investigation. `--unattended` runs without questions in its own worktree.
 user-invocable: true
 argument-hint: <what's going wrong, or an issue ID> [--unattended]
 ---

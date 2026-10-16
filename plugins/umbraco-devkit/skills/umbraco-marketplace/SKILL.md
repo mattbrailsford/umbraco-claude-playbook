@@ -1,11 +1,10 @@
 ---
 name: umbraco-marketplace
 description: >-
-  Gets a finished Umbraco package listed on the Umbraco Marketplace — the umbraco-marketplace
-  NuGet tag, the Umbraco package dependency Marketplace uses to infer version support, the
-  CMS v14+ compatibility gotcha, and the optional umbraco-marketplace.json metadata file. Use
-  once a package is ready to publish to NuGet, or when reviewing an existing package's
-  packaging/publish setup.
+  Gets a finished package listed on the Umbraco Marketplace: the NuGet tag, the dependency
+  Marketplace reads version support from, the v14+ compatibility gotcha, and
+  umbraco-marketplace.json. Use when a package is ready to publish, or when reviewing its
+  packaging.
 user-invocable: true
 argument-hint: [optional]
 ---

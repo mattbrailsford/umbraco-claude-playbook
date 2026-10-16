@@ -1,12 +1,11 @@
 ---
 name: umbraco-cms-source
 description: >-
-  How to look up Umbraco CMS source code in a local clone of umbraco/Umbraco-CMS, read at the
-  release tag matching the CMS version the project targets — where the clone's path is
-  recorded, picking the tag, and the read-only git commands for reading, searching, and
-  listing files at that tag. Falls back to GitHub via `gh` when there's no clone. Use whenever
-  you need to see how the CMS itself implements something: a base class, an extension point's
-  real contract, a sibling backoffice element, a service's actual behavior.
+  How to read Umbraco CMS source at the release tag the project targets, from a local clone
+  of umbraco/Umbraco-CMS or from GitHub through `gh`. Use when you need to see how the CMS
+  implements something: a base class, an extension point's contract, a backoffice element, a
+  service's behavior.
+
 ---
 
 # umbraco-cms-source

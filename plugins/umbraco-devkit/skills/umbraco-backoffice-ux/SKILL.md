@@ -1,13 +1,11 @@
 ---
 name: umbraco-backoffice-ux
 description: >-
-  How an Umbraco backoffice screen should look and behave for the editor using it — matching
-  existing screens, pickers vs select boxes, the five moments every UI needs (first run,
-  mistake, wait, finish, return), components that appear in more than one place, and the small
-  details that most often get sent back (icon buttons, contrast, labels, table columns). Use
-  when designing, building or reviewing any backoffice UI. Not for package structure, compiler
-  setup or public API surface (`umbraco-backoffice-conventions`), and not for how a specific
-  extension point works (the official Backoffice Skills plugin).
+  How an Umbraco backoffice screen should look and behave for editors: matching existing
+  screens, pickers vs. selects, first run, mistakes, waiting, finishing and returning,
+  shared components, and the details most often sent back. Use when designing, building or
+  reviewing backoffice UI. For package structure, see `umbraco-backoffice-conventions`.
+
 ---
 
 # Backoffice UX

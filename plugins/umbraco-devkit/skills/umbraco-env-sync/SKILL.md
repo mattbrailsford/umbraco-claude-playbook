@@ -1,15 +1,12 @@
 ---
 name: umbraco-env-sync
 description: >-
-  Moving an Umbraco package's own entities between environments (local, dev, staging, live)
-  with Umbraco Deploy or uSync — which entities move as files on disk and which an editor
-  sends over the wire, the export shape and its dependencies, restoring in ordered passes so
-  an entity exists before something links to it, keeping secrets out of the export, linking
-  to users and user groups by alias, translating property values that store ids, and keeping
-  the sync code in step when a deployable entity changes. Use when adding Deploy or uSync
-  support to a package, or when planning, building, or reviewing a change to an entity the
-  package already syncs. Not for deploying the site itself (CI/CD, hosting) or for Umbraco
-  Cloud setup.
+  Moving an Umbraco package's own entities between environments with Umbraco Deploy or
+  uSync: what moves as files and what moves over the wire, export shape and dependencies,
+  ordered restores, keeping secrets out, linking users by alias, translating stored ids, and
+  keeping sync code current. Use when adding Deploy or uSync support, or changing an entity
+  the package syncs. Not for deploying the site itself.
+
 ---
 
 # Moving package data between environments

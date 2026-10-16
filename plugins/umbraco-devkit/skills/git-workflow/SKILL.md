@@ -1,10 +1,10 @@
 ---
 name: git-workflow
 description: >-
-  Conventional Commits, trunk-vs-branch by change size, and how an Umbraco package's own
-  versioning relates to the CMS major versions it supports. Use whenever committing,
-  branching, or deciding how to structure either for a change in an Umbraco project. Does
-  not cover release pipelines — see the README's "Building on top" section for that.
+  Conventional Commits, trunk vs. branch by change size, and how a package's versions relate
+  to the CMS majors it supports. Use when committing, branching, or deciding how to
+  structure either in an Umbraco project. Not for release pipelines.
+
 ---
 
 # Git workflow

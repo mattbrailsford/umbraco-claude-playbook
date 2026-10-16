@@ -1,13 +1,10 @@
 ---
 name: issue-backlog
 description: >-
-  The entry point for working a tracker's open issues from new to fixed, one stage at a time:
-  triage the new ones, get the maintainer's call on the ones waiting for a decision,
-  investigate the unproven bugs in parallel subagents, each in its own worktree, then start
-  fixes one issue at a time. Shows how many issues sit in each state, suggests the next stage,
-  and runs it through the skill that owns it. Use for "work through the backlog", "get the
-  issues ready", "what's next on the tracker". For one known issue, use `issue-triage`,
-  `investigate-bug`, or `issue-resolve` directly.
+  Works a tracker's open issues from new to fixed, one stage at a time: triage, maintainer
+  decisions, investigation, then fixes. Shows how many issues sit in each state and runs the
+  next stage. Use for "work through the backlog" or "what's next on the tracker". For one
+  known issue, use `issue-triage`, `investigate-bug` or `issue-resolve`.
 user-invocable: true
 argument-hint: [stage to start at: triage | decisions | investigate | fix, optional]
 ---

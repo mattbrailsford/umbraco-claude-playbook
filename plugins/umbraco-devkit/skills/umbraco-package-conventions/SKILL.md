@@ -1,15 +1,11 @@
 ---
 name: umbraco-package-conventions
 description: >-
-  Backend package conventions for an Umbraco package that aren't about extension mechanisms
-  specifically — async method naming, type and member visibility (internal by default),
-  public-API backwards compatibility, and where extension methods live. Use when naming a
-  service method, deciding whether a type or member should be public, changing a public
-  method's signature, or organizing extension methods. For Umbraco's own extension mechanisms
-  (Composers, collection builders, notification handlers, attribute-based discovery), see
-  `umbraco-extensibility` instead. Complements
-  `dotnet-best-practices` (general C#/.NET language discipline, not Umbraco-specific) — this
-  skill is Umbraco-package-specific convention, not general language discipline.
+  Backend conventions for an Umbraco package: async naming, internal by default, public-API
+  backwards compatibility, and where extension methods live. Use when naming a method,
+  choosing visibility, changing a public signature, or organizing extension methods. For
+  extension mechanisms, see `umbraco-extensibility`.
+
 ---
 
 # Umbraco package conventions

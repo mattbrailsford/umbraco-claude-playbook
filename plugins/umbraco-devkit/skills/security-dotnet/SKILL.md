@@ -1,14 +1,11 @@
 ---
 name: security-dotnet
 description: >-
-  Backend security review checklist for an Umbraco CMS package — Management API controllers,
-  EF Core queries built from user or backoffice-user input, backoffice authorization,
-  secrets/sensitive-configuration storage, custom non-Management-API endpoints, and NuGet
-  dependency supply chain. Use when reviewing or writing any Management API controller action,
-  any EF Core query assembled from input, any code path handling API keys/tokens/connection
-  strings, or any endpoint added outside the standard Management API pipeline. For frontend
-  security (XSS in Lit templates, secrets in a client bundle, npm supply chain), see
-  `security-lit` instead.
+  Backend security checklist for an Umbraco package: Management API authorization, EF Core
+  queries built from input, secrets and sensitive settings, endpoints outside the Management
+  API, and NuGet supply chain. Use when writing or reviewing any of those. For frontend
+  security, see `security-lit`.
+
 ---
 
 # Backend security review for Umbraco packages

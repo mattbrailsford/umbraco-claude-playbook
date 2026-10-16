@@ -1,13 +1,10 @@
 ---
 name: project-init
 description: >-
-  Setup wizard for an Umbraco package or project. Walks through each piece the pipeline relies
-  on, checks what's already there, and offers to add what's missing, one step at a time: the
-  solution (from a real dotnet new template), CLAUDE.md, .gitignore, .claude/memory/ and the
-  plan-folder convention, per-worktree demo site ports, lint and format, and backend,
-  frontend and e2e tests, and local clones of the Umbraco CMS source and docs. Never adds anything
-  without asking. Use when starting a new repo,
-  when an existing repo is missing CLAUDE.md, or again later to fill gaps such as a project with no tests yet.
+  Setup wizard for an Umbraco package or project. Checks each piece the pipeline relies on
+  (solution, CLAUDE.md, .gitignore, memory, plan folders, demo site ports, lint, tests,
+  local CMS source and docs clones) and offers to add what's missing, one step at a time.
+  Use for a new repo, a repo without CLAUDE.md, or to fill gaps later.
 user-invocable: true
 argument-hint: [project name, optional]
 ---

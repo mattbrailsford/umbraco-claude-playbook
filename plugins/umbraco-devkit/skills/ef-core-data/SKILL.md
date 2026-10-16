@@ -1,11 +1,10 @@
 ---
 name: ef-core-data
 description: >-
-  EF Core conventions for a persistence layer inside an Umbraco package — one entity model
-  targeting both SQL Server and SQLite, product-prefixed migrations, repositories internal to
-  their owning service, query shape that holds up on large tables, and testing against a real (if in-memory) database. EF Core is the
-  recommended data-access approach for a new Umbraco package. Use when designing or reviewing
-  a package's entities, migrations, or repositories.
+  EF Core in an Umbraco package: one model for SQL Server and SQLite, prefixed migrations,
+  internal repositories, query shape for large tables, and testing against a real database.
+  Use when designing or reviewing a package's entities, migrations or repositories.
+
 ---
 
 # EF Core data for Umbraco packages

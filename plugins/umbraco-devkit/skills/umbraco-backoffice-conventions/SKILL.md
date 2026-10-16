@@ -1,18 +1,12 @@
 ---
 name: umbraco-backoffice-conventions
 description: >-
-  Umbraco-backoffice-specific frontend conventions built with Lit and UUI — required compiler
-  setup, local vs. global components, what gates your public API surface, generating a typed
-  client from a Management API's OpenAPI spec, the lifecycle of observable subscriptions and
-  of extension APIs you create, localization key naming, build output (what stays external,
-  cache busting), and building a multi-package frontend workspace in order. Use when setting up
-  or structuring a Lit + UUI backoffice frontend package, deciding whether a component should
-  be exported, wiring up an OpenAPI-generated client, subscribing to a state/context
-  observable, adding localization keys, or setting up frontend builds in a monorepo — not when
-  implementing a specific extension point (dashboard, tree, property editor, modal) or using
-  the state-management system itself, which the official Backoffice Skills plugin already
-  covers in depth. Complements `typescript-best-practices` (general TS language discipline,
-  not Umbraco-specific).
+  Conventions for a Lit + UUI Umbraco backoffice package: compiler setup, local vs. exported
+  components and the public API surface, OpenAPI-generated clients, observable and extension
+  lifecycles, localization keys, build output and cache busting, and multi-package builds.
+  Use when setting up or structuring a backoffice frontend. Not for individual extension
+  points or state management, which the official Backoffice Skills plugin covers.
+
 ---
 
 # Umbraco backoffice frontend conventions

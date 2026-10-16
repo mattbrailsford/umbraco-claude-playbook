@@ -1,9 +1,9 @@
 ---
 name: github-init
 description: >-
-  Bootstraps the GitHub remote for a new Umbraco package or add-on — README, LICENSE, one
-  CONTRIBUTING.md, a bug report template, and a Dependabot config. Use when a project has no
-  `origin` remote yet and it's time to push it publicly for the first time.
+  Sets up the GitHub repo for a new Umbraco package: README, LICENSE, CONTRIBUTING.md, a bug
+  report template and a Dependabot config. Use when a project has no `origin` remote yet and
+  is about to go public.
 user-invocable: true
 argument-hint: [optional repo name]
 ---

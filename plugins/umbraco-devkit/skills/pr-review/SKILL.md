@@ -1,17 +1,11 @@
 ---
 name: pr-review
 description: >-
-  Reviews a pull request opened by someone outside the core maintainer team against an
-  open-source Umbraco package repo. Dispatches the existing `reviewer` agent against the PR
-  diff for its Umbraco-aware checklist (public API impact, manifest alias renames,
-  multi-version/provider parity, layering, security), then adds what only matters because the
-  diff came from outside the team: a pre-check for anything that would run on your machine
-  during build/test, an unconditional security pass, contribution hygiene against the repo's
-  own CONTRIBUTING.md, a generic docs-update flag, and whether the diff matches what the PR
-  claims to do. Produces a draft review for you to approve before anything is posted; never
-  auto-merges or auto-approves. Use when a PR lands from outside the core team on a package
-  repo, or when asked to review a community PR/contribution. Not for a `feature-build` task's own
-  diff — dispatch `reviewer` directly for that, via `feature-build` or `quick-fix`.
+  Reviews a pull request from outside the core team on an open-source Umbraco package: runs
+  the `reviewer` agent, then checks what's unsafe to build locally, security, contribution
+  rules, docs, and whether the diff does what it claims. Drafts the review for approval;
+  never posts or merges on its own. Use for community PRs. For your own task's diff, use
+  `reviewer` through `feature-build` or `quick-fix`.
 user-invocable: true
 argument-hint: <PR number or URL>
 ---

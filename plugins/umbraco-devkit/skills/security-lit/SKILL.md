@@ -1,13 +1,12 @@
 ---
 name: security-lit
 description: >-
-  Frontend security review checklist for an Umbraco backoffice package built with Lit — XSS via
-  `unsafeHTML`/`unsafeSVG`, secrets that leak into a client bundle, sensitive data in browser
-  storage, and npm dependency supply chain. Use when reviewing or writing any Lit template that
-  renders user-generated, AI-generated, or externally-sourced content, any frontend code that
-  reads a build-time environment variable, or any use of `localStorage`/`sessionStorage`. For
-  backend security (Management API authz, EF Core injection, secrets storage), see
-  `security-dotnet` instead.
+  Frontend security checklist for a Lit backoffice package: XSS through
+  `unsafeHTML`/`unsafeSVG`, secrets in the client bundle, sensitive data in browser storage,
+  and npm supply chain. Use when a template renders user, AI or external content, frontend
+  code reads a build-time env var, or code uses localStorage or sessionStorage. For backend
+  security, see `security-dotnet`.
+
 ---
 
 # Frontend security review for Umbraco backoffice packages
