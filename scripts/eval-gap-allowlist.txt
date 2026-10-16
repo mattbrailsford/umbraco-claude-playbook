@@ -4,15 +4,12 @@
 # This list only shrinks. Remove a skill when its first eval lands (check-evals.sh flags it
 # if you forget). Never add a new skill here: write its eval instead.
 
-bdd-specs
 change-backport
 decision-review
 dependency-review
 feature-close
-git-workflow
 github-init
 issue-backlog
 issue-resolve
 major-upgrade
 pr-describe
-user-stories
