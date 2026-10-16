@@ -1,6 +1,6 @@
 ---
 description: unsafeHTML around a localized string with a user-controlled argument. From umbraco/Umbraco-CMS#22731 (GHSA-vr9v-27gg-qgx4).
-tags: [security-lit, should-trigger, real-bug]
+tags: [umbraco-backoffice-security, should-trigger, real-bug]
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

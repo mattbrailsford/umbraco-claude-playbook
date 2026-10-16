@@ -1,5 +1,5 @@
 ---
-description: A frontend-only Lit XSS question belongs to security-lit, not security-dotnet.
+description: A frontend-only Lit XSS question belongs to umbraco-backoffice-security, not security-dotnet.
 tags: [security-dotnet, should-not-trigger]
 max_turns: 6
 allowed_tools: [Read, Glob, Grep, Skill]

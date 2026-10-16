@@ -35,8 +35,10 @@ fi
 changed="$(git diff --name-only "$base" -- plugins/umbraco-devkit \
   | grep -vxF "$plugin" | grep -v '^plugins/umbraco-devkit/evals/' || true)"
 # Find the manifest by name at the base, so a renamed plugin folder still compares.
-base_plugin="$(git ls-tree -r --name-only "$base" -- plugins \
-  | grep -m1 '/\.claude-plugin/plugin\.json$')"
+# List first, then search: piping into `grep -m1` can close the pipe early, and under
+# pipefail the SIGPIPE in git ls-tree would end the script with no message.
+base_tree="$(git ls-tree -r --name-only "$base" -- plugins)"
+base_plugin="$(grep -m1 '/\.claude-plugin/plugin\.json$' <<<"$base_tree")"
 base_version="$(git show "$base:$base_plugin" | jq -r '.version')"
 
 if [[ -n "$changed" && "$plugin_version" == "$base_version" ]]; then

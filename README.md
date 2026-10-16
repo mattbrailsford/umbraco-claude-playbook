@@ -143,7 +143,7 @@ You don't run these. The skills above and the agents load them when the work nee
 | [`ef-core-data`](plugins/umbraco-devkit/skills/ef-core-data/SKILL.md) | SQL Server + SQLite, migrations, repositories |
 | [`umbraco-cms-source`](plugins/umbraco-devkit/skills/umbraco-cms-source/SKILL.md) | Read the CMS source at the version you target |
 | [`umbraco-docs`](plugins/umbraco-devkit/skills/umbraco-docs/SKILL.md) | Read the official docs for the version you target |
-| [`security-dotnet`](plugins/umbraco-devkit/skills/security-dotnet/SKILL.md), [`security-lit`](plugins/umbraco-devkit/skills/security-lit/SKILL.md) | Backend and frontend security checklists |
+| [`security-dotnet`](plugins/umbraco-devkit/skills/security-dotnet/SKILL.md), [`umbraco-backoffice-security`](plugins/umbraco-devkit/skills/umbraco-backoffice-security/SKILL.md) | Backend security checklist, and Umbraco's tools for keeping backoffice extensions safe |
 
 **General craft:**
 

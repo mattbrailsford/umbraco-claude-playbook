@@ -17,8 +17,9 @@ design. A reviewer that fixes its own findings isn't a gate.
 
 - `security-dotnet` — always for auth, user input, the Management API, EF Core queries built
   from input, or secrets/configuration.
-- `security-lit` — always for a Lit template's `unsafeHTML`/`unsafeSVG` usage, a frontend
-  build-time env var, or `localStorage`/`sessionStorage`.
+- `umbraco-backoffice-security` — always for `unsafeHTML`/`unsafeSVG`, a localized term
+  rendered as HTML, a DOMPurify config, a frontend build-time env var, browser storage, or a
+  frontend call to an API that needs credentials.
 - `solid-principles` / `design-principles` — when judging module and class design.
 - `dotnet-best-practices` — nullable-reference discipline, type modeling, async/LINQ/disposal
   correctness, exception vs. explicit result on error paths.
