@@ -127,7 +127,7 @@ one has leaked.
 - **Leave secrets out by default.** API keys, passwords, tokens, connection strings, and
   encrypted values don't go into the export unless the site owner turns them on.
 - **Let config references through.** A setting that points at configuration instead of
-  holding the secret (`security-dotnet`'s "Secrets and sensitive configuration") is safe to
+  holding the secret (`umbraco-security`'s "Secrets and sensitive configuration") is safe to
   move. Each environment resolves it to its own value.
 - **Give site owners an ignore list.** A setting naming fields to always leave out, for
   provider settings the package doesn't know about.

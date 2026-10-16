@@ -40,7 +40,7 @@ lives, and to name a new skill. `README.md` lists every skill; this table lists 
 | GitHub | `github-<action>` | The package's GitHub repo | `github-init` |
 | Older jobs | kept as they are | Jobs named before the subject-first rule | `quick-fix`, `investigate-bug`, `major-upgrade`, `umbraco-marketplace` |
 | Umbraco knowledge | `umbraco-<topic>` | How Umbraco does something | `umbraco-performance`, `umbraco-docs` |
-| Stack knowledge | `<tech>-<topic>` | One technology, as Umbraco packages use it | `ef-core-data`, `security-dotnet` |
+| Stack knowledge | `<tech>-<topic>` | One technology, as Umbraco packages use it | `ef-core-data`, `typescript-best-practices` |
 | General craft | `<lang>-best-practices`, or the topic's name | Not Umbraco-specific | `dotnet-best-practices`, `solid-principles`, `gof-patterns`, `plain-writing` |
 | Agents | a role noun | Dispatched by skills, never run directly | `builder`, `reviewer`, `issue-triager` |
 
