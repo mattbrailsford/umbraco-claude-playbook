@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: dependencies-locked-security-alert
+context:
+  scaffold_script: fixture.sh
