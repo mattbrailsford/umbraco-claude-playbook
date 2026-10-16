@@ -15,5 +15,4 @@ issue-backlog
 issue-resolve
 major-upgrade
 pr-describe
-project-init
 user-stories
