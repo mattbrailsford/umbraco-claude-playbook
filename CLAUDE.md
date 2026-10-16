@@ -77,10 +77,11 @@ scripts/check-skill-callers.sh # no skill changes behavior based on which skill 
 ```
 
 Evals compare answers with and without the plugin. They make real model calls and cost
-money, so run them on purpose, not as a routine check:
+money, so run them on purpose, not as a routine check. The default judge (Haiku) misgrades
+long answers such as full reviews, so judge with Sonnet:
 
 ```bash
-claude plugin eval plugins/umbraco-devkit --tag <skill-name> --no-publish
+claude plugin eval plugins/umbraco-devkit --tag <skill-name> --judge-model sonnet --no-publish
 ```
 
 Ask the model to write the code, not review it. Given a short snippet to review, plain
