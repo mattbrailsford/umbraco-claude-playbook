@@ -161,7 +161,9 @@ the review gate, project memory, branches and worktrees, and what to build on to
 
 Each skill has evals: realistic requests run with and without the plugin, to show the skill
 changes the result. [docs/EVAL-COVERAGE.md](./docs/EVAL-COVERAGE.md) shows which skills and
-which of their sections have evals, with the latest scores.
+which of their sections have evals, with the latest scores. How evals are written, run and
+kept current is in [`write-skill-eval`](./.claude/skills/write-skill-eval/SKILL.md). If a skill
+misses something, [open a "skill missed" issue](../../issues/new?template=skill-missed.yml).
 
 ## Contributing
 

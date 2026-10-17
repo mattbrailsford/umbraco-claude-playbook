@@ -1,0 +1,41 @@
+name: A skill missed something
+description: Claude got something wrong that a devkit skill should have prevented. Each one becomes a real-bug eval.
+labels: [skill-missed]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks. This becomes a `real-bug` eval: the request you made, set up so the wrong answer is possible, then checked against the right one. Leave out anything confidential.
+  - type: textarea
+    id: request
+    attributes:
+      label: What you asked Claude
+      description: The request as you typed it, or close to it.
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What Claude did
+      description: The code or answer it gave, and why it's wrong. A snippet or diff helps.
+    validations:
+      required: true
+  - type: textarea
+    id: right
+    attributes:
+      label: What would have been right
+      description: The fix, and a link to docs, CMS source or a commit if you have one.
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Umbraco and devkit versions
+      placeholder: "Umbraco 17.6, umbraco-devkit 7.0.3"
+    validations:
+      required: true
+  - type: input
+    id: skill
+    attributes:
+      label: Skill you'd expect to cover it
+      description: If you know. Leave blank if not.
