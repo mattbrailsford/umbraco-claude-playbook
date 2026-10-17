@@ -9,16 +9,19 @@ description: >-
 
 # Write a skill eval
 
-An eval case earns its place when plain Claude fails it and the skill fixes that. Follow
-the eval rules in `CLAUDE.md` ("No build, lint, or test step") throughout; this skill is the
-order to apply them in.
+An eval case earns its place when plain Claude fails it and the skill fixes that. The
+process: start from a real failure, set up the scenario, prove plain Claude fails, write the
+smallest rule that fills the gap, prove the skill fixes it and actually loaded, then keep the
+case as a guard. Follow the eval rules in `CLAUDE.md` ("No build, lint, or test step")
+throughout; this skill is the order to apply them in.
 
-## 1. Pick the behavior
+## 1. Start from a real failure
 
-Read the skill's `SKILL.md` and find what it adds:
+Begin with something Claude got wrong, not with the skill's text:
 
-- **Knowledge skill:** a fact or rule plain Claude gets wrong without it. Prefer a real bug
-  that was fixed in a package; tag that case `real-bug`.
+- **Knowledge skill:** a bug that shipped in a package, or a mistake Claude was seen making.
+  Tag a shipped bug's case `real-bug`. Writing a case from a rule you already have only
+  shows the rule gets loaded, not that it's needed.
 - **Workflow skill** (`feature-*`, `quick-fix`, `issue-*`, ...): a rule the skill must keep,
   such as stopping when its input is missing or never touching git.
 
@@ -95,7 +98,7 @@ the one you had in mind.
   `focus: trace` to grade the whole answer, or `focus: {source: file, path: ...}` for one
   written file. Give the grader for the core behavior `weight: 2`.
 
-## 5. Prove each grader can fail
+## 5. Prove plain Claude fails
 
 Run the case once with a single run per arm:
 
@@ -110,10 +113,27 @@ grader "cannot pass with the granted tools" means the run measured nothing.
 - **A grader that passes without the plugin measures nothing.** Make the prompt or grader
   harder, or delete the grader.
 - **If every grader passes without the plugin**, the case is too easy. Rework it in step 2.
+- **Try a second scenario before giving up on a gap.** Plain Claude often passes the obvious
+  version and fails a variant: sibling code already doing it wrong, the risky part buried in
+  a bigger change, a related API. If it passes every variant you can think of, no rule is
+  needed; stop here.
 - **Workflow cases** run with `--ablation none`, so there is no baseline. Read each grader
   against an answer that breaks the rule; if it would still pass, tighten it.
 
-## 6. Run it properly
+## 6. Write the smallest rule that fills the gap
+
+Skip this if the skill already has the rule and only needs to load (step 7).
+
+- **General, not project-specific.** The rule describes Umbraco or stack behavior any
+  package hits. Leave out the names and conventions of the project the bug came from.
+- **Checked against the source.** Confirm the behavior in CMS source at the target release
+  tags (`umbraco-cms-source`) or the docs (`umbraco-docs`), including from which version it
+  applies.
+- **In the right skill.** Follow "Skill boundary discipline" in `CLAUDE.md`: fit the
+  skill's description, write only what differs from the norm, and grep for the concept
+  first.
+
+## 7. Prove the skill fixes it, and loaded
 
 Run it with the default three runs per arm, Sonnet judging:
 
@@ -125,9 +145,32 @@ claude plugin eval plugins/umbraco-devkit --tag <skill-name> --judge-model sonne
 Three runs are noisy. Don't judge a close or zero gain on one run: rerun with `--runs 6`
 first.
 
-## 7. Finish
+A pass with the plugin counts only if the skill loaded: check `skill-fired` in the log. If
+the plugin passes but the skill didn't load, the gain came from somewhere else. If the
+skill doesn't load, fix its description's "Use when" so it matches the request, not the
+rule. Then rerun.
+
+Check the log for errored runs too (auth, spend limit). An errored run is neither a pass nor
+a fail; don't count it.
+
+## 8. Finish, and keep the case as a guard
 
 - Run `scripts/check-evals.sh`.
 - Put the with and without scores in the PR. A knowledge skill that shows no gain doesn't
   ship.
 - `evals/` ships but never loads for a consumer, so a new case needs no version bump.
+- Rerun the case whenever its skill changes. Plain Claude improves, so recheck old cases'
+  baselines now and then.
+
+## Removing a rule
+
+A rule goes only when plain Claude reliably gets it right with no prompting, across varied
+scenarios where the rule applies, not just the existing case.
+
+1. Write at least one harder variant (step 5's list).
+2. Run plain Claude only, 4 runs per scenario. To skip the with-plugin arm, point the eval at
+   a copy of the plugin with no skills: a folder holding only `.claude-plugin/plugin.json`
+   (no `skills` entry) and a real copy of `evals/` (the tool refuses a symlink), run with
+   `--ablation none`.
+3. Stop at the first failed run: one miss proves the rule is needed.
+4. Remove the rule only if every graded run passed. Keep its cases as guards.

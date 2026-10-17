@@ -233,8 +233,11 @@ import { html, css } from "lit";
 import { html, css } from "@umbraco-cms/backoffice/external/lit";
 ```
 
-The same goes for every library the backoffice ships under `external/*` (UUI, RxJS, and
-others). `umbraco-dependencies`' npm section has how to find bare imports that slip through.
+The same goes for every library the backoffice ships under `external/*`. In 17 and 18 that's
+`dompurify`, `lit`, `luxon`, `marked`, `monaco-editor`, `rxjs`, `signalr` and `uui`. Before
+adding one of these from npm, or copying a bare import from a file next to yours, import it
+from `@umbraco-cms/backoffice/external/<name>` instead. `umbraco-dependencies`' npm section
+has how to find bare imports that slip through.
 
 **Bump `version` in `umbraco-package.json` for every release that changes frontend assets.**
 From 17.6 and 18.1, Umbraco appends that version to the manifest's entry points and import map

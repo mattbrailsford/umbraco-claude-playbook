@@ -114,11 +114,25 @@ prevents it.
 - Workflow cases for bug-fixing skills (`investigate-bug`, `quick-fix`, `issue-resolve`)
   may be handed a bug, since they test the workflow's own rules.
 
+Every eval follows the same process. The repo-only `write-skill-eval` skill walks through it.
+
+1. **Start from a real failure:** a shipped bug or a mistake Claude was seen making, not the
+   skill's text.
+2. **Set up the scenario** as above.
+3. **Prove plain Claude fails,** trying more than one version of the scenario. A grader that
+   passes without the plugin measures nothing. If plain Claude passes every version, no rule
+   is needed.
+4. **Write the smallest rule that fills the gap:** general Umbraco or stack behavior, checked
+   against CMS source or docs, in the skill whose description it fits.
+5. **Prove the skill fixes it, and loaded.** A plugin pass where the skill didn't load
+   doesn't count; fix the skill's "Use when" instead. Errored runs count as neither.
+6. **Keep the case as a guard** and rerun it when its skill changes.
+
 A new skill, or a change that adds behavior to one, ships with at least one eval for that
-behavior, tagged with the skill's name. Run it with and without the plugin before merging,
-and put both scores in the PR. A knowledge skill that shows no gain over plain Claude doesn't
-ship. Before trusting a new case, run it once without the plugin: a grader that passes there
-measures nothing. The repo-only `write-skill-eval` skill walks through all of this.
+behavior, tagged with the skill's name, with both scores in the PR. A knowledge skill that
+shows no gain over plain Claude doesn't ship. A rule is removed only when plain Claude passes
+every run across varied scenarios, including a harder variant ("Removing a rule" in
+`write-skill-eval`).
 
 Workflow skills (`feature-*`, `quick-fix`, `issue-*`, ...) have no plain-Claude equivalent,
 so their cases check the skill keeps its own rules instead. They're tagged `workflow`; run
