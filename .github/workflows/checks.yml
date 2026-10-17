@@ -44,6 +44,15 @@ jobs:
       - name: Evals
         run: scripts/check-evals.sh
 
+      # A warning, not a failure: some skill changes can't affect behavior. CI can't run evals.
+      - name: Eval scores recorded
+        run: |
+          changed="$(git diff --name-only origin/main...HEAD)"
+          if grep -qE '^plugins/umbraco-devkit/(skills|agents)/' <<<"$changed" &&
+             ! grep -qx 'docs/eval-scores.json' <<<"$changed"; then
+            echo "::warning::A skill or agent changed but docs/eval-scores.json didn't. Rerun the evals that cover the change and record them with scripts/record-eval-scores.sh, unless the change can't affect behavior."
+          fi
+
       # Fails if docs/EVAL-COVERAGE.md is stale, and shows it on the run's summary page.
       - name: Eval coverage
         run: |
