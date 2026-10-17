@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: load-balancing-files-export-download
+context:
+  scaffold_script: fixture.sh

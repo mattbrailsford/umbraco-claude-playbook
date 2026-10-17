@@ -21,7 +21,7 @@ in the source at the project's tag (`umbraco-cms-source`), not from this list.
   (`umbraco-performance`).
 - **More than one server.** Works on one server, fails or repeats on several: a cache
   cleared on one server only, a file on one server's disk, state in one server's memory, a
-  job or handler that runs once per server (`umbraco-load-balancing`).
+  job or handler that runs once per server (jobs: `umbraco-load-balancing`).
 - **Moving between environments.** Works on the site it was made on, wrong after a Deploy
   or uSync run: a field the export leaves out, a link restored before the thing it points
   at, a user group linked by key (`umbraco-env-sync`).

@@ -1,10 +1,10 @@
 ---
 name: umbraco-load-balancing
 description: >-
-  Keeping a package correct when a site runs on more than one server: files on one server's
-  disk, state in one server's memory, jobs that must run once, concurrent writes, absolute URLs, and multi-step flows. Use when writing,
-  changing or reviewing package code that does any of these. Not for setting up a
-  load-balanced host.
+  Keeping a package correct when a site runs on more than one server: the two server
+  setups a package must work in, and background jobs whose work must happen once per site.
+  Use when writing, changing or reviewing a package's background job or scheduled work. Not
+  for setting up a load-balanced host.
 
 ---
 
@@ -39,45 +39,6 @@ one server". Your package can't tell which setup it's in, so its code must be ri
 
 Source: [Umbraco in load balanced environments](https://docs.umbraco.com/umbraco-cms/run-in-production/infrastructure-and-ops/server-setup/load-balancing),
 [Load balancing the backoffice](https://docs.umbraco.com/umbraco-cms/run-in-production/infrastructure-and-ops/server-setup/load-balancing/load-balancing-backoffice).
-
-## Files: never one server's disk
-
-Every server has its own disk. A file written to `App_Data`, `wwwroot` or a folder you made
-is on one server only. The next request may not find it.
-
-- **Media and user files go through Umbraco's file system.** Use `MediaFileManager` or
-  `IFileSystem`, not `System.IO.File`. The site decides where that storage lives (local
-  disk, Azure Blob, ...); your code works with all of them.
-- **Generated files (exports, PDFs, one-off downloads) go to shared storage too.** Hand out
-  a URL to them, not a local path.
-- **Backoffice uploads use Umbraco's temporary file API**, not a temp folder of your own.
-  Umbraco documents how to share its temp location across servers. A folder you invent
-  isn't covered.
-- **Local disk is fine for files every server can rebuild for itself**, such as a cache of
-  something stored elsewhere.
-
-```csharp
-// Don't: lands on one server's disk
-File.WriteAllText(Path.Combine(contentRoot, "App_Data", "MyPackage", "export.csv"), csv);
-
-// Do: lands in the site's shared media storage
-_mediaFileManager.FileSystem.AddFile("my-package/export.csv", stream);
-```
-
-## State: never one server's memory
-
-A `static` field, a singleton's field, `IMemoryCache`, a `ConcurrentDictionary` or an
-in-process queue lives on one server, and is lost when that server restarts.
-
-- **A cache is fine in memory** as long as every server clears its copy when the data
-  changes. See "Caches: clear on every server" below.
-- **State every server must agree on goes in the database.** Counters, rate limits, feature
-  flags, "this user already did X", import progress.
-- **In-process queues (`Channel<T>`, `ConcurrentQueue<T>`) lose work.** If a recycle mid-way
-  would drop something that matters, store the work in the database and process it from a
-  background job.
-- **`static` is fine for things that never change** after startup. Mutable `static` state
-  drifts apart between servers.
 
 ## Work that must happen once
 
@@ -126,57 +87,10 @@ builder.Services.AddSingleton<IDistributedBackgroundJob, MyPackageDigestJob>();
 Source: [Scheduling](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/scheduling),
 [Distributed jobs settings](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/configuration/distributedjobssettings).
 
-## Concurrent writes
-
-Two servers can run the same code at the same moment. A "read, then write if missing" on
-shared rows can create duplicates or lose an update.
-
-- **Prefer a database constraint.** A unique index turns a race into an error you can
-  handle. Add it in the table's migration (`ef-core-data`).
-- **Take a lock when a constraint can't express it.** In a scope, `scope.WriteLock(id)`
-  takes a lock all servers share, from the `umbracoLock` table. Packages can add their own
-  rows there. Pick an ID that doesn't clash with the documented list, and don't reuse
-  core's.
-
-Source: [Distributed locks](https://docs.umbraco.com/umbraco-cms/run-in-production/infrastructure-and-ops/distributed-locks).
-
-## Absolute URLs
-
-Behind a load balancer, the raw request can look like plain HTTP from an internal host
-name.
-
-- **Use `Request.Scheme` and `Request.Host` as reported.** With forwarded headers set up by
-  the host, they are the public values. Don't rebuild them yourself.
-- **Outside a request** (a background job, an email), use
-  `Umbraco:CMS:WebRouting:UmbracoApplicationUrl`. Don't remember the host from the first
-  request; it may be an internal health check.
-
-## Multi-step flows
-
-A wizard, an OAuth callback or an "approve this" link spans more than one request, and each
-can land on a different server.
-
-- **Keep the state in the database**, or in a signed value the client sends back. Not in a
-  server's memory.
-- **Don't depend on session.** It's shared only if the host has set up a distributed cache.
-  If the package truly needs it, say so in its docs.
-- **Encrypted values need shared keys.** Values protected with `IDataProtector` only decrypt
-  on another server if the host shares data protection keys. Umbraco's docs require it for
-  load balancing, but name it in the package docs if your package relies on it.
-
-Source: [Common load-balancing pitfalls](https://docs.umbraco.com/umbraco-cms/run-in-production/infrastructure-and-ops/server-setup/load-balancing/common-load-balancing-pitfalls).
-
 ## Reviewing a diff for load balancing
 
-- `System.IO.File`, `Directory` or a path under `App_Data` or `wwwroot` for data another
-  request will read.
-- Mutable state in a `static` field, a singleton, `IMemoryCache` or an in-process queue
-  that other servers need to see or that must survive a restart.
 - A recurring background job that sends, calls out or writes shared data, relying on the
   default `ServerRoles` to run it once.
 - An `IDistributedBackgroundJob` without a package-prefixed `Name`, or one that drops the
   cancellation token.
-- "Check then insert" on shared rows with no unique constraint or lock; a lock ID that
-  clashes with core's or another package's.
-- An absolute URL built from a remembered first-request host, or by hand from headers.
-- Wizard, OAuth or approval state kept in memory or session with no fallback.
+
