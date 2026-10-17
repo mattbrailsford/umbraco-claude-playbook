@@ -3,9 +3,9 @@ name: umbraco-load-balancing
 description: >-
   Keeping a package correct when a site runs on more than one server: files on one server's
   disk, state in one server's memory, caches cleared on every server, jobs and handlers that
-  must run once, recovering interrupted work, concurrent writes, absolute URLs, and
-  multi-step flows. Use when writing, changing or reviewing package code that does any of
-  these. Not for setting up a load-balanced host.
+  must run once, concurrent writes, absolute URLs, and multi-step flows. Use when writing,
+  changing or reviewing package code that does any of these. Not for setting up a
+  load-balanced host.
 
 ---
 
@@ -154,20 +154,6 @@ Source: [Scheduling](https://docs.umbraco.com/umbraco-cms/extend-your-project/se
   shared row from one; it happens once per server.
 
 The same split applies to your own `ICacheRefresher`: its `Refresh` runs on every server.
-
-### Recovering work a crash left half done
-
-Startup code runs on every server, and a server can restart while another is mid-run. So a
-startup step that marks every `Running` row `Failed`, or puts it back in the queue, breaks
-work another server is still doing.
-
-- **Record who owns a run and when it last showed signs of life.** Store the owning server
-  (or a lease expiry) on the row, and update a heartbeat while the work runs.
-- **Recover only rows whose lease has run out.** Check that in a recurring job, not just
-  at startup: a crashed server may never come back to clean up after itself.
-- **Recover once.** Do it in an `IDistributedBackgroundJob`, or claim each row with a
-  conditional update (`WHERE status = Running AND leaseExpiry < now`), so two servers don't
-  restart the same run.
 
 ## Concurrent writes
 
