@@ -184,10 +184,10 @@
     "withoutDate": "2026-10-16"
   },
   "dependencies-bare-lit-import": {
-    "date": "2026-10-16",
-    "runs": 3,
-    "skillLoaded": 0,
-    "with": 56,
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 3,
+    "with": 100,
     "without": 22,
     "withoutDate": "2026-10-16"
   },
@@ -272,8 +272,8 @@
     "withoutDate": "2026-10-16"
   },
   "docs-custom-webhook-event": {
-    "date": "2026-10-16",
-    "runs": 3,
+    "date": "2026-10-17",
+    "runs": 4,
     "skillLoaded": 0,
     "with": 67,
     "without": 44,
@@ -396,9 +396,9 @@
     "withoutDate": "2026-10-16"
   },
   "extensibility-migration-admin-group": {
-    "date": "2026-10-16",
-    "runs": 3,
-    "skillLoaded": 0,
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 3,
     "with": 100,
     "without": 78,
     "withoutDate": "2026-10-16"
@@ -638,8 +638,8 @@
   "package-conventions-controller-constructor-audit": {
     "date": "2026-10-17",
     "runs": 4,
-    "skillLoaded": 1,
-    "with": 100,
+    "skillLoaded": 3,
+    "with": 67,
     "without": 50,
     "withoutDate": "2026-10-17"
   },
@@ -664,8 +664,8 @@
     "withoutDate": "2026-10-17"
   },
   "performance-converter-cache-level": {
-    "date": "2026-10-16",
-    "runs": 3,
+    "date": "2026-10-17",
+    "runs": 4,
     "skillLoaded": 0,
     "with": 100,
     "without": 0,
