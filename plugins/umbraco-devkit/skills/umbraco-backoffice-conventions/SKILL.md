@@ -5,8 +5,9 @@ description: >-
   components and the public API surface, OpenAPI-generated clients, observable and extension
   lifecycles, localization keys, build output and cache busting, and multi-package builds.
   Use when setting up or structuring a backoffice frontend, changing what imports what
-  across its entry points, or adding a call to the package's own API. Not for individual
-  extension points or state management, which the official Backoffice Skills plugin covers.
+  across its entry points, or adding a library or a call to the package's own API. Not for
+  individual extension points or state management, which the official Backoffice Skills
+  plugin covers.
 
 ---
 
