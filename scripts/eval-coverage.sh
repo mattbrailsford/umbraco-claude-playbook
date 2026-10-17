@@ -26,6 +26,7 @@ out="docs/EVAL-COVERAGE.md"
 clear_gain=20     # at least this: the skill clearly helps
 no_gain=10        # below this: no real help
 under_covered=50  # below this % of sections with an eval: under-covered
+stale_days=90     # a recorded score older than this should be rerun
 
 # A context section (background, scope, sources, a review list restating other sections) has
 # nothing an eval could fail, so its heading is written in italics: `## *Two server setups*`.
@@ -80,7 +81,15 @@ tmp="$(mktemp)"
 trap 'rm -f "$summary" "$body" "$tmp"' EXIT
 
 # Actions, one bullet per line, filled in per skill below.
-act_remove=""; act_trigger=""; act_prove=""; act_cover=""; act_unrun=""; act_workflow=""
+act_remove=""; act_trigger=""; act_prove=""; act_cover=""; act_unrun=""; act_workflow=""; act_stale=""
+# Stale = recorded more than $stale_days days before the newest recorded score. Measured from the
+# newest score, not today, so the report only changes when scores do and CI stays stable.
+newest="$(awk -F'\t' '$6 != "–" { print $6 }' <<<"$scores_tsv" | sort | tail -1)"
+stale_before=""
+if [[ -n "$newest" ]]; then
+  stale_before="$(date -u -d "$newest -$stale_days days" +%F 2>/dev/null ||
+    date -u -j -v-"$stale_days"d -f %F "$newest" +%F)"
+fi
 nl=$'\n'
 
 for skill_file in "$skills_dir"/*/SKILL.md; do
@@ -208,6 +217,15 @@ for skill_file in "$skills_dir"/*/SKILL.md; do
   fi
 
   ctx="–"; $workflow || ctx="$(context_count "$skill")"
+  stale=()
+  for c in ${cases[@]+"${cases[@]}"}; do
+    d="$(field "$c" 6)"
+    if [[ -n "$stale_before" && "$d" != "–" && "$d" < "$stale_before" ]]; then stale+=("$c"); fi
+  done
+  if [[ ${#stale[@]} -gt 0 ]]; then
+    act_stale+="- $(link "$skill"): $(printf '`%s` ' "${stale[@]}" | sed 's/ $//')$nl"
+  fi
+
   echo "| $(link "$skill") | $kind | $status | $best | ${#cases[@]} | $real | $covered | $ctx |" >> "$summary"
 done
 
@@ -244,6 +262,9 @@ section() {
   section "Workflow rules broken" \
     "A workflow eval scored under 100, so the skill broke one of its own rules." \
     "$act_workflow"
+  section "Stale scores" \
+    "Recorded more than $stale_days days before the newest score. Rerun them, then \`scripts/record-eval-scores.sh\`." \
+    "$act_stale"
   section "Evals never run" \
     "No recorded score. Run them, then \`scripts/record-eval-scores.sh\`." \
     "$act_unrun"

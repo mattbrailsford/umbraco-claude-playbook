@@ -184,3 +184,29 @@ scenarios where the rule applies, not just the existing case.
    `--ablation none`.
 3. Stop at the first failed run: one miss proves the rule is needed.
 4. Remove the rule only if every graded run passed. Keep its cases as guards.
+
+## Keeping evals current
+
+Evals go stale as skills, Claude and Umbraco change. Rerun them when something happens, not
+on a timer you'll forget.
+
+- **A skill changes (in its PR).** New rule: steps 1–8. Changed rule: rerun the cases that
+  cover its section, with and without the plugin. Changed "Use when": rerun the skill's cases
+  and its should-not-trigger cases and check it loads. New context section: italic heading,
+  no eval.
+- **A bug ships that a skill should have stopped.** Write a `real-bug` case for it first. If
+  plain Claude fails it, add or fix the rule. These are the most valuable cases.
+- **A new Claude model.** Run every knowledge case as plain Claude (the empty-plugin run from
+  "Removing a rule"). Rules it now passes get the removal check. Then run everything once with
+  the plugin to catch a skill that now makes things worse.
+- **A new Umbraco version.** Recheck version-specific rules against CMS source, bump the
+  version in the fixtures, and rerun the affected skills.
+- **Every few weeks, or about every 10 merged PRs.** Work the coverage report's "What to do
+  next" from the top: remove, fix loading, prove gain, stale scores, then one or two
+  under-covered skills, highest risk first (security, extensibility, env-sync).
+- **Revisit a case** when plain Claude passes it every time (write a harder variant, or keep
+  it as a guard with `# covers: []`), when a score looks wrong (read the judge's evidence: a
+  vague grader fails correct answers), or when its score is older than 90 days.
+
+Don't chase 100% coverage for its own sake, and don't run everything with the plugin by
+default: plain-only runs cost half and answer most questions.
