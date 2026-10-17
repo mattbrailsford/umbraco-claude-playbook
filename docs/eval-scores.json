@@ -167,6 +167,14 @@
     "without": null,
     "withoutDate": null
   },
+  "cms-source-content-update-keeps-values": {
+    "date": "2026-10-17",
+    "runs": 3,
+    "skillLoaded": 1,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
   "decision-review-unlogged-deviation": {
     "date": "2026-10-16",
     "runs": 3,
@@ -280,12 +288,12 @@
     "withoutDate": "2026-10-16"
   },
   "docs-delivery-api-allow-list": {
-    "date": "2026-10-16",
-    "runs": 3,
-    "skillLoaded": 2,
-    "with": 100,
-    "without": 78,
-    "withoutDate": "2026-10-16"
+    "date": "2026-10-17",
+    "runs": 6,
+    "skillLoaded": 5,
+    "with": 61,
+    "without": 61,
+    "withoutDate": "2026-10-17"
   },
   "dotnet-write-outcome-type": {
     "date": "2026-10-16",
@@ -484,12 +492,12 @@
     "withoutDate": null
   },
   "git-workflow-two-cms-majors": {
-    "date": "2026-10-16",
+    "date": "2026-10-17",
     "runs": 6,
     "skillLoaded": 6,
-    "with": 83,
-    "without": 50,
-    "withoutDate": "2026-10-16"
+    "with": 100,
+    "without": 83,
+    "withoutDate": "2026-10-17"
   },
   "github-init-stub-readme": {
     "date": "2026-10-16",
@@ -1092,20 +1100,20 @@
     "withoutDate": "2026-10-16"
   },
   "source-create-content": {
-    "date": "2026-10-16",
-    "runs": 3,
-    "skillLoaded": 3,
+    "date": "2026-10-17",
+    "runs": 6,
+    "skillLoaded": 6,
     "with": 100,
     "without": 67,
-    "withoutDate": "2026-10-16"
+    "withoutDate": "2026-10-17"
   },
   "source-schedule-publish": {
-    "date": "2026-10-16",
-    "runs": 3,
-    "skillLoaded": 3,
-    "with": 100,
-    "without": 78,
-    "withoutDate": "2026-10-16"
+    "date": "2026-10-17",
+    "runs": 6,
+    "skillLoaded": 6,
+    "with": 78,
+    "without": 56,
+    "withoutDate": "2026-10-17"
   },
   "typescript-write-data-source": {
     "date": "2026-10-16",

@@ -12,6 +12,12 @@ These evals gain, but the skill mostly didn't load, so the gain may come from el
 - [`umbraco-docs`](#umbraco-docs): `docs-custom-webhook-event` (+23, loaded 0/4). Fix its description's "Use when" for these requests, then rerun to see if the gain holds.
 - [`umbraco-performance`](#umbraco-performance): `performance-converter-cache-level` (+100, loaded 0/4). Fix its description's "Use when" for these requests, then rerun to see if the gain holds.
 
+### Prove the gain
+
+No baseline yet, or the gain is too small to trust.
+
+- [`git-workflow`](#git-workflow): best gain only 17 (`git-workflow-two-cms-majors`). Rerun with `--runs 6`, or add a harder scenario.
+
 ### Under-covered
 
 Fewer than 50% of the skill's sections have an eval, so most of its rules are unproven.
@@ -33,7 +39,6 @@ Fewer than 50% of the skill's sections have an eval, so most of its rules are un
 No recorded score. Run them, then `scripts/record-eval-scores.sh`.
 
 - [`umbraco-backoffice-conventions`](#umbraco-backoffice-conventions): `backoffice-conventions-external-markdown`
-- [`umbraco-cms-source`](#umbraco-cms-source): `cms-source-content-update-keeps-values`
 - [`umbraco-env-sync`](#umbraco-env-sync): `env-sync-access-rules`
 - [`umbraco-security`](#umbraco-security): `security-secret-in-response-dynamic-settings`
 
@@ -51,7 +56,7 @@ No recorded score. Run them, then `scripts/record-eval-scores.sh`.
 | [`feature-design`](#feature-design) | workflow | Keeps its rules | – | 1 | 0 | – | – |
 | [`feature-explore`](#feature-explore) | workflow | Keeps its rules | – | 1 | 0 | – | – |
 | [`feature-plan`](#feature-plan) | workflow | Keeps its rules | – | 1 | 0 | – | – |
-| [`git-workflow`](#git-workflow) | knowledge | Proven | +33 | 1 | 0 | 1/8 | 0 |
+| [`git-workflow`](#git-workflow) | knowledge | Small gain | +17 | 1 | 0 | 1/8 | 0 |
 | [`github-init`](#github-init) | workflow | Keeps its rules | – | 1 | 0 | – | – |
 | [`investigate-bug`](#investigate-bug) | workflow | Keeps its rules | – | 1 | 0 | – | – |
 | [`issue-backlog`](#issue-backlog) | workflow | Keeps its rules | – | 1 | 0 | – | – |
@@ -67,7 +72,7 @@ No recorded score. Run them, then `scripts/record-eval-scores.sh`.
 | [`umbraco-backoffice-ux`](#umbraco-backoffice-ux) | knowledge | Proven | +100 | 10 | 0 | 4/5 | 1 |
 | [`umbraco-cms-source`](#umbraco-cms-source) | knowledge | Proven | +33 | 3 | 1 | 1/5 | 0 |
 | [`umbraco-dependencies`](#umbraco-dependencies) | knowledge | Proven | +100 | 8 | 0 | 4/5 | 0 |
-| [`umbraco-docs`](#umbraco-docs) | knowledge | Proven | +22 | 2 | 0 | 1/5 | 0 |
+| [`umbraco-docs`](#umbraco-docs) | knowledge | Gain, skill rarely loads | +23 | 2 | 0 | 1/5 | 0 |
 | [`umbraco-env-sync`](#umbraco-env-sync) | knowledge | Proven | +27 | 7 | 0 | 7/31 | 1 |
 | [`umbraco-extensibility`](#umbraco-extensibility) | knowledge | Proven | +89 | 24 | 4 | 6/23 | 6 |
 | [`umbraco-marketplace`](#umbraco-marketplace) | knowledge | Proven | +100 | 1 | 0 | 1/4 | 4 |
@@ -185,7 +190,7 @@ Stays quiet on: `ef-core-skip-generic-efcore`
 | Issues — `gh issue create` | **no eval** | | | | | |
 | Pull requests — `gh pr create` | **no eval** | | | | | |
 | Sanity rules | **no eval** | | | | | |
-| Umbraco packages and version tracking | `git-workflow-two-cms-majors` | 83 | 50 | 33 | 6/6 | 2026-10-16 |
+| Umbraco packages and version tracking | `git-workflow-two-cms-majors` | 100 | 83 | 17 | 6/6 | 2026-10-17 |
 
 ### `github-init`
 
@@ -311,9 +316,9 @@ shown to follow (kept so a regression shows up), or a case not yet mapped.
 |---|---|---|---|---|---|---|
 | Find the clone | **no eval** | | | | | |
 | Pick the tag | **no eval** | | | | | |
-| Read, search, list | `cms-source-content-update-keeps-values` | – | – | – | – | – |
-| Read, search, list | `source-create-content` | 100 | 67 | 33 | 3/3 | 2026-10-16 |
-| Read, search, list | `source-schedule-publish` | 100 | 78 | 22 | 3/3 | 2026-10-16 |
+| Read, search, list | `cms-source-content-update-keeps-values` | 100 | 100 | 0 | 1/3 | 2026-10-17 |
+| Read, search, list | `source-create-content` | 100 | 67 | 33 | 6/6 | 2026-10-17 |
+| Read, search, list | `source-schedule-publish` | 78 | 56 | 22 | 6/6 | 2026-10-17 |
 | Rules | **no eval** | | | | | |
 | No clone: GitHub fallback | **no eval** | | | | | |
 
@@ -341,7 +346,7 @@ Stays quiet on: `dependencies-skip-generic-node`
 | Find the clone | **no eval** | | | | | |
 | Pick the folder | **no eval** | | | | | |
 | Read, search, list | `docs-custom-webhook-event` | 67 | 44 | 23 | 0/4 | 2026-10-17 |
-| Read, search, list | `docs-delivery-api-allow-list` | 100 | 78 | 22 | 2/3 | 2026-10-16 |
+| Read, search, list | `docs-delivery-api-allow-list` | 61 | 61 | 0 | 5/6 | 2026-10-17 |
 | No clone: live site fallback | **no eval** | | | | | |
 | Rules | **no eval** | | | | | |
 
