@@ -1,6 +1,7 @@
 ---
 description: Adding the API behind a settings screen with a password-style field; the masked value must never come back in a response.
 tags: [umbraco-security, should-trigger]
+# covers: ["Secrets and sensitive configuration"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

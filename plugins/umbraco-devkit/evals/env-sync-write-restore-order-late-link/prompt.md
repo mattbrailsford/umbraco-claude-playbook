@@ -1,6 +1,7 @@
 ---
 description: "Adding a store's default tax rate to working uSync code; tax rates import after stores, so the new link needs filling in later."
 tags: [umbraco-env-sync, should-trigger]
+# covers: ["Restore order"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

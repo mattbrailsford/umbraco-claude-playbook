@@ -1,6 +1,7 @@
 ---
 description: "Adding a wait to a dashboard; from 17.6/18.1 a relative import of the entry file loads it twice. From umbraco/Umbraco.AI#324."
 tags: [umbraco-backoffice-conventions, should-trigger, real-bug]
+# covers: ["Local vs. global components"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

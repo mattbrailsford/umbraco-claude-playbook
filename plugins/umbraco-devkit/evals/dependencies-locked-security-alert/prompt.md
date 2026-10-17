@@ -1,6 +1,7 @@
 ---
 description: A security alert on a package the CMS supplies; the fix comes through a CMS patch, not a version forced by the package.
 tags: [umbraco-dependencies, should-trigger]
+# covers: ["Locked to the CMS"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

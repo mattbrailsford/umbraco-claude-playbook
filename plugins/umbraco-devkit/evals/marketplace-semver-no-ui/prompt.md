@@ -1,6 +1,7 @@
 ---
 description: "Announcing v14-17 support without a release; a 10.0.0 floor with no maximum lists as v10-13 unless umbraco-marketplace.json sets SemVer mode."
 tags: [umbraco-marketplace, should-trigger]
+# covers: ["The version-compatibility gotcha"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 description: Opening a fixed list of PDF sections to other packages should use an ordered collection builder and offer notifications.
 tags: [umbraco-extensibility, should-trigger]
+# covers: ["Collection builders — how you make *your own* extension points", "Publish your own notifications at extension points"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

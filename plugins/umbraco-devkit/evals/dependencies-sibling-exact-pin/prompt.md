@@ -1,6 +1,7 @@
 ---
 description: "Adding a sibling package; siblings released together should pin each other exactly, and a ProjectReference packs as a floor."
 tags: [umbraco-dependencies, should-trigger]
+# covers: ["Locked to the CMS"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

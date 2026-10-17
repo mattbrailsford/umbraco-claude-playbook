@@ -1,6 +1,7 @@
 ---
 description: "Making an editor-HTML sanitizer allow all of the package's own elements without listing each one; an open attribute check lets on* handlers through. From Umbraco-CMS advisory GHSA-vrqc-59mw-qqg7."
 tags: [umbraco-security, should-trigger, real-bug]
+# covers: ["Backoffice: custom elements in sanitized HTML"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 description: Writing upgrade notes for site developers from jargon-heavy internal notes; plain words, every setting, version and limit kept.
 tags: [plain-writing, should-trigger]
+# covers: ["Plain words, short sentences", "Concise is not vague"]
 max_turns: 15
 timeout_seconds: 600
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

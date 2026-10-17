@@ -1,6 +1,7 @@
 ---
 description: "Adding a progress bar for a background import; progress held in one server's memory isn't visible from the server that answers the status request."
 tags: [umbraco-extensibility, should-trigger]
+# covers: []
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

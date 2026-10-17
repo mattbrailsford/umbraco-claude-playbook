@@ -1,6 +1,7 @@
 ---
 description: "Formatting dates in a backoffice element with a library the backoffice already ships (luxon); importing it from npm bundles a second copy."
 tags: [umbraco-backoffice-conventions, should-trigger]
+# covers: ["Build output: externalise the backoffice, version every release"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 description: "Full CRUD API for carrier accounts that hold a client secret and webhook signing secret shown as password fields; no response may carry them."
 tags: [umbraco-security, should-trigger]
+# covers: ["Secrets and sensitive configuration"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

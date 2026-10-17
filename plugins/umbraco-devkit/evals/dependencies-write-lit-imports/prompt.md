@@ -1,6 +1,7 @@
 ---
 description: Writing a backoffice element; Lit must come from the backoffice's external path, not a bare import that bundles a second copy.
 tags: [umbraco-dependencies, should-trigger]
+# covers: ["Locked to the CMS"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

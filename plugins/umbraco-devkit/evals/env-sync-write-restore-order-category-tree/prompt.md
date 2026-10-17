@@ -1,6 +1,7 @@
 ---
 description: "uSync for a self-referencing category tree; children can be read before their parents exist on a new environment."
 tags: [umbraco-env-sync, should-trigger]
+# covers: ["Restore order"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

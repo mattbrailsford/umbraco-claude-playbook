@@ -1,6 +1,7 @@
 ---
 description: "Showing a server-rendered email preview built from editor-written templates and member data; it must not render as live markup unsanitized."
 tags: [umbraco-security, should-trigger]
+# covers: ["Backoffice: sanitizing and escaping"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

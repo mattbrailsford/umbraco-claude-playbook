@@ -1,6 +1,7 @@
 ---
 description: "Bringing a v17 migration forward to a v18 branch that already has a later migration of its own; the ID must still match v17's."
 tags: [ef-core-data, should-trigger]
+# covers: ["Migrations: generated per provider, prefixed to avoid collisions"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

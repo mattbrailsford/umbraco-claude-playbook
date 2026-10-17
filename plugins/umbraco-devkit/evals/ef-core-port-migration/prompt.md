@@ -1,6 +1,7 @@
 ---
 description: Porting an EF Core migration to another major's branch must copy the files and keep the migration ID, not create a new one.
 tags: [ef-core-data, should-trigger]
+# covers: ["Migrations: generated per provider, prefixed to avoid collisions"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

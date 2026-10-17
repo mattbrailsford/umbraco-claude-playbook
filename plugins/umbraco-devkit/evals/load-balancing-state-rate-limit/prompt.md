@@ -1,6 +1,7 @@
 ---
 description: "Adding a per-member submission limit; a counter in one server's memory lets members past the limit on every other server."
 tags: [umbraco-extensibility, should-trigger]
+# covers: []
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

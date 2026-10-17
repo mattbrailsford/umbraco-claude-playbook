@@ -1,6 +1,7 @@
 ---
 description: "Building a first backoffice element; Lit must come from @umbraco-cms/backoffice/external/lit and @umbraco stays out of the bundle."
 tags: [umbraco-backoffice-conventions, should-trigger]
+# covers: ["Build output: externalise the backoffice, version every release"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

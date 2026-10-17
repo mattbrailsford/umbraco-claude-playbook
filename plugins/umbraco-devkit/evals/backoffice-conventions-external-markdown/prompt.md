@@ -1,6 +1,7 @@
 ---
 description: "Adding a Markdown preview to a property editor UI with marked and DOMPurify, both of which the backoffice already ships; npm imports bundle second copies."
 tags: [umbraco-backoffice-conventions, should-trigger]
+# covers: ["Build output: externalise the backoffice, version every release"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

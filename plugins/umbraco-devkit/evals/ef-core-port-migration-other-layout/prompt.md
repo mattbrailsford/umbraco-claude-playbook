@@ -1,6 +1,7 @@
 ---
 description: "Backporting a fix whose migration must be rewritten for an older branch's different project layout; the ID must still match."
 tags: [ef-core-data, should-trigger]
+# covers: ["Migrations: generated per provider, prefixed to avoid collisions"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

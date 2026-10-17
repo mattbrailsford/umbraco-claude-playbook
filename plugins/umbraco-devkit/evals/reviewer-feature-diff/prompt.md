@@ -1,6 +1,7 @@
 ---
 description: A realistic uncommitted feature diff hiding three real Umbraco bugs (startup sweep, per-render DB read, unsafeHTML around a localized name). Tests the review gate, not one skill.
 tags: [reviewer, should-trigger, real-bug]
+# covers: []
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Agent, "Bash(git:*)"]

@@ -43,3 +43,9 @@ jobs:
 
       - name: Evals
         run: scripts/check-evals.sh
+
+      # Fails if docs/EVAL-COVERAGE.md is stale, and shows it on the run's summary page.
+      - name: Eval coverage
+        run: |
+          scripts/eval-coverage.sh --check
+          cat docs/EVAL-COVERAGE.md >> "$GITHUB_STEP_SUMMARY"

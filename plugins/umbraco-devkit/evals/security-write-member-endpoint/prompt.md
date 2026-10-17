@@ -1,6 +1,7 @@
 ---
 description: A cookie-authenticated endpoint outside the Management API needs its own antiforgery or origin check.
 tags: [umbraco-security, should-trigger]
+# covers: ["Endpoints outside the Management API"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

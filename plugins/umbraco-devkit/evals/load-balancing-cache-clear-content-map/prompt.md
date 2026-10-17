@@ -1,6 +1,7 @@
 ---
 description: "Keeping an in-memory redirect map built from published content up to date; clearing it from the publishing server alone leaves other servers stale."
 tags: [umbraco-extensibility, should-trigger]
+# covers: ["4. Cache refresher"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

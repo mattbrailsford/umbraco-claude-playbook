@@ -1,6 +1,7 @@
 ---
 description: "Package migration that grants the admin group a section; the admin group's int id isn't 1 on every site. From umbraco/Umbraco.AI (0ffaf8db2)."
 tags: [umbraco-extensibility, should-trigger, real-bug]
+# covers: ["9. Package migration plan"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

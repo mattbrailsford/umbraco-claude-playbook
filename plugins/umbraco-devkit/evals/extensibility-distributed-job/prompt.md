@@ -1,6 +1,7 @@
 ---
 description: Adding a nightly digest email job on a load-balanced v17 site; it needs IDistributedBackgroundJob, not ServerRoles.
 tags: [umbraco-extensibility, should-trigger]
+# covers: ["10. Recurring background job"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

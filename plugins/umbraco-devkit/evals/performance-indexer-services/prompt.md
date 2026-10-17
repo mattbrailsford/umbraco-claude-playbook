@@ -1,6 +1,7 @@
 ---
 description: Adding a full rebuild to a search sync; the obvious version loads every page through IContentService and looks up data types per property. From umbraco/Umbraco.Cms.Integrations#140.
 tags: [umbraco-performance, should-trigger, real-bug]
+# covers: ["Read published content from the cache, not the services layer"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 description: Adding a dependency to a shipped public controller keeps the old constructor and marks the new one for ActivatorUtilities.
 tags: [umbraco-package-conventions, should-trigger]
+# covers: ["Public API backwards compatibility"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

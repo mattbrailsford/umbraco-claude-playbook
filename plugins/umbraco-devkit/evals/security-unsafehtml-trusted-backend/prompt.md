@@ -1,6 +1,7 @@
 ---
 description: Rendering HTML from the package's own API; AI output and rich text still need sanitizing before unsafeHTML.
 tags: [umbraco-security, should-trigger]
+# covers: ["Backoffice: sanitizing and escaping"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

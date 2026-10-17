@@ -1,6 +1,7 @@
 ---
 description: "Preparing a release; from 17.6 the umbraco-package.json version is the browser cache key, so it must change every release."
 tags: [umbraco-backoffice-conventions, should-trigger]
+# covers: ["Build output: externalise the backoffice, version every release"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

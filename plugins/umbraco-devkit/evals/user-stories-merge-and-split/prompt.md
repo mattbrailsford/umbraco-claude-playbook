@@ -1,6 +1,7 @@
 ---
 description: "New stories keep one outcome per Then, put the empty-export case on its own, and get relative sizes instead of invented story points."
 tags: [user-stories, should-trigger]
+# covers: ["Workflow", "Scope boundaries"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

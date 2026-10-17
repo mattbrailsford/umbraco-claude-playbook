@@ -1,6 +1,7 @@
 ---
 description: A new parameter on a shipped public method needs an obsolete proxy overload with a removal version.
 tags: [umbraco-package-conventions, should-trigger]
+# covers: ["Public API backwards compatibility"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
