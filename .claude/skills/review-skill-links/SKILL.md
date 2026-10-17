@@ -41,7 +41,7 @@ git diff --name-only "$(git merge-base HEAD origin/main)" -- plugins/
 If the user names skills, start there. Otherwise start with the changed and new skills.
 Either way, read each one's frontmatter `description` and section headings, then find its
 neighbors: skills that cover nearby ground (`umbraco-backoffice-conventions` next to
-`umbraco-backoffice-ux`, `umbraco-performance` next to `umbraco-load-balancing`, and so on).
+`umbraco-backoffice-ux`, `umbraco-performance` next to `umbraco-extensibility`, and so on).
 
 ## 3. Read for these problems
 

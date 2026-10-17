@@ -1,6 +1,6 @@
 ---
 description: A realistic feature diff hiding three multi-server bugs (direct cache clear, logo on local disk, weekly email job relying on default ServerRoles).
-tags: [umbraco-load-balancing, reviewer, should-trigger]
+tags: [umbraco-extensibility, reviewer, should-trigger]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Agent, "Bash(git:*)"]

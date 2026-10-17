@@ -1,7 +1,7 @@
 ---
 type: tool_used
 tool: Skill
-input_match: '"skill"\s*:\s*"(?:[\w-]+:)?umbraco-load-balancing"'
+input_match: '"skill"\s*:\s*"(?:[\w-]+:)?umbraco-extensibility"'
 min: 0
 max: 0
 arm: both

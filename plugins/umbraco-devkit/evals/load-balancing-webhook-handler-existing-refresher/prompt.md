@@ -1,6 +1,6 @@
 ---
 description: "Telling an external indexer about published pages, next to an existing cache refresher handler that runs on every server."
-tags: [umbraco-load-balancing, should-trigger]
+tags: [umbraco-extensibility, should-trigger]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
