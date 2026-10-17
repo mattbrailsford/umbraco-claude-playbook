@@ -3,7 +3,7 @@ name: umbraco-env-sync
 description: >-
   Moving an Umbraco package's own entities between environments with Umbraco Deploy or
   uSync: what moves as files and what moves over the wire, export shape and dependencies,
-  ordered restores, keeping secrets out, linking users by alias, translating stored ids, and
+  restores, keeping secrets out, linking users by alias, translating stored ids, and
   keeping sync code current. Use when adding Deploy or uSync support, or changing an entity
   the package syncs. Not for deploying the site itself.
 
@@ -87,30 +87,10 @@ Each entity becomes one exported item (Deploy: an artifact; uSync: an XML file).
   newer one. A missing field keeps the target's value or a default. A new field is optional
   on read.
 
-## Restore in passes
+## Restoring
 
-A sync tool restores many entities in one run, and some link to others. The order matters:
-an entity can't link to something that doesn't exist yet. Both tools solve this with
-passes: every entity's code runs in the passes it asks for, and all of one pass finishes
-before the next starts.
-
-1. **Draw the graph.** List the entities and which ones each links to.
-2. **Turn it into a pass table.** Entities that link to nothing come first. An entity comes
-   after everything it needs.
-3. **Break cycles and late links with a fill-in pass.** When two entities link to each
-   other, or an early entity links to a later one (a store's default country, where the
-   country belongs to the store), create the entity early with those links empty, then
-   fill them in a late pass once everything exists.
-
-| Pass | Does |
-|---|---|
-| 1 | Create entities that link to nothing, and the bare shells of entities others hang off |
-| 2 | Create entities that need pass 1 to exist |
-| 3 | Create entities that need pass 2 |
-| last | Fill in every link that was left empty |
-
-Write the table into the sync code's own docs, or as a comment next to the pass numbers.
-It's the thing that breaks when someone adds a link.
+A sync tool restores many entities in one run, in passes: every entity's code runs in the
+passes it asks for, and all of one pass finishes before the next starts.
 
 - **Be lenient where a lost value is better than a failed run.** A link to something the
   target doesn't have: drop it and log a warning, unless the entity can't work without it,
@@ -170,7 +150,7 @@ it ships an entity that quietly stops round-tripping.
 | Change | Sync change that goes with it |
 |---|---|
 | New field on a synced entity | Add it to the export and the restore. Optional on read. Leave it out if it's a secret. |
-| New link to another entity | Store it as a typed key, declare the dependency, and check the pass table still holds. |
+| New link to another entity | Store it as a typed key and declare the dependency. |
 | New entity type | Decide how it moves (table above), then the full set: export shape, restore passes, registration, tests. |
 | Renamed or removed field | Keep reading the old name from existing exports. |
 | New property editor that stores ids | A value translator. |
@@ -182,10 +162,10 @@ them alongside the entity change; `reviewer` checks they're there.
 
 - Unit test each connector or serializer: export an entity, check the output, restore it
   onto an empty target, check the result. Cover a missing dependency and a secret field.
-- One scenario test across entities, restoring a full set in pass order, catches a broken
-  pass table.
+- One scenario test across entities, restoring a full set, catches links restored before
+  the thing they point at.
 - Run a real transfer between two local sites when sync support is added, and when the
-  pass table or the secret handling changes. Both tools can do it on one machine without a
+  restore passes or the secret handling change. Both tools can do it on one machine without a
   license: [references/real-transfer.md](references/real-transfer.md). Check the export
   for a fake secret, and the target's database for the result.
 
@@ -198,8 +178,6 @@ Apply when the project syncs (see "Does this project sync?").
 - A synced entity's model gained, lost, or renamed a field, and the export and restore
   didn't change with it.
 - A new link stored as a raw GUID or integer, or not declared as a dependency.
-- A new link that breaks the pass table: restored before the thing it points at, with no
-  fill-in pass.
 - A secret field exported with no default exclusion; a restore that wipes a field the
   export left out.
 - A user, user group, or member stored by key instead of alias; an unresolved one that

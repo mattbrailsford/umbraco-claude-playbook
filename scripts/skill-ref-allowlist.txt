@@ -61,3 +61,12 @@ order-status-badge
 page-summary-preview
 monaco-editor
 skill-fired
+user-key
+allow-same-origin
+allow-scripts
+cb-product-card
+display-name
+document-key
+notes-doc-link
+notes-mention
+product-picker-details-panel

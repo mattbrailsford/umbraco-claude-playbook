@@ -148,7 +148,7 @@ var relations = _appCaches.RuntimeCache.GetCacheItem(
 - **Decide what clears it, at design time.** An expiry alone means stale data for that
   long. If the data changes when your entity is saved, clear the key there.
 - **Clear it on every server.** On a load-balanced site the clear goes through a cache
-  refresher: see `umbraco-load-balancing`.
+  refresher (`umbraco-extensibility`'s catalogue, row 4).
 - **Refresh many items in one call.** `DistributedCache.Refresh(refresherId, ids)` or
   `RefreshByPayload(refresherId, payloads)` with the whole set, not one call per item in a
   loop. Outside a web request (a background job, an import), each call is written to the

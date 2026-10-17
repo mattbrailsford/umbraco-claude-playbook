@@ -2,8 +2,7 @@
 name: umbraco-load-balancing
 description: >-
   Keeping a package correct when a site runs on more than one server: files on one server's
-  disk, state in one server's memory, caches cleared on every server, jobs and handlers that
-  must run once, concurrent writes, absolute URLs, and multi-step flows. Use when writing,
+  disk, state in one server's memory, jobs that must run once, concurrent writes, absolute URLs, and multi-step flows. Use when writing,
   changing or reviewing package code that does any of these. Not for setting up a
   load-balanced host.
 
@@ -80,22 +79,6 @@ in-process queue lives on one server, and is lost when that server restarts.
 - **`static` is fine for things that never change** after startup. Mutable `static` state
   drifts apart between servers.
 
-## Caches: clear on every server
-
-Clearing a key in `AppCaches` clears it on the server that ran the code. The others keep
-serving the old value until it expires.
-
-- **Route every clear through your package's cache refresher** (`umbraco-extensibility`'s
-  catalogue, row 4), via `DistributedCache`, so every server drops its copy. Don't clear the
-  key directly.
-- **Send what other servers can act on**: an ID or key they can re-read, not an object that
-  only exists in this server's memory.
-- **Don't lean on an expiry alone** for data that mirrors Umbraco content. Clear it from the
-  matching notification.
-
-Source: [Common load-balancing pitfalls](https://docs.umbraco.com/umbraco-cms/run-in-production/infrastructure-and-ops/server-setup/load-balancing/common-load-balancing-pitfalls),
-[ICacheRefresher](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/cache/icacherefresher).
-
 ## Work that must happen once
 
 ### Background jobs
@@ -143,18 +126,6 @@ builder.Services.AddSingleton<IDistributedBackgroundJob, MyPackageDigestJob>();
 Source: [Scheduling](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/scheduling),
 [Distributed jobs settings](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/configuration/distributedjobssettings).
 
-### Notification handlers
-
-- **Action notifications run once**, on the server that did the action.
-  `ContentPublishedNotification` fires where the editor clicked Publish. Side effects
-  (email, webhook, audit row) belong here.
-- **Cache refresher notifications run on every server.** `ContentCacheRefresherNotification`
-  and the others fire as each server processes the change. Only do per-server work there:
-  clear your own cache, update a local index. Never send email, call an API or write a
-  shared row from one; it happens once per server.
-
-The same split applies to your own `ICacheRefresher`: its `Refresh` runs on every server.
-
 ## Concurrent writes
 
 Two servers can run the same code at the same moment. A "read, then write if missing" on
@@ -201,14 +172,10 @@ Source: [Common load-balancing pitfalls](https://docs.umbraco.com/umbraco-cms/ru
   request will read.
 - Mutable state in a `static` field, a singleton, `IMemoryCache` or an in-process queue
   that other servers need to see or that must survive a restart.
-- A package cache cleared directly instead of through its cache refresher, or a refresher
-  payload that carries an in-memory object instead of an ID.
 - A recurring background job that sends, calls out or writes shared data, relying on the
   default `ServerRoles` to run it once.
 - An `IDistributedBackgroundJob` without a package-prefixed `Name`, or one that drops the
   cancellation token.
-- Email, a webhook, an HTTP call or a shared write in a cache refresher notification
-  handler or an `ICacheRefresher`.
 - "Check then insert" on shared rows with no unique constraint or lock; a lock ID that
   clashes with core's or another package's.
 - An absolute URL built from a remembered first-request host, or by hand from headers.

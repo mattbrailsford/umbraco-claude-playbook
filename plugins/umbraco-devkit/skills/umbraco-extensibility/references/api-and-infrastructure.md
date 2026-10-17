@@ -73,7 +73,7 @@ public class MyCacheRefresher : JsonCacheRefresherBase<MyCacheRefresher, MyCache
 Auto-discovered; broadcasts a cache-invalidation message across load-balanced servers. One
 per entity type your package owns is the normal shape once there's more than one — reach for
 this the moment your package maintains its own in-memory cache that needs to stay consistent
-across servers. How to clear through it: `umbraco-load-balancing`.
+across servers.
 
 ## 8. Custom file system
 
