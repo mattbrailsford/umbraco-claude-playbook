@@ -3,8 +3,9 @@ name: umbraco-dependencies
 description: >-
   Sorts an Umbraco package's NuGet and npm dependencies into locked to the CMS, shipped to
   sites, and dev-only, and says what each kind needs: which version, how sibling packages
-  pin each other, and Dependabot rules. Use when adding or bumping a dependency, referencing
-  a sibling package, judging an update PR, writing dependabot.yml, or matching dependencies
+  pin each other, and Dependabot rules. Use when adding, bumping or importing a dependency
+  (including writing client code that imports Lit, UUI or RxJS), referencing a sibling
+  package, judging an update PR, writing dependabot.yml, or matching dependencies
   to a new CMS version.
 
 ---

@@ -5,7 +5,9 @@ description: >-
   layer, tree traversal, caching lookups and clearing them, data type config and converter
   cache levels, output cache eviction, light hot paths, and backoffice screens that don't
   over-fetch. Use when writing, changing or reviewing code that runs per request, per save, per
-  indexed item or at startup, or a list or search screen. Not for a site's own templates.
+  indexed item or at startup (property value converters, notification handlers, indexing),
+  code that loops over every content item (a full rebuild, an import, a sync), or a list or
+  search screen. Not for a site's own templates.
 
 ---
 
