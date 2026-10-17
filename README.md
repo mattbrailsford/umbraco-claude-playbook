@@ -157,6 +157,12 @@ You don't run these. The skills above and the agents load them when the work nee
 [docs/HOW-IT-WORKS.md](./docs/HOW-IT-WORKS.md) covers the plan folder, ideas and the archive,
 the review gate, project memory, branches and worktrees, and what to build on top.
 
+## How the skills are tested
+
+Each skill has evals: realistic requests run with and without the plugin, to show the skill
+changes the result. [docs/EVAL-COVERAGE.md](./docs/EVAL-COVERAGE.md) shows which skills and
+which of their sections have evals, with the latest scores.
+
 ## Contributing
 
 Issues and PRs welcome. This repo follows its own

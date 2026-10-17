@@ -1,6 +1,7 @@
 ---
 description: "Adding an element to a client that already imports bare lit; the backoffice provides Lit, so a bare import bundles a second copy."
 tags: [umbraco-dependencies, should-trigger]
+# covers: ["Locked to the CMS"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

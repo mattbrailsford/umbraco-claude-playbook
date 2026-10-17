@@ -1,6 +1,7 @@
 ---
 description: Adding EF Core to a package with a CMS 17.0 floor; versions must match the floor (10.0.0), not the latest 10.0.x.
 tags: [umbraco-dependencies, should-trigger]
+# covers: ["Which CMS version: the floor", "Locked to the CMS"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

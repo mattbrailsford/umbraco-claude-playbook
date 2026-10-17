@@ -1,6 +1,7 @@
 ---
 description: "Queuing a search-engine ping with the page's absolute URL on publish; the queued work runs after the request, and behind a load balancer the request host can be internal."
 tags: [umbraco-extensibility, should-trigger]
+# covers: []
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

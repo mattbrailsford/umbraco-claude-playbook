@@ -1,6 +1,7 @@
 ---
 description: "Adding a second confirmation modal next to one that wraps localize.string in unsafeHTML; asset and folder names are editor input. From umbraco/Umbraco-CMS#22731 (GHSA-vr9v-27gg-qgx4)."
 tags: [umbraco-security, should-trigger, real-bug]
+# covers: ["Backoffice: sanitizing and escaping"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 description: Writing a README section for site developers should load plain-writing.
 tags: [plain-writing, should-trigger]
+# covers: ["Concise is not vague"]
 max_turns: 8
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

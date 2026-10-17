@@ -1,6 +1,7 @@
 ---
 description: "Taking Dependabot's Markdig major into a minor release; a major of a shipped dependency waits for the package's own next major."
 tags: [umbraco-dependencies, should-trigger]
+# covers: ["What each kind needs before a bump"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

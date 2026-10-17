@@ -36,6 +36,7 @@ neighbors: the skill's short name, then what it tests (`env-sync-access-rules`).
 ---
 description: <one line: what this case proves>
 tags: [<skill-name>, should-trigger]
+# covers: ["<the skill section it tests>"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
@@ -66,6 +67,11 @@ allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
   in the prompt ("Git can't run here") so the answer doesn't stall trying.
 - **Tags:** the skill's name, then `should-trigger`, `should-not-trigger`, or `workflow`.
   Add `real-bug` when it applies.
+- **Covers:** for a knowledge case, add `# covers: ["<heading>"]` after `tags:`, naming the
+  skill's `## ` section (in `SKILL.md` or `references/`) that holds the rule. Use `[]` for a
+  guard whose rule was removed. Keep the `#`: the eval tool rejects frontmatter keys it
+  doesn't know, so the line is a YAML comment. `scripts/eval-coverage.sh --check` fails on a
+  heading that doesn't exist.
 
 For a should-not-trigger case, write a nearby request the skill should stay out of.
 
@@ -156,6 +162,9 @@ a fail; don't count it.
 ## 8. Finish, and keep the case as a guard
 
 - Run `scripts/check-evals.sh`.
+- Record the run: `scripts/record-eval-scores.sh` (newest results by default), then
+  `scripts/eval-coverage.sh`. Commit `docs/eval-scores.json` and `docs/EVAL-COVERAGE.md`;
+  CI fails if the report is stale.
 - Put the with and without scores in the PR. A knowledge skill that shows no gain doesn't
   ship.
 - `evals/` ships but never loads for a consumer, so a new case needs no version bump.

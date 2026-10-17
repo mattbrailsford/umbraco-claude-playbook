@@ -1,6 +1,7 @@
 ---
 description: A realistic feature diff hiding three multi-server bugs (direct cache clear, logo on local disk, weekly email job relying on default ServerRoles).
 tags: [umbraco-extensibility, reviewer, should-trigger]
+# covers: ["4. Cache refresher", "10. Recurring background job"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Agent, "Bash(git:*)"]

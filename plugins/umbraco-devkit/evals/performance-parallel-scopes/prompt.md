@@ -1,6 +1,7 @@
 ---
 description: "Speeding up an endpoint with Task.WhenAll; Umbraco scopes are tracked per async flow, so parallel scoped work crashes. From umbraco/Umbraco.AI (07f2a9d0b)."
 tags: [umbraco-performance, should-trigger, real-bug]
+# covers: []
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

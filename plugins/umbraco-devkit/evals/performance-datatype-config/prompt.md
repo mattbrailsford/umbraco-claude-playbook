@@ -1,6 +1,7 @@
 ---
 description: Enforcing a data type setting on save; reading the configuration through IDataTypeService runs a database query per property per save.
 tags: [umbraco-performance, should-trigger]
+# covers: ["Read data type configuration from its cache"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

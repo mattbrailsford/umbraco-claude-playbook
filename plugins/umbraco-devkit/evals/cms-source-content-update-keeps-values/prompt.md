@@ -1,6 +1,7 @@
 ---
 description: "Updating one property through IContentEditingService; any property left out of the update is cleared. From umbraco/Umbraco.AI (2db917884, 412edf698)."
 tags: [umbraco-cms-source, should-trigger, real-bug]
+# covers: ["Read, search, list"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

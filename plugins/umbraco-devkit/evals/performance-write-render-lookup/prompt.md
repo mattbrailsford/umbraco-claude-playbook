@@ -1,6 +1,7 @@
 ---
 description: Writing a front-end view component from scratch; the obvious version reads the database on every page view. From umbraco/Umbraco.Forms.Issues#1283.
 tags: [umbraco-performance, should-trigger, real-bug]
+# covers: ["Cache your own expensive lookups"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

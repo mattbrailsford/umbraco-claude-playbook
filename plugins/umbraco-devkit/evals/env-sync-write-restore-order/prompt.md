@@ -1,6 +1,7 @@
 ---
 description: uSync for linked entities; links exported as keys not integer ids, and a store/country cycle broken with a fill-in pass.
 tags: [umbraco-env-sync, should-trigger]
+# covers: ["Restore order", "The export shape"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

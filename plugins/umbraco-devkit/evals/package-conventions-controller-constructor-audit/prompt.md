@@ -1,6 +1,7 @@
 ---
 description: "An audit log feature that, as one part, adds a dependency to a shipped public controller; the old constructor must stay and the new one needs the ActivatorUtilities marker."
 tags: [umbraco-package-conventions, should-trigger]
+# covers: ["Public API backwards compatibility"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

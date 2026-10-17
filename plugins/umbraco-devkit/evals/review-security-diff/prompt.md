@@ -1,6 +1,7 @@
 ---
 description: A realistic backoffice feature diff hiding three frontend security bugs (unsafeHTML of own-API HTML, DOMPurify letting on* attributes through, a VITE_ API key in the bundle).
 tags: [umbraco-security, reviewer, should-trigger]
+# covers: ["Backoffice: sanitizing and escaping", "Backoffice: custom elements in sanitized HTML"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Agent, "Bash(git:*)"]

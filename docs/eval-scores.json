@@ -1,0 +1,1094 @@
+{
+  "backoffice-conventions-cache-bust": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-conventions-client-throw-on-error": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 67,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-conventions-entry-relative-import": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-conventions-external-lit": {
+    "date": "2026-10-17",
+    "runs": 6,
+    "skillLoaded": 6,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-conventions-external-luxon": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 4,
+    "with": 100,
+    "without": 17,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-conventions-skip-plain-lit": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-security-bundle-secret-and-storage": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-security-dompurify-attributes": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-security-localize-unsafehtml": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-security-skip-backend-sql": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-security-unsafehtml-trusted-backend": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-ux-write-connections-dashboard": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 6,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "backoffice-ux-write-sync-button": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 6,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "bdd-specs-tag-filters": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 22,
+    "withoutDate": "2026-10-16"
+  },
+  "change-backport-security-only-line": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "decision-review-unlogged-deviation": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "dependencies-add-ef-core": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "dependencies-bare-lit-import": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 56,
+    "without": 22,
+    "withoutDate": "2026-10-16"
+  },
+  "dependencies-ef-core-floor": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "dependencies-locked-security-alert": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "dependencies-shipped-major-pr": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "dependencies-sibling-exact-pin": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "dependencies-skip-generic-node": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "dependencies-write-dependabot": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 95,
+    "without": 29,
+    "withoutDate": "2026-10-16"
+  },
+  "dependencies-write-lit-imports": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 1,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "dependency-review-locked-bump": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "design-fail-fast-options": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 33,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "design-internal-repository": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 67,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "docs-custom-webhook-event": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 67,
+    "without": 44,
+    "withoutDate": "2026-10-16"
+  },
+  "docs-delivery-api-allow-list": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 2,
+    "with": 100,
+    "without": 78,
+    "withoutDate": "2026-10-16"
+  },
+  "dotnet-write-outcome-type": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "dotnet-write-routine-failures": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "ef-core-port-migration": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "ef-core-port-migration-newer-line": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "ef-core-port-migration-other-layout": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 4,
+    "with": 100,
+    "without": 75,
+    "withoutDate": "2026-10-17"
+  },
+  "ef-core-skip-generic-efcore": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "ef-core-two-providers": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "env-sync-entity-gains-fields": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 73,
+    "withoutDate": "2026-10-16"
+  },
+  "env-sync-picker-values": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 75,
+    "withoutDate": "2026-10-16"
+  },
+  "env-sync-write-restore-order": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "env-sync-write-restore-order-category-tree": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "env-sync-write-restore-order-late-link": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "env-sync-write-usync-settings": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 67,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "extensibility-distributed-job": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 11,
+    "withoutDate": "2026-10-16"
+  },
+  "extensibility-job-umbraco-context": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 1,
+    "with": 89,
+    "without": 89,
+    "withoutDate": "2026-10-16"
+  },
+  "extensibility-migration-admin-group": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 78,
+    "withoutDate": "2026-10-16"
+  },
+  "extensibility-ordered-extension-point": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 67,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "extensibility-package-migration": {
+    "date": "2026-10-17",
+    "runs": 2,
+    "skillLoaded": 2,
+    "with": 100,
+    "without": 33,
+    "withoutDate": "2026-10-17"
+  },
+  "extensibility-skip-dashboard": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "extensibility-skip-generic-csharp": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "feature-build-asks-before-trunk": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "feature-build-stops-without-checklist": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "feature-close-open-pr": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "feature-design-stops-without-brief": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "feature-explore-writes-brief": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "feature-plan-stops-without-design": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "git-workflow-two-cms-majors": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 6,
+    "with": 83,
+    "without": 50,
+    "withoutDate": "2026-10-16"
+  },
+  "github-init-stub-readme": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "gof-write-caching-wrapper": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "gof-write-export-formats": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "investigate-bug-no-fix": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "issue-backlog-board": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "issue-resolve-security-stop": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "issue-triage-security-report": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "load-balancing-cache-clear": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "load-balancing-cache-clear-content-map": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "load-balancing-cache-clear-sibling-local": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "load-balancing-skip-host-config": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "load-balancing-startup-recovery": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "load-balancing-webhook-handler": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "load-balancing-webhook-handler-existing-refresher": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "load-balancing-webhook-handler-own-refresher": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "load-balancing-write-recovery": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "major-upgrade-version-mismatch": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "marketplace-semver-no-ui": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "marketplace-tag-installable-only": {
+    "date": "2026-10-16",
+    "runs": 2,
+    "skillLoaded": 2,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "package-conventions-controller-constructor": {
+    "date": "2026-10-17",
+    "runs": 3,
+    "skillLoaded": 2,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "package-conventions-controller-constructor-audit": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 1,
+    "with": 100,
+    "without": 50,
+    "withoutDate": "2026-10-17"
+  },
+  "package-conventions-new-parameter": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 2,
+    "with": 89,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "package-conventions-skip-notification-handler": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "package-conventions-view-component-constructor": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "performance-converter-cache-level": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "performance-datatype-config": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 2,
+    "with": 100,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "performance-indexer-services": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 67,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "performance-parallel-scopes": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "performance-render-lookup": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 2,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "performance-skip-template": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "performance-write-render-lookup": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "plain-writing-issue-reply": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "plain-writing-readme-config": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "plain-writing-release-notes": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "plain-writing-skip-code-comment": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "plain-writing-skip-commit-message": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "plain-writing-spec-screen": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 6,
+    "with": 100,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "plain-writing-upgrade-notes": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 6,
+    "with": 100,
+    "without": 80,
+    "withoutDate": "2026-10-16"
+  },
+  "pr-describe-plan-folder": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "pr-review-hidden-install-hooks": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "project-init-keeps-claude-md": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "project-init-new-package-template": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "quick-fix-escalates": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "review-backoffice-security-diff": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "review-load-balancing-diff": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 0,
+    "with": 89,
+    "without": 78,
+    "withoutDate": "2026-10-16"
+  },
+  "review-security-diff": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "review-security-lit-diff": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "reviewer-feature-diff": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "security-bundle-secret-and-storage": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 78,
+    "withoutDate": "2026-10-16"
+  },
+  "security-dompurify-attributes": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-dompurify-attributes-generic-elements": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "security-dompurify-attributes-markdown-mentions": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 4,
+    "with": 100,
+    "without": 75,
+    "withoutDate": "2026-10-17"
+  },
+  "security-dotnet-secret-in-response": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 6,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-dotnet-skip-lit-xss": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-dotnet-unauthenticated-controller": {
+    "date": "2026-10-16",
+    "runs": 6,
+    "skillLoaded": 6,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-dotnet-write-api-key": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-dotnet-write-controller": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 1,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-dotnet-write-member-endpoint": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-dotnet-write-raw-sql": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 2,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-lit-bundle-secret-and-storage": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-lit-dompurify-attributes": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 1,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-lit-localize-unsafehtml": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-lit-skip-backend-sql": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-lit-unsafehtml-trusted-backend": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-localize-unsafehtml": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-localize-unsafehtml-info-box": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "security-localize-unsafehtml-sibling-pattern": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "security-secret-in-response": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-secret-in-response-crud": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 4,
+    "with": 100,
+    "without": 75,
+    "withoutDate": "2026-10-17"
+  },
+  "security-skip-generic-aspnet": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "security-unauthenticated-controller": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 2,
+    "with": 100,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "security-unsafehtml-trusted-backend": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "security-unsafehtml-trusted-backend-email-preview": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "security-unsafehtml-trusted-backend-sibling": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "security-write-api-key": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "security-write-controller": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 56,
+    "withoutDate": "2026-10-16"
+  },
+  "security-write-member-endpoint": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "security-write-raw-sql": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  },
+  "solid-interface-segregation": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "solid-open-closed-export": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "source-create-content": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 67,
+    "withoutDate": "2026-10-16"
+  },
+  "source-schedule-publish": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 78,
+    "withoutDate": "2026-10-16"
+  },
+  "typescript-write-data-source": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "typescript-write-state-and-alias": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 100,
+    "withoutDate": "2026-10-16"
+  },
+  "user-stories-merge-and-split": {
+    "date": "2026-10-16",
+    "runs": 3,
+    "skillLoaded": 3,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-16"
+  },
+  "zz-net-smoke": {
+    "date": "2026-10-16",
+    "runs": 1,
+    "skillLoaded": 0,
+    "with": 100,
+    "without": null,
+    "withoutDate": null
+  }
+}

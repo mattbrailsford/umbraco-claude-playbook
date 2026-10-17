@@ -1,6 +1,7 @@
 ---
 description: Writing dependabot.yml for an Umbraco package; locked deps ignored for all versions, shipped majors held, commit prefix matching commitlint.
 tags: [umbraco-dependencies, should-trigger]
+# covers: ["Dependabot"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

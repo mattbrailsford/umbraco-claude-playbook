@@ -1,6 +1,7 @@
 ---
 description: Adding an API key to stored connections; the key must not be stored or returned in plain text.
 tags: [umbraco-security, should-trigger]
+# covers: ["Secrets and sensitive configuration"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

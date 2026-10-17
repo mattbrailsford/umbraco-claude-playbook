@@ -1,6 +1,7 @@
 ---
 description: "A first release supporting two CMS majors: package versions track the CMS major (13.x, 17.x) by default."
 tags: [git-workflow, should-trigger]
+# covers: ["Umbraco packages and version tracking"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

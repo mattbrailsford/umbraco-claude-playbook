@@ -1,6 +1,7 @@
 ---
 description: "Applying Dependabot's EF Core bump; a package's EF Core version is a floor and should match what its minimum Umbraco uses."
 tags: [umbraco-dependencies, should-trigger]
+# covers: ["Which CMS version: the floor"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 description: "Generic load/save API for connector settings whose definitions mark some fields as password editors; those values must never come back."
 tags: [umbraco-security, should-trigger]
+# covers: ["Secrets and sensitive configuration"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

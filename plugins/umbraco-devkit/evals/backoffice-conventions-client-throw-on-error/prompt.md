@@ -1,6 +1,7 @@
 ---
 description: "Adding a delete action on a package made from Umbraco's extension template; its hey-api client resolves errors instead of throwing, so tryExecute shows no notification. From umbraco/Umbraco.AI (ff9cb17b4)."
 tags: [umbraco-backoffice-conventions, should-trigger, real-bug]
+# covers: ["Generating a typed API client from your Management API"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 description: Writing a SPEC screen section next to a mockup; the text covers behaviour and rules, not what the picture shows.
 tags: [plain-writing, should-trigger]
+# covers: ["Let pictures carry what they show"]
 max_turns: 15
 timeout_seconds: 600
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

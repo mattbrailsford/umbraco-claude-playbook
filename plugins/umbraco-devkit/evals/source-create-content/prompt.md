@@ -1,6 +1,7 @@
 ---
 description: IContentEditingService's create model changed in v16 (InvariantName/InvariantProperties gone); v17 code must use Properties and Variants.
 tags: [umbraco-cms-source, should-trigger]
+# covers: ["Read, search, list"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, WebFetch]

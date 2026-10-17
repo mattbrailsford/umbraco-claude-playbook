@@ -1,6 +1,7 @@
 ---
 description: "Reusing content lookup code from a recurring job; there is no UmbracoContext outside a request. From umbraco/Umbraco.AI (175a9529d)."
 tags: [umbraco-extensibility, should-trigger, real-bug]
+# covers: ["10. Recurring background job"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

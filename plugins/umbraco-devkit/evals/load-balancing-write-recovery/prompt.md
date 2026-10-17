@@ -1,6 +1,7 @@
 ---
 description: Adding recovery for imports a crash left Running; the obvious startup sweep fails runs other servers still own. From umbraco/Umbraco.Automate#388.
 tags: [umbraco-extensibility, should-trigger, real-bug]
+# covers: []
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

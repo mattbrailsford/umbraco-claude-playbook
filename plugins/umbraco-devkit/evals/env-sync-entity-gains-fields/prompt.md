@@ -1,6 +1,7 @@
 ---
 description: Adding fields to an entity the package already syncs; the uSync code must change with it, read old files, and export the new list stably.
 tags: [umbraco-env-sync, should-trigger]
+# covers: ["Keep sync in step"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

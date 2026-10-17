@@ -1,6 +1,7 @@
 ---
 description: "Building a details panel next to a card that already renders server-rendered rich text with raw unsafeHTML; editor rich text needs sanitizing even from the package's own API."
 tags: [umbraco-security, should-trigger]
+# covers: ["Backoffice: sanitizing and escaping"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

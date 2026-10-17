@@ -1,6 +1,7 @@
 ---
 description: "Adding a dependency to a shipped view component that sites inherit from; ViewComponents are created by ActivatorUtilities, so the new constructor needs the marker and the old one stays."
 tags: [umbraco-package-conventions, should-trigger]
+# covers: ["Public API backwards compatibility"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

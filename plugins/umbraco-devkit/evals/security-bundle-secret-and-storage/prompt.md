@@ -1,6 +1,7 @@
 ---
 description: Calling a third-party API from a backoffice dashboard; a VITE_ secret ships in the bundle, and a cached token in localStorage is readable by any script.
 tags: [umbraco-security, should-trigger]
+# covers: ["Backoffice: credentials stay on the server"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

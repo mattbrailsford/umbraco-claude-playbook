@@ -1,6 +1,7 @@
 ---
 description: Building a delete confirmation from a localized term with markup; wrapping localize.string in unsafeHTML inserts the item name unescaped. From umbraco/Umbraco-CMS#22731 (GHSA-vr9v-27gg-qgx4).
 tags: [umbraco-security, should-trigger, real-bug]
+# covers: ["Backoffice: sanitizing and escaping"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 description: Adding a slow action button to a backoffice screen; waiting state, finish feedback, and an error that says what to do next.
 tags: [umbraco-backoffice-ux, should-trigger]
+# covers: ["The five moments"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,7 @@
 ---
 description: Setting up EF Core migrations for an Umbraco package needs prefixed migrations generated separately for SQL Server and SQLite.
 tags: [ef-core-data, should-trigger]
+# covers: ["One entity model, two providers", "Migrations: generated per provider, prefixed to avoid collisions"]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

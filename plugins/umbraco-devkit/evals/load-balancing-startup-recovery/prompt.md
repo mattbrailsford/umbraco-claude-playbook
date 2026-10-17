@@ -1,6 +1,7 @@
 ---
 description: Making interrupted imports resume after a restart; the obvious startup requeue re-runs imports other servers are still running. From umbraco/Umbraco.Automate#388 and umbraco/Umbraco.AI#445.
 tags: [umbraco-extensibility, should-trigger, real-bug]
+# covers: []
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

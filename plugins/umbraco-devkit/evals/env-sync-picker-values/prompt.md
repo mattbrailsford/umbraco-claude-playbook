@@ -1,6 +1,7 @@
 ---
 description: A property editor that stores an entity's integer id needs a value mapper so content moves between environments.
 tags: [umbraco-env-sync, should-trigger]
+# covers: ["Property values that store ids"]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

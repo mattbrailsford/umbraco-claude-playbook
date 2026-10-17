@@ -1,6 +1,7 @@
 ---
 description: Adding a value converter next to an existing one; PropertyValueConverterBase's default cache level is Snapshot, which runs as None.
 tags: [umbraco-performance, should-trigger]
+# covers: ["Property value converters: set the cache level"]
 max_turns: 20
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
