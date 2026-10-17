@@ -7,5 +7,5 @@ allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
 GitHub raised a high-severity Dependabot alert on this repo: Microsoft.Extensions.Caching.Memory
-10.0.0 has a denial-of-service vulnerability, fixed in 10.0.3. We don't reference it
-directly; it comes in transitively. Fix it. Git and dotnet can't run here.
+10.0.0 has a denial-of-service vulnerability, fixed in 10.0.3. It comes in transitively.
+Clear the alert. Git and dotnet can't run here.

@@ -87,10 +87,10 @@ long answers such as full reviews, so judge with Sonnet:
 
 ```bash
 claude plugin eval plugins/umbraco-devkit --tag <skill-name> --judge-model sonnet --no-publish \
-  --scaffold --allow-tools Write Edit
+  --scaffold --allow-tools Write Edit WebFetch
 ```
 
-`--scaffold` runs each case's `fixture.sh`, and `--allow-tools` grants the write tools a
+`--scaffold` runs each case's `fixture.sh`, and `--allow-tools` grants the write and web tools a
 case lists in `allowed_tools`. Without them, a case starts in an empty folder or can't write
 its answer, and its scores mean nothing.
 
@@ -99,11 +99,40 @@ Claude catches most mistakes, so a review prompt hides what a skill adds. Test r
 on a realistic, multi-file diff (scaffolded, like `reviewer-feature-diff`), never a
 snippet. Build cases from real, fixed bugs where possible, and tag them `real-bug`.
 
+Set up the scenario that causes the problem; never ask for the fix. The prompt asks for
+something a developer would really ask for, in a project where the obvious answer brings
+the problem in. A prompt that points at the problem tests debugging, not whether the skill
+prevents it.
+
+- Allowed: facts a developer would state about their setup ("sites are load balanced",
+  target versions, "other packages call this"). Without them the trap isn't real; a grader
+  fails an answer only when the setup makes the problem real.
+- Banned: the bug's symptom, a request to fix it, naming the risk or the right API, and
+  bait ("I think it's fine").
+- Diagnosis cases (symptom in, cause out) are tagged `diagnose`, kept rare, and don't
+  count as proof that a skill prevents the problem.
+- Workflow cases for bug-fixing skills (`investigate-bug`, `quick-fix`, `issue-resolve`)
+  may be handed a bug, since they test the workflow's own rules.
+
+Every eval follows the same process. The repo-only `write-skill-eval` skill walks through it.
+
+1. **Start from a real failure:** a shipped bug or a mistake Claude was seen making, not the
+   skill's text.
+2. **Set up the scenario** as above.
+3. **Prove plain Claude fails,** trying more than one version of the scenario. A grader that
+   passes without the plugin measures nothing. If plain Claude passes every version, no rule
+   is needed.
+4. **Write the smallest rule that fills the gap:** general Umbraco or stack behavior, checked
+   against CMS source or docs, in the skill whose description it fits.
+5. **Prove the skill fixes it, and loaded.** A plugin pass where the skill didn't load
+   doesn't count; fix the skill's "Use when" instead. Errored runs count as neither.
+6. **Keep the case as a guard** and rerun it when its skill changes.
+
 A new skill, or a change that adds behavior to one, ships with at least one eval for that
-behavior, tagged with the skill's name. Run it with and without the plugin before merging,
-and put both scores in the PR. A knowledge skill that shows no gain over plain Claude doesn't
-ship. Before trusting a new case, run it once without the plugin: a grader that passes there
-measures nothing. The repo-only `write-skill-eval` skill walks through all of this.
+behavior, tagged with the skill's name, with both scores in the PR. A knowledge skill that
+shows no gain over plain Claude doesn't ship. A rule is removed only when plain Claude passes
+every run across varied scenarios, including a harder variant ("Removing a rule" in
+`write-skill-eval`).
 
 Workflow skills (`feature-*`, `quick-fix`, `issue-*`, ...) have no plain-Claude equivalent,
 so their cases check the skill keeps its own rules instead. They're tagged `workflow`; run

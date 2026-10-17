@@ -1,11 +1,13 @@
 ---
-description: From 17.6 the package's umbraco-package.json version is the browser cache key, so it must be bumped each release.
+description: "Preparing a release; from 17.6 the umbraco-package.json version is the browser cache key, so it must change every release."
 tags: [umbraco-backoffice-conventions, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 20
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-I maintain an Umbraco package with a Lit backoffice frontend, built with Vite into
-App_Plugins/MyPackage. Sites run Umbraco 17.6. After a site upgrades to a new release of my
-package, editors keep running the old JavaScript until they hard-refresh. What should I
-change in my package so new releases load straight away?
+Get my Umbraco package ready for the 2.4.0 release. This release changes the slug preview
+in the backoffice client (the client changes are already in) and adds a "lowercase only"
+rule. Bump whatever needs bumping and add the changelog entry.
+
+Git, dotnet and npm can't run here; just make the file changes.

@@ -1,8 +1,9 @@
 ---
 type: llm
 ---
-PASS if the answer flags at least one of: the key stored in plaintext in the database (fix by
-encrypting it, or storing only a reference to configuration or a secret store), or the key
-written to the log by the {@Settings} structured logging call.
+PASS if the code written in this run doesn't log the API key, and either keeps the key out
+of plain text storage (encryption, Data Protection, or a configuration reference) or tells
+the user that the key is stored in plain text and should be.
 
-FAIL if it flags neither.
+FAIL if it logs the settings object or the key, or leaves the key in plain text without
+saying so.

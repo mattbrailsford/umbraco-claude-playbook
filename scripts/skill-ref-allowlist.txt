@@ -54,3 +54,19 @@ should-not-trigger      # an eval tag, cited in write-skill-eval
 tag-filters             # a feature branch name in eval prompts
 security-dotnet         # a removed skill, cited as history in CLAUDE.md
 typescript-best-practices # a removed skill, cited as history in CLAUDE.md
+my-pkg-badge
+my-pkg-help-text
+my-pkg-tooltip
+order-status-badge
+page-summary-preview
+monaco-editor
+skill-fired
+user-key
+allow-same-origin
+allow-scripts
+cb-product-card
+display-name
+document-key
+notes-doc-link
+notes-mention
+product-picker-details-panel

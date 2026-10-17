@@ -10,5 +10,4 @@ In my Umbraco 17.6 package, add an ArticleImporter service (src/MyPackage) that 
 draft "article" under a given parent using IContentEditingService. It gets the parent key,
 the article content type key, a name, and a "bodyText" string. It runs from a background
 import with no logged-in user, so it should act as the super user. Return the new content's
-key, or the operation status if it fails. dotnet can't run here, so make sure the code
-matches the real 17.6 API.
+key, or the operation status if it fails. dotnet can't run here.

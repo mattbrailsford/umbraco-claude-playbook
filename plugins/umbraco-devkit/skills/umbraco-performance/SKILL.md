@@ -4,7 +4,7 @@ description: >-
   Keeping a package fast on the sites that install it: the published cache over the services
   layer, tree traversal, caching lookups and clearing them, data type config and converter
   cache levels, output cache eviction, light hot paths, and backoffice screens that don't
-  over-fetch. Use when writing or reviewing code that runs per request, per save, per
+  over-fetch. Use when writing, changing or reviewing code that runs per request, per save, per
   indexed item or at startup, or a list or search screen. Not for a site's own templates.
 
 ---
@@ -148,7 +148,7 @@ var relations = _appCaches.RuntimeCache.GetCacheItem(
 - **Decide what clears it, at design time.** An expiry alone means stale data for that
   long. If the data changes when your entity is saved, clear the key there.
 - **Clear it on every server.** On a load-balanced site the clear goes through a cache
-  refresher: see `umbraco-load-balancing`.
+  refresher (`umbraco-extensibility`'s catalogue, row 4).
 - **Refresh many items in one call.** `DistributedCache.Refresh(refresherId, ids)` or
   `RefreshByPayload(refresherId, payloads)` with the whole set, not one call per item in a
   loop. Outside a web request (a background job, an import), each call is written to the

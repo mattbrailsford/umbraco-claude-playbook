@@ -2,11 +2,16 @@
 type: llm
 weight: 2
 ---
-PASS if the code only fails runs that no live server owns. On a site with more than one
-server sharing the database, one server starting up must not mark imports Failed that
-another server is still running. It may use any of these: a lease or heartbeat column that
-must have expired, recording which server or process owns the run, or a periodic job that
-fails runs older than a timeout.
+Context: the package's `ImportWorker` is a hosted service, so it runs on every server of a
+site, and all servers share one database. A run that is Running may be in progress on
+another server that is still alive.
 
-FAIL if the code fails every Running or Pending row on startup with no ownership, lease,
-heartbeat or age check.
+PASS if the final code only marks a Running run Failed once no live server can still own
+it: for example a lease or heartbeat column the worker keeps updating and that must have
+expired, recording which server or process owns the run and checking that owner, or a
+periodic check that fails runs whose last heartbeat or start is older than a timeout well
+beyond a normal import.
+
+FAIL if the code marks every Running (or Pending) run Failed when a server starts, or on
+a timer, with no ownership, lease, heartbeat or age check, so one server starting up kills
+imports another server is running.

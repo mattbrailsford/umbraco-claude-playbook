@@ -3,7 +3,7 @@ name: umbraco-security
 description: >-
   What Umbraco provides for keeping a package secure, on the server and in the backoffice:
   Management API authorization and policies, settings that hold secrets, endpoints outside
-  the Management API, sanitizeHTML and escapeHTML, localize.htmlString, DOMPurify rules for
+  the Management API, sanitizeHTML and escapeHTML, DOMPurify rules for
   custom elements, and umbHttpClient instead of handling tokens in the browser. Use when
   writing or reviewing a Management API controller, a secret setting, a custom endpoint, a
   backoffice template that uses unsafeHTML, or frontend code that calls an API.
@@ -63,8 +63,7 @@ Lit escapes interpolated values; the risk is in `unsafeHTML()`/`unsafeSVG()`.
 
 - **`sanitizeHTML(html)`** runs DOMPurify with its default config. Use it on any HTML that
   must render as markup and isn't a constant: rich text, AI output, external API content,
-  editor-written help text. Passing through the package's own backend doesn't make it
-  trusted.
+  editor-written help text.
 - **`escapeHTML(value)`** escapes one value for insertion into HTML you then render with
   `unsafeHTML`.
 
@@ -72,7 +71,7 @@ Lit escapes interpolated values; the risk is in `unsafeHTML()`/`unsafeSVG()`.
 import { html, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { sanitizeHTML } from '@umbraco-cms/backoffice/utils';
 
-// WRONG: "it comes from our own API" doesn't make it safe
+// WRONG: renders unsanitized markup
 html`<div>${unsafeHTML(this._summary)}</div>`;
 
 // RIGHT
@@ -81,27 +80,6 @@ html`<div>${unsafeHTML(sanitizeHTML(this._summary))}</div>`;
 
 Import DOMPurify itself from `@umbraco-cms/backoffice/external/dompurify` if you need a custom
 config, so the package doesn't bundle a second copy.
-
-## Backoffice: localized terms with markup
-
-A term with markup in it (`'Delete <strong>%0%</strong>?'`) tempts you to wrap
-`localize.string(...)` in `unsafeHTML`. That inserts every argument unescaped, so an editor
-who names an item `<img src=x onerror=...>` runs script in another user's backoffice. This
-was a real CMS vulnerability (GHSA-vr9v-27gg-qgx4, fixed in 17.4.0).
-
-Use `this.localize.htmlString(term, ...args)` (17.4+). It escapes each argument and returns
-the `unsafeHTML` directive itself:
-
-```typescript
-// WRONG
-html`<p>${unsafeHTML(this.localize.string('#myPackage_confirmDelete', item.name))}</p>`;
-
-// RIGHT
-html`<p>${this.localize.htmlString('#myPackage_confirmDelete', item.name)}</p>`;
-```
-
-On a package that supports versions before 17.4, pass `escapeHTML(item.name)` to
-`localize.string` instead.
 
 ## Backoffice: custom elements in sanitized HTML
 
@@ -142,7 +120,6 @@ Each of these is an injection, an authorization gap, or a secret exposure, which
   restriction
 - a cookie-authenticated endpoint outside the Management API with no antiforgery or origin
   check
-- an unsanitized `unsafeHTML`/`unsafeSVG` render of non-constant content, or
-  `localize.string` inside `unsafeHTML` with any argument
+- an unsanitized `unsafeHTML`/`unsafeSVG` render of non-constant content
 - a DOMPurify config that lets `on*` attributes through
 - a secret reaching the client bundle

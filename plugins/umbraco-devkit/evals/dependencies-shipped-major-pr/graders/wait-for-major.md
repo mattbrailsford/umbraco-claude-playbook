@@ -2,11 +2,15 @@
 type: llm
 weight: 2
 ---
-PASS if the answer says not to ship the Markdig major in a 3.x minor release: Markdig ships
-to every site that installs the package, so a new major lands on them (and on any other
-package or site code that also uses Markdig) in what they expect to be a safe update. It
-should hold the bump for the package's next major (4.0), and suggest closing the PR or
-ignoring Markdig majors in Dependabot.
+Context: Markdig ships to every site that installs MyCompany.HelpText, so a new Markdig
+major lands on those sites (and on any other package or site code that also uses Markdig)
+in what they expect to be a safe 3.x update. A major of a shipped dependency should wait for
+the package's own next major (4.0).
 
-FAIL if it says merging is fine after testing or reading the changelog, without holding the
-major for the package's next major release.
+PASS if 3.5.0 does not ship Markdig 1.0.0: either Markdig stays at 0.40.0 in the 3.5.0
+changes and the answer explains why (holding the bump for 4.0, closing the PR or ignoring
+Markdig majors in Dependabot), or the answer stops before applying it and explains the
+problem.
+
+FAIL if `Directory.Packages.props` ends up with Markdig 1.0.0 while the release stays 3.5.0,
+with no warning about shipping a dependency major in a minor release.

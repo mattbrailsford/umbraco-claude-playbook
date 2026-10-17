@@ -1,11 +1,13 @@
 ---
-description: A new major of a dependency that ships to sites waits for the package's next major.
+description: "Taking Dependabot's Markdig major into a minor release; a major of a shipped dependency waits for the package's own next major."
 tags: [umbraco-dependencies, should-trigger]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 20
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-Dependabot opened "Bump Markdig from 0.40.0 to 1.0.0" on my Umbraco package. CI is green.
-The package is MyCompany.HelpText 3.4.0, supports Umbraco 17, and uses Markdig at runtime to
-render editor help text, so it's a normal NuGet dependency of the package. Can I merge it
-and ship it in 3.5.0?
+Get MyCompany.HelpText 3.5.0 ready. It's a small release: pull in Dependabot's open PR
+"Bump Markdig from 0.40.0 to 1.0.0" (CI is green on it), bump the version, and add the
+changelog entry.
+
+Git and dotnet can't run here.

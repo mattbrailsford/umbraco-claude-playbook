@@ -2,12 +2,16 @@
 type: llm
 weight: 2
 ---
-PASS if the answer flags that on a site with more than one server sharing the database,
-one server starting up marks imports Failed that another server is still running, and
-proposes a fix that only fails runs nobody owns any more. Any of these count: a lease or
-heartbeat column that must have expired, recording which server or process owns the run,
-or a periodic job that fails runs older than a timeout.
+Context: the package's `ImportWorker` is a hosted service, so it runs on every server of a
+site, and all servers share one database. A run that is Running may be in progress on
+another server that is still alive.
 
-FAIL if the answer does not raise the multi-server problem, or only suggests changes that
-still fail every Running row on startup (for example adding logging, a try/catch, or
-moving it to UmbracoApplicationStartedNotification).
+PASS if the final code only puts a Running run back to Pending (or restarts it) once no
+live server can still own it: for example a lease or heartbeat column the worker keeps
+updating and that must have expired, recording which server or process owns the run and
+only requeuing runs owned by this server or by one that is gone, or a timeout well beyond
+a normal import.
+
+FAIL if, when a server starts (or on a timer), the code requeues or restarts every Running
+run with no ownership, lease, heartbeat or age check, so one server starting up re-runs an
+import another server is still running.

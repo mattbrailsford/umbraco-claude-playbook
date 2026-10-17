@@ -79,8 +79,7 @@ change in the consuming project.
 To react to content/media/member lifecycle events, implement `INotificationHandler<T>` and
 register it via the composer, not a static event subscription. Handlers test in isolation and
 don't leak subscriptions across restarts. Keep handlers light (`umbraco-performance`), and
-put side effects only in handlers that run once, not on every server
-(`umbraco-load-balancing`).
+put side effects only in handlers that run once, not on every server.
 
 Not the same as the official Backoffice Extension Skills plugin's `umbraco-notifications`
 skill: that covers backoffice toast messages (`UMB_NOTIFICATION_CONTEXT`), a frontend-only

@@ -1,25 +1,16 @@
 ---
-description: unsafeHTML around a localized string with a user-controlled argument. From umbraco/Umbraco-CMS#22731 (GHSA-vr9v-27gg-qgx4).
+description: Building a delete confirmation from a localized term with markup; wrapping localize.string in unsafeHTML inserts the item name unescaped. From umbraco/Umbraco-CMS#22731 (GHSA-vr9v-27gg-qgx4).
 tags: [umbraco-security, should-trigger, real-bug]
-max_turns: 10
-allowed_tools: [Read, Glob, Grep, Skill]
+max_turns: 25
+timeout_seconds: 900
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-This is the confirm step of a delete modal in my Umbraco 17.6 backoffice extension. The
-localization term is `'Delete <strong>%0%</strong>? This cannot be undone.'`, so I need
-unsafeHTML for the bold to render. `item.name` is the name an editor gave the item.
-Review it.
+In my Umbraco 17.6 backoffice extension (`client/`), finish the delete confirmation modal
+in `client/src/items/modals/delete-item-modal.element.ts`. Show the
+`myPackage_confirmDelete` term with the item's name, with the name in bold as the term
+says, a Cancel button that rejects the modal, and a red Delete button that submits it.
+Item names are typed in by editors.
 
-```ts
-import { html, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
-
-render() {
-  return html`
-    <uui-dialog-layout headline=${this.localize.term('general_delete')}>
-      <p>${unsafeHTML(this.localize.string('#myPackage_confirmDelete', this.item.name))}</p>
-      <uui-button slot="actions" look="primary" color="danger" @click=${this.#confirm}>
-        ${this.localize.term('general_delete')}
-      </uui-button>
-    </uui-dialog-layout>`;
-}
-```
+There's no npm or network here, so you can't install packages or run the build; just make
+the code change.

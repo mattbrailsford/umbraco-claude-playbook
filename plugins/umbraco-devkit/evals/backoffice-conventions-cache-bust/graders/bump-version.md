@@ -2,11 +2,15 @@
 type: llm
 weight: 2
 ---
-PASS if the answer tells the package author to bump the `version` in `umbraco-package.json`
-for every release, because Umbraco (17.6 and later) appends that version to the package's
-entry point and import map URLs as a cache-busting query string. Extra advice (content-hashed
-chunk file names, cache headers) is fine alongside it.
+Context: from Umbraco 17.6 the backoffice appends the `version` in the package's
+`umbraco-package.json` to the package's entry point and import map URLs, so it is the
+browser's cache key. In this repo `umbraco-package.json` has no `version` at all, so the
+URLs never change between releases and editors keep running the old client JavaScript after
+upgrading.
 
-FAIL if the answer never mentions bumping the umbraco-package.json version, and instead
-relies only on things like telling editors to hard-refresh, hand-added `?v=` query strings,
-server cache headers, or content-hashed file names for the entry point.
+PASS if, after the change, `src/Umbraco.Community.SlugRules/Client/public/umbraco-package.json`
+has a `version` for this release (for example "2.4.0"), or the build now writes the release
+version into it automatically (for example a Vite plugin or build step that sets it from
+package.json or the MSBuild version).
+
+FAIL if `umbraco-package.json` still has no version and nothing sets one at build time.

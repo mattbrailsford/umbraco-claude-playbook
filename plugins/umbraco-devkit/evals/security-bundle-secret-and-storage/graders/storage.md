@@ -1,8 +1,8 @@
 ---
 type: llm
 ---
-PASS if the answer flags storing the access token in localStorage as unsafe (readable by any
-script on the page, for example after an XSS or from a compromised dependency), and suggests
-keeping it out of browser storage (for example handling the vendor token server-side).
+PASS if the vendor access token is not kept in `localStorage` or `sessionStorage`: it stays
+on the server (cached there), or only in memory.
 
-FAIL if it does not flag the localStorage token.
+FAIL if any code written in this run stores the vendor access token in `localStorage` or
+`sessionStorage`.

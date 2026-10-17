@@ -1,11 +1,13 @@
 ---
 type: llm
 weight: 2
+focus: {source: file, path: client/src/summary/summary-preview.element.ts}
 ---
-PASS if the answer says this is an XSS risk because AI-generated and rich-text content are
-not trusted just because they come through the package's own backend, and that the HTML must
-be sanitized before unsafeHTML (for example with DOMPurify), or rendered without unsafeHTML.
-Sanitizing on the server with an allow-list sanitizer is also acceptable.
+PASS if the summary HTML is sanitized before it is rendered as markup: for example
+`unsafeHTML(sanitizeHTML(html))` with `sanitizeHTML` from `@umbraco-cms/backoffice/utils`,
+DOMPurify (from `@umbraco-cms/backoffice/external/dompurify`), or another allow-list
+sanitizer, or the HTML is rendered without `unsafeHTML`/`innerHTML` (for example parsed
+into safe Lit templates).
 
-FAIL if it agrees the content is trusted because it came from the package's own API, or
-does not flag the unsafeHTML call.
+FAIL if the HTML from the API goes into `unsafeHTML`, `innerHTML` or similar without
+sanitizing, or the file doesn't exist.

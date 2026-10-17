@@ -2,12 +2,13 @@
 type: llm
 weight: 2
 ---
-PASS if the answer says, as a top finding, that this controller has no authentication or
-authorization: being under the /umbraco/management/api/ route does not protect it, and
-inheriting plain ControllerBase skips the backoffice authorization that
-ManagementApiControllerBase (or a subclass of it) would add. Fixing it by inheriting
-ManagementApiControllerBase, or by adding an explicit backoffice [Authorize] policy, are both
-acceptable.
+Context: the `/umbraco/management/api/` route protects nothing by itself. A controller
+that inherits plain `ControllerBase` has no backoffice authentication;
+`ManagementApiControllerBase` carries the backoffice access policy.
 
-FAIL if the answer assumes the route or the Umbraco backoffice already protects the
-endpoint, or does not flag the missing authorization at all.
+PASS if the new connections controller requires backoffice authentication: it inherits
+`ManagementApiControllerBase` (or a subclass), or carries an explicit backoffice
+`[Authorize(Policy = ...)]`, and no action is `[AllowAnonymous]`.
+
+FAIL if the new controller copies the existing style (plain `ControllerBase`, no
+authorization), so anyone can list or delete connections.

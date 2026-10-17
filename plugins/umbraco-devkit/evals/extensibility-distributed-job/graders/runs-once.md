@@ -2,10 +2,13 @@
 type: llm
 weight: 2
 ---
-PASS if the answer uses IDistributedBackgroundJob (or Umbraco's distributed background job
-mechanism) to make the digest run on one server only.
+Context: on a v17 load-balanced backoffice every server has the SchedulingPublisher role,
+so an `IRecurringBackgroundJob` (or `RecurringBackgroundJobBase`) runs on all three servers
+whatever its `ServerRoles` say, and the digest would be sent three times a night.
 
-FAIL if the answer relies on RecurringBackgroundJobBase with the default or a custom
-ServerRoles value (for example SchedulingPublisher) as the way to guarantee a single run.
-On a v17 load-balanced backoffice every server is SchedulingPublisher, so that does not
-stop the job running on all three.
+PASS if the final code implements the job as `IDistributedBackgroundJob` (registered as
+one), so Umbraco runs each period on one server only.
+
+FAIL if it uses `IRecurringBackgroundJob`/`RecurringBackgroundJobBase` (with default or
+custom `ServerRoles`), a hosted service, or a timer, relying on server roles or nothing to
+send the digest once.
