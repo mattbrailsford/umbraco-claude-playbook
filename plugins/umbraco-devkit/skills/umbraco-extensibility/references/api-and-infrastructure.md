@@ -1,6 +1,6 @@
 # API and infrastructure extension points
 
-## Contents
+## *Contents*
 
 - 2\. Management API endpoint
 - 3\. Health check

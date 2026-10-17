@@ -12,7 +12,7 @@ description: >-
 
 # Backoffice UX
 
-## 🎯 Why: Design for Change
+## *🎯 Why: Design for Change*
 
 A backoffice extension has a real user: the editor sitting in front of it. A feature that
 technically works but leaves them guessing is still a bug, just one the build and test suite

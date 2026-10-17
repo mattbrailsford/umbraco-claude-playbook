@@ -27,8 +27,10 @@ clear_gain=20     # at least this: the skill clearly helps
 no_gain=10        # below this: no real help
 under_covered=50  # below this % of sections with an eval: under-covered
 
-# Headings that hold no rule of their own, so they don't count toward coverage.
-not_a_rule='^(Contents|Scope|Sources?|Test it|Reviewing .*|Hand off|Argument)$'
+# A context section (background, scope, sources, a review list restating other sections) has
+# nothing an eval could fail, so its heading is written in italics: `## *Two server setups*`.
+# It doesn't count toward coverage.
+context_heading='^[*_].*[*_]$'
 
 # One line per recorded case: name, with, without, skill loaded, runs, date. Read once.
 scores_tsv=""
@@ -51,10 +53,13 @@ done)"
 
 tags_of() { awk -F'\t' -v c="$1" '$1 == c { print $2 }' <<<"$tags_tsv"; }
 covers_of() { awk -F'\t' -v c="$1" '$1 == c { print $2 }' <<<"$covers_tsv"; }
-headings_of() {
+# `## ` lines inside code fences (example issue bodies, templates) aren't sections.
+all_headings_of() {
   cat "$skills_dir/$1/SKILL.md" "$skills_dir/$1"/references/*.md 2>/dev/null |
-    sed -n 's/^## //p' | grep -Ev "$not_a_rule" || true
+    awk '/^[[:space:]]*(```|~~~)/ { fence = !fence; next } !fence && /^## / { sub(/^## /, ""); print }'
 }
+headings_of() { all_headings_of "$1" | grep -Ev "$context_heading" || true; }
+context_count() { all_headings_of "$1" | grep -cE "$context_heading" || true; }
 # field <case> <column>: 2 with, 3 without, 4 skill loaded, 5 runs, 6 date; "–" if not recorded.
 field() {
   local v
@@ -202,7 +207,8 @@ for skill_file in "$skills_dir"/*/SKILL.md; do
     printf '\nStays quiet on: %s\n' "$(printf '`%s` ' "${quiet[@]}" | sed 's/ $//')" >> "$body"
   fi
 
-  echo "| $(link "$skill") | $kind | $status | $best | ${#cases[@]} | $real | $covered |" >> "$summary"
+  ctx="–"; $workflow || ctx="$(context_count "$skill")"
+  echo "| $(link "$skill") | $kind | $status | $best | ${#cases[@]} | $real | $covered | $ctx |" >> "$summary"
 done
 
 # Under-covered skills, most untested sections first.
@@ -243,8 +249,8 @@ section() {
     "$act_unrun"
   echo "## Summary"
   echo
-  echo "| Skill | Kind | Status | Best gain | Evals | Real bugs | Sections covered |"
-  echo "|---|---|---|---|---|---|---|"
+  echo "| Skill | Kind | Status | Best gain | Evals | Real bugs | Sections covered | Context |"
+  echo "|---|---|---|---|---|---|---|---|"
   cat "$summary"
   echo
   echo "## How to read this"
@@ -261,6 +267,8 @@ section() {
   echo "  skill keeps its own rules. Anything under 100 broke one."
   echo "- **Sections covered:** the skill's \`## \` sections that at least one eval names in its"
   echo "  \`# covers:\` line. A section with no eval is a rule nobody has proven is needed."
+  echo "- **Context:** sections with an italic heading (\`## *Background*\`): background, scope,"
+  echo "  sources or a review list. They hold nothing an eval could fail, so they don't count."
   echo "- **Skill loaded:** in how many recorded with-plugin runs the skill actually loaded."
   echo "- **–** means nothing has been recorded."
   echo

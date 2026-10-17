@@ -30,7 +30,7 @@ v19: Umbraco Search (`Umbraco.Cms.Search`) replaces the built-in Examine indexes
 hooks. It's also an add-on for v17 and v18, so check which one the site uses, not just the
 major.
 
-## 🎯 Why: Design for Change
+## *🎯 Why: Design for Change*
 
 Slow code gets fixed by adding caches, and caches added late get bolted on in the wrong
 place, with no plan for clearing them. Deciding up front where data is read from, and what
@@ -274,7 +274,7 @@ Source: CMS issue [#18910](https://github.com/umbraco/Umbraco-CMS/issues/18910).
 
 Source: Block Preview issue [#149](https://github.com/rickbutterfield/BlockPreview/issues/149).
 
-## Reviewing a diff for performance
+## *Reviewing a diff for performance*
 
 - A services-layer read (`IContentService`, `IMediaService`, `IDataTypeService`, ...) on a
   per-request, per-property or per-item path.

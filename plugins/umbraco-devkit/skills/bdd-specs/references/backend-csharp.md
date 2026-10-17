@@ -1,6 +1,6 @@
 # BDD specs — Backend: C#
 
-## Contents
+## *Contents*
 
 - Matching the project's framework and assertion library
 - The shape: Feature > Scenario > Specification (with a worked NUnit example)

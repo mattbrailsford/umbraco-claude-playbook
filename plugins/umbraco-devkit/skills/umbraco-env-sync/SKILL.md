@@ -169,7 +169,7 @@ them alongside the entity change; `reviewer` checks they're there.
   license: [references/real-transfer.md](references/real-transfer.md). Check the export
   for a fake secret, and the target's database for the result.
 
-## Reviewing a diff for environment sync
+## *Reviewing a diff for environment sync*
 
 Apply when the project syncs (see "Does this project sync?").
 

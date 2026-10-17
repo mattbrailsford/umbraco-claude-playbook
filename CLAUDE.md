@@ -278,6 +278,10 @@ Before adding a section to an existing skill:
    Claude already follows gets no skill: evals showed no gain from it. Umbraco- or
    Lit-specific content goes in a skill named for what it covers.
 3. Grep for the concept first. Don't state a rule that another skill already states.
+4. Mark a context section (background, scope, sources, a review list restating other
+   sections) with an italic heading: `## *Two server setups*`. It holds nothing an eval
+   could fail, so the coverage report doesn't count it. Any section with a rule in it stays
+   plain, and needs an eval.
 
 Before renaming, splitting, or removing a skill, run `scripts/check-skill-refs.sh`. It only
 catches stale references, not wrong boundaries. A false positive goes in

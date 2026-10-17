@@ -14,7 +14,7 @@ code is legacy, not a coequal choice. When adding to an existing NPoco codebase,
 convention rather than adding a second persistence technology for one feature. For anything
 new, use EF Core and the conventions below.
 
-## 🎯 Why: Design for Change
+## *🎯 Why: Design for Change*
 
 A package's tables usually share a database with Umbraco core and every other installed
 package. These conventions keep a schema change local to your package and keep persistence

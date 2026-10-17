@@ -1,6 +1,6 @@
 # Content, routing, and search extension points
 
-## Contents
+## *Contents*
 
 - 1\. Property value converter
 - 5\. Content finder

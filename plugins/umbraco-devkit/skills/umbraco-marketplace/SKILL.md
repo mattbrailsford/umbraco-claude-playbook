@@ -15,7 +15,7 @@ Getting listed is almost entirely automatic — there's no submission form, no r
 code-quality or security gate, and no revenue share. The whole mechanism is a NuGet tag plus a
 dependency reference. Most packages that "aren't showing up" just have one of those wrong.
 
-## How listing actually works
+## *How listing actually works*
 
 Marketplace syncs from NuGet, not from a submission: new packages are picked up daily, listing
 metadata refreshes every couple of hours, and there's a self-serve validator
@@ -85,7 +85,7 @@ the docs (`umbraco-docs`) before hand-writing this file rather than copying an e
 4. After publishing to NuGet, run the package through marketplace.umbraco.com/validate before
    considering this done.
 
-## What this skips, and why
+## *What this skips, and why*
 
 - **No code-quality, security, or "actively maintained" gate.** Umbraco doesn't enforce one at
   listing time, so this skill doesn't invent one — that's `umbraco-security` and
@@ -98,14 +98,14 @@ the docs (`umbraco-docs`) before hand-writing this file rather than copying an e
   `umbraco-marketplace.json` doesn't wire up billing; if the package needs real payment
   handling, that's a separate, project-specific concern this skill doesn't cover.
 
-## Sources
+## *Sources*
 
 - https://docs.umbraco.com/umbraco-dxp/marketplace/listing-your-package
 - https://docs.umbraco.com/umbraco-dxp/marketplace/introduction
 - https://docs.umbraco.com/umbraco-cms/extend-your-project/packages/creating-a-package
 - https://umbraco.com/blog/get-ready-for-the-new-umbraco-marketplace
 
-## Hand off
+## *Hand off*
 
 Report which of the required items were already in place, which were added, and whether
 `umbraco-marketplace.json` was created/updated and why. If any field's current shape couldn't

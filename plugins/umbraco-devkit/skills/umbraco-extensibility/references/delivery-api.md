@@ -1,6 +1,6 @@
 # Delivery API support in a package
 
-## Contents
+## *Contents*
 
 - Read the docs first
 - Does your property editor need Delivery API support?
@@ -135,7 +135,7 @@ site owner should choose when it runs.
   query endpoint with the new filter and sort. Check the response against the OpenAPI schema
   at `/umbraco/openapi`.
 
-## Review checklist
+## *Review checklist*
 
 - Every shipped property value converter either implements
   `IDeliveryApiPropertyValueConverter` or has a recorded reason it doesn't need to.
