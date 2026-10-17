@@ -12,7 +12,7 @@ description: >-
 
 # Plain writing
 
-## Why
+## *Why*
 
 Reading is where a person spends most of their time in this pipeline. Every plan file, PR
 description and review gets read at least once, often several times, and usually by someone

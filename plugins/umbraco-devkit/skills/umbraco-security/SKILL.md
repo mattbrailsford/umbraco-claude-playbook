@@ -108,7 +108,7 @@ CUSTOM_ELEMENT_HANDLING: {
   to the third-party service behind your own Management API endpoint, which reads the key
   from server-side settings ("Secrets and sensitive configuration").
 
-## In a review
+## *In a review*
 
 Each of these is an injection, an authorization gap, or a secret exposure, which the
 `reviewer` agent treats as `Critical`:

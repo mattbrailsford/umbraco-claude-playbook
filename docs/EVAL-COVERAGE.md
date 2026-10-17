@@ -16,19 +16,17 @@ These evals gain, but the skill mostly didn't load, so the gain may come from el
 
 Fewer than 50% of the skill's sections have an eval, so most of its rules are unproven.
 
-- [`umbraco-env-sync`](#umbraco-env-sync): 23 of 30 sections have no eval.
-- [`umbraco-extensibility`](#umbraco-extensibility): 20 of 26 sections have no eval.
-- [`umbraco-backoffice-conventions`](#umbraco-backoffice-conventions): 9 of 12 sections have no eval.
-- [`git-workflow`](#git-workflow): 8 of 9 sections have no eval.
-- [`bdd-specs`](#bdd-specs): 7 of 8 sections have no eval.
-- [`umbraco-performance`](#umbraco-performance): 7 of 11 sections have no eval.
-- [`ef-core-data`](#ef-core-data): 6 of 8 sections have no eval.
-- [`umbraco-package-conventions`](#umbraco-package-conventions): 6 of 7 sections have no eval.
-- [`umbraco-marketplace`](#umbraco-marketplace): 5 of 6 sections have no eval.
-- [`plain-writing`](#plain-writing): 4 of 7 sections have no eval.
+- [`umbraco-env-sync`](#umbraco-env-sync): 24 of 31 sections have no eval.
+- [`umbraco-extensibility`](#umbraco-extensibility): 17 of 23 sections have no eval.
+- [`umbraco-backoffice-conventions`](#umbraco-backoffice-conventions): 8 of 11 sections have no eval.
+- [`git-workflow`](#git-workflow): 7 of 8 sections have no eval.
+- [`umbraco-performance`](#umbraco-performance): 6 of 10 sections have no eval.
+- [`bdd-specs`](#bdd-specs): 5 of 6 sections have no eval.
+- [`ef-core-data`](#ef-core-data): 5 of 7 sections have no eval.
+- [`umbraco-package-conventions`](#umbraco-package-conventions): 5 of 6 sections have no eval.
 - [`umbraco-cms-source`](#umbraco-cms-source): 4 of 5 sections have no eval.
 - [`umbraco-docs`](#umbraco-docs): 4 of 5 sections have no eval.
-- [`user-stories`](#user-stories): 3 of 5 sections have no eval.
+- [`umbraco-marketplace`](#umbraco-marketplace): 3 of 4 sections have no eval.
 
 ### Evals never run
 
@@ -41,42 +39,42 @@ No recorded score. Run them, then `scripts/record-eval-scores.sh`.
 
 ## Summary
 
-| Skill | Kind | Status | Best gain | Evals | Real bugs | Sections covered |
-|---|---|---|---|---|---|---|
-| [`bdd-specs`](#bdd-specs) | knowledge | Proven | +78 | 1 | 0 | 1/8 |
-| [`change-backport`](#change-backport) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`decision-review`](#decision-review) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`dependency-review`](#dependency-review) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`ef-core-data`](#ef-core-data) | knowledge | Proven | +33 | 4 | 0 | 2/8 |
-| [`feature-build`](#feature-build) | workflow | Keeps its rules | – | 2 | 0 | – |
-| [`feature-close`](#feature-close) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`feature-design`](#feature-design) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`feature-explore`](#feature-explore) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`feature-plan`](#feature-plan) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`git-workflow`](#git-workflow) | knowledge | Proven | +33 | 1 | 0 | 1/9 |
-| [`github-init`](#github-init) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`investigate-bug`](#investigate-bug) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`issue-backlog`](#issue-backlog) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`issue-resolve`](#issue-resolve) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`issue-triage`](#issue-triage) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`major-upgrade`](#major-upgrade) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`plain-writing`](#plain-writing) | knowledge | Proven | +33 | 5 | 0 | 3/7 |
-| [`pr-describe`](#pr-describe) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`pr-review`](#pr-review) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`project-init`](#project-init) | workflow | Keeps its rules | – | 2 | 0 | – |
-| [`quick-fix`](#quick-fix) | workflow | Keeps its rules | – | 1 | 0 | – |
-| [`umbraco-backoffice-conventions`](#umbraco-backoffice-conventions) | knowledge | Proven | +100 | 6 | 2 | 3/12 |
-| [`umbraco-backoffice-ux`](#umbraco-backoffice-ux) | knowledge | Proven | +100 | 10 | 0 | 4/5 |
-| [`umbraco-cms-source`](#umbraco-cms-source) | knowledge | Proven | +33 | 3 | 1 | 1/5 |
-| [`umbraco-dependencies`](#umbraco-dependencies) | knowledge | Proven | +100 | 8 | 0 | 4/5 |
-| [`umbraco-docs`](#umbraco-docs) | knowledge | Proven | +22 | 2 | 0 | 1/5 |
-| [`umbraco-env-sync`](#umbraco-env-sync) | knowledge | Proven | +27 | 7 | 0 | 7/30 |
-| [`umbraco-extensibility`](#umbraco-extensibility) | knowledge | Proven | +89 | 24 | 4 | 6/26 |
-| [`umbraco-marketplace`](#umbraco-marketplace) | knowledge | Proven | +100 | 1 | 0 | 1/6 |
-| [`umbraco-package-conventions`](#umbraco-package-conventions) | knowledge | Proven | +22 | 4 | 0 | 1/7 |
-| [`umbraco-performance`](#umbraco-performance) | knowledge | Proven | +100 | 6 | 4 | 4/11 |
-| [`umbraco-security`](#umbraco-security) | knowledge | Proven | +44 | 18 | 6 | 6/7 |
-| [`user-stories`](#user-stories) | knowledge | Proven | +100 | 1 | 0 | 2/5 |
+| Skill | Kind | Status | Best gain | Evals | Real bugs | Sections covered | Context |
+|---|---|---|---|---|---|---|---|
+| [`bdd-specs`](#bdd-specs) | knowledge | Proven | +78 | 1 | 0 | 1/6 | 3 |
+| [`change-backport`](#change-backport) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`decision-review`](#decision-review) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`dependency-review`](#dependency-review) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`ef-core-data`](#ef-core-data) | knowledge | Proven | +33 | 4 | 0 | 2/7 | 1 |
+| [`feature-build`](#feature-build) | workflow | Keeps its rules | – | 2 | 0 | – | – |
+| [`feature-close`](#feature-close) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`feature-design`](#feature-design) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`feature-explore`](#feature-explore) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`feature-plan`](#feature-plan) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`git-workflow`](#git-workflow) | knowledge | Proven | +33 | 1 | 0 | 1/8 | 0 |
+| [`github-init`](#github-init) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`investigate-bug`](#investigate-bug) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`issue-backlog`](#issue-backlog) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`issue-resolve`](#issue-resolve) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`issue-triage`](#issue-triage) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`major-upgrade`](#major-upgrade) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`plain-writing`](#plain-writing) | knowledge | Proven | +33 | 5 | 0 | 3/6 | 1 |
+| [`pr-describe`](#pr-describe) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`pr-review`](#pr-review) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`project-init`](#project-init) | workflow | Keeps its rules | – | 2 | 0 | – | – |
+| [`quick-fix`](#quick-fix) | workflow | Keeps its rules | – | 1 | 0 | – | – |
+| [`umbraco-backoffice-conventions`](#umbraco-backoffice-conventions) | knowledge | Proven | +100 | 6 | 2 | 3/11 | 1 |
+| [`umbraco-backoffice-ux`](#umbraco-backoffice-ux) | knowledge | Proven | +100 | 10 | 0 | 4/5 | 1 |
+| [`umbraco-cms-source`](#umbraco-cms-source) | knowledge | Proven | +33 | 3 | 1 | 1/5 | 0 |
+| [`umbraco-dependencies`](#umbraco-dependencies) | knowledge | Proven | +100 | 8 | 0 | 4/5 | 0 |
+| [`umbraco-docs`](#umbraco-docs) | knowledge | Proven | +22 | 2 | 0 | 1/5 | 0 |
+| [`umbraco-env-sync`](#umbraco-env-sync) | knowledge | Proven | +27 | 7 | 0 | 7/31 | 1 |
+| [`umbraco-extensibility`](#umbraco-extensibility) | knowledge | Proven | +89 | 24 | 4 | 6/23 | 6 |
+| [`umbraco-marketplace`](#umbraco-marketplace) | knowledge | Proven | +100 | 1 | 0 | 1/4 | 4 |
+| [`umbraco-package-conventions`](#umbraco-package-conventions) | knowledge | Proven | +22 | 4 | 0 | 1/6 | 1 |
+| [`umbraco-performance`](#umbraco-performance) | knowledge | Proven | +100 | 6 | 4 | 4/10 | 2 |
+| [`umbraco-security`](#umbraco-security) | knowledge | Proven | +44 | 18 | 6 | 6/6 | 1 |
+| [`user-stories`](#user-stories) | knowledge | Proven | +100 | 1 | 0 | 2/4 | 1 |
 
 ## How to read this
 
@@ -92,6 +90,8 @@ No recorded score. Run them, then `scripts/record-eval-scores.sh`.
   skill keeps its own rules. Anything under 100 broke one.
 - **Sections covered:** the skill's `## ` sections that at least one eval names in its
   `# covers:` line. A section with no eval is a rule nobody has proven is needed.
+- **Context:** sections with an italic heading (`## *Background*`): background, scope,
+  sources or a review list. They hold nothing an eval could fail, so they don't count.
 - **Skill loaded:** in how many recorded with-plugin runs the skill actually loaded.
 - **–** means nothing has been recorded.
 
@@ -101,11 +101,9 @@ No recorded score. Run them, then `scripts/record-eval-scores.sh`.
 
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
-| 🎯 Why: Design for Change | **no eval** | | | | | |
 | Gate: require the design and the stories first | **no eval** | | | | | |
 | Which layer(s) does this feature touch? | **no eval** | | | | | |
 | Hard rules (apply to every spec, either layer) | `bdd-specs-tag-filters` | 100 | 22 | 78 | 3/3 | 2026-10-16 |
-| Examples and per-stack mechanics | **no eval** | | | | | |
 | Open question: before or alongside implementation? | **no eval** | | | | | |
 | The shape: Feature > Scenario > Specification | **no eval** | | | | | |
 | The shape: Feature > Scenario > Specification | **no eval** | | | | | |
@@ -132,7 +130,6 @@ No recorded score. Run them, then `scripts/record-eval-scores.sh`.
 
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
-| 🎯 Why: Design for Change | **no eval** | | | | | |
 | One entity model, two providers | `ef-core-two-providers` | 100 | 67 | 33 | 3/3 | 2026-10-16 |
 | Migrations: generated per provider, prefixed to avoid collisions | `ef-core-port-migration` | 100 | 100 | 0 | 0/3 | 2026-10-16 |
 | Migrations: generated per provider, prefixed to avoid collisions | `ef-core-port-migration-newer-line` | – | 100 | – | – | – |
@@ -186,7 +183,6 @@ Stays quiet on: `ef-core-skip-generic-efcore`
 | If you are an AI agent: always ask before touching main or a support branch | **no eval** | | | | | |
 | Commits — Conventional Commits, kept honest | **no eval** | | | | | |
 | Issues — `gh issue create` | **no eval** | | | | | |
-| Context | **no eval** | | | | | |
 | Pull requests — `gh pr create` | **no eval** | | | | | |
 | Sanity rules | **no eval** | | | | | |
 | Umbraco packages and version tracking | `git-workflow-two-cms-majors` | 83 | 50 | 33 | 6/6 | 2026-10-16 |
@@ -231,7 +227,6 @@ Stays quiet on: `ef-core-skip-generic-efcore`
 
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
-| Why | **no eval** | | | | | |
 | Lead with the point | **no eval** | | | | | |
 | Plain words, short sentences | `plain-writing-upgrade-notes` | 100 | 80 | 20 | 6/6 | 2026-10-16 |
 | Concise is not vague | `plain-writing-issue-reply` | 100 | 100 | 0 | 3/3 | 2026-10-16 |
@@ -273,7 +268,6 @@ Stays quiet on: `plain-writing-skip-code-comment` `plain-writing-skip-commit-mes
 
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
-| 🎯 Why: Design for Change | **no eval** | | | | | |
 | Compiler setup this ecosystem requires | **no eval** | | | | | |
 | Local vs. global components | `backoffice-conventions-entry-relative-import` | 100 | 0 | 100 | 3/3 | 2026-10-16 |
 | What actually gates your public API: `package.json` exports, not any one file | **no eval** | | | | | |
@@ -295,7 +289,6 @@ Stays quiet on: `backoffice-conventions-skip-plain-lit`
 
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
-| 🎯 Why: Design for Change | **no eval** | | | | | |
 | Match what's already there | `backoffice-ux-match-banner-tokens` | 100 | 0 | 100 | 4/4 | 2026-10-17 |
 | Match what's already there | `backoffice-ux-match-sibling-dashboard` | – | 100 | – | – | – |
 | Choosing things: picker, not select | `backoffice-ux-picker-reviewer-user` | – | 100 | – | – | – |
@@ -305,6 +298,7 @@ Stays quiet on: `backoffice-conventions-skip-plain-lit`
 | The five moments | `backoffice-ux-write-connections-dashboard` | 100 | 100 | 0 | 6/6 | 2026-10-16 |
 | The five moments | `backoffice-ux-write-sync-button` | 100 | 100 | 0 | 6/6 | 2026-10-16 |
 | Details that get sent back | `backoffice-ux-details-toolbar` | 100 | 50 | 50 | 4/4 | 2026-10-17 |
+| Reviewing a UI diff | **no eval** | | | | | |
 
 No section: `backoffice-ux-places-loyalty-two-views` `backoffice-ux-places-sidebar-card`
 
@@ -365,6 +359,7 @@ Stays quiet on: `dependencies-skip-generic-node`
 | Users, groups, and members | `env-sync-write-usync-settings` | 67 | 67 | 0 | 3/3 | 2026-10-16 |
 | Property values that store ids | `env-sync-picker-values` | 100 | 75 | 25 | 3/3 | 2026-10-16 |
 | Keep sync in step | `env-sync-entity-gains-fields` | 100 | 73 | 27 | 3/3 | 2026-10-16 |
+| Test it | **no eval** | | | | | |
 | The pieces | **no eval** | | | | | |
 | Dependencies | **no eval** | | | | | |
 | Restore passes | **no eval** | | | | | |
@@ -393,7 +388,6 @@ Stays quiet on: `dependencies-skip-generic-node`
 
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
-| 🎯 Why: Design for Change | **no eval** | | | | | |
 | Composers — your package's DI entry point | **no eval** | | | | | |
 | Collection builders — how you make *your own* extension points | `extensibility-ordered-extension-point` | 67 | 67 | 0 | 3/3 | 2026-10-16 |
 | Attribute-based discovery, when the extension point is "plugins" | **no eval** | | | | | |
@@ -402,7 +396,6 @@ Stays quiet on: `dependencies-skip-generic-node`
 | Notification handlers, not raw event subscriptions | `load-balancing-webhook-handler-own-refresher` | – | 100 | – | – | – |
 | Publish your own notifications at extension points | `extensibility-ordered-extension-point` | 67 | 67 | 0 | 3/3 | 2026-10-16 |
 | Catalogue: which CMS extension point for which job | **no eval** | | | | | |
-| Scope note | **no eval** | | | | | |
 | 2. Management API endpoint | **no eval** | | | | | |
 | 3. Health check | **no eval** | | | | | |
 | 4. Cache refresher | `load-balancing-cache-clear` | 100 | 100 | 0 | 3/3 | 2026-10-16 |
@@ -426,7 +419,6 @@ Stays quiet on: `dependencies-skip-generic-node`
 | Custom selectors, filters, sorters, and index fields | **no eval** | | | | | |
 | Telling site owners what to do | **no eval** | | | | | |
 | Testing | **no eval** | | | | | |
-| Review checklist | **no eval** | | | | | |
 
 No section: `load-balancing-absolute-url-digest` `load-balancing-absolute-url-queued-ping` `load-balancing-concurrent-get-or-create-customer` `load-balancing-concurrent-order-number` `load-balancing-files-export-download` `load-balancing-files-upload-preview-confirm` `load-balancing-multistep-approval-link` `load-balancing-multistep-oauth-connect` `load-balancing-startup-recovery` `load-balancing-state-import-progress` `load-balancing-state-rate-limit` `load-balancing-write-recovery`
 
@@ -439,18 +431,15 @@ Stays quiet on: `extensibility-skip-dashboard` `extensibility-skip-generic-cshar
 
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
-| How listing actually works | **no eval** | | | | | |
 | What actually gets you listed | **no eval** | | | | | |
 | The version-compatibility gotcha | `marketplace-semver-no-ui` | 100 | 0 | 100 | 3/3 | 2026-10-16 |
 | Optional: `umbraco-marketplace.json` — richer listing metadata | **no eval** | | | | | |
 | Behavior — before you tag a release | **no eval** | | | | | |
-| What this skips, and why | **no eval** | | | | | |
 
 ### `umbraco-package-conventions`
 
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
-| 🎯 Why: Design for Change | **no eval** | | | | | |
 | Async method naming: `[Action][Entity]Async` | **no eval** | | | | | |
 | Visibility: `internal` by default | **no eval** | | | | | |
 | Routine failures: `Attempt<TResult, TStatus>`, like Umbraco's services | **no eval** | | | | | |
@@ -467,7 +456,6 @@ Stays quiet on: `package-conventions-skip-notification-handler`
 
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
-| 🎯 Why: Design for Change | **no eval** | | | | | |
 | Read published content from the cache, not the services layer | `performance-indexer-services` | 67 | 67 | 0 | 0/3 | 2026-10-16 |
 | Don't walk the whole tree | **no eval** | | | | | |
 | Navigation extensions: pass the services in | **no eval** | | | | | |
@@ -510,7 +498,6 @@ Stays quiet on: `performance-skip-template`
 | Backoffice: custom elements in sanitized HTML | `security-dompurify-attributes-generic-elements` | – | 100 | – | – | – |
 | Backoffice: custom elements in sanitized HTML | `security-dompurify-attributes-markdown-mentions` | 100 | 75 | 25 | 4/4 | 2026-10-17 |
 | Backoffice: credentials stay on the server | `security-bundle-secret-and-storage` | 100 | 78 | 22 | 3/3 | 2026-10-16 |
-| In a review | **no eval** | | | | | |
 
 Stays quiet on: `security-skip-generic-aspnet`
 
@@ -519,7 +506,6 @@ Stays quiet on: `security-skip-generic-aspnet`
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
 | Where this writes | **no eval** | | | | | |
-| The pipeline this sits in | **no eval** | | | | | |
 | Workflow | `user-stories-merge-and-split` | 100 | 0 | 100 | 3/3 | 2026-10-16 |
 | Scope boundaries | `user-stories-merge-and-split` | 100 | 0 | 100 | 3/3 | 2026-10-16 |
 | Output | **no eval** | | | | | |

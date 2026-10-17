@@ -12,7 +12,7 @@ description: >-
 
 # Umbraco package conventions
 
-## 🎯 Why: Design for Change
+## *🎯 Why: Design for Change*
 
 A package's own internal conventions — naming, layering, namespace organization, API stability
 — don't touch its extension surface directly, but they're what makes the codebase predictable

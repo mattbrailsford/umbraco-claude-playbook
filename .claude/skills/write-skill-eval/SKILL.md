@@ -68,7 +68,8 @@ allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 - **Tags:** the skill's name, then `should-trigger`, `should-not-trigger`, or `workflow`.
   Add `real-bug` when it applies.
 - **Covers:** for a knowledge case, add `# covers: ["<heading>"]` after `tags:`, naming the
-  skill's `## ` section (in `SKILL.md` or `references/`) that holds the rule. Use `[]` for a
+  skill's `## ` section (in `SKILL.md` or `references/`) that holds the rule. Italic headings
+  (`## *Background*`) are context and take no eval. Use `[]` for a
   guard whose rule was removed. Keep the `#`: the eval tool rejects frontmatter keys it
   doesn't know, so the line is a YAML comment. `scripts/eval-coverage.sh --check` fails on a
   heading that doesn't exist.

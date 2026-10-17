@@ -21,7 +21,7 @@ Specification, one assertion, happy-then-sad, pending by default, a real-entry-p
 identical either way; only the syntax it's expressed in differs. Don't duplicate this
 discipline into a second, stack-specific skill — extend the relevant reference file instead.
 
-## 🎯 Why: Design for Change
+## *🎯 Why: Design for Change*
 
 One assertion per Specification means a failing spec names exactly what broke. Segregating
 happy path from sad path means you can change one behavior without re-reading the whole
@@ -81,7 +81,7 @@ only the reference file(s) that layer needs:
 Before reporting, reread every spec you wrote against rules 3 and 6: one assertion each, and
 each one marked pending. These two slip most often.
 
-## Examples and per-stack mechanics
+## *Examples and per-stack mechanics*
 
 - **`references/backend-csharp.md`** — test framework detection, the shape mapped onto
   NUnit (or xUnit), a full worked example, file/naming convention.

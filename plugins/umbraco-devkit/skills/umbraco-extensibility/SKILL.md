@@ -12,7 +12,7 @@ description: >-
 
 # Extending Umbraco, not just building on top of it
 
-## 🎯 Why: Design for Change
+## *🎯 Why: Design for Change*
 
 Packages get extended by code you'll never see. Reuse Umbraco's own extension mechanisms so
 the extension surface stays stable while the implementation changes; don't invent your own
@@ -150,7 +150,7 @@ attribute shape verbatim. The docs for that major (`umbraco-docs`) help find the
 add-on for v17 and v18. Which API applies depends on the stack the site runs, not just the
 major; `content-and-routing.md` row 7 covers both.
 
-## Scope note
+## *Scope note*
 
 This skill covers Umbraco's extension mechanisms and the backend-side CMS extension points
 built on them, only.

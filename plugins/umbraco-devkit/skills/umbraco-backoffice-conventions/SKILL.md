@@ -23,7 +23,7 @@ These patterns match the Umbraco backoffice client itself. **Be flexible about t
 mechanism, not about the underlying principle**: a smaller package can simplify the
 mechanism, as noted below.
 
-## 🎯 Why: Design for Change
+## *🎯 Why: Design for Change*
 
 One structure means "is this component loaded, and is it meant for use outside this
 package?" always has one obvious answer, instead of each contributor re-deriving it from code.

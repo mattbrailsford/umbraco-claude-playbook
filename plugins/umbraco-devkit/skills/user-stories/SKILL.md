@@ -25,7 +25,7 @@ this skill as its first step). If invoked standalone before `feature-plan` has r
 to the same file, and note that `feature-plan` still needs to run to turn the stories into an
 ordered, dependency-aware task list in `PLAN.md`.
 
-## The pipeline this sits in
+## *The pipeline this sits in*
 
 ```
 feature request ──▶ [user-stories] ──▶ STORIES.md ──▶ [bdd-specs] ──▶ specs ──▶ code
