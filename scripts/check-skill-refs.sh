@@ -32,8 +32,10 @@ fi
 sort -u -o "$valid_names" "$valid_names"
 
 # Every backtick-quoted, kebab-case (>= one hyphen) token across tracked Markdown files.
+# docs/EVAL-COVERAGE.md is skipped: it's generated, and its backticked names are eval cases.
+md_files() { git ls-files '*.md' ':!docs/EVAL-COVERAGE.md'; }
 found_tokens="$(mktemp)"
-git ls-files '*.md' \
+md_files \
   | xargs grep -ohE '`[a-z][a-z0-9]*(-[a-z0-9]+)+`' \
   | tr -d '`' \
   | sort -u > "$found_tokens"
@@ -43,7 +45,7 @@ while IFS= read -r token; do
   if ! grep -qxF "$token" "$valid_names"; then
     unresolved=1
     echo "Unresolved reference: \`$token\`"
-    git ls-files '*.md' | xargs grep -n "\`$token\`" | sed 's/^/    /'
+    md_files | xargs grep -n "\`$token\`" | sed 's/^/    /'
     echo
   fi
 done < "$found_tokens"
