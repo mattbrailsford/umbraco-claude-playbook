@@ -9,11 +9,8 @@ scores in `docs/eval-scores.json`. Don't edit it by hand.
 
 These evals gain, but the skill mostly didn't load, so the gain may come from elsewhere.
 
-- [`umbraco-dependencies`](#umbraco-dependencies): `dependencies-bare-lit-import` (+34, loaded 0/3). Fix its description's "Use when" for these requests, then rerun to see if the gain holds.
-- [`umbraco-docs`](#umbraco-docs): `docs-custom-webhook-event` (+23, loaded 0/3). Fix its description's "Use when" for these requests, then rerun to see if the gain holds.
-- [`umbraco-extensibility`](#umbraco-extensibility): `extensibility-migration-admin-group` (+22, loaded 0/3). Fix its description's "Use when" for these requests, then rerun to see if the gain holds.
-- [`umbraco-package-conventions`](#umbraco-package-conventions): `package-conventions-controller-constructor-audit` (+50, loaded 1/4). Fix its description's "Use when" for these requests, then rerun to see if the gain holds.
-- [`umbraco-performance`](#umbraco-performance): `performance-converter-cache-level` (+100, loaded 0/3). Fix its description's "Use when" for these requests, then rerun to see if the gain holds.
+- [`umbraco-docs`](#umbraco-docs): `docs-custom-webhook-event` (+23, loaded 0/4). Fix its description's "Use when" for these requests, then rerun to see if the gain holds.
+- [`umbraco-performance`](#umbraco-performance): `performance-converter-cache-level` (+100, loaded 0/4). Fix its description's "Use when" for these requests, then rerun to see if the gain holds.
 
 ### Under-covered
 
@@ -333,7 +330,7 @@ shown to follow (kept so a regression shows up), or a case not yet mapped.
 | Which CMS version: the floor | `dependencies-add-ef-core` | 100 | 100 | 0 | 3/3 | 2026-10-16 |
 | Which CMS version: the floor | `dependencies-ef-core-floor` | 100 | 0 | 100 | 3/3 | 2026-10-16 |
 | Locked to the CMS | `dependencies-add-ef-core` | 100 | 100 | 0 | 3/3 | 2026-10-16 |
-| Locked to the CMS | `dependencies-bare-lit-import` | 56 | 22 | 34 | 0/3 | 2026-10-16 |
+| Locked to the CMS | `dependencies-bare-lit-import` | 100 | 22 | 78 | 3/4 | 2026-10-17 |
 | Locked to the CMS | `dependencies-locked-security-alert` | 100 | 0 | 100 | 3/3 | 2026-10-16 |
 | Locked to the CMS | `dependencies-sibling-exact-pin` | 100 | 0 | 100 | 3/3 | 2026-10-16 |
 | Locked to the CMS | `dependencies-write-lit-imports` | 100 | 100 | 0 | 1/3 | 2026-10-16 |
@@ -349,7 +346,7 @@ Stays quiet on: `dependencies-skip-generic-node`
 |---|---|---|---|---|---|---|
 | Find the clone | **no eval** | | | | | |
 | Pick the folder | **no eval** | | | | | |
-| Read, search, list | `docs-custom-webhook-event` | 67 | 44 | 23 | 0/3 | 2026-10-16 |
+| Read, search, list | `docs-custom-webhook-event` | 67 | 44 | 23 | 0/4 | 2026-10-17 |
 | Read, search, list | `docs-delivery-api-allow-list` | 100 | 78 | 22 | 2/3 | 2026-10-16 |
 | No clone: live site fallback | **no eval** | | | | | |
 | Rules | **no eval** | | | | | |
@@ -413,7 +410,7 @@ Stays quiet on: `dependencies-skip-generic-node`
 | 4. Cache refresher | `load-balancing-cache-clear-sibling-local` | – | 100 | – | – | – |
 | 4. Cache refresher | `review-load-balancing-diff` | 89 | 78 | 11 | 0/6 | 2026-10-16 |
 | 8. Custom file system | **no eval** | | | | | |
-| 9. Package migration plan | `extensibility-migration-admin-group` | 100 | 78 | 22 | 0/3 | 2026-10-16 |
+| 9. Package migration plan | `extensibility-migration-admin-group` | 100 | 78 | 22 | 3/4 | 2026-10-17 |
 | 9. Package migration plan | `extensibility-package-migration` | 100 | 33 | 67 | 2/2 | 2026-10-17 |
 | 10. Recurring background job | `extensibility-distributed-job` | 100 | 11 | 89 | 3/3 | 2026-10-16 |
 | 10. Recurring background job | `extensibility-job-umbraco-context` | 89 | 89 | 0 | 1/3 | 2026-10-16 |
@@ -458,7 +455,7 @@ Stays quiet on: `extensibility-skip-dashboard` `extensibility-skip-generic-cshar
 | Visibility: `internal` by default | **no eval** | | | | | |
 | Routine failures: `Attempt<TResult, TStatus>`, like Umbraco's services | **no eval** | | | | | |
 | Public API backwards compatibility | `package-conventions-controller-constructor` | 100 | 100 | 0 | 2/3 | 2026-10-17 |
-| Public API backwards compatibility | `package-conventions-controller-constructor-audit` | 100 | 50 | 50 | 1/4 | 2026-10-17 |
+| Public API backwards compatibility | `package-conventions-controller-constructor-audit` | 67 | 50 | 17 | 3/4 | 2026-10-17 |
 | Public API backwards compatibility | `package-conventions-new-parameter` | 89 | 67 | 22 | 2/3 | 2026-10-16 |
 | Public API backwards compatibility | `package-conventions-view-component-constructor` | – | 100 | – | – | – |
 | Extension methods | **no eval** | | | | | |
@@ -477,7 +474,7 @@ Stays quiet on: `package-conventions-skip-notification-handler`
 | Cache your own expensive lookups | `performance-render-lookup` | 100 | 100 | 0 | 2/3 | 2026-10-16 |
 | Cache your own expensive lookups | `performance-write-render-lookup` | 100 | 0 | 100 | 3/3 | 2026-10-16 |
 | Read data type configuration from its cache | `performance-datatype-config` | 100 | 67 | 33 | 2/3 | 2026-10-16 |
-| Property value converters: set the cache level | `performance-converter-cache-level` | 100 | 0 | 100 | 0/3 | 2026-10-16 |
+| Property value converters: set the cache level | `performance-converter-cache-level` | 100 | 0 | 100 | 0/4 | 2026-10-17 |
 | Output caching: evict when your data changes | **no eval** | | | | | |
 | Keep hot paths light | **no eval** | | | | | |
 | Management API endpoints: return what the list needs | **no eval** | | | | | |

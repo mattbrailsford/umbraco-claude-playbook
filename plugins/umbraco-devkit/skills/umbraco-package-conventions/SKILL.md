@@ -4,7 +4,8 @@ description: >-
   Backend conventions for an Umbraco package: async naming, internal by default,
   Attempt-based results for routine failures, public-API backwards compatibility, and where
   extension methods live. Use when naming a method, choosing visibility, shaping a service's
-  result, changing a public signature, or organizing extension methods. For
+  result, changing a public signature (including adding a dependency to a public class's
+  constructor), or organizing extension methods. For
   extension mechanisms, see `umbraco-extensibility`.
 
 ---

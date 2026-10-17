@@ -26,6 +26,10 @@ public class RatingValueConverter : PropertyValueConverterBase
     public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
         => typeof(int);
 
+    // Always set it; how to choose the level: umbraco-performance, "Property value converters".
+    public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType)
+        => PropertyCacheLevel.Element;
+
     public override object? ConvertIntermediateToObject(
         IPublishedElement owner, IPublishedPropertyType propertyType,
         PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
