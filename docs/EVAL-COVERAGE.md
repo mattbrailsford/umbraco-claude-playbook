@@ -38,7 +38,6 @@ Fewer than 50% of the skill's sections have an eval, so most of its rules are un
 No recorded score. Run them, then `scripts/record-eval-scores.sh`.
 
 - [`umbraco-backoffice-conventions`](#umbraco-backoffice-conventions): `backoffice-conventions-external-markdown`
-- [`umbraco-backoffice-ux`](#umbraco-backoffice-ux): `backoffice-ux-picker-sibling-select`
 - [`umbraco-cms-source`](#umbraco-cms-source): `cms-source-content-update-keeps-values`
 - [`umbraco-env-sync`](#umbraco-env-sync): `env-sync-access-rules`
 - [`umbraco-security`](#umbraco-security): `security-secret-in-response-dynamic-settings`
@@ -70,7 +69,7 @@ No recorded score. Run them, then `scripts/record-eval-scores.sh`.
 | [`project-init`](#project-init) | workflow | Keeps its rules | – | 2 | 0 | – |
 | [`quick-fix`](#quick-fix) | workflow | Keeps its rules | – | 1 | 0 | – |
 | [`umbraco-backoffice-conventions`](#umbraco-backoffice-conventions) | knowledge | Proven | +100 | 6 | 2 | 3/12 |
-| [`umbraco-backoffice-ux`](#umbraco-backoffice-ux) | knowledge | Proven | +100 | 9 | 0 | 5/6 |
+| [`umbraco-backoffice-ux`](#umbraco-backoffice-ux) | knowledge | Proven | +100 | 10 | 0 | 4/5 |
 | [`umbraco-cms-source`](#umbraco-cms-source) | knowledge | Proven | +33 | 3 | 1 | 1/5 |
 | [`umbraco-dependencies`](#umbraco-dependencies) | knowledge | Proven | +100 | 8 | 0 | 4/5 |
 | [`umbraco-docs`](#umbraco-docs) | knowledge | Proven | +22 | 2 | 0 | 1/5 |
@@ -300,16 +299,20 @@ Stays quiet on: `backoffice-conventions-skip-plain-lit`
 | Section | Eval | With | Without | Gain | Skill loaded | Recorded |
 |---|---|---|---|---|---|---|
 | 🎯 Why: Design for Change | **no eval** | | | | | |
-| Match what's already there | `backoffice-ux-match-banner-tokens` | 50 | 0 | 50 | 2/4 | 2026-10-17 |
+| Match what's already there | `backoffice-ux-match-banner-tokens` | 100 | 0 | 100 | 4/4 | 2026-10-17 |
 | Match what's already there | `backoffice-ux-match-sibling-dashboard` | – | 100 | – | – | – |
 | Choosing things: picker, not select | `backoffice-ux-picker-reviewer-user` | – | 100 | – | – | – |
-| Choosing things: picker, not select | `backoffice-ux-picker-sibling-select` | – | – | – | – | – |
+| Choosing things: picker, not select | `backoffice-ux-picker-sibling-select` | 75 | 0 | 75 | 3/4 | 2026-10-17 |
 | Choosing things: picker, not select | `backoffice-ux-write-connections-dashboard` | 100 | 100 | 0 | 6/6 | 2026-10-16 |
 | The five moments | `backoffice-ux-moments-remember-filter` | 100 | 0 | 100 | 4/4 | 2026-10-17 |
 | The five moments | `backoffice-ux-write-connections-dashboard` | 100 | 100 | 0 | 6/6 | 2026-10-16 |
 | The five moments | `backoffice-ux-write-sync-button` | 100 | 100 | 0 | 6/6 | 2026-10-16 |
-| Every place it appears | `backoffice-ux-places-sidebar-card` | – | 100 | – | – | – |
 | Details that get sent back | `backoffice-ux-details-toolbar` | 100 | 50 | 50 | 4/4 | 2026-10-17 |
+
+No section: `backoffice-ux-places-loyalty-two-views` `backoffice-ux-places-sidebar-card`
+
+These test something with no rule in the skill: a guard for a rule plain Claude was
+shown to follow (kept so a regression shows up), or a case not yet mapped.
 
 ### `umbraco-cms-source`
 

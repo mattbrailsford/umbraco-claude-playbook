@@ -98,8 +98,8 @@
   "backoffice-ux-match-banner-tokens": {
     "date": "2026-10-17",
     "runs": 4,
-    "skillLoaded": 2,
-    "with": 50,
+    "skillLoaded": 4,
+    "with": 100,
     "without": 0,
     "withoutDate": "2026-10-17"
   },
@@ -116,6 +116,18 @@
     "withoutDate": "2026-10-17"
   },
   "backoffice-ux-picker-reviewer-user": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-ux-picker-sibling-select": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 3,
+    "with": 75,
+    "without": 0,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-ux-places-loyalty-two-views": {
     "without": 100,
     "withoutDate": "2026-10-17"
   },

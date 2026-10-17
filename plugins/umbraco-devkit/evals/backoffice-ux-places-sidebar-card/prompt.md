@@ -1,7 +1,7 @@
 ---
 description: "Building a figures card that renders both in a wide workspace view and a narrow sidebar."
 tags: [umbraco-backoffice-ux, should-trigger]
-# covers: ["Every place it appears"]
+# covers: []
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
