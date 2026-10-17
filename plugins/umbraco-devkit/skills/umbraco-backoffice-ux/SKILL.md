@@ -2,9 +2,11 @@
 name: umbraco-backoffice-ux
 description: >-
   How an Umbraco backoffice screen should look and behave for editors: matching existing
-  screens, pickers vs. selects, first run, mistakes, waiting, finishing and returning,
-  shared components, and the details most often sent back. Use when designing, building or
-  reviewing backoffice UI. For package structure, see `umbraco-backoffice-conventions`.
+  screens, pickers vs. selects, first run, mistakes, waiting, finishing and returning, and
+  the details most often sent back. Use when designing, building, changing or reviewing
+  backoffice UI, including adding a banner, button, field or panel to an existing view or
+  styling it like what's already there. For package structure, see
+  `umbraco-backoffice-conventions`.
 
 ---
 
@@ -70,6 +72,10 @@ content, media, a member, a user, or any other entity. Umbraco's convention is a
 The same shape applies when each chosen item needs its own settings: a ref list, an add button,
 and a modal per item to configure it. Not an inline list of rows with fields in each.
 
+**This beats "match what's already there".** A neighbouring field that already uses a
+`<select>` for an entity is a mistake to fix, not a pattern to copy: build the new field as a
+picker, and say in your reply that the existing one should switch too.
+
 A `<select>` or combobox is a deliberate choice only for a short, fixed list of simple values
 (an enum-like setting) that needs no extra context to pick correctly. When you choose it over
 a picker, say so in `ARCHITECTURE.md` with the reason, so it reads as a decision.
@@ -91,14 +97,6 @@ deliberately, whether each needs handling:
 
 A moment that genuinely doesn't apply is a deliberate skip, noted as such, not left
 unconsidered.
-
-## Every place it appears
-
-A component often renders in more than one place: a narrow sidebar and a full-width
-workspace, a modal and an inline editor, a dashboard and a content app. Design and check it in
-every place it will appear, not just the first one built. Make it respond to the width of its
-container rather than the window, and when the same small piece of UI repeats across places,
-build it once as a shared component.
 
 ## Details that get sent back
 
@@ -137,7 +135,6 @@ Things to look for in the code, before anyone sees the screen:
 - user-facing strings, `aria-label`s or placeholders that aren't localized
 - a list or table with no empty state, a fetch with no loading state, a save with no
   confirmation
-- a component used in more than one place that sets a fixed width
 - a new `icon-*` name that hasn't been checked against the backoffice icon set
 - a form input with no label tied to it (`uui-label for=` or an `aria-label`), so a screen
   reader announces nothing

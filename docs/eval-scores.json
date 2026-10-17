@@ -87,6 +87,54 @@
     "without": 100,
     "withoutDate": "2026-10-16"
   },
+  "backoffice-ux-details-toolbar": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 4,
+    "with": 100,
+    "without": 50,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-ux-match-banner-tokens": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 4,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-ux-match-sibling-dashboard": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-ux-moments-remember-filter": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 4,
+    "with": 100,
+    "without": 0,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-ux-picker-reviewer-user": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-ux-picker-sibling-select": {
+    "date": "2026-10-17",
+    "runs": 4,
+    "skillLoaded": 3,
+    "with": 75,
+    "without": 0,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-ux-places-loyalty-two-views": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
+  "backoffice-ux-places-sidebar-card": {
+    "without": 100,
+    "withoutDate": "2026-10-17"
+  },
   "backoffice-ux-write-connections-dashboard": {
     "date": "2026-10-16",
     "runs": 6,

@@ -70,3 +70,10 @@ document-key
 notes-doc-link
 notes-mention
 product-picker-details-panel
+auto-fill
+auto-fit
+header-actions
+umb-input-document
+umb-user-input
+uui-box
+uui-table
