@@ -1,6 +1,6 @@
 ---
 description: "Caching shipping zones the same way as an existing service that clears its cache only on the local server."
-tags: [umbraco-load-balancing, should-trigger]
+tags: [umbraco-extensibility, should-trigger]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

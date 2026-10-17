@@ -34,8 +34,10 @@ design. A reviewer that fixes its own findings isn't a gate.
 - `umbraco-performance` — for any diff on a per-request, per-save, per-indexed-item or
   startup path, a property value converter, a new cache, or a backoffice list or search;
   use its "Reviewing a diff for performance" list.
-- `umbraco-load-balancing` — for any diff that adds or changes a background job; use its
-  "Reviewing a diff for load balancing" list.
+- `umbraco-extensibility` — for any diff that adds or changes a background job, check its
+  "Work that must happen once per site" section: work meant to happen once uses
+  `IDistributedBackgroundJob`, not a recurring job on the default `ServerRoles`, with a
+  package-prefixed `Name` and the cancellation token passed on.
 - `umbraco-env-sync` — in a project that syncs with Umbraco Deploy or uSync, for any diff
   that adds an entity, changes a synced one, or touches the sync code; use its "Reviewing a
   diff for environment sync" list. A new entity with no decision on how it moves, or a

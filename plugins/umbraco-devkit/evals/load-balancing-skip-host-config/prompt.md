@@ -1,6 +1,6 @@
 ---
-description: Configuring a load-balanced host is out of scope for the package-side skill.
-tags: [umbraco-load-balancing, should-not-trigger]
+description: Configuring a load-balanced host is out of scope for the package skills.
+tags: [umbraco-extensibility, should-not-trigger]
 max_turns: 6
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

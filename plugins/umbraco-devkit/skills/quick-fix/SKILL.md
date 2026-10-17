@@ -48,9 +48,10 @@ is one that changes behavior someone saw go wrong. Typos, comments, and dead cod
    `investigate-bug` instead: a quick fix needs a known cause.
 3. **Consult skills selectively.** Only load a skill if the fix genuinely touches its
    territory:
-   - `umbraco-performance` / `umbraco-load-balancing`: only if the fix touches a cache, a
-     per-request or per-save path, a background job, files on disk, or a handler's side
-     effects.
+   - `umbraco-performance`: only if the fix touches a cache or a per-request or per-save
+     path.
+   - `umbraco-extensibility`: only if the fix touches a background job or another extension
+     point.
    - `umbraco-env-sync`: only if the project syncs with Umbraco Deploy or uSync and the fix
      adds an entity, changes a synced one, or touches the sync code.
    - `umbraco-dependencies`: only if the fix adds or bumps a NuGet or npm package.

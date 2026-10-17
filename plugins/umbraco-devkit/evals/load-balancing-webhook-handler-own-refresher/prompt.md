@@ -1,6 +1,6 @@
 ---
 description: "Notifying an ERP when a price list changes, in a package whose own cache refresher already reacts to every change on every server."
-tags: [umbraco-load-balancing, should-trigger]
+tags: [umbraco-extensibility, should-trigger]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

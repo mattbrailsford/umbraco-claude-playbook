@@ -28,7 +28,7 @@ section, and the files/extension points you own. Build that task and nothing mor
   SQL Server *and* SQLite before writing a migration — most Umbraco packages need both.
 - Code that runs per request, per save, per indexed item or at startup, a property value
   converter, a cache, or a backoffice list or search → `umbraco-performance`.
-- Code that runs on a timer or as a background job → `umbraco-load-balancing`.
+- Code that runs on a timer or as a background job → `umbraco-extensibility`.
 - In a project that syncs with Umbraco Deploy or uSync: a new entity, a change to a synced
   entity, or the sync code itself → `umbraco-env-sync`. Make the matching sync change in
   the same task.

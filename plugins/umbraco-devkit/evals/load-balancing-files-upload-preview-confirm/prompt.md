@@ -1,6 +1,6 @@
 ---
 description: "A two-step backoffice upload (preview, then confirm); a file saved to a folder of the package's own on one server isn't there when the confirm request lands on another."
-tags: [umbraco-load-balancing, should-trigger]
+tags: [umbraco-extensibility, should-trigger]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,6 +1,6 @@
 ---
 description: "Linking incoming orders to a customer record found or created by email; check-then-insert creates duplicates when two servers take orders for the same customer at once."
-tags: [umbraco-load-balancing, should-trigger]
+tags: [umbraco-extensibility, should-trigger]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

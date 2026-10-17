@@ -1,6 +1,6 @@
 ---
 description: Sending a webhook after publish once the content is served; the cache refresher notification that fits fires once per server.
-tags: [umbraco-load-balancing, should-trigger]
+tags: [umbraco-extensibility, should-trigger]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

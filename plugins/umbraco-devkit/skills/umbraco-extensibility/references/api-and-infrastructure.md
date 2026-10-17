@@ -192,7 +192,7 @@ minutes) is the wait after startup before the first run. `ServerRoles` (default 
 SchedulingPublisher`) restricts which server role in a load-balanced setup actually executes
 it. With a load-balanced backoffice (v17+) every server is `SchedulingPublisher`, so the
 default doesn't mean "one server": work that must run once uses `IDistributedBackgroundJob`
-instead (see `umbraco-load-balancing`). Implement
+instead (below). Implement
 `IRecurringBackgroundJob` directly only if the class already has to inherit from something
 else and can't take `RecurringBackgroundJobBase`. From v19 the interface has no default
 members: a direct implementation declares `Delay`, `IgnoredDelay`, `ServerRoles`, both change
@@ -201,7 +201,52 @@ gone. The base class supplies all of them, on every version. Inject services (`I
 `ICoreScopeProvider`, `ILogger<T>`, `IOptionsMonitor<T>`) via constructor DI as normal — the
 job is resolved from the container like anything else registered through the composer.
 
-Source: [Scheduling](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/scheduling).
+### Work that must happen once per site
+
+A site can run on a dedicated backoffice server with front-end `Subscriber` servers, or
+(v17+) on several servers that all serve the backoffice and are all `SchedulingPublisher`.
+A package can't tell which, so "the scheduling server" isn't a safe stand-in for "exactly
+one server".
+
+- **Work that must happen once per run** (send a digest, call a third-party API, write a
+  shared row, clean up shared data) → `IDistributedBackgroundJob` on v17+. Umbraco tracks it
+  in the database so only one server runs it at a time. Which server isn't fixed.
+- **Work each server does for itself** (clear its own temp files, warm its own cache) →
+  `IRecurringBackgroundJob` with `ServerRoles` set to every role.
+
+```csharp
+public class MyPackageDigestJob : IDistributedBackgroundJob
+{
+    public string Name => "MyPackage.Digest";
+    public TimeSpan Period => TimeSpan.FromHours(1);
+
+    public Task ExecuteAsync() => ExecuteAsync(CancellationToken.None);
+
+    public async Task ExecuteAsync(CancellationToken cancellationToken)
+    {
+        // pass cancellationToken to every async call
+    }
+}
+
+// In a composer
+builder.Services.AddSingleton<IDistributedBackgroundJob, MyPackageDigestJob>();
+```
+
+- **Prefix `Name` with your package name.** It's the job's row in the database, shared with
+  core and every other package.
+- **Pass the cancellation token on.** A job that ignores it holds up the server's shutdown
+  until it finishes. The `ExecuteAsync(CancellationToken)` overload arrived in 17.5; on
+  earlier 17.x only `ExecuteAsync()` is called.
+- **Expect a crashed run to block the next one for a while.** If a server dies mid-run, no
+  other server picks the job up until its `Period` plus `DistributedJobs:MaximumExecutionTime`
+  has passed.
+- **A package that also supports v13** has no `IDistributedBackgroundJob` there. Keep the
+  recurring job on v13 and say in its docs that it runs once only with a dedicated
+  backoffice.
+
+Source: [Scheduling](https://docs.umbraco.com/umbraco-cms/extend-your-project/server-side-extensions/scheduling),
+[Distributed jobs settings](https://docs.umbraco.com/umbraco-cms/develop-with-umbraco/configuration/distributedjobssettings),
+[Load balancing the backoffice](https://docs.umbraco.com/umbraco-cms/run-in-production/infrastructure-and-ops/server-setup/load-balancing/load-balancing-backoffice).
 
 ## 11. Custom Management API authorization policy
 

@@ -265,7 +265,7 @@ this phase.
   decides its version, and whether it ships to sites, is known before it's chosen.
 - Reading content on front-end requests, caching, or large lists → `umbraco-performance`,
   so where data is read from and what clears each cache is decided now.
-- Background jobs or scheduled work → `umbraco-load-balancing`, so work meant to happen once
+- Background jobs or scheduled work → `umbraco-extensibility`, so work meant to happen once
   happens once on a site with several servers.
 - A new or changed entity in a project that supports Umbraco Deploy or uSync, or adding that
   support → `umbraco-env-sync`, so how the entity moves between environments is decided

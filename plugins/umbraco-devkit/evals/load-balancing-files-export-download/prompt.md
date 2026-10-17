@@ -1,6 +1,6 @@
 ---
 description: "Adding a large CSV export that the editor downloads once it's ready; a file on one server's disk isn't there on the next request."
-tags: [umbraco-load-balancing, should-trigger]
+tags: [umbraco-extensibility, should-trigger]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

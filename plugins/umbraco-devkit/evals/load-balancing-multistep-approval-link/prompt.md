@@ -1,6 +1,6 @@
 ---
 description: "An approve-by-email flow: the request, the emailed link and the approval are separate requests that can reach different servers."
-tags: [umbraco-load-balancing, should-trigger]
+tags: [umbraco-extensibility, should-trigger]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

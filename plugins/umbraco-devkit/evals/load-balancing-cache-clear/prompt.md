@@ -1,6 +1,6 @@
 ---
 description: Caching settings read on every page; the obvious local cache clear on save leaves other servers on the old value.
-tags: [umbraco-load-balancing, should-trigger]
+tags: [umbraco-extensibility, should-trigger]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
